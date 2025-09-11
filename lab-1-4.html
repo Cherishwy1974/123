@@ -3,970 +3,1174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>对数运算学习 - 高等应用数学虚拟实验室</title>
+    <title>函数概念实验室</title>
     
-    <!-- 本地化MathJax配置 -->
+    <!-- ========================================
+         修复1：使用本地MathJax，优化配置减少卡顿
+         修复2：延迟加载，避免阻塞页面
+         ======================================== -->
     <script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true,
-                packages: {'[+]': ['ams', 'base']}
-            },
-            chtml: {
-                scale: 1,
-                minScale: 0.5,
-                matchFontHeight: false
+                processEscapes: true
             },
             startup: {
-                ready: () => {
-                    MathJax.startup.defaultReady();
-                    console.log('MathJax加载完成');
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('MathJax加载完成');
+                    });
                 }
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
             }
         };
     </script>
-    <script async src="../common-assets/js/tex-svg.js"></script>
+    <!-- 使用defer异步加载，避免阻塞 -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
     
-    
-    <!-- 隐藏滚动条样式 -->
-    <link rel="stylesheet" href="../common-assets/css/hidden-scrollbar.css">
-
-<style>
-        /* 字体标准化规范 */
+    <style>
+        /* ========================================
+           用户要求1：字号统一
+           ======================================== */
         :root {
-            --h1-size: 22px;      /* 一级标题 */
-            --h2-size: 20px;      /* 二级标题 */
-            --h3-size: 18px;      /* 三级标题 */
-            --btn-size: 16px;     /* 按钮文字 */
-            --formula-size: 20px; /* 数学公式 */
-            --text-size: 16px;    /* 正文文字 */
+            --h1-size: 22px;      
+            --h2-size: 20px;      
+            --h3-size: 18px;      
+            --btn-size: 16px;     
+            --formula-size: 20px; 
+            --text-size: 16px;
             
-            /* 现代化配色方案 */
             --primary: #4f46e5;
             --primary-light: #6366f1;
             --primary-dark: #3730a3;
-            --secondary: #7c3aed;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
             --light: #ffffff;
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
             --gray-600: #4b5563;
             --gray-800: #1f2937;
-            --gray-900: #111827;
             --border: #e5e7eb;
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        /* 全局重置和基础样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* 本地化字体设置 - 使用系统字体栈 */
+        /* ========================================
+           用户要求：滚动条生效但不显示
+           ======================================== */
+        *::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
             font-size: var(--text-size);
-            line-height: 1.6;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
+            line-height: 1.5;
+            background: var(--gray-50);
             color: var(--gray-800);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* 全屏容器布局 */
-        .app-container {
-            width: 100vw;
+        /* ========================================
+           用户要求：横向布局（宽是高的2倍），压缩高度
+           ======================================== */
+        .container {
+            width: 100%;
+            max-width: 1400px;
             height: 100vh;
-            display: grid;
-            grid-template-rows: auto auto 1fr;
+            max-height: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
             background: var(--light);
-            overflow: auto;
         }
 
-        /* 顶部标题栏 */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             color: var(--light);
-            padding: 16px 24px;
+            padding: 8px 20px;
+            height: 40px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: none;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 16px;
         }
 
         .header h1 {
-            font-size: var(--h1-size);
-            font-weight: 700;
-            margin: 0;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            letter-spacing: 0.5px;
-        }
-
-        .header-subtitle {
-            font-size: var(--h3-size);
-            opacity: 0.9;
-            font-weight: 400;
+            font-size: var(--h2-size);
             margin: 0;
         }
 
-        /* 主内容区域 - 使用Grid布局 */
-        .main-content {
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            height: 100%;
-            overflow: auto;
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
         }
 
-        /* 侧边导航栏 */
+        /* ========================================
+           用户要求：侧边栏不动
+           ======================================== */
         .sidebar {
+            width: 120px;
             background: var(--gray-50);
             border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 20px 0;
-            overflow-y: auto;
+            padding: 10px 8px;
         }
 
-        .nav-tabs {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 0 16px;
-        }
-
-        .nav-tab {
-            padding: 14px 16px;
+        .nav-btn {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 4px;
             background: transparent;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: var(--btn-size);
-            font-weight: 500;
+            font-size: var(--text-size);
             color: var(--gray-600);
             text-align: left;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: inherit;
+            transition: all 0.2s;
         }
 
-        .nav-tab::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 0;
-            background: var(--primary);
-            border-radius: 0 2px 2px 0;
-            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-tab:hover {
+        .nav-btn:hover {
             background: var(--gray-100);
-            color: var(--primary);
-            transform: translateX(4px);
         }
 
-        .nav-tab:hover::before {
-            height: 24px;
-        }
-
-        .nav-tab.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        .nav-btn.active {
+            background: var(--primary);
             color: var(--light);
-            font-weight: 600;
-            box-shadow: var(--shadow);
         }
 
-        .nav-tab.active::before {
-            height: 100%;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* 导航图标 */
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .content-area {
-            display: flex;
-            overflow: auto;
-            background: var(--light);
-        }
-
-        /* 内容面板 */
-        .panel {
-            display: none;
-            padding: 24px;
-            overflow-y: auto;
+        /* ========================================
+           用户要求：最多左右两栏，必须有可视化
+           ======================================== */
+        .content {
             flex: 1;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) var(--gray-200);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .panel::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .panel::-webkit-scrollbar-track {
-            background: var(--gray-100);
-            border-radius: 3px;
-        }
-
-        .panel::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 3px;
-        }
-
-        .panel::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
-        .panel.active {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-
-
-        .loading.hidden {
             display: none;
-        }
-
-        /* 学习区域样式 */
-        .learning-section {
-            background: var(--light);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .concept-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .concept-card {
-            background: var(--light);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .concept-card:hover {
-            transform: translateY(-2px);
-            box-shadow: none;
-        }
-
-        .concept-card h3 {
-            color: var(--primary);
-            margin-bottom: 16px;
-            font-size: var(--h3-size);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .concept-card .formula {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            text-align: center;
-            border: 1px solid var(--border);
-            font-size: var(--formula-size);
-            transition: all 0.3s ease;
-        }
-
-        .concept-card .formula:hover {
-            background: #f0f7ff;
-            border-color: var(--primary);
-        }
-
-        .concept-card .description {
-            color: var(--gray-600);
-            font-size: var(--text-size);
-            line-height: 1.6;
-            margin-top: 15px;
-            padding: 10px;
-            background: #fafafa;
-            border-radius: 6px;
-        }
-
-        /* 例题区域样式 */
-        .examples-section {
-            background: var(--light);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .example-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .example-item {
-            background: var(--gray-50);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .example-item:hover {
-            box-shadow: var(--shadow);
-        }
-
-        .example-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .example-header h3 {
-            color: var(--primary);
-            font-size: var(--h3-size);
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .example-question {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--primary);
-            font-size: var(--formula-size);
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .example-solution {
-            background: var(--light);
             padding: 16px;
-            border-radius: 8px;
-            border: 1px solid var(--success);
-            margin-top: 16px;
+            overflow-y: auto;
         }
 
-        .solution-step {
-            margin: 8px 0;
-            font-size: var(--text-size);
-            line-height: 1.6;
-        }
-
-        .solution-step strong {
-            color: var(--success);
-        }
-
-        /* 练习区域样式 */
-        .practice-section {
-            background: var(--light);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .practice-area {
-            display: flex;
-            flex-direction: column;
+        .content.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
-        .practice-controls {
+        .column {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
         }
 
-        .practice-question {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid var(--primary);
-            font-size: var(--formula-size);
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
         }
 
-        .practice-input {
-            display: flex;
-            justify-content: center;
+        .card h3 {
+            font-size: var(--h3-size);
+            color: var(--primary);
+            margin-bottom: 12px;
         }
 
-        .practice-input input {
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 4px;
             font-size: var(--text-size);
-            font-family: inherit;
-            width: 300px;
-            text-align: center;
+            font-weight: 500;
         }
 
-        .practice-input input:focus {
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: var(--text-size);
+            background: var(--gray-50);
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background: var(--light);
         }
 
-        .practice-feedback {
-            background: var(--gray-50);
-            padding: 16px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: var(--text-size);
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .practice-hint {
-            background: var(--warning);
-            color: var(--light);
-            padding: 16px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: var(--text-size);
-        }
-
-        /* 按钮样式 */
         .btn {
-            padding: 12px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 8px 16px;
+            background: var(--primary);
             color: var(--light);
             border: none;
-            border-radius: 12px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: var(--btn-size);
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            white-space: nowrap;
-            font-family: inherit;
-            position: relative;
-            overflow: auto;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            transition: all 0.2s;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+            background: var(--primary-dark);
         }
 
-        .btn:hover::before {
-            left: 100%;
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        .btn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        .result {
+            background: var(--gray-50);
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            font-size: var(--text-size);
+            margin: 12px 0;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .show-solution {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        .formula-box {
+            background: #f0f7ff;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+            margin: 12px 0;
+            text-align: center;
+            font-size: var(--formula-size);
         }
 
-        .show-solution:hover {
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 160px 1fr;
-            }
-
-            .concept-cards {
-                grid-template-columns: 1fr;
-            }
+        /* ========================================
+           用户要求：公式输入框汉字字号调整
+           只对包含MathJax公式的元素应用字号调整
+           ======================================== */
+        
+        /* 公式框中的汉字字号调整 - 统一使用正文字号 */
+        .formula-box .MathJax {
+            font-size: var(--text-size) !important;
         }
         
+        /* 针对MathJax渲染的汉字文本 */
+        .formula-box .MathJax_Display,
+        .formula-box .MathJax_SVG,
+        .formula-box .MathJax_SVG_Display {
+            font-size: var(--text-size) !important;
+        }
+        
+        /* 更精确的汉字样式控制 */
+        .formula-box .MathJax span[style*="font-family"] {
+            font-size: var(--text-size) !important;
+        }
+        
+        /* 保持数学符号的正常大小，只调整汉字 */
+        .formula-box .MathJax .mord {
+            font-size: var(--text-size) !important;
+        }
+        
+        /* ========================================
+           用户反馈修复：加工过程文本字号过大问题
+           为steps元素添加特殊样式，保持正常字号
+           注意：只对包含MathJax的元素调整字号，纯文本保持原样
+           ======================================== */
+        .formula-box#steps {
+            font-size: var(--text-size) !important;
+        }
+        
+        .formula-box#steps strong {
+            font-size: var(--text-size) !important;
+        }
+        
+        /* 确保纯文本的formula-box保持正常字号 */
+        .formula-box:not(:has(.MathJax)) {
+            font-size: var(--formula-size);
+        }
+
+        .info-box {
+            background: var(--gray-50);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-size: var(--text-size);
+            text-align: center;
+        }
+
+        .steps {
+            background: #fff9e6;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #f59e0b;
+            line-height: 1.8;
+            font-size: var(--text-size);
+        }
+
+        .canvas-container {
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            background: #fafafa;
+            padding: 10px;
+            min-height: 200px;
+            max-height: 500px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-container canvas {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .tower-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: var(--gray-50);
+            border-radius: 4px;
+            min-height: 250px;
+            max-height: 400px;
+        }
+
+        .tower-display {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .tower {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+        }
+
+        .block {
+            width: 40px;
+            height: 25px;
+            background: var(--primary);
+            border: 1px solid var(--primary-dark);
+            margin: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .block.removing {
+            opacity: 0.3;
+            transform: translateX(50px);
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+
+        .slider-group label {
+            min-width: 60px;
+            font-size: var(--text-size);
+        }
+
+        .slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-200);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .rule-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            background: var(--gray-50);
+            border-radius: 4px;
+            min-height: 150px;
+        }
+
+        .rule-tower {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rule-height {
+            width: 30px;
+            background: var(--primary);
+            border-radius: 2px;
+            margin-bottom: 5px;
+        }
+
+        .rule-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            text-align: center;
+        }
+
+        .operator {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            padding: 0 10px;
+        }
+
+        /* ========================================
+           响应式设计：小尺寸下导航按钮移到上方
+           ======================================== */
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto 1fr;
+            .main {
+                flex-direction: column;
             }
 
             .sidebar {
-                padding: 10px 0;
-            }
-
-            .nav-tabs {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 8px 16px;
+                display: flex;
                 flex-direction: row;
+                gap: 8px;
                 overflow-x: auto;
-                padding: 0 10px;
-            }
-
-            .nav-tab {
-                min-width: 120px;
-                padding: 10px 12px;
-            }
-
-            .practice-controls {
+                flex-shrink: 0;
                 justify-content: center;
+                flex-wrap: nowrap;
             }
 
-            .example-header {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start;
+            .nav-btn {
+                min-width: 90px;
+                text-align: center;
+                margin-bottom: 0;
+                white-space: nowrap;
+                flex-shrink: 0;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .content.active {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .container {
+                max-height: none;
+                height: 100vh;
+            }
+
+            .header {
+                padding: 6px 16px;
+                height: 36px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            .canvas-container {
+                min-height: 200px;
+                max-height: 300px;
+                padding: 8px;
+            }
+
+            .canvas-container canvas {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+            }
+
+            .tower-container {
+                min-height: 200px;
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 4px 12px;
+                height: 32px;
+            }
+
+            .header h1 {
+                font-size: 16px;
+            }
+
+            .sidebar {
+                padding: 6px 8px;
+                gap: 6px;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                min-width: 75px;
+                padding: 6px 8px;
+                font-size: 13px;
+                flex: 1;
+                max-width: 100px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            .canvas-container {
+                min-height: 180px;
+                max-height: 250px;
+                padding: 6px;
+            }
+
+            .canvas-container canvas {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+            }
+
+            .tower-container {
+                min-height: 180px;
+                max-height: 250px;
+            }
+        }
+
+        /* 极小屏幕优化 */
+        @media (max-width: 360px) {
+            .sidebar {
+                padding: 4px 6px;
+                gap: 4px;
+                /* ========================================
+                   修复：极小屏幕确保按钮可以横向滚动查看
+                   不强制挤压，保持按钮最小可读宽度
+                   ======================================== */
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+
+            .nav-btn {
+                /* ========================================
+                   修复：保持最小宽度，确保文字不被截断
+                   用户可通过横向滚动查看所有按钮
+                   ======================================== */
+                min-width: 65px;
+                padding: 5px 6px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+
+            .header h1 {
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 加载指示器 -->
-    <div class="loading" id="loading">
-        <div>页面加载中，请稍候...</div>
-        </div>
-
-    <!-- 全屏应用容器 -->
-    <div class="app-container">
-        <!-- 顶部标题栏 -->
+    <div class="container">
         <header class="header">
-            <div class="header-content">
-                <h1>对数运算学习</h1>
-                <p class="header-subtitle">深入理解对数的概念与应用</p>
-            </div>
+            <h1>函数概念实验室</h1>
         </header>
 
-        <!-- 主内容区域 -->
-        <main class="main-content">
-            <!-- 侧边导航栏 -->
+        <div class="main">
+            <!-- 侧边栏 -->
             <nav class="sidebar">
-                <div class="nav-tabs">
-                    <button class="nav-tab active" data-panel="learning">
-                        <span class="nav-icon">📚</span>
-                        <span>学习</span>
-                    </button>
-                    <button class="nav-tab" data-panel="examples">
-                        <span class="nav-icon">💡</span>
-                        <span>例题</span>
-                    </button>
-                    <button class="nav-tab" data-panel="practice">
-                        <span class="nav-icon">🎯</span>
-                        <span>练习</span>
-                    </button>
-                    </div>
+                <button class="nav-btn active" onclick="switchPanel('basic')">函数基础</button>
+                <button class="nav-btn" onclick="switchPanel('tower')">豆浆机实验</button>
+                <button class="nav-btn" onclick="switchPanel('rules')">函数性质</button>
             </nav>
 
-            <!-- 内容区域 -->
-            <div class="content-area">
-                <!-- 学习面板 -->
-                <div class="panel active" id="learning">
-                    <div class="learning-section">
-
-                        <div class="concept-cards">
-                            <div class="concept-card">
-                                <h3>🔢 对数的定义</h3>
-                                <div class="formula">如果 $a^x = N$ (其中 $a > 0, a \neq 1, N > 0$)，那么数 $x$ 叫做以 $a$ 为底 $N$ 的对数</div>
-                                <div class="formula">记作：$x = \log_a N$</div>
-                                <div class="description">
-                                    其中：$a$ 叫做对数的底数，$N$ 叫做真数，$x$ 叫做对数值
-                    </div>
-                </div>
-
-                            <div class="concept-card">
-                                <h3>📐 对数运算法则</h3>
-                                <div class="formula">$\log_a(MN) = \log_a M + \log_a N$</div>
-                                <div class="formula">$\log_a\left(\frac{M}{N}\right) = \log_a M - \log_a N$</div>
-                                <div class="formula">$\log_a(M^n) = n\log_a M$</div>
-                                <div class="description">
-                                    对数运算将乘除法转化为加减法，将乘方开方转化为乘除法
-                                </div>
-                </div>
-
-                            <div class="concept-card">
-                                <h3>🎯 特殊对数</h3>
-                                <div class="formula">$\log_a 1 = 0$ （任何底数的1的对数为0）</div>
-                                <div class="formula">$\log_a a = 1$ （底数的对数为1）</div>
-                                <div class="formula">$\lg N = \log_{10} N$ （常用对数）</div>
-                                <div class="formula">$\ln N = \log_e N$ （自然对数）</div>
-                                <div class="description">
-                                    常用对数以10为底，自然对数以e≈2.718为底
-                                </div>
-                </div>
-
-                            <div class="concept-card">
-                                <h3>🔄 换底公式</h3>
-                                <div class="formula">$\log_a b = \frac{\log_c b}{\log_c a}$ （$c > 0, c \neq 1$）</div>
-                                <div class="formula">$\log_a b = \frac{\lg b}{\lg a} = \frac{\ln b}{\ln a}$</div>
-                                <div class="description">
-                                    换底公式可以将任意底数的对数转换为常用对数或自然对数
-                                </div>
-                            </div>
+            <!-- 函数基础页面 -->
+            <div class="content active" id="basic">
+                <div class="column">
+                    <div class="card">
+                        <h3>函数三要素</h3>
+                        <div class="input-group">
+                            <label>选择原料（定义域）</label>
+                            <select id="base" onchange="calculate()">
+                                <option value="黄豆" selected>黄豆</option>
+                                <option value="黑豆">黑豆</option>
+                                <option value="红豆">红豆</option>
+                                <option value="绿豆">绿豆</option>
+                            </select>
                         </div>
+                        <div class="input-group">
+                            <label>加工方式（对应关系）</label>
+                            <select id="value" onchange="calculate()">
+                                <option value="豆浆模式" selected>豆浆模式</option>
+                                <option value="浓豆浆模式">浓豆浆模式</option>
+                                <option value="快速模式">快速模式</option>
+                            </select>
+                        </div>
+                        <div class="result" id="result">
+                            $f($黄豆$) =$ 热豆浆
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn" onclick="calculate()">运行豆浆机</button>
+                            <button class="btn" onclick="randomCalc()">随机搭配</button>
+                        </div>
+                        <div class="formula-box" id="steps">
+                            $f: X \rightarrow Y$<br>
+                            定义域 → 对应关系 → 值域
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>函数的本质</h3>
+                        <div class="info-box">定义域：能放进去的材料</div>
+                        <div class="info-box">对应关系：加工的固定程序</div>
+                        <div class="info-box">值域：能生产出的成品</div>
+                        <div class="info-box">一个输入 → 唯一输出</div>
+                    </div>
                 </div>
-            </div>
 
-                <!-- 例题面板 -->
-                <div class="panel" id="examples">
-            <div class="examples-section">
-
-                        <div class="example-list">
-                    <div class="example-item">
-                                <div class="example-header">
-                                    <h3>例题1：基础对数计算</h3>
-                                    <button class="btn show-solution" onclick="toggleSolution(1)">显示解答</button>
-                                </div>
-                                <div class="example-question">
-                                    计算：$\log_2 8 + \log_3 27 - \log_5 1$
-                                </div>
-                                <div class="example-solution" id="solution-1" style="display: none;">
-                                    <div class="solution-step">
-                                        <strong>解：</strong>
-                                    </div>
-                                    <div class="solution-step">
-                                        $\log_2 8 = \log_2 2^3 = 3$
-                                    </div>
-                                    <div class="solution-step">
-                                        $\log_3 27 = \log_3 3^3 = 3$
-                                    </div>
-                                    <div class="solution-step">
-                                        $\log_5 1 = 0$
-                                    </div>
-                                    <div class="solution-step">
-                                        因此：$\log_2 8 + \log_3 27 - \log_5 1 = 3 + 3 - 0 = 6$
-                                    </div>
-                                </div>
-                    </div>
-
-                    <div class="example-item">
-                                <div class="example-header">
-                                    <h3>例题2：对数运算法则应用</h3>
-                                    <button class="btn show-solution" onclick="toggleSolution(2)">显示解答</button>
-                                </div>
-                                <div class="example-question">
-                                    已知 $\log_2 3 = a$，$\log_2 5 = b$，求 $\log_2 15$
-                                </div>
-                                <div class="example-solution" id="solution-2" style="display: none;">
-                                    <div class="solution-step">
-                                        <strong>解：</strong>
-                                    </div>
-                                    <div class="solution-step">
-                                        $\log_2 15 = \log_2 (3 \times 5)$
-                                    </div>
-                                    <div class="solution-step">
-                                        $= \log_2 3 + \log_2 5$
-                                    </div>
-                                    <div class="solution-step">
-                                        $= a + b$
-                                    </div>
-                                </div>
-                    </div>
-
-                    <div class="example-item">
-                                <div class="example-header">
-                                    <h3>例题3：换底公式应用</h3>
-                                    <button class="btn show-solution" onclick="toggleSolution(3)">显示解答</button>
-                                </div>
-                                <div class="example-question">
-                                    计算：$\log_8 9 \times \log_3 2$
-                                </div>
-                                <div class="example-solution" id="solution-3" style="display: none;">
-                                    <div class="solution-step">
-                                        <strong>解：</strong>
-                                    </div>
-                                    <div class="solution-step">
-                                        使用换底公式：$\log_8 9 = \frac{\log_2 9}{\log_2 8} = \frac{\log_2 3^2}{\log_2 2^3} = \frac{2\log_2 3}{3}$
-                                    </div>
-                                    <div class="solution-step">
-                                        $\log_3 2 = \frac{\log_2 2}{\log_2 3} = \frac{1}{\log_2 3}$
-                                    </div>
-                                    <div class="solution-step">
-                                        因此：$\log_8 9 \times \log_3 2 = \frac{2\log_2 3}{3} \times \frac{1}{\log_2 3} = \frac{2}{3}$
-                                    </div>
-                                </div>
-                    </div>
+                <div class="column">
+                    <div class="card">
+                        <h3>函数映射图</h3>
+                        <div class="canvas-container">
+                            <canvas id="graph" width="600" height="300"></canvas>
+                        </div>
+                        <div class="slider-group">
+                            <label>材料数</label>
+                            <input type="range" class="slider" id="baseSlider" 
+                                   min="2" max="6" step="1" value="3">
+                            <span class="slider-value" id="sliderValue">3</span>
+                        </div>
+                        <div class="info-box" id="funcDesc">
+                            显示 3 种材料的映射关系
+                        </div>
                     </div>
                 </div>
             </div>
 
-                <!-- 练习面板 -->
-                <div class="panel" id="practice">
-                    <div class="practice-section">
+            <!-- 豆浆机实验页面 -->
+            <div class="content" id="tower">
+                <div class="column">
+                    <div class="card">
+                        <h3>豆浆机实验 - 理解函数</h3>
+                        <div class="info-box">
+                            豆浆机就是一个函数：固定输入→固定输出
+                        </div>
+                        <div class="input-group">
+                            <label>投入原料（定义域元素）</label>
+                            <select id="towerSize" onchange="updateTower()">
+                                <option value="黄豆+水" selected>黄豆+水</option>
+                                <option value="黑豆+水">黑豆+水</option>
+                                <option value="黄豆+黑豆+水">黄豆+黑豆+水</option>
+                                <option value="五谷杂粮+水">五谷杂粮+水</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>选择程序（对应关系）</label>
+                            <select id="towerBase" onchange="updateTower()">
+                                <option value="标准豆浆" selected>标准豆浆程序</option>
+                                <option value="浓香豆浆">浓香豆浆程序</option>
+                                <option value="快速豆浆">快速豆浆程序</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="animateDismantling()" style="width: 100%; margin-top: 12px;">
+                            启动豆浆机
+                        </button>
+                        <div class="steps" id="towerSteps">
+                            准备加工黄豆+水...<br>
+                            使用标准豆浆程序
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="practice-area">
-                            <div class="practice-controls">
-                                <button class="btn" onclick="generatePractice()">🎲 生成新题</button>
-                                <button class="btn" onclick="checkAnswer()">✅ 检查答案</button>
-                                <button class="btn" onclick="showHint()">💡 提示</button>
-                                <button class="btn" onclick="resetPractice()">🔄 重置</button>
+                <div class="column">
+                    <div class="card">
+                        <h3>加工过程可视化</h3>
+                        <div class="tower-container">
+                            <div class="tower-display" id="towerVisual"></div>
+                        </div>
+                        <div class="result" id="towerResult">
+                            $f($黄豆+水$) =$ 热豆浆
+                        </div>
+                        <div class="formula-box">
+                            🌱 原料 = 定义域元素<br>
+                            ⚙️ 程序 = 对应关系<br>
+                            🥛 成品 = 值域元素
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 函数性质页面 -->
+            <div class="content" id="rules">
+                <div class="column">
+                    <div class="card">
+                        <h3>单射：不同原料→不同成品</h3>
+                        <div class="formula-box">不同的输入产生不同的输出</div>
+                        <div class="rule-visual" id="multiplyViz"></div>
+                        <div class="steps">
+                            不同豆子做出不同豆浆<br>
+                            例：黄豆→黄豆浆<br>
+                            黑豆→黑豆浆<br>
+                            红豆→红豆浆<br>
+                            每种原料都有自己独特的成品
+                        </div>
                     </div>
 
-                            <div class="practice-question" id="practice-question">
-                                点击"生成新题"开始练习
+                    <div class="card">
+                        <h3>函数的唯一性</h3>
+                        <div class="formula-box">同一输入必须得到同一输出</div>
+                        <div class="steps">
+                            豆浆机的可靠性<br>
+                            例：放入黄豆+水<br>
+                            今天得到：黄豆浆✓<br>
+                            明天得到：黄豆浆✓<br>
+                            结果必须一致！
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="card">
+                        <h3>满射：用尽所有成品类型</h3>
+                        <div class="formula-box">值域中的每个元素都能被产生</div>
+                        <div class="rule-visual" id="divideViz"></div>
+                        <div class="steps">
+                            菜单上的都能做<br>
+                            例：菜单有5种豆浆<br>
+                            黄豆浆✓ 黑豆浆✓<br>
+                            红豆浆✓ 绿豆浆✓<br>
+                            五谷浆✓<br>
+                            每种都有对应原料能做出来
+                        </div>
                     </div>
 
-                            <div class="practice-input">
-                                <input type="text" id="practice-answer" placeholder="请输入答案">
-                    </div>
-
-                            <div class="practice-feedback" id="practice-feedback">
-                                答题反馈将在这里显示
-                    </div>
-
-                            <div class="practice-hint" id="practice-hint" style="display: none;">
-                                提示信息将在这里显示
+                    <div class="card">
+                        <h3>复合函数：连续加工</h3>
+                        <div class="formula-box">$(g \circ f)(x) = g(f(x))$</div>
+                        <div class="steps">
+                            两步加工流程<br>
+                            例：豆子→豆浆→豆腐<br>
+                            第一步：$f($豆子$)=$ 豆浆<br>
+                            第二步：$g($豆浆$)=$ 豆腐<br>
+                            合并：$(g \circ f)($豆子$)=$ 豆腐
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-            </div>
-        </main>
     </div>
 
     <script>
-        let currentPracticeQuestion = null;
-
-        // MathJax渲染辅助函数
-        function renderMathJax(element) {
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise([element]).catch(err => {
-                    console.warn('MathJax渲染错误:', err);
-                    setTimeout(() => {
-                        if (window.MathJax && window.MathJax.typesetPromise) {
-                            window.MathJax.typesetPromise([element]).catch(e => console.warn('MathJax延迟渲染失败:', e));
-                        }
-                    }, 100);
-                });
-            } else {
-                setTimeout(() => renderMathJax(element), 200);
+        // ========================================
+        // 修复3：简化渲染逻辑，减少重复调用
+        // ========================================
+        function renderMath() {
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise().catch(err => console.log('渲染错误:', err));
             }
         }
 
-        // 导航标签页切换
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // 移除所有活动状态
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-
-                // 添加活动状态
-                tab.classList.add('active');
-                const panelId = tab.getAttribute('data-panel');
-                const panel = document.getElementById(panelId);
-                if (panel) {
-                    panel.classList.add('active');
-                }
-            });
-        });
-
-        // 切换解答显示
-        function toggleSolution(exampleId) {
-            const solution = document.getElementById(`solution-${exampleId}`);
-            const button = event.target;
-
-            if (solution.style.display === 'none') {
-                solution.style.display = 'block';
-                button.textContent = '隐藏解答';
-                renderMathJax(solution);
-            } else {
-                solution.style.display = 'none';
-                button.textContent = '显示解答';
-            }
-        }
-
-        // 练习题库
-        const practiceQuestions = [
-            {
-                question: '计算：$\\log_2 16$',
-                answer: '4',
-                hint: '想想：$2$ 的几次方等于 $16$？',
-                solution: '$2^4 = 16$，所以 $\\log_2 16 = 4$'
-            },
-            {
-                question: '计算：$\\log_3 27 + \\log_3 9$',
-                answer: '5',
-                hint: '使用对数运算法则：$\\log_a M + \\log_a N = \\log_a(MN)$',
-                solution: '$\\log_3 27 + \\log_3 9 = \\log_3(27 \\times 9) = \\log_3 243 = \\log_3 3^5 = 5$'
-            },
-            {
-                question: '计算：$\\log_5 125 - \\log_5 25$',
-                answer: '1',
-                hint: '使用对数运算法则：$\\log_a M - \\log_a N = \\log_a(\\frac{M}{N})$',
-                solution: '$\\log_5 125 - \\log_5 25 = \\log_5(\\frac{125}{25}) = \\log_5 5 = 1$'
-            },
-            {
-                question: '已知 $\\log_2 3 = a$，求 $\\log_2 12$',
-                answer: '2+a',
-                hint: '将 $12$ 分解为 $4 \\times 3$，其中 $4 = 2^2$',
-                solution: '$\\log_2 12 = \\log_2(4 \\times 3) = \\log_2 4 + \\log_2 3 = 2 + a$'
-            },
-            {
-                question: '计算：$\\log_4 2$',
-                answer: '0.5',
-                hint: '想想：$4$ 的几次方等于 $2$？注意 $4 = 2^2$',
-                solution: '设 $\\log_4 2 = x$，则 $4^x = 2$，即 $(2^2)^x = 2^1$，所以 $2x = 1$，$x = \\frac{1}{2} = 0.5$'
-            }
-        ];
-
-        // 生成练习题
-        function generatePractice() {
-            const randomIndex = Math.floor(Math.random() * practiceQuestions.length);
-            currentPracticeQuestion = practiceQuestions[randomIndex];
-
-            document.getElementById('practice-question').innerHTML = currentPracticeQuestion.question;
-            document.getElementById('practice-answer').value = '';
-            document.getElementById('practice-feedback').innerHTML = '';
-            document.getElementById('practice-hint').style.display = 'none';
-
-            renderMathJax(document.getElementById('practice-question'));
-        }
-
-        // 检查答案
-        function checkAnswer() {
-            if (!currentPracticeQuestion) {
-                document.getElementById('practice-feedback').innerHTML = '请先生成练习题';
-                return;
-            }
-
-            const userAnswer = document.getElementById('practice-answer').value.trim();
-            const correctAnswer = currentPracticeQuestion.answer;
-            const feedbackElement = document.getElementById('practice-feedback');
-
-            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                feedbackElement.innerHTML = `<span style="color: var(--success)">✅ 正确！${currentPracticeQuestion.solution}</span>`;
-                feedbackElement.style.background = '#f0f9ff';
-                feedbackElement.style.border = '1px solid var(--success)';
-            } else {
-                feedbackElement.innerHTML = `<span style="color: var(--danger)">❌ 错误！正确答案是：${correctAnswer}</span>`;
-                feedbackElement.style.background = '#fef2f2';
-                feedbackElement.style.border = '1px solid var(--danger)';
-            }
-
-            renderMathJax(feedbackElement);
-        }
-
-        // 显示提示
-        function showHint() {
-            if (!currentPracticeQuestion) {
-                document.getElementById('practice-feedback').innerHTML = '请先生成练习题';
-                return;
-            }
-
-            const hintElement = document.getElementById('practice-hint');
-            hintElement.innerHTML = currentPracticeQuestion.hint;
-            hintElement.style.display = 'block';
-            renderMathJax(hintElement);
-        }
-
-        // 重置练习
-        function resetPractice() {
-            currentPracticeQuestion = null;
-            document.getElementById('practice-question').innerHTML = '点击"生成新题"开始练习';
-            document.getElementById('practice-answer').value = '';
-            document.getElementById('practice-feedback').innerHTML = '';
-            document.getElementById('practice-hint').style.display = 'none';
-
-            // 重置样式
-            const feedbackElement = document.getElementById('practice-feedback');
-            feedbackElement.style.background = 'var(--gray-50)';
-            feedbackElement.style.border = 'none';
-        }
-
-        // 回车键提交答案
-        document.getElementById('practice-answer')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
-
-        // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', function() {
-            // 隐藏加载指示器
-            document.getElementById('loading').classList.add('hidden');
-
-            // 初始化MathJax渲染
+        // 页面切换
+        function switchPanel(panel) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(panel).classList.add('active');
+            
+            // 延迟渲染公式，避免卡顿
             setTimeout(() => {
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                    window.MathJax.typesetPromise().catch(err => console.warn('MathJax初始化渲染错误:', err));
+                renderMath();
+                if (panel === 'basic') drawGraph();
+                if (panel === 'tower') updateTower();
+                if (panel === 'rules') drawRuleVisuals();
+            }, 50);
+        }
+
+        // 计算函数映射
+        function calculate() {
+            const base = document.getElementById('base').value;
+            const value = document.getElementById('value').value;
+            
+            // 定义映射关系
+            const mappings = {
+                '黄豆': {
+                    '豆浆模式': '热黄豆浆',
+                    '浓豆浆模式': '浓黄豆浆',
+                    '快速模式': '快速黄豆浆'
+                },
+                '黑豆': {
+                    '豆浆模式': '热黑豆浆',
+                    '浓豆浆模式': '浓黑豆浆',
+                    '快速模式': '快速黑豆浆'
+                },
+                '红豆': {
+                    '豆浆模式': '热红豆浆',
+                    '浓豆浆模式': '浓红豆浆',
+                    '快速模式': '快速红豆浆'
+                },
+                '绿豆': {
+                    '豆浆模式': '热绿豆浆',
+                    '浓豆浆模式': '浓绿豆浆',
+                    '快速模式': '快速绿豆浆'
                 }
-            }, 300);
+            };
+            
+            const result = mappings[base][value];
+            document.getElementById('result').innerHTML = `$f($${base}$) =$ ${result}`;
+            
+            // ========================================
+            // 用户要求：加工过程显示为一行
+            // 将换行符改为空格分隔符
+            // ========================================
+            let steps = `<strong>加工过程：</strong> `;
+            steps += `1. 投入原料：${base} `;
+            steps += `2. 选择程序：${value} `;
+            steps += `3. 研磨加热中... `;
+            steps += `4. 过滤装杯... `;
+            steps += `<strong>产出成品：${result}</strong>`;
+            
+            document.getElementById('steps').innerHTML = steps;
+            
+            drawGraph();
+            renderMath();
+        }
+
+        // 随机搭配
+        function randomCalc() {
+            const bases = ['黄豆', '黑豆', '红豆', '绿豆'];
+            const values = ['豆浆模式', '浓豆浆模式', '快速模式'];
+            
+            const base = bases[Math.floor(Math.random() * bases.length)];
+            const value = values[Math.floor(Math.random() * values.length)];
+            
+            document.getElementById('base').value = base;
+            document.getElementById('value').value = value;
+            calculate();
+        }
+
+        // 绘制函数映射图
+        function drawGraph() {
+            const canvas = document.getElementById('graph');
+            if (!canvas) return;
+            
+            const container = canvas.parentElement;
+            const containerWidth = Math.max(200, container.clientWidth - 20);
+            const containerHeight = Math.max(150, Math.min(400, container.clientHeight - 20));
+            
+            canvas.style.width = containerWidth + 'px';
+            canvas.style.height = containerHeight + 'px';
+            
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            canvas.width = containerWidth * devicePixelRatio;
+            canvas.height = containerHeight * devicePixelRatio;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.scale(devicePixelRatio, devicePixelRatio);
+            
+            const width = containerWidth;
+            const height = containerHeight;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // 获取材料数量
+            const materialCount = parseInt(document.getElementById('baseSlider')?.value || 3);
+            
+            // 绘制定义域和值域
+            const leftX = width * 0.2;
+            const rightX = width * 0.8;
+            const startY = height * 0.2;
+            const spacing = (height * 0.6) / (materialCount - 1);
+            
+            // 材料列表
+            const materials = ['黄豆', '黑豆', '红豆', '绿豆', '花生', '核桃'];
+            const products = ['黄豆浆', '黑豆浆', '红豆浆', '绿豆浆', '花生浆', '核桃浆'];
+            
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            
+            // 绘制映射关系
+            for (let i = 0; i < materialCount; i++) {
+                const y = startY + i * spacing;
+                
+                // 绘制箭头
+                ctx.strokeStyle = '#4f46e5';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(leftX + 30, y);
+                ctx.lineTo(rightX - 30, y);
+                ctx.stroke();
+                
+                // 箭头头部
+                ctx.beginPath();
+                ctx.moveTo(rightX - 35, y - 5);
+                ctx.lineTo(rightX - 30, y);
+                ctx.lineTo(rightX - 35, y + 5);
+                ctx.stroke();
+                
+                // 绘制定义域元素
+                ctx.fillStyle = '#4f46e5';
+                ctx.fillRect(leftX - 40, y - 15, 80, 30);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(materials[i], leftX, y + 5);
+                
+                // 绘制值域元素
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(rightX - 40, y - 15, 80, 30);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(products[i], rightX, y + 5);
+            }
+            
+            // 绘制标题
+            ctx.fillStyle = '#374151';
+            ctx.font = '16px Arial';
+            ctx.fillText('定义域', leftX, startY - 30);
+            ctx.fillText('值域', rightX, startY - 30);
+            
+            // 更新描述
+            document.getElementById('funcDesc').innerHTML = `显示 ${materialCount} 种材料的映射关系`;
+        }
+
+        // 更新豆浆机实验
+        function updateTower() {
+            const material = document.getElementById('towerSize').value;
+            const program = document.getElementById('towerBase').value;
+            
+            const visual = document.getElementById('towerVisual');
+            visual.innerHTML = '';
+            
+            // 创建加工流程可视化
+            const steps = ['原料', '研磨', '加热', '过滤', '成品'];
+            const icons = ['🌱', '⚙️', '🔥', '🔧', '🥛'];
+            
+            steps.forEach((step, index) => {
+                const tower = document.createElement('div');
+                tower.className = 'tower';
+                tower.id = `tower-${index}`;
+                
+                const block = document.createElement('div');
+                block.className = 'block';
+                block.style.width = '60px';
+                block.style.height = '40px';
+                block.innerHTML = `${icons[index]}<br>${step}`;
+                tower.appendChild(block);
+                
+                visual.appendChild(tower);
+            });
+            
+            // 定义输出结果
+            const outputs = {
+                '黄豆+水': {
+                    '标准豆浆': '热黄豆浆',
+                    '浓香豆浆': '浓黄豆浆',
+                    '快速豆浆': '快速黄豆浆'
+                },
+                '黑豆+水': {
+                    '标准豆浆': '热黑豆浆',
+                    '浓香豆浆': '浓黑豆浆',
+                    '快速豆浆': '快速黑豆浆'
+                },
+                '黄豆+黑豆+水': {
+                    '标准豆浆': '混合豆浆',
+                    '浓香豆浆': '浓混合豆浆',
+                    '快速豆浆': '快速混合豆浆'
+                },
+                '五谷杂粮+水': {
+                    '标准豆浆': '五谷豆浆',
+                    '浓香豆浆': '浓五谷豆浆',
+                    '快速豆浆': '快速五谷豆浆'
+                }
+            };
+            
+            const output = outputs[material][program];
+            
+            document.getElementById('towerResult').innerHTML = 
+                `$f($${material}$) =$ ${output}`;
+            
+            // ========================================
+            // 用户要求：豆浆机初始状态也显示为一行
+            // ========================================
+            document.getElementById('towerSteps').innerHTML = 
+                `准备加工${material}... → 使用${program}`;
+            
+            renderMath();
+        }
+
+        // 豆浆机动画
+        function animateDismantling() {
+            const material = document.getElementById('towerSize').value;
+            const program = document.getElementById('towerBase').value;
+            
+            let stepNum = 0;
+            const stepTexts = [
+                `投入原料：${material}`,
+                '开始研磨...',
+                '加热煮沸中...',
+                '过滤豆渣...',
+                '豆浆制作完成！'
+            ];
+            
+            const animate = () => {
+                if (stepNum >= 5) {
+                    // ========================================
+                    // 用户要求：豆浆机动画步骤也显示为一行
+                    // ========================================
+                    document.getElementById('towerSteps').innerHTML = 
+                        stepTexts.join(' → ') + ' → <strong>享用您的豆浆吧！</strong>';
+                    renderMath();
+                    return;
+                }
+                
+                // 高亮当前步骤
+                const tower = document.getElementById(`tower-${stepNum}`);
+                if (tower) {
+                    tower.querySelector('.block').style.background = '#10b981';
+                }
+                
+                // ========================================
+                // 用户要求：动画过程中也显示为一行
+                // ========================================
+                document.getElementById('towerSteps').innerHTML = 
+                    stepTexts.slice(0, stepNum + 1).join(' → ');
+                
+                stepNum++;
+                setTimeout(animate, 800);
+            };
+            
+            // 重置动画
+            updateTower();
+            setTimeout(animate, 500);
+        }
+
+        // 绘制函数性质可视化
+        function drawRuleVisuals() {
+            // 单射可视化
+            const multiplyViz = document.getElementById('multiplyViz');
+            multiplyViz.innerHTML = `
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 60px; background: #fbbf24;"></div>
+                    <div class="rule-label">黄豆<br>↓<br>黄豆浆</div>
+                </div>
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 60px; background: #374151;"></div>
+                    <div class="rule-label">黑豆<br>↓<br>黑豆浆</div>
+                </div>
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 60px; background: #ef4444;"></div>
+                    <div class="rule-label">红豆<br>↓<br>红豆浆</div>
+                </div>
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 60px; background: #10b981;"></div>
+                    <div class="rule-label">绿豆<br>↓<br>绿豆浆</div>
+                </div>
+            `;
+            
+            // 满射可视化
+            const divideViz = document.getElementById('divideViz');
+            divideViz.innerHTML = `
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 80px; background: #6366f1;"></div>
+                    <div class="rule-label">所有原料<br>（定义域）</div>
+                </div>
+                <div class="operator">→</div>
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 40px; background: #fbbf24;"></div>
+                    <div class="rule-label">豆浆1</div>
+                </div>
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 40px; background: #10b981;"></div>
+                    <div class="rule-label">豆浆2</div>
+                </div>
+                <div class="rule-tower">
+                    <div class="rule-height" style="height: 40px; background: #ef4444;"></div>
+                    <div class="rule-label">豆浆3</div>
+                </div>
+            `;
+        }
+
+        // 滑块事件
+        document.getElementById('baseSlider')?.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            document.getElementById('sliderValue').textContent = value;
+            drawGraph();
+        });
+
+        // 防抖优化：窗口大小变化时只重绘当前活跃面板
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const activePanel = document.querySelector('.content.active');
+                if (activePanel) {
+                    const panelId = activePanel.id;
+                    if (panelId === 'basic') {
+                        drawGraph();
+                    } else if (panelId === 'tower') {
+                        updateTower();
+                    } else if (panelId === 'rules') {
+                        drawRuleVisuals();
+                    }
+                }
+            }, 150);
+        });
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                calculate();
+                drawGraph();
+                updateTower();
+                drawRuleVisuals();
+                renderMath();
+            }, 100);
         });
     </script>
 </body>
 </html>
-
