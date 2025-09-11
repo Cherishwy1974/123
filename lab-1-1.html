@@ -282,14 +282,18 @@
             border-radius: 4px;
             background: #fafafa;
             padding: 10px;
-            min-height: 300px;
+            min-height: 200px;
+            max-height: 500px;
             overflow: hidden;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .canvas-container canvas {
             max-width: 100%;
-            height: auto;
+            max-height: 100%;
             display: block;
             margin: 0 auto;
         }
@@ -355,16 +359,17 @@
             color: var(--primary);
         }
 
-        /* 立方体容器 - 修复显示问题 */
+        /* 立方体容器 - 智能自适应 */
         .cube-container {
             background: var(--gray-50);
             border-radius: 4px;
             padding: 20px;
-            min-height: 320px;
+            min-height: 250px;
+            max-height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: auto;
+            overflow: hidden;
             position: relative;
         }
 
@@ -431,24 +436,26 @@
             }
 
             .canvas-container {
-                min-height: 250px;
+                min-height: 200px;
+                max-height: 300px;
                 padding: 8px;
             }
 
             .canvas-container canvas {
                 width: 100%;
-                max-width: 500px;
+                max-width: 100%;
                 height: auto;
             }
 
             .cube-container {
-                min-height: 250px;
+                min-height: 200px;
+                max-height: 300px;
                 padding: 16px;
             }
 
             .cube-container canvas {
                 width: 100%;
-                max-width: 350px;
+                max-width: 100%;
                 height: auto;
             }
 
@@ -497,24 +504,26 @@
             }
 
             .canvas-container {
-                min-height: 200px;
+                min-height: 180px;
+                max-height: 250px;
                 padding: 6px;
             }
 
             .canvas-container canvas {
                 width: 100%;
-                max-width: 400px;
+                max-width: 100%;
                 height: auto;
             }
 
             .cube-container {
-                min-height: 200px;
+                min-height: 180px;
+                max-height: 250px;
                 padding: 12px;
             }
 
             .cube-container canvas {
                 width: 100%;
-                max-width: 300px;
+                max-width: 100%;
                 height: auto;
             }
 
@@ -780,15 +789,15 @@
             calculate();
         }
 
-        // 绘制函数图像
+        // 智能Canvas自适应绘制函数图像
         function drawGraph() {
             const canvas = document.getElementById('graph');
             if (!canvas) return;
             
-            // 动态调整Canvas大小以适应容器
+            // 智能计算容器尺寸
             const container = canvas.parentElement;
-            const containerWidth = container.clientWidth - 20; // 减去padding
-            const containerHeight = Math.min(300, container.clientHeight - 20);
+            const containerWidth = Math.max(200, container.clientWidth - 20); // 最小宽度200px
+            const containerHeight = Math.max(150, Math.min(400, container.clientHeight - 20)); // 最小高度150px，最大400px
             
             // 设置Canvas显示尺寸
             canvas.style.width = containerWidth + 'px';
@@ -810,11 +819,18 @@
             ctx.clearRect(0, 0, width, height);
             
             const base = parseFloat(document.getElementById('baseSlider')?.value || 2);
-            const scale = 40;
             
-            // 网格
+            // 智能计算网格密度和缩放比例
+            const minGridSize = 20;
+            const maxGridSize = 60;
+            const gridDensity = Math.max(5, Math.min(15, Math.floor(width / 50))); // 根据宽度调整网格密度
+            const scale = Math.max(minGridSize, Math.min(maxGridSize, width / gridDensity));
+            
+            // 智能网格绘制
             ctx.strokeStyle = '#e5e7eb';
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = width < 300 ? 0.3 : 0.5; // 小屏幕时使用更细的线
+            
+            // 主网格线
             for (let x = centerX % scale; x < width; x += scale) {
                 ctx.beginPath();
                 ctx.moveTo(x, 0);
@@ -828,9 +844,32 @@
                 ctx.stroke();
             }
             
+            // 次网格线（仅在较大屏幕上显示）
+            if (width > 400) {
+                ctx.strokeStyle = '#f3f4f6';
+                ctx.lineWidth = 0.2;
+                const subScale = scale / 2;
+                for (let x = centerX % subScale; x < width; x += subScale) {
+                    if (Math.abs(x - centerX) % scale !== 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, height);
+                        ctx.stroke();
+                    }
+                }
+                for (let y = centerY % subScale; y < height; y += subScale) {
+                    if (Math.abs(y - centerY) % scale !== 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(width, y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
             // 坐标轴
             ctx.strokeStyle = '#374151';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = width < 300 ? 1.5 : 2;
             ctx.beginPath();
             ctx.moveTo(0, centerY);
             ctx.lineTo(width, centerY);
@@ -840,11 +879,12 @@
             
             // 函数曲线
             ctx.strokeStyle = '#4f46e5';
-            ctx.lineWidth = 2.5;
+            ctx.lineWidth = width < 300 ? 2 : 2.5;
             ctx.beginPath();
             
             let first = true;
-            for (let px = 0; px <= width; px += 2) {
+            const stepSize = width < 300 ? 3 : 2; // 小屏幕时使用更大的步长提高性能
+            for (let px = 0; px <= width; px += stepSize) {
                 const x = (px - centerX) / scale;
                 const y = Math.pow(base, x);
                 
@@ -864,8 +904,9 @@
             
             // 标记点(0,1)
             ctx.fillStyle = '#ef4444';
+            const pointRadius = width < 300 ? 3 : 5;
             ctx.beginPath();
-            ctx.arc(centerX, centerY - scale, 5, 0, 2 * Math.PI);
+            ctx.arc(centerX, centerY - scale, pointRadius, 0, 2 * Math.PI);
             ctx.fill();
             
             // 更新描述
@@ -900,18 +941,16 @@
             renderMath();
         }
 
-        // ========================================
-        // 修复4：立方体绘制，确保不被截断
-        // ========================================
+        // 智能立方体可视化绘制
         function drawCube() {
             const num = parseInt(document.getElementById('cbNum').value);
             const canvas = document.getElementById('cubeCanvas');
             if (!canvas) return;
             
-            // 动态调整Canvas大小以适应容器
+            // 智能计算容器尺寸
             const container = canvas.parentElement;
-            const containerWidth = container.clientWidth - 40; // 减去padding
-            const containerHeight = Math.min(280, container.clientHeight - 40);
+            const containerWidth = Math.max(250, container.clientWidth - 40); // 最小宽度250px
+            const containerHeight = Math.max(200, Math.min(350, container.clientHeight - 40)); // 最小高度200px，最大350px
             
             // 设置Canvas显示尺寸
             canvas.style.width = containerWidth + 'px';
@@ -929,21 +968,39 @@
             
             ctx.clearRect(0, 0, containerWidth, containerHeight);
             
-            // 调整位置和大小，确保完整显示
-            const unit = Math.min(20, containerWidth / 20, containerHeight / 15);
+            // 智能计算单位长度，确保立方体完整显示
+            const maxCubeWidth = cbrt * 0.866 * 2; // 等轴测投影的最大宽度
+            const maxCubeHeight = cbrt * 1.5; // 等轴测投影的最大高度
+            
+            // 计算可用的绘制区域（留出边距）
+            const margin = 30;
+            const availableWidth = containerWidth - margin * 2;
+            const availableHeight = containerHeight - margin * 2;
+            
+            // 根据立方体复杂度和容器大小智能计算单位长度
+            const unitByWidth = availableWidth / (maxCubeWidth + 2);
+            const unitByHeight = availableHeight / (maxCubeHeight + 2);
+            const unit = Math.min(unitByWidth, unitByHeight, 25); // 最大单位长度25px
+            
+            // 确保最小单位长度
+            const minUnit = containerWidth < 300 ? 8 : 12;
+            const finalUnit = Math.max(minUnit, unit);
+            
             const offsetX = containerWidth / 2;
             const offsetY = containerHeight / 2;
             
+            // 智能调整线宽
+            const lineWidth = containerWidth < 300 ? 1 : 1.5;
             ctx.strokeStyle = '#4f46e5';
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = lineWidth;
             
             // 绘制立方体框架
             for (let z = 0; z <= cbrt; z++) {
                 for (let y = 0; y <= cbrt; y++) {
                     for (let x = 0; x <= cbrt; x++) {
                         // 计算等轴测投影坐标
-                        const px = offsetX + (x - z) * unit * 0.866;
-                        const py = offsetY + (x + z) * unit * 0.5 - y * unit;
+                        const px = offsetX + (x - z) * finalUnit * 0.866;
+                        const py = offsetY + (x + z) * finalUnit * 0.5 - y * finalUnit;
                         
                         // 绘制可见的边
                         ctx.beginPath();
@@ -952,7 +1009,7 @@
                         if (y === 0 || y === cbrt || z === 0 || z === cbrt) {
                             if (x < cbrt) {
                                 ctx.moveTo(px, py);
-                                ctx.lineTo(px + unit * 0.866, py - unit * 0.5);
+                                ctx.lineTo(px + finalUnit * 0.866, py - finalUnit * 0.5);
                             }
                         }
                         
@@ -960,7 +1017,7 @@
                         if (x === 0 || x === cbrt || z === 0 || z === cbrt) {
                             if (y < cbrt) {
                                 ctx.moveTo(px, py);
-                                ctx.lineTo(px, py + unit);
+                                ctx.lineTo(px, py + finalUnit);
                             }
                         }
                         
@@ -968,7 +1025,7 @@
                         if (x === 0 || x === cbrt || y === 0 || y === cbrt) {
                             if (z < cbrt) {
                                 ctx.moveTo(px, py);
-                                ctx.lineTo(px - unit * 0.866, py - unit * 0.5);
+                                ctx.lineTo(px - finalUnit * 0.866, py - finalUnit * 0.5);
                             }
                         }
                         
@@ -977,17 +1034,29 @@
                 }
             }
             
-            // 填充可见面，增加立体感
-            ctx.fillStyle = 'rgba(79, 70, 229, 0.1)';
-            
-            // 顶面
-            ctx.beginPath();
-            ctx.moveTo(offsetX, offsetY - cbrt * unit);
-            ctx.lineTo(offsetX + cbrt * unit * 0.866, offsetY - cbrt * unit - cbrt * unit * 0.5);
-            ctx.lineTo(offsetX, offsetY - cbrt * unit - cbrt * unit);
-            ctx.lineTo(offsetX - cbrt * unit * 0.866, offsetY - cbrt * unit - cbrt * unit * 0.5);
-            ctx.closePath();
-            ctx.fill();
+            // 填充可见面，增加立体感（仅在较大屏幕上显示）
+            if (containerWidth > 300) {
+                ctx.fillStyle = 'rgba(79, 70, 229, 0.1)';
+                
+                // 顶面
+                ctx.beginPath();
+                ctx.moveTo(offsetX, offsetY - cbrt * finalUnit);
+                ctx.lineTo(offsetX + cbrt * finalUnit * 0.866, offsetY - cbrt * finalUnit - cbrt * finalUnit * 0.5);
+                ctx.lineTo(offsetX, offsetY - cbrt * finalUnit - cbrt * finalUnit);
+                ctx.lineTo(offsetX - cbrt * finalUnit * 0.866, offsetY - cbrt * finalUnit - cbrt * finalUnit * 0.5);
+                ctx.closePath();
+                ctx.fill();
+                
+                // 右面
+                ctx.fillStyle = 'rgba(79, 70, 229, 0.05)';
+                ctx.beginPath();
+                ctx.moveTo(offsetX + cbrt * finalUnit * 0.866, offsetY - cbrt * finalUnit - cbrt * finalUnit * 0.5);
+                ctx.lineTo(offsetX + cbrt * finalUnit * 0.866, offsetY - cbrt * finalUnit * 0.5);
+                ctx.lineTo(offsetX, offsetY - cbrt * finalUnit);
+                ctx.lineTo(offsetX, offsetY - cbrt * finalUnit - cbrt * finalUnit);
+                ctx.closePath();
+                ctx.fill();
+            }
             
             document.getElementById('cbExp').innerHTML = 
                 `${num}个方块搭成${cbrt}×${cbrt}×${cbrt}立方体<br>棱长 = ${cbrt}<br>所以 $${num}^{\\frac{1}{3}} = ${cbrt}$`;
@@ -1002,12 +1071,23 @@
             drawGraph();
         });
 
-        // 窗口大小变化时重新绘制
+        // 防抖优化：窗口大小变化时只重绘当前活跃面板
+        let resizeTimeout;
         window.addEventListener('resize', function() {
-            setTimeout(() => {
-                drawGraph();
-                drawCube();
-            }, 100);
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const activePanel = document.querySelector('.content.active');
+                if (activePanel) {
+                    const panelId = activePanel.id;
+                    if (panelId === 'basic') {
+                        drawGraph();
+                    } else if (panelId === 'fraction') {
+                        drawSquare();
+                        drawCube();
+                    }
+                    // rules面板没有Canvas，无需重绘
+                }
+            }, 150); // 增加防抖延迟到150ms
         });
 
         // 初始化
