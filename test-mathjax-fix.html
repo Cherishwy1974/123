@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathJax修复测试页面</title>
+    
+    <!-- 使用修复版MathJax配置 -->
+    <script src="common-assets/js/mathjax-fixed-config.js"></script>
+    <script async src="common-assets/js/tex-svg.js" 
+            onerror="console.error('本地MathJax加载失败，尝试备用方案'); tryFallbackRenderer();"></script>
+    
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .formula {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4f46e5;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>MathJax修复测试页面</h1>
+    
+    <div class="test-section">
+        <h2>测试状态</h2>
+        <div id="status" class="status info">正在检查MathJax状态...</div>
+        <button onclick="checkMathJaxStatus()">检查状态</button>
+        <button onclick="reloadMathJax()">重新渲染</button>
+    </div>
+
+    <div class="test-section">
+        <h2>内联公式测试</h2>
+        <div class="formula">
+            这是一个内联公式：$E = mc^2$，以及另一个公式 $\sin^2(x) + \cos^2(x) = 1$。
+        </div>
+        <div class="formula">
+            分数测试：$\frac{a}{b} = \frac{c}{d}$，根号测试：$\sqrt{x^2 + y^2}$。
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>块级公式测试</h2>
+        <div class="formula">
+            二次公式：
+            $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+        </div>
+        <div class="formula">
+            积分公式：
+            $$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
+        </div>
+        <div class="formula">
+            矩阵测试：
+            $$\begin{pmatrix}
+            a & b \\
+            c & d
+            \end{pmatrix} \begin{pmatrix}
+            x \\
+            y
+            \end{pmatrix} = \begin{pmatrix}
+            ax + by \\
+            cx + dy
+            \end{pmatrix}$$
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>复杂公式测试</h2>
+        <div class="formula">
+            泰勒级数：
+            $$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n$$
+        </div>
+        <div class="formula">
+            偏微分方程：
+            $$\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u$$
+        </div>
+    </div>
+
+    <script>
+        function checkMathJaxStatus() {
+            const statusDiv = document.getElementById('status');
+            
+            if (window.MathJax) {
+                if (window.MathJax.typesetPromise) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ MathJax已加载并可用';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ MathJax已加载但typesetPromise不可用';
+                }
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ MathJax未加载';
+            }
+        }
+
+        // 页面加载完成后检查状态
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkMathJaxStatus();
+                
+                // 检查是否有未渲染的公式
+                setTimeout(() => {
+                    const unrendered = document.querySelectorAll('script[type*="math/tex"], .MathJax_Preview');
+                    if (unrendered.length > 0) {
+                        console.log(`发现 ${unrendered.length} 个未渲染的公式`);
+                        if (typeof reloadMathJax === 'function') {
+                            reloadMathJax();
+                        }
+                    }
+                }, 2000);
+            }, 1000);
+        });
+
+        // 添加页面可见性变化时的重新渲染
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && window.MathJax && window.MathJax.typesetPromise) {
+                console.log('页面重新可见，检查MathJax渲染...');
+                setTimeout(() => {
+                    const unrendered = document.querySelectorAll('script[type*="math/tex"], .MathJax_Preview');
+                    if (unrendered.length > 0) {
+                        console.log(`发现 ${unrendered.length} 个未渲染的公式，重新渲染...`);
+                        if (typeof reloadMathJax === 'function') {
+                            reloadMathJax();
+                        }
+                    }
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>
