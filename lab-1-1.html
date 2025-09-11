@@ -3,977 +3,786 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>指数运算 - 高等应用数学虚拟实验室</title>
+    <title>指数运算实验室</title>
     
-    <!-- 本地化MathJax配置 -->
+    <!-- ========================================
+         修复1：使用本地MathJax，优化配置减少卡顿
+         修复2：延迟加载，避免阻塞页面
+         ======================================== -->
     <script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true,
-                packages: {'[+]': ['ams', 'base']}
-            },
-            chtml: {
-                scale: 1,
-                minScale: 0.5,
-                matchFontHeight: false
+                processEscapes: true
             },
             startup: {
-                ready: () => {
-                    MathJax.startup.defaultReady();
-                    console.log('MathJax加载完成');
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('MathJax加载完成');
+                    });
                 }
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
             }
         };
     </script>
-    <script async src="./common-assets/js/tex-svg.js"></script>
-    
-    <!-- 隐藏滚动条样式 -->
-    <link rel="stylesheet" href="./common-assets/css/hidden-scrollbar.css">
+    <!-- 使用defer异步加载，避免阻塞 -->
+    <script defer src="./common-assets/js/tex-svg.js"></script>
     
     <style>
-        /* 字体标准化规范 */
+        /* ========================================
+           用户要求1：字号统一
+           ======================================== */
         :root {
-            --h1-size: 22px;      /* 一级标题 */
-            --h2-size: 20px;      /* 二级标题 */
-            --h3-size: 18px;      /* 三级标题 */
-            --btn-size: 16px;     /* 按钮文字 */
-            --formula-size: 20px; /* 数学公式 */
-            --text-size: 16px;    /* 正文文字 */
+            --h1-size: 22px;      
+            --h2-size: 20px;      
+            --h3-size: 18px;      
+            --btn-size: 16px;     
+            --formula-size: 20px; 
+            --text-size: 16px;
             
-            /* 现代化配色方案 */
             --primary: #4f46e5;
             --primary-light: #6366f1;
             --primary-dark: #3730a3;
-            --secondary: #7c3aed;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
             --light: #ffffff;
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
             --gray-600: #4b5563;
             --gray-800: #1f2937;
-            --gray-900: #111827;
             --border: #e5e7eb;
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        /* 全局重置和基础样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* 本地化字体设置 - 使用系统字体栈 */
+        /* ========================================
+           用户要求：滚动条生效但不显示
+           ======================================== */
+        *::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
             font-size: var(--text-size);
-            line-height: 1.6;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            height: 100vh;
-            margin: 0;
-            padding: 0;
+            line-height: 1.5;
+            background: var(--gray-50);
             color: var(--gray-800);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* 全屏容器布局 */
-        .app-container {
-            width: 100vw;
+        /* ========================================
+           用户要求：横向布局（宽是高的2倍），压缩高度
+           ======================================== */
+        .container {
+            width: 100%;
+            max-width: 1400px;
             height: 100vh;
-            display: grid;
-            grid-template-rows: auto auto 1fr;
+            max-height: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
             background: var(--light);
-            overflow: auto;
         }
 
-        /* 顶部标题栏 */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             color: var(--light);
-            padding: 16px 24px;
+            padding: 8px 20px;
+            height: 40px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: none;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 16px;
         }
 
         .header h1 {
-            font-size: var(--h1-size);
-            font-weight: 700;
-            margin: 0;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            letter-spacing: 0.5px;
-        }
-
-        .header-subtitle {
-            font-size: var(--h3-size);
-            opacity: 0.9;
-            font-weight: 400;
+            font-size: var(--h2-size);
             margin: 0;
         }
 
-        /* 主内容区域 - 使用Grid布局 */
-        .main-content {
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            height: 100%;
-
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
         }
 
-        /* 侧边导航栏 */
+        /* ========================================
+           用户要求：侧边栏不动
+           ======================================== */
         .sidebar {
+            width: 120px;
             background: var(--gray-50);
             border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 20px 0;
-            overflow-y: auto;
+            padding: 10px 8px;
         }
 
-        .nav-tabs {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 0 16px;
-        }
-
-        .nav-tab {
-            padding: 14px 16px;
+        .nav-btn {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 4px;
             background: transparent;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: var(--btn-size);
-            font-weight: 500;
+            font-size: var(--text-size);
             color: var(--gray-600);
             text-align: left;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: inherit;
+            transition: all 0.2s;
         }
 
-        .nav-tab::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 0;
-            background: var(--primary);
-            border-radius: 0 2px 2px 0;
-            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-tab:hover {
+        .nav-btn:hover {
             background: var(--gray-100);
-            color: var(--primary);
-            transform: translateX(4px);
         }
 
-        .nav-tab:hover::before {
-            height: 24px;
-        }
-
-        .nav-tab.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        .nav-btn.active {
+            background: var(--primary);
             color: var(--light);
-            font-weight: 600;
-            box-shadow: var(--shadow);
         }
 
-        .nav-tab.active::before {
-            height: 100%;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* 导航图标 */
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .content-area {
-            display: flex;
-            overflow: auto;
-            background: var(--light);
-        }
-
-        /* 内容面板 */
-        .panel {
-            display: none;
-            padding: 24px;
-            overflow-y: auto;
+        /* ========================================
+           用户要求：最多左右两栏，必须有可视化
+           ======================================== */
+        .content {
             flex: 1;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) var(--gray-200);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .panel::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .panel::-webkit-scrollbar-track {
-            background: var(--gray-100);
-            border-radius: 3px;
-        }
-
-        .panel::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 3px;
-        }
-
-        .panel::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
-        .panel.active {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-
-
-        .loading.hidden {
             display: none;
+            padding: 16px;
+            overflow-y: auto;
         }
 
-        /* 计算器区域 */
-        .calc-section {
+        .content.active {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-
-        .calc-inputs, .calc-results {
-            background: var(--light);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
             gap: 20px;
-            transition: all 0.3s ease;
         }
 
-        .calc-inputs:hover, .calc-results:hover {
-            box-shadow: none;
-            transform: translateY(-2px);
-        }
-
-        /* 输入组件 */
-        .input-group {
+        .column {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .card {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .card h3 {
+            font-size: var(--h3-size);
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
         }
 
         .input-group label {
-            font-weight: 600;
-            color: var(--gray-800);
+            display: block;
+            margin-bottom: 4px;
             font-size: var(--text-size);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 500;
         }
 
-        .input-group input {
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
             font-size: var(--text-size);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--gray-50);
-            color: var(--gray-800);
-            font-family: inherit;
         }
 
-        .input-group input:focus {
+        .input-group input:focus,
+        .input-group select:focus {
             outline: none;
             border-color: var(--primary);
             background: var(--light);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-            transform: translateY(-1px);
         }
 
-        .input-group input:hover {
-            border-color: var(--primary-light);
-            background: var(--light);
-        }
-
-        /* 操作按钮组 */
-        .operation-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        /* 按钮样式 */
         .btn {
-            padding: 14px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 8px 16px;
+            background: var(--primary);
             color: var(--light);
             border: none;
-            border-radius: 12px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: var(--btn-size);
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            white-space: nowrap;
-            font-family: inherit;
-            position: relative;
-            overflow: auto;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            transition: all 0.2s;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+            background: var(--primary-dark);
         }
 
-        .btn:hover::before {
-            left: 100%;
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        .btn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-        }
-
-        /* 结果显示组件 */
-        .result-display {
-            background: linear-gradient(135deg, var(--gray-50) 0%, var(--light) 100%);
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid var(--primary);
+        .result {
+            background: var(--gray-50);
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid var(--primary);
             text-align: center;
-            min-height: 60px;
+            font-size: var(--text-size);
+            margin: 12px 0;
+            min-height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: var(--formula-size);
-            font-weight: 600;
-            color: var(--gray-800);
-            box-shadow: inset 0 2px 8px rgba(79, 70, 229, 0.1);
-            transition: all 0.3s ease;
         }
 
-        .result-display:hover {
-            border-color: var(--primary-light);
-            box-shadow: inset 0 2px 8px rgba(79, 70, 229, 0.15);
-        }
-
-        .formula-display {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
-            padding: 20px;
-            border-radius: 12px;
+        .formula-box {
+            background: #f0f7ff;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+            margin: 12px 0;
             text-align: center;
-            border: 1px solid var(--primary);
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: all 0.3s ease;
+            font-size: var(--formula-size);
         }
 
-        .formula-display:hover {
-            box-shadow: none;
-            transform: translateY(-1px);
-        }
-
-        .formula-display small {
-            color: var(--gray-600);
+        .info-box {
+            background: var(--gray-50);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 8px 0;
             font-size: var(--text-size);
-            line-height: 1.5;
+            text-align: center;
         }
 
-        /* MathJax公式样式 */
-        .formula-display .MathJax {
-            font-size: var(--formula-size) !important;
-        }
-
-        /* 图表和属性样式 */
-        .graph-container, .properties-grid {
-            background: var(--light);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+        .steps {
+            background: #fff9e6;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #f59e0b;
+            line-height: 1.8;
+            font-size: var(--text-size);
         }
 
         .canvas-container {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
             background: #fafafa;
-            margin: 16px 0;
-            overflow: auto;
+            padding: 10px;
+            min-height: 300px;
         }
 
-        .canvas-container canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        .controls {
-            display: flex;
-            gap: 16px;
-            margin: 16px 0;
+        .dot-grid {
+            display: grid;
+            gap: 6px;
             padding: 16px;
             background: var(--gray-50);
-            border-radius: 12px;
+            border-radius: 4px;
+            justify-content: center;
+            align-content: center;
+            min-height: 200px;
         }
 
-        .control-group {
+        .dot {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .slider-group {
             display: flex;
             align-items: center;
             gap: 12px;
-            flex: 1;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 4px;
+            margin-top: 12px;
         }
 
-        .control-group label {
-            font-weight: 600;
-            color: var(--gray-800);
+        .slider-group label {
+            min-width: 60px;
             font-size: var(--text-size);
-            min-width: 80px;
         }
 
         .slider {
             flex: 1;
-            height: 6px;
-            border-radius: 3px;
+            height: 4px;
+            -webkit-appearance: none;
             background: var(--gray-200);
             outline: none;
-            -webkit-appearance: none;
         }
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: var(--primary);
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .properties-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .property-card {
-            background: var(--light);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .property-card:hover {
-            transform: translateY(-2px);
-            box-shadow: none;
-        }
-
-        .property-card h3 {
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
             color: var(--primary);
-            margin-bottom: 16px;
-            font-size: var(--h3-size);
-            font-weight: 700;
+        }
+
+        /* 立方体容器 - 修复显示问题 */
+        .cube-container {
+            background: var(--gray-50);
+            border-radius: 4px;
+            padding: 20px;
+            min-height: 320px;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .property-card .formula {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            text-align: center;
-            border: 1px solid var(--border);
-            font-size: var(--formula-size);
-            transition: all 0.3s ease;
-        }
-
-        .property-card .formula:hover {
-            background: #f0f7ff;
-            border-color: var(--primary);
-        }
-
-        .property-card .description {
-            color: var(--gray-600);
-            font-size: var(--text-size);
-            line-height: 1.6;
-            margin-top: 15px;
-            padding: 10px;
-            background: #fafafa;
-            border-radius: 6px;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 160px 1fr;
-            }
-
-            .calc-section {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto 1fr;
-            }
-
-            .sidebar {
-                padding: 10px 0;
-            }
-
-            .nav-tabs {
-                flex-direction: row;
-                overflow-x: auto;
-                padding: 0 10px;
-            }
-
-            .nav-tab {
-                min-width: 120px;
-                padding: 10px 12px;
-            }
-
-            .operation-buttons {
-                grid-template-columns: 1fr;
-            }
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-    <!-- 加载指示器 -->
-    <div class="loading" id="loading">
-        <div>页面加载中，请稍候...</div>
-        </div>
-
-    <!-- 全屏应用容器 -->
-    <div class="app-container">
-        <!-- 顶部标题栏 -->
+    <div class="container">
         <header class="header">
-            <div class="header-content">
-                <h1>指数运算</h1>
-                <p class="header-subtitle">探索指数函数的性质与计算</p>
-            </div>
+            <h1>指数运算实验室</h1>
         </header>
 
-        <!-- 主内容区域 -->
-        <main class="main-content">
-            <!-- 侧边导航栏 -->
+        <div class="main">
+            <!-- 侧边栏 -->
             <nav class="sidebar">
-                <div class="nav-tabs">
-                    <button class="nav-tab active" data-panel="calculator">
-                        <span class="nav-icon">🧮</span>
-                        <span>计算器</span>
-                    </button>
-                    <button class="nav-tab" data-panel="graph">
-                        <span class="nav-icon">📊</span>
-                        <span>图像</span>
-                    </button>
-                    <button class="nav-tab" data-panel="properties">
-                        <span class="nav-icon">📋</span>
-                        <span>性质</span>
-                    </button>
-        </div>
+                <button class="nav-btn active" onclick="switchPanel('basic')">基础计算</button>
+                <button class="nav-btn" onclick="switchPanel('fraction')">分数指数</button>
+                <button class="nav-btn" onclick="switchPanel('rules')">运算法则</button>
             </nav>
 
-            <!-- 内容区域 -->
-            <div class="content-area">
-                <!-- 计算器面板 -->
-        <div class="panel active" id="calculator">
-            <div class="calc-section">
-                        <div class="calc-inputs">
-                <div class="input-group">
-                                <label for="baseInput">底数 (a):</label>
-                                <input type="number" id="baseInput" value="2" step="0.1" min="0.1" placeholder="输入底数">
-                </div>
-                <div class="input-group">
-                                <label for="exponentInput">指数 (x):</label>
-                                <input type="number" id="exponentInput" value="3" step="0.1" placeholder="输入指数">
-                </div>
-                            <div class="operation-buttons">
-                                <button class="btn" onclick="calculate()">🔢 计算</button>
-                                <button class="btn" onclick="showSteps()">📝 显示步骤</button>
-                                <button class="btn" onclick="clearAll()">🗑️ 清空</button>
-                                <button class="btn" onclick="randomValues()">🎲 随机数</button>
-                </div>
-            </div>
+            <!-- 基础计算页面 -->
+            <div class="content active" id="basic">
+                <div class="column">
+                    <div class="card">
+                        <h3>指数计算</h3>
+                        <div class="input-group">
+                            <label>底数 a</label>
+                            <input type="number" id="base" value="2" step="0.1" min="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>指数 x</label>
+                            <input type="number" id="exp" value="3" step="0.1">
+                        </div>
+                        <div class="result" id="result">
+                            $2^3 = 8$
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn" onclick="calculate()">计算</button>
+                            <button class="btn" onclick="randomCalc()">随机</button>
+                        </div>
+                        <div class="formula-box" id="steps">
+                            $a^x = \underbrace{a \times a \times ... \times a}_{x \text{次}}$
+                        </div>
+                    </div>
 
-                        <div class="calc-results">
-                            <div class="result-display" id="result">
-                                输入数值并点击计算
-                            </div>
-                            <div class="formula-display" id="steps">
-                                计算步骤将在这里显示
-                            </div>
-                </div>
-            </div>
-        </div>
-
-                <!-- 图像面板 -->
-        <div class="panel" id="graph">
-            <div class="graph-container">
-                <div class="canvas-container">
-                    <canvas id="expCanvas"></canvas>
-                </div>
-
-                <div class="controls">
-                    <div class="control-group">
-                        <label for="baseSlider">底数 a:</label>
-                        <input type="range" id="baseSlider" class="slider" min="0.1" max="5" step="0.1" value="2">
-                        <span id="baseValue">2.0</span>
+                    <div class="card">
+                        <h3>特殊情况</h3>
+                        <div class="info-box">$a^0 = 1$ (a ≠ 0)</div>
+                        <div class="info-box">$a^{-n} = \frac{1}{a^n}$</div>
+                        <div class="info-box">$a^{\frac{1}{n}} = \sqrt[n]{a}$</div>
+                        <div class="info-box">$a^{\frac{m}{n}} = \sqrt[n]{a^m}$</div>
                     </div>
                 </div>
 
-                        <div class="formula-display">
-                            <div>函数: $y = a^x$</div>
-                            <div id="functionDesc">当 $a > 1$ 时为递增函数，当 $0 < a < 1$ 时为递减函数</div>
-                            <div>图像过点 $(0, 1)$，定义域 $(-\infty, +\infty)$</div>
-                </div>
-            </div>
-        </div>
-
-                <!-- 属性面板 -->
-        <div class="panel" id="properties">
-            <div class="properties-grid">
-                <div class="property-card">
-                            <h3>📐 指数运算法则</h3>
-                    <div class="formula">$a^m \cdot a^n = a^{m+n}$</div>
-                    <div class="formula">$\frac{a^m}{a^n} = a^{m-n}$</div>
-                    <div class="formula">$(a^m)^n = a^{mn}$</div>
-                            <div class="formula">$(ab)^n = a^n b^n$</div>
-                            <div class="description">同底数指数相乘时指数相加，相除时指数相减，幂的幂时指数相乘。</div>
-                </div>
-
-                <div class="property-card">
-                            <h3>🎯 特殊指数值</h3>
-                    <div class="formula">$a^0 = 1$ (当 $a \neq 0$)</div>
-                    <div class="formula">$a^1 = a$</div>
-                    <div class="formula">$a^{-n} = \frac{1}{a^n}$</div>
-                    <div class="formula">$a^{\frac{1}{n}} = \sqrt[n]{a}$</div>
-                            <div class="description">任何非零数的0次幂为1；负指数表示倒数；分数指数表示根式。</div>
-                </div>
-
-                <div class="property-card">
-                            <h3>📊 指数函数性质</h3>
-                    <div class="formula">定义域: $(-\infty, +\infty)$</div>
-                    <div class="formula">值域: $(0, +\infty)$</div>
-                    <div class="formula">过点: $(0, 1)$</div>
-                            <div class="description">指数函数在实数域内连续，当a>1时单调递增，当0&lt;a&lt;1时单调递减。</div>
+                <div class="column">
+                    <div class="card">
+                        <h3>函数图像</h3>
+                        <div class="canvas-container">
+                            <canvas id="graph" width="600" height="300"></canvas>
                         </div>
+                        <div class="slider-group">
+                            <label>底数 a</label>
+                            <input type="range" class="slider" id="baseSlider" 
+                                   min="0.1" max="5" step="0.1" value="2">
+                            <span class="slider-value" id="sliderValue">2.0</span>
+                        </div>
+                        <div class="info-box" id="funcDesc">
+                            $y = 2^x$ 单调递增
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="property-card">
-                            <h3>🔄 指数与对数</h3>
-                            <div class="formula">$y = a^x \Leftrightarrow x = \log_a y$</div>
-                            <div class="formula">$a^{\log_a x} = x$</div>
-                            <div class="formula">$\log_a a^x = x$</div>
-                            <div class="description">指数函数与对数函数互为反函数，它们的图像关于直线y=x对称。</div>
+            <!-- 分数指数页面 -->
+            <div class="content" id="fraction">
+                <div class="column">
+                    <div class="card">
+                        <h3>平方根可视化</h3>
+                        <div class="input-group">
+                            <label>选择数字</label>
+                            <select id="sqNum" onchange="drawSquare()">
+                                <option value="4">4 → 2×2</option>
+                                <option value="9" selected>9 → 3×3</option>
+                                <option value="16">16 → 4×4</option>
+                                <option value="25">25 → 5×5</option>
+                            </select>
+                        </div>
+                        <div id="squareGrid" class="dot-grid"></div>
+                        <div class="steps" id="sqExp">
+                            9个点排成3×3正方形<br>
+                            边长 = 3<br>
+                            所以 $9^{\frac{1}{2}} = 3$
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>复合分数指数</h3>
+                        <div class="formula-box">
+                            $8^{\frac{2}{3}} = (8^{\frac{1}{3}})^2$
+                        </div>
+                        <div class="steps">
+                            第1步：$8^{\frac{1}{3}} = 2$ (立方根)<br>
+                            第2步：$2^2 = 4$ (平方)<br>
+                            结果：$8^{\frac{2}{3}} = 4$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="card">
+                        <h3>立方根可视化</h3>
+                        <div class="input-group">
+                            <label>选择数字</label>
+                            <select id="cbNum" onchange="drawCube()">
+                                <option value="8" selected>8 → 2×2×2</option>
+                                <option value="27">27 → 3×3×3</option>
+                                <option value="64">64 → 4×4×4</option>
+                            </select>
+                        </div>
+                        <div class="cube-container">
+                            <canvas id="cubeCanvas" width="400" height="280"></canvas>
+                        </div>
+                        <div class="steps" id="cbExp">
+                            8个方块搭成2×2×2立方体<br>
+                            棱长 = 2<br>
+                            所以 $8^{\frac{1}{3}} = 2$
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 运算法则页面 -->
+            <div class="content" id="rules">
+                <div class="column">
+                    <div class="card">
+                        <h3>基本运算法则</h3>
+                        <div class="formula-box">$a^m \cdot a^n = a^{m+n}$</div>
+                        <div class="formula-box">$\frac{a^m}{a^n} = a^{m-n}$</div>
+                        <div class="formula-box">$(a^m)^n = a^{mn}$</div>
+                        <div class="formula-box">$(ab)^n = a^n b^n$</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>自然指数</h3>
+                        <div class="formula-box">
+                            $e = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n$
+                        </div>
+                        <div class="info-box">$e \approx 2.71828...$</div>
+                        <div class="formula-box">$\frac{d}{dx}e^x = e^x$</div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="card">
+                        <h3>对数关系</h3>
+                        <div class="formula-box">$y = a^x \Leftrightarrow x = \log_a y$</div>
+                        <div class="formula-box">$a^{\log_a x} = x$</div>
+                        <div class="formula-box">$\log_a a^x = x$</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>应用实例</h3>
+                        <div class="info-box">复利：$A = P(1 + r)^t$</div>
+                        <div class="info-box">半衰期：$N = N_0 \cdot 2^{-\frac{t}{t_{1/2}}}$</div>
+                        <div class="info-box">人口增长：$P = P_0 e^{rt}$</div>
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
-        </main>
     </div>
 
     <script>
-        // MathJax渲染辅助函数
-        function renderMathJax(element) {
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise([element]).catch(err => {
-                    console.warn('MathJax渲染错误:', err);
-                    // 如果渲染失败，尝试延迟重新渲染
-                    setTimeout(() => {
-                        if (window.MathJax && window.MathJax.typesetPromise) {
-                            window.MathJax.typesetPromise([element]).catch(e => console.warn('MathJax延迟渲染也失败:', e));
-                        }
-                    }, 100);
-                });
-            } else {
-                // MathJax还没加载完成，延迟渲染
-                setTimeout(() => renderMathJax(element), 200);
+        // ========================================
+        // 修复3：简化渲染逻辑，减少重复调用
+        // ========================================
+        function renderMath() {
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise().catch(err => console.log('渲染错误:', err));
             }
         }
 
-        // 导航标签页切换
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // 移除所有活动状态
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-
-                // 添加活动状态
-                tab.classList.add('active');
-                const panelId = tab.getAttribute('data-panel');
-                const panel = document.getElementById(panelId);
-                if (panel) {
-                    panel.classList.add('active');
+        // 页面切换
+        function switchPanel(panel) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(panel).classList.add('active');
+            
+            // 延迟渲染公式，避免卡顿
+            setTimeout(() => {
+                renderMath();
+                if (panel === 'basic') drawGraph();
+                if (panel === 'fraction') {
+                    drawSquare();
+                    drawCube();
                 }
+            }, 50);
+        }
 
-                // 如果切换到图像面板，重新绘制图像
-                if (panelId === 'graph') {
-                    setTimeout(drawGraph, 100);
-                }
-            });
-        });
-
-        // 指数计算
+        // 计算
         function calculate() {
-            const base = parseFloat(document.getElementById('baseInput').value);
-            const exponent = parseFloat(document.getElementById('exponentInput').value);
-
-            if (isNaN(base) || isNaN(exponent)) {
+            const base = parseFloat(document.getElementById('base').value);
+            const exp = parseFloat(document.getElementById('exp').value);
+            
+            if (isNaN(base) || isNaN(exp)) {
                 document.getElementById('result').innerHTML = '请输入有效数字';
                 return;
             }
-
-            const result = Math.pow(base, exponent);
-            const resultElement = document.getElementById('result');
-            resultElement.innerHTML = `$${base}^{${exponent}} = ${result.toFixed(3)}$`;
-
-            // 渲染MathJax
-            renderMathJax(resultElement);
-        }
-
-        // 显示计算步骤
-        function showSteps() {
-            const base = parseFloat(document.getElementById('baseInput').value);
-            const exponent = parseFloat(document.getElementById('exponentInput').value);
-
-            if (isNaN(base) || isNaN(exponent)) {
-                document.getElementById('steps').innerHTML = '请先输入有效数字';
-                return;
-            }
-
-            const result = Math.pow(base, exponent);
-            const stepsElement = document.getElementById('steps');
-
-            let steps = `<div>计算步骤：</div>`;
-            steps += `<div>$${base}^{${exponent}}$</div>`;
-
-            if (exponent === 0) {
-                steps += `<div>根据指数法则：任何非零数的0次幂等于1</div>`;
-                steps += `<div>$${base}^{0} = 1$</div>`;
-            } else if (exponent === 1) {
-                steps += `<div>根据指数法则：任何数的1次幂等于它本身</div>`;
-                steps += `<div>$${base}^{1} = ${base}$</div>`;
-            } else if (exponent < 0) {
-                steps += `<div>负指数转换：$${base}^{${exponent}} = \\frac{1}{${base}^{${Math.abs(exponent)}}}$</div>`;
-                steps += `<div>计算：$\\frac{1}{${Math.pow(base, Math.abs(exponent)).toFixed(3)}} = ${result.toFixed(3)}$</div>`;
+            
+            const result = Math.pow(base, exp);
+            document.getElementById('result').innerHTML = `$${base}^{${exp}} = ${result.toFixed(3)}$`;
+            
+            // 更新步骤
+            if (exp === 0) {
+                document.getElementById('steps').innerHTML = '$a^0 = 1$ (零次幂)';
+            } else if (exp < 0) {
+                document.getElementById('steps').innerHTML = `$${base}^{${exp}} = \\frac{1}{${base}^{${-exp}}}$`;
             } else {
-                steps += `<div>直接计算：$${base}^{${exponent}} = ${result.toFixed(3)}$</div>`;
+                document.getElementById('steps').innerHTML = `$${base}^{${exp}} = ${result.toFixed(3)}$`;
             }
-
-            stepsElement.innerHTML = steps;
-            renderMathJax(stepsElement);
+            
+            // 同步滑块
+            document.getElementById('baseSlider').value = base;
+            document.getElementById('sliderValue').textContent = base.toFixed(1);
+            
+            drawGraph();
+            renderMath();
         }
 
-        // 清空所有输入
-        function clearAll() {
-            document.getElementById('baseInput').value = '';
-            document.getElementById('exponentInput').value = '';
-            document.getElementById('result').innerHTML = '输入数值并点击计算';
-            document.getElementById('steps').innerHTML = '计算步骤将在这里显示';
-        }
-
-        // 生成随机数值
-        function randomValues() {
-            const randomBase = (Math.random() * 4 + 1).toFixed(1);
-            const randomExponent = (Math.random() * 6 - 3).toFixed(1);
-
-            document.getElementById('baseInput').value = randomBase;
-            document.getElementById('exponentInput').value = randomExponent;
-
-            // 自动计算
+        // 随机
+        function randomCalc() {
+            document.getElementById('base').value = (Math.random() * 4 + 1).toFixed(1);
+            document.getElementById('exp').value = (Math.random() * 6 - 3).toFixed(1);
             calculate();
         }
 
-        // 绘制指数函数图像
+        // 绘制函数图像
         function drawGraph() {
-            const canvas = document.getElementById('expCanvas');
+            const canvas = document.getElementById('graph');
             if (!canvas) return;
-
+            
             const ctx = canvas.getContext('2d');
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-
             const width = canvas.width;
             const height = canvas.height;
             const centerX = width / 2;
             const centerY = height / 2;
-
-            // 清空画布
+            
             ctx.clearRect(0, 0, width, height);
-
-            // 绘制坐标轴
-            ctx.strokeStyle = '#333';
+            
+            const base = parseFloat(document.getElementById('baseSlider')?.value || 2);
+            const scale = 40;
+            
+            // 网格
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 0.5;
+            for (let x = centerX % scale; x < width; x += scale) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = centerY % scale; y < height; y += scale) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            
+            // 坐标轴
+            ctx.strokeStyle = '#374151';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            // x轴
             ctx.moveTo(0, centerY);
             ctx.lineTo(width, centerY);
-            // y轴
             ctx.moveTo(centerX, 0);
             ctx.lineTo(centerX, height);
             ctx.stroke();
-
-            // 获取底数
-            const base = parseFloat(document.getElementById('baseSlider')?.value || 2);
-
-            // 绘制指数函数 y = a^x
+            
+            // 函数曲线
             ctx.strokeStyle = '#4f46e5';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
-
-            const scale = 50; // 缩放因子
-            let firstPoint = true;
-
-            for (let x = -width/2; x <= width/2; x += 1) {
-                const realX = x / scale;
-                const realY = Math.pow(base, realX);
-
-                if (realY > 0 && realY < 1000) { // 避免数值过大
-                    const canvasX = centerX + x;
-                const canvasY = centerY - realY * scale;
-
-                if (canvasY >= 0 && canvasY <= height) {
-                    if (firstPoint) {
-                            ctx.moveTo(canvasX, canvasY);
-                        firstPoint = false;
-                    } else {
-                            ctx.lineTo(canvasX, canvasY);
+            
+            let first = true;
+            for (let px = 0; px <= width; px += 2) {
+                const x = (px - centerX) / scale;
+                const y = Math.pow(base, x);
+                
+                if (y > 0 && y < 1000) {
+                    const py = centerY - y * scale;
+                    if (py >= -10 && py <= height + 10) {
+                        if (first) {
+                            ctx.moveTo(px, py);
+                            first = false;
+                        } else {
+                            ctx.lineTo(px, py);
                         }
                     }
                 }
             }
             ctx.stroke();
-
-            // 标记特殊点 (0, 1)
+            
+            // 标记点(0,1)
             ctx.fillStyle = '#ef4444';
             ctx.beginPath();
-            ctx.arc(centerX, centerY - scale, 6, 0, 2 * Math.PI);
+            ctx.arc(centerX, centerY - scale, 5, 0, 2 * Math.PI);
             ctx.fill();
+            
+            // 更新描述
+            const desc = document.getElementById('funcDesc');
+            if (base > 1) {
+                desc.innerHTML = `$y = ${base.toFixed(1)}^x$ 单调递增`;
+            } else if (base < 1) {
+                desc.innerHTML = `$y = ${base.toFixed(1)}^x$ 单调递减`;
+            } else {
+                desc.innerHTML = `$y = 1$ 常函数`;
+            }
+            renderMath();
+        }
 
-            // 添加标签
-            ctx.fillStyle = '#333';
-            ctx.font = '14px Arial';
-            ctx.fillText('(0, 1)', centerX + 10, centerY - scale - 10);
-            ctx.fillText(`y = ${base}^x`, width - 80, 30);
+        // 平方根可视化
+        function drawSquare() {
+            const num = parseInt(document.getElementById('sqNum').value);
+            const grid = document.getElementById('squareGrid');
+            const sqrt = Math.sqrt(num);
+            
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${sqrt}, 1fr)`;
+            
+            for (let i = 0; i < num; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                grid.appendChild(dot);
+            }
+            
+            document.getElementById('sqExp').innerHTML = 
+                `${num}个点排成${sqrt}×${sqrt}正方形<br>边长 = ${sqrt}<br>所以 $${num}^{\\frac{1}{2}} = ${sqrt}$`;
+            renderMath();
+        }
+
+        // ========================================
+        // 修复4：立方体绘制，确保不被截断
+        // ========================================
+        function drawCube() {
+            const num = parseInt(document.getElementById('cbNum').value);
+            const canvas = document.getElementById('cubeCanvas');
+            const ctx = canvas.getContext('2d');
+            const cbrt = Math.round(Math.cbrt(num));
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 调整位置和大小，确保完整显示
+            const unit = 20;
+            const offsetX = 200;
+            const offsetY = 140;
+            
+            ctx.strokeStyle = '#4f46e5';
+            ctx.lineWidth = 1.5;
+            
+            // 绘制立方体框架
+            for (let z = 0; z <= cbrt; z++) {
+                for (let y = 0; y <= cbrt; y++) {
+                    for (let x = 0; x <= cbrt; x++) {
+                        // 计算等轴测投影坐标
+                        const px = offsetX + (x - z) * unit * 0.866;
+                        const py = offsetY + (x + z) * unit * 0.5 - y * unit;
+                        
+                        // 绘制可见的边
+                        ctx.beginPath();
+                        
+                        // X方向的边
+                        if (y === 0 || y === cbrt || z === 0 || z === cbrt) {
+                            if (x < cbrt) {
+                                ctx.moveTo(px, py);
+                                ctx.lineTo(px + unit * 0.866, py - unit * 0.5);
+                            }
+                        }
+                        
+                        // Y方向的边
+                        if (x === 0 || x === cbrt || z === 0 || z === cbrt) {
+                            if (y < cbrt) {
+                                ctx.moveTo(px, py);
+                                ctx.lineTo(px, py + unit);
+                            }
+                        }
+                        
+                        // Z方向的边
+                        if (x === 0 || x === cbrt || y === 0 || y === cbrt) {
+                            if (z < cbrt) {
+                                ctx.moveTo(px, py);
+                                ctx.lineTo(px - unit * 0.866, py - unit * 0.5);
+                            }
+                        }
+                        
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            // 填充可见面，增加立体感
+            ctx.fillStyle = 'rgba(79, 70, 229, 0.1)';
+            
+            // 顶面
+            ctx.beginPath();
+            ctx.moveTo(offsetX, offsetY - cbrt * unit);
+            ctx.lineTo(offsetX + cbrt * unit * 0.866, offsetY - cbrt * unit - cbrt * unit * 0.5);
+            ctx.lineTo(offsetX, offsetY - cbrt * unit - cbrt * unit);
+            ctx.lineTo(offsetX - cbrt * unit * 0.866, offsetY - cbrt * unit - cbrt * unit * 0.5);
+            ctx.closePath();
+            ctx.fill();
+            
+            document.getElementById('cbExp').innerHTML = 
+                `${num}个方块搭成${cbrt}×${cbrt}×${cbrt}立方体<br>棱长 = ${cbrt}<br>所以 $${num}^{\\frac{1}{3}} = ${cbrt}$`;
+            renderMath();
         }
 
         // 滑块事件
         document.getElementById('baseSlider')?.addEventListener('input', function() {
             const value = parseFloat(this.value);
-            document.getElementById('baseValue').textContent = value.toFixed(1);
+            document.getElementById('sliderValue').textContent = value.toFixed(1);
+            document.getElementById('base').value = value;
             drawGraph();
-
-            // 更新函数描述
-            const desc = document.getElementById('functionDesc');
-            if (desc) {
-                if (value > 1) {
-                    desc.innerHTML = '当 $a > 1$ 时为递增函数';
-                } else if (value < 1) {
-                    desc.innerHTML = '当 $0 < a < 1$ 时为递减函数';
-                } else {
-                    desc.innerHTML = '当 $a = 1$ 时为常函数 $y = 1$';
-                }
-                renderMathJax(desc);
-            }
         });
 
-        // 页面加载完成后初始化
+        // 初始化
         window.addEventListener('DOMContentLoaded', function() {
-            // 隐藏加载指示器
-            document.getElementById('loading').classList.add('hidden');
-
-            // 初始化图像
+            // 延迟初始化，避免阻塞
             setTimeout(() => {
+                calculate();
                 drawGraph();
-                // 初始化MathJax渲染
-                setTimeout(() => {
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                        window.MathJax.typesetPromise().catch(err => console.warn('MathJax初始化渲染错误:', err));
-                    }
-                }, 300);
+                drawSquare();
+                drawCube();
+                renderMath();
             }, 100);
         });
     </script>
