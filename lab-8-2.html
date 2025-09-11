@@ -1,0 +1,1097 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日悖论动画演示 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: {'[+]': ['ams', 'base', 'newcommand']},
+                macros: {
+                    lim: ['\\mathop{\\rm lim}\\limits', 1],
+                    liminf: ['\\mathop{\\rm lim\\,inf}\\limits', 1],
+                    limsup: ['\\mathop{\\rm lim\\,sup}\\limits', 1]
+                }
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.8,
+                matchFontHeight: false,
+                mtextInheritFont: true
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库和可视化库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+
+    
+    <!-- 隐藏滚动条样式 -->
+    <link rel="stylesheet" href="../common-assets/css/hidden-scrollbar.css">
+
+<style>
+        /* 页面特定样式补充 - 使用fullscreen-layout.css统一样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Source Han Serif SC", "Noto Serif CJK SC", "SimSun", serif;
+            font-size: 16px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            color: #333;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 全屏容器布局 */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: #ffffff;
+            padding: 12px 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 50px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            height: calc(100vh - 70px);
+            overflow: auto;
+        }
+
+        /* 左侧导航 */
+        .tabs {
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 8px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            overflow-y: auto;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            text-align: left;
+            width: 100%;
+            border-left: 2px solid transparent;
+            min-height: 36px;
+        }
+
+        .tab:hover {
+            background: #e2e8f0;
+            color: #374151;
+        }
+
+        .tab.active {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left-color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .tab svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* 右侧内容面板 */
+        .panels {
+            background: #ffffff;
+            padding: 10px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: var(--font-h1);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: hidden; /* 防止滚动条 */
+        }
+
+        .control-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-label {
+            font-size: 16px;
+            color: #666;
+            min-width: 100px;
+        }
+
+        .control-input {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100px;
+        }
+
+        .control-input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .control-btn {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .control-btn.simulate {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .control-btn.reset {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+        }
+
+        .demo-area {
+            background: linear-gradient(135deg, #f8fbff 0%, #e8f2ff 100%);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            text-align: center;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .demo-title {
+            font-size: 22px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .probability-display {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .prob-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+        }
+
+        .prob-label {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .prob-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .people-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin: 30px 0;
+            max-height: 300px;
+            overflow-y: hidden; /* 防止滚动条 */
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .person {
+            width: 60px;
+            height: 80px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .person.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .person.match {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-color: #28a745;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .person-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .person-birthday {
+            font-size: 10px;
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .result-display {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .result-display.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .result-text {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* MathJax样式 */
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: 16px !important;
+            font-weight: normal !important;
+        }
+        
+        .MathJax_Display {
+            font-size: 18px !important;
+        }
+        
+        .formula-inline {
+            display: inline;
+        }
+        
+        .formula-inline .MathJax {
+            font-size: 16px !important;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 180px 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+            
+            .header-title h1 {
+                font-size: 18px;
+            }
+            
+            .header-subtitle {
+                display: none;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+            }
+            
+            .tabs {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 10px;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .tab {
+                flex-shrink: 0;
+                min-width: 120px;
+                white-space: nowrap;
+            }
+            
+            .panels {
+                padding: 20px;
+                max-height: none;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .people-container {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            }
+            
+            .person {
+                width: 50px;
+                height: 70px;
+                font-size: 10px;
+            }
+            
+            .person-icon {
+                font-size: 20px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-group input, .input-group select {
+                width: 100%;
+            }
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }
+
+        /* 加载指示器 */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .loading.hidden {
+            display: none;
+        }
+
+        /* 内容样式 */
+        .panel h2 {
+            display: none;
+        }
+
+        .panel h3 {
+            font-size: 16px;
+            color: #334155;
+            margin: 10px 0 8px 0;
+        }
+
+        .panel p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
+        /* 知识卡片 */
+        .knowledge-card {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .knowledge-card h3 {
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .knowledge-card .formula {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+        }
+
+        /* 交互区域 */
+        .interactive-section {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            min-width: 70px;
+        }
+
+        .input-group input, .input-group select {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            width: 90px;
+            min-height: 36px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* 按钮样式 */
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            margin: 3px;
+            min-height: 36px;
+            min-width: 36px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }</style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div>页面加载中，请稍候...</div>
+    </div>
+
+    <div class="app-container">
+        <div class="header">
+            <div class="header-title">
+                <h1>生日悖论动画演示</h1>
+                <span class="header-subtitle">探索在一群人中有两人生日相同的概率</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab active" onclick="showPanel('simulation')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    模拟实验
+                </button>
+                <button class="tab" onclick="showPanel('theory')">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-5 14H5v-2h9v2zm0-4H5v-2h9v2zm0-4H5V7h9v2zm5 8h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V7h4v2z"/></svg>
+                    理论分析
+                </button>
+                <button class="tab" onclick="showPanel('calculator')">
+                    <svg viewBox="0 0 24 24"><path d="M7 2v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-2V2h-2v2H9V2H7zm0 4h10v12H5V6h2z"/></svg>
+                    概率计算器
+                </button>
+                <button class="tab" onclick="showPanel('applications')">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-5 14H5v-2h9v2zm0-4H5v-2h9v2zm0-4H5V7h9v2zm5 8h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V7h4v2z"/></svg>
+                    实际应用
+                </button>
+            </div>
+            
+            <div class="panels">
+                <!-- 模拟实验面板 -->
+                <div id="simulation" class="panel active">
+                    <h2>生日悖论模拟实验</h2>
+                    
+                    <!-- 控制面板 -->
+                    <div class="control-panel">
+                        <div class="panel-title">实验参数设置</div>
+                        <div class="control-group">
+                            <label class="control-label">人数:</label>
+                            <input type="number" class="control-input" id="people-count" value="23" min="2" max="100">
+                            <button class="control-btn" id="add-person-btn">逐个添加</button>
+                            <button class="control-btn simulate" id="simulate-btn">批量模拟</button>
+                            <button class="control-btn reset" id="reset-btn">重置</button>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">模拟次数:</label>
+                            <input type="number" class="control-input" id="simulation-count" value="1000" min="100" max="10000">
+                        </div>
+                    </div>
+                    
+                    <!-- 演示区域 -->
+                    <div class="demo-area">
+                        <div class="demo-title">生日悖论演示</div>
+                        
+                        <div class="probability-display">
+                            <div class="prob-item">
+                                <div class="prob-label">当前人数</div>
+                                <div class="prob-value" id="current-people">0</div>
+                            </div>
+                            <div class="prob-item">
+                                <div class="prob-label">理论概率</div>
+                                <div class="prob-value" id="theoretical-prob">0%</div>
+                            </div>
+                            <div class="prob-item">
+                                <div class="prob-label">模拟概率</div>
+                                <div class="prob-value" id="simulation-prob">-</div>
+                            </div>
+                            <div class="prob-item">
+                                <div class="prob-label">是否有重复</div>
+                                <div class="prob-value" id="has-match">否</div>
+                            </div>
+                        </div>
+                        
+                        <div class="people-container" id="people-container">
+                            <!-- 人员将在这里动态添加 -->
+                        </div>
+                        
+                        <div class="result-display" id="result-display">
+                            <div class="result-title" id="result-title"></div>
+                            <div class="result-text" id="result-text"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 理论分析面板 -->
+                <div id="theory" class="panel">
+                    <h2>生日悖论理论分析</h2>
+                    <div class="knowledge-card">
+                        <h3>简单理解：生日悖论</h3>
+                        <p>生日悖论是指：在一群人中，出现相同生日的概率比我们直觉认为的要高得多</p>
+                        <div class="formula">
+                            $P(\text{至少两人生日相同}) = 1 - \frac{365!}{(365-n)! \cdot 365^n}$
+                        </div>
+                        <p><strong>简单理解：</strong></p>
+                        <ul style="margin-left: 20px; color: #475569;">
+                            <li>23个人中，有50%的概率出现相同生日</li>
+                            <li>57个人中，有99%的概率出现相同生日</li>
+                            <li>这是因为组合数增长很快</li>
+                            <li>就像买彩票，看起来很难中奖，但买的人多了就容易中</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 概率计算器面板 -->
+                <div id="calculator" class="panel">
+                    <h2>生日概率计算器</h2>
+                    <div class="interactive-section">
+                        <h3>自定义概率计算</h3>
+                        <div class="input-group">
+                            <label>人数:</label>
+                            <input type="number" id="calc-people" placeholder="输入人数" value="23" min="2" max="365">
+                        </div>
+                        <button class="btn" onclick="calculateBirthdayProbability()">计算概率</button>
+                        
+                        <div id="calc-result" class="result-display" style="display: none;">
+                            <h4>计算结果：</h4>
+                            <div id="calc-formula" class="formula"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 实际应用面板 -->
+                <div id="applications" class="panel">
+                    <h2>生日悖论的实际应用</h2>
+                    <div class="example-grid">
+                        <div class="example-card">
+                            <h4>密码学</h4>
+                            <p><strong>应用：</strong>哈希碰撞攻击</p>
+                            <p><strong>例子：</strong>寻找两个不同的输入产生相同的哈希值</p>
+                        </div>
+                        
+                        <div class="example-card">
+                            <h4>数据库设计</h4>
+                            <p><strong>应用：</strong>避免主键冲突</p>
+                            <p><strong>例子：</strong>设计用户ID生成策略</p>
+                        </div>
+                        
+                        <div class="example-card">
+                            <h4>随机数生成</h4>
+                            <p><strong>应用：</strong>测试随机数质量</p>
+                            <p><strong>例子：</strong>检测伪随机数生成器的重复</p>
+                        </div>
+                        
+                        <div class="example-card">
+                            <h4>统计学</h4>
+                            <p><strong>应用：</strong>样本重复检测</p>
+                            <p><strong>例子：</strong>调查数据中的重复样本识别</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPeople = [];
+        let isAnimating = false;
+
+        // 初始化页面
+        function initializePage() {
+            setupEventListeners();
+            resetDemo();
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            document.getElementById('add-person-btn').addEventListener('click', addPersonStep);
+            document.getElementById('simulate-btn').addEventListener('click', runSimulation);
+            document.getElementById('reset-btn').addEventListener('click', resetDemo);
+        }
+
+        // 重置演示
+        function resetDemo() {
+            currentPeople = [];
+            isAnimating = false;
+            document.getElementById('people-container').innerHTML = '';
+            updateDisplay();
+            hideResult();
+        }
+
+        // 逐个添加人员
+        function addPersonStep() {
+            if (isAnimating) return;
+
+            const targetCount = parseInt(document.getElementById('people-count').value);
+            if (currentPeople.length >= targetCount) {
+                resetDemo();
+                return;
+            }
+
+            isAnimating = true;
+            addPerson();
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500);
+        }
+
+        // 添加一个人
+        function addPerson() {
+            const birthday = Math.floor(Math.random() * 365) + 1;
+            const person = {
+                id: currentPeople.length,
+                birthday: birthday,
+                birthdayText: formatBirthday(birthday)
+            };
+
+            currentPeople.push(person);
+            renderPerson(person);
+            updateDisplay();
+            checkForMatches();
+        }
+
+        // 渲染人员
+        function renderPerson(person) {
+            const container = document.getElementById('people-container');
+            const personDiv = document.createElement('div');
+            personDiv.className = 'person';
+            personDiv.innerHTML = `
+                <div class="person-icon">👤</div>
+                <div class="person-birthday">${person.birthdayText}</div>
+            `;
+
+            container.appendChild(personDiv);
+
+            setTimeout(() => {
+                personDiv.classList.add('show');
+            }, 100);
+        }
+
+        // 格式化生日显示
+        function formatBirthday(dayOfYear) {
+            const months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+            let remaining = dayOfYear;
+            let month = 0;
+
+            while (remaining > months[month]) {
+                remaining -= months[month];
+                month++;
+            }
+
+            return `${monthNames[month]}${remaining}日`;
+        }
+
+        // 检查是否有生日重复
+        function checkForMatches() {
+            const birthdays = currentPeople.map(p => p.birthday);
+            const uniqueBirthdays = new Set(birthdays);
+            const hasMatch = birthdays.length !== uniqueBirthdays.size;
+
+            if (hasMatch) {
+                highlightMatches();
+                showResult(true);
+            }
+
+            document.getElementById('has-match').textContent = hasMatch ? '是' : '否';
+            document.getElementById('has-match').style.color = hasMatch ? '#28a745' : '#667eea';
+        }
+
+        // 高亮重复生日的人
+        function highlightMatches() {
+            const birthdayCount = {};
+            currentPeople.forEach(person => {
+                if (!birthdayCount[person.birthday]) {
+                    birthdayCount[person.birthday] = [];
+                }
+                birthdayCount[person.birthday].push(person.id);
+            });
+
+            const people = document.querySelectorAll('.person');
+            Object.values(birthdayCount).forEach(group => {
+                if (group.length > 1) {
+                    group.forEach(id => {
+                        people[id].classList.add('match');
+                    });
+                }
+            });
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            const count = currentPeople.length;
+            document.getElementById('current-people').textContent = count;
+
+            const theoreticalProb = calculateTheoreticalProbability(count);
+            document.getElementById('theoretical-prob').textContent = (theoreticalProb * 100).toFixed(1) + '%';
+        }
+
+        // 计算理论概率
+        function calculateTheoreticalProbability(n) {
+            if (n <= 1) return 0;
+            if (n > 365) return 1;
+
+            let prob = 1;
+            for (let i = 0; i < n; i++) {
+                prob *= (365 - i) / 365;
+            }
+            return 1 - prob;
+        }
+
+        // 运行模拟
+        function runSimulation() {
+            const peopleCount = parseInt(document.getElementById('people-count').value);
+            const simulationCount = parseInt(document.getElementById('simulation-count').value);
+
+            let matches = 0;
+
+            for (let i = 0; i < simulationCount; i++) {
+                const birthdays = [];
+                for (let j = 0; j < peopleCount; j++) {
+                    birthdays.push(Math.floor(Math.random() * 365) + 1);
+                }
+
+                const uniqueBirthdays = new Set(birthdays);
+                if (birthdays.length !== uniqueBirthdays.size) {
+                    matches++;
+                }
+            }
+
+            const simulationProb = (matches / simulationCount * 100).toFixed(1);
+            document.getElementById('simulation-prob').textContent = simulationProb + '%';
+
+            showSimulationResult(matches, simulationCount, simulationProb);
+        }
+
+        // 显示结果
+        function showResult(hasMatch) {
+            const resultDiv = document.getElementById('result-display');
+            const titleDiv = document.getElementById('result-title');
+            const textDiv = document.getElementById('result-text');
+
+            if (hasMatch) {
+                titleDiv.textContent = '发现生日重复！';
+                textDiv.textContent = `在${currentPeople.length}个人中发现了相同的生日。这验证了生日悖论：即使人数不多，出现生日重复的概率也比我们直觉认为的要高得多。`;
+            }
+
+            resultDiv.classList.add('show');
+        }
+
+        // 显示模拟结果
+        function showSimulationResult(matches, total, percentage) {
+            const resultDiv = document.getElementById('result-display');
+            const titleDiv = document.getElementById('result-title');
+            const textDiv = document.getElementById('result-text');
+
+            titleDiv.textContent = '模拟实验结果';
+            textDiv.textContent = `在${total}次模拟中，有${matches}次出现生日重复，概率为${percentage}%。这个结果应该接近理论概率值。`;
+
+            resultDiv.classList.add('show');
+        }
+
+        // 隐藏结果
+        function hideResult() {
+            document.getElementById('result-display').classList.remove('show');
+        }
+
+        // 面板切换功能
+        function showPanel(panelId) {
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(panelId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // 重新渲染数学公式
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([document.getElementById(panelId)]).catch(err => console.warn('MathJax渲染错误:', err));
+            }
+        }
+
+        // 计算生日概率
+        function calculateBirthdayProbability() {
+            try {
+                const n = parseInt(document.getElementById('calc-people').value);
+                if (n < 2 || n > 365) {
+                    alert('人数必须在2-365之间');
+                    return;
+                }
+
+                const probability = calculateTheoreticalProbability(n);
+                const percentage = (probability * 100).toFixed(1);
+                
+                const result = `在${n}个人中，至少两人生日相同的概率为：${percentage}%`;
+                
+                document.getElementById('calc-formula').innerHTML = result;
+                document.getElementById('calc-result').style.display = 'block';
+                
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([document.getElementById('calc-result')]).catch(err => console.warn('MathJax渲染错误:', err));
+                    }
+                }, 100);
+                
+            } catch (error) {
+                console.error('概率计算错误:', error);
+                alert('计算错误，请检查输入');
+            }
+        }
+
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            // 隐藏加载指示器
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.classList.add('hidden');
+                setTimeout(() => loading.remove(), 500);
+            }
+
+            initializePage();
+
+            // MathJax 初始化
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise().catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+

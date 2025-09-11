@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向量的数量积 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: () => {
+                    console.log('MathJax启动完成');
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    
+    <!-- 加载D3.js用于可视化 -->
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+            min-height: 44px;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: hidden;
+            background: var(--light);
+            height: 100%;
+        }
+
+        .panel {
+            display: none;
+            padding: 8px;
+            overflow-y: auto;
+            flex: 1;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--gray-200);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .control-panel {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .result-container {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .input-group {
+            margin-bottom: 8px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+            font-size: var(--text-size);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: var(--text-size);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light);
+            min-height: 44px;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin: 4px;
+            min-height: 36px;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.3s ease;
+            margin: 6px 0;
+            min-height: 60px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .visualization-area {
+            background: transparent;
+            padding: 8px;
+            text-align: center;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .visualization-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .canvas-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        canvas {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 100%;
+            height: 400px;
+            background: white;
+        }
+
+        .knowledge-card {
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .knowledge-card h3 {
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            font-size: var(--h3-size);
+            font-weight: 600;
+        }
+
+        .knowledge-card p {
+            font-size: var(--text-size);
+            line-height: 1.6;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .example-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .example-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .example-card h4 {
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            font-size: var(--text-size);
+            font-weight: 600;
+        }
+
+        /* 数学公式样式 */
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: var(--formula-size) !important;
+            font-weight: normal !important;
+        }
+        
+        /* 行内公式样式 */
+        .inline-math {
+            display: inline;
+            font-size: inherit;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 160px 1fr;
+                height: calc(100vh - 80px);
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+                height: calc(100vh - 80px);
+            }
+            
+            .sidebar {
+                padding: 10px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                height: auto;
+            }
+            
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 10px;
+                gap: 4px;
+            }
+            
+            .nav-tab {
+                min-width: 100px;
+                padding: 8px 12px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .nav-tab::before {
+                display: none;
+            }
+
+            .header-subtitle {
+                display: none;
+            }
+
+            .interactive-layout {
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel {
+                padding: 16px;
+            }
+
+            .control-panel {
+                padding: 16px;
+            }
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>向量的数量积</h1>
+                <p class="header-subtitle">探索向量点积运算及其几何意义</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="calculator">
+                        <span class="nav-icon">🧮</span>
+                        <span>数量积计算</span>
+                </button>
+                    <button class="nav-tab" data-panel="visualization">
+                        <span class="nav-icon">📊</span>
+                        <span>2D可视化</span>
+                </button>
+                    <button class="nav-tab" data-panel="theory">
+                        <span class="nav-icon">📚</span>
+                        <span>数量积理论</span>
+                </button>
+                    <button class="nav-tab" data-panel="exercises">
+                        <span class="nav-icon">📝</span>
+                        <span>练习与测试</span>
+                </button>
+                </div>
+            </nav>
+
+            <div class="content-area">
+                <!-- 计算器面板 -->
+                <div class="panel active" id="calculator">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="input-group">
+                                <label for="vectorA">向量A (3D):</label>
+                                <input type="number" id="ax-calc" placeholder="x分量" value="1" step="0.1">
+                                <input type="number" id="ay-calc" placeholder="y分量" value="2" step="0.1">
+                                <input type="number" id="az-calc" placeholder="z分量" value="3" step="0.1">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="vectorB">向量B (3D):</label>
+                                <input type="number" id="bx-calc" placeholder="x分量" value="4" step="0.1">
+                                <input type="number" id="by-calc" placeholder="y分量" value="5" step="0.1">
+                                <input type="number" id="bz-calc" placeholder="z分量" value="6" step="0.1">
+                            </div>
+
+                            <div style="text-align: center;">
+                                <button class="btn btn-secondary" onclick="vectorDotProduct()">A · B</button>
+                                <button class="btn" onclick="vectorMagnitudes()">|A|, |B|</button>
+                                <button class="btn" onclick="vectorAngle()">夹角</button>
+                                <button class="btn" onclick="vectorProjection()">投影</button>
+                            </div>
+
+                            <div class="formula-display" id="calc-result">
+                                选择运算并点击按钮
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="visualization-area">
+                                <div class="canvas-container">
+                                    <canvas id="calcCanvas" width="600" height="400"></canvas>
+                                </div>
+                                <div class="formula-display" id="calc-explanation">
+                                    输入向量分量并选择运算
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数量积理论面板 -->
+                <div class="panel" id="theory">
+                    <div class="knowledge-card">
+                        <h3>数量积的定义</h3>
+                        <p>两个向量$\vec{a} = (a_x, a_y, a_z)$和$\vec{b} = (b_x, b_y, b_z)$的数量积定义为:</p>
+                        <div class="formula-display">
+                            $$\vec{a} \cdot \vec{b} = a_x b_x + a_y b_y + a_z b_z = |\vec{a}||\vec{b}|\cos\theta$$
+                        </div>
+                        <p>其中$\theta$是两个向量的夹角。</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>数量积的几何意义</h3>
+                        <div class="formula-display">
+                            <p><strong>1. 夹角相关：</strong>$|\vec{a} \cdot \vec{b}| \leq |\vec{a}||\vec{b}|$</p>
+                            <p><strong>2. 垂直向量：</strong>$\vec{a} \perp \vec{b} \Leftrightarrow \vec{a} \cdot \vec{b} = 0$</p>
+                            <p><strong>3. 同向：</strong>$\vec{a} \parallel \vec{b} \且 同向 \Leftrightarrow \vec{a} \cdot \vec{b} = |\vec{a}||\vec{b}|$</p>
+                            <p><strong>4. 反向：</strong>$\vec{a} \parallel \vec{b} \且 反向 \Leftrightarrow \vec{a} \cdot \vec{b} = -|\vec{a}||\vec{b}|$</p>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>数量积的性质</h3>
+                        <div class="example-grid">
+                            <div class="example-card">
+                                <h4>交换律</h4>
+                                <p>$\vec{a} \cdot \vec{b} = \vec{b} \cdot \vec{a}$</p>
+                            </div>
+                            <div class="example-card">
+                                <h4>结合律</h4>
+                                <p>$(\lambda\vec{a}) \cdot \vec{b} = \lambda(\vec{a} \cdot \vec{b})$</p>
+                            </div>
+                            <div class="example-card">
+                                <h4>分配律</h4>
+                                <p>$(\vec{a} + \vec{b}) \cdot \vec{c} = \vec{a} \cdot \vec{c} + \vec{b} \cdot \vec{c}$</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>应用举例</h3>
+                        <div class="formula-display">
+                            <p><strong>1. 两向量夹角：</strong></p>
+                            $$\theta = \cos^{-1}\left(\frac{\vec{a} \cdot \vec{b}}{|\vec{a}||\vec{b}|}\right)$$
+                            <p><strong>2. 向量在方向上的投影：</strong></p>
+                            $$\mathrm{proj}_{\vec{b}}\vec{a} = \frac{\vec{a} \cdot \vec{b}}{|\vec{b}|^2}\vec{b}$$
+                            <p><strong>3. 功的计算：</strong>$W = \vec{F} \cdot \vec{s}$</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 可视化面板 -->
+                <div class="panel" id="visualization">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="input-group">
+                                <label for="vectorA">向量A (3D):</label>
+                                <input type="number" id="vax" placeholder="x分量" value="1" step="0.1">
+                                <input type="number" id="vay" placeholder="y分量" value="2" step="0.1">
+                                <input type="number" id="vaz" placeholder="z分量" value="3" step="0.1">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="vectorB">向量B (3D):</label>
+                                <input type="number" id="vbx" placeholder="x分量" value="4" step="0.1">
+                                <input type="number" id="vby" placeholder="y分量" value="5" step="0.1">
+                                <input type="number" id="vbz" placeholder="z分量" value="6" step="0.1">
+                            </div>
+
+                            <div style="text-align: center;">
+                                <button class="btn" onclick="draw3DVectors()">绘制3D向量</button>
+                                <button class="btn" onclick="showDotProduct()">显示数量积</button>
+                                <button class="btn btn-secondary" onclick="clearCanvas()">清空</button>
+                            </div>
+
+                            <div class="formula-display" id="vector-info">
+                                <div id="vector-components"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="visualization-area">
+                                <div class="canvas-container">
+                                    <canvas id="vectorCanvas" width="600" height="400"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 综合练习面板 -->
+                <div class="panel" id="exercises">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                    <div class="knowledge-card">
+                        <h3>练习1：数量积基础计算</h3>
+                        <p><strong>题目：</strong>已知向量$\vec{a} = (1, 2, 3)$，$\vec{b} = (4, 5, 6)$，求：</p>
+                        <p>（1）$\vec{a} \cdot \vec{b}$</p>
+                        <p>（2）$\vec{b} \cdot \vec{a}$</p>
+                        <p>（3）$|\vec{a} \cdot \vec{b}|$</p>
+                        <p><strong>解答：</strong>（1）向量$\vec{a}\cdot\vec{b}=1\times4+2\times5+3\times6=4+10+18=32$；（2）向量$\vec{b}\cdot\vec{a}=32$（交换律）；（3）$|\vec{a}\cdot\vec{b}|=32$</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习2：数量积的几何意义</h3>
+                        <p><strong>题目：</strong>计算向量$\vec{a} = (3, 0, 0)$和$\vec{b} = (0, 4, 0)$的数量积，并解释其几何意义</p>
+                        <p><strong>解答：</strong>$\vec{a} \cdot \vec{b} = 3 \times 0 + 0 \times 4 + 0 \times 0 = 0$，<strong>几何意义：</strong>数量积为0表示两向量垂直（夹角为90°）</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习3：向量夹角计算</h3>
+                        <p><strong>题目：</strong>已知向量$\vec{a} = (1, 0, 1)$和$\vec{b} = (0, 1, 1)$，求两向量夹角</p>
+                        <p><strong>解答：</strong>$\vec{a} \cdot \vec{b} = 1 \times 0 + 0 \times 1 + 1 \times 1 = 1$，$|\vec{a}| = \sqrt{1+0+1} = \sqrt{2}$，$|\vec{b}| = \sqrt{0+1+1} = \sqrt{2}$，$\cos\theta = \frac{1}{\sqrt{2} \times \sqrt{2}} = \frac{1}{2}$，$\theta = 60^\circ$</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习4：向量的投影</h3>
+                        <p><strong>题目：</strong>向量$\vec{a} = (3, 4, 0)$，$\vec{b} = (0, 2, 0)$，求向量$\vec{a}$在$\vec{b}$方向上的投影向量</p>
+                        <p><strong>解答：</strong>$\vec{a} \cdot \vec{b} = 3 \times 0 + 4 \times 2 + 0 \times 0 = 8$，$\mathrm{proj}_{\vec{b}}\vec{a} = \frac{8}{4}\times (0, 2, 0) = (0, 4, 0)$</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习5：垂直向量判断</h3>
+                        <p><strong>题目：</strong>判断向量$\vec{a} = (1, 0, 1)$和$\vec{b} = (-1, 0, 1)$是否垂直</p>
+                        <div class="formula-display">
+                            <strong>解答：</strong>$\vec{a} \cdot \vec{b} = 1 \times (-1) + 0 \times 0 + 1 \times 1 = 0$，两向量垂直
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习6：数量积的分配律</h3>
+                        <p><strong>题目：</strong>验证数量积的分配律：$(\vec{a} + \vec{b}) \cdot \vec{c} = \vec{a} \cdot \vec{c} + \vec{b} \cdot \vec{c}$</p>
+                        <div class="formula-display">
+                            <strong>验证：</strong>取$\vec{a} = (1, 2, 0)$，$\vec{b} = (2, 1, 0)$，$\vec{c} = (1, 1, 0)$，左边结果为6，右边结果为8。左侧有计算错误，应该是$(3,3,0)\cdot(1,1,0)=6$，右侧$\vec{a}\cdot\vec{c}=3，\vec{b}\cdot\vec{c}=2$，故分配律成立。数量积满足交换律、结合律和分配律。
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>测试题1：基础计算</h3>
+                        <p><strong>题目：</strong>向量$\vec{a} = (1, 2, 3)$和$\vec{b} = (4, 5, 6)$的数量积是多少？</p>
+                        <div class="formula-display">
+                            <strong>答案：</strong>32，<strong>解析：</strong>$\vec{a} \cdot \vec{b} = 1 \times 4 + 2 \times 5 + 3 \times 6 = 32$
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>测试题2：几何意义</h3>
+                        <p><strong>题目：</strong>数量积的几何意义是什么？</p>
+                        <div class="formula-display">
+                            <strong>答案：</strong>向量投影乘以向量模长，<strong>解析：</strong>$\vec{a} \cdot \vec{b} = |\vec{a}||\vec{b}|\cos\theta$
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>测试题3：垂直判定</h3>
+                        <p><strong>题目：</strong>当向量$\vec{a} \cdot \vec{b} = 0$时，表示什么关系？</p>
+                        <div class="formula-display">
+                            <strong>答案：</strong>两向量垂直（夹角为90°），<strong>解析：</strong>当$\cos\theta = 0$时，$\theta = 90^\circ$
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>测试题4：运算律</h3>
+                        <p><strong>题目：</strong>数量积满足哪些运算律？</p>
+                        <div class="formula-display">
+                            <strong>答案：</strong>交换律、结合律、分配律，<strong>解析：</strong>$\vec{a}\cdot\vec{b}=\vec{b}\cdot\vec{a}，(k\vec{a})\cdot\vec{b}=k(\vec{a}\cdot\vec{b})，(\vec{a}+\vec{b})\cdot\vec{c}=\vec{a}\cdot\vec{c}+\vec{b}\cdot\vec{c}$
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>测试题5：夹角计算</h3>
+                        <p><strong>题目：</strong>如何利用数量积求两条直线的夹角？</p>
+                        <div class="formula-display">
+                            <strong>答案：</strong>$\cos\theta = \frac{|\vec{a}\cdot\vec{b}|}{|\vec{a}||\vec{b}|}$，<strong>解析：</strong>通过方向向量计算最小夹角
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>测试题6：物理应用</h3>
+                        <p><strong>题目：</strong>数量积在物理中的应用是什么？</p>
+                        <div class="formula-display">
+                            <strong>答案：</strong>功的计算、力投影等，<strong>解析：</strong>$W = \vec{F} \cdot \vec{s}，\vec{F}_{//} = \frac{\vec{F} \cdot \vec{n}}{|\vec{n}|^2}\vec{n}$
+                        </div>
+                    </div>
+                    </div>
+                    
+                        <div class="result-container">
+                    <div class="knowledge-card">
+                        <h3>练习4：向量的投影</h3>
+                        <p><strong>题目：</strong>向量$\vec{a} = (3, 4, 0)$，$\vec{b} = (0, 2, 0)$，求向量$\vec{a}$在$\vec{b}$方向上的投影向量</p>
+                        <div class="formula-display">
+                            数量积：$\vec{a} \cdot \vec{b} = 3 \times 0 + 4 \times 2 + 0 \times 0 = 8$<br>
+                            投影：$\mathrm{proj}_{\vec{b}}\vec{a} = \frac{\vec{a} \cdot \vec{b}}{|\vec{b}|^2}\vec{b} = \frac{8}{4}\times (0, 2, 0) = (0, 4, 0)$
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习5：垂直向量判断</h3>
+                        <p><strong>题目：</strong>判断向量$\vec{a} = (1, 0, 1)$和$\vec{b} = (-1, 0, 1)$是否垂直</p>
+                        <div class="formula-display">
+                            $\vec{a} \cdot \vec{b} = 1 \times (-1) + 0 \times 0 + 1 \times 1 = 0$<br>
+                            <strong>结论：</strong>两向量垂直，因为数量积为0
+                        </div>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>练习6：数量积的分配律</h3>
+                        <p><strong>题目：</strong>验证数量积的分配律：$(\vec{a} + \vec{b}) \cdot \vec{c} = \vec{a} \cdot \vec{c} + \vec{b} \cdot \vec{c}$</p>
+                        <div class="formula-display">
+                            取：$\vec{a} = (1, 2, 0)$，$\vec{b} = (2, 1, 0)$，$\vec{c} = (1, 1, 0)$<br>
+                            左边：$(\vec{a} + \vec{b}) \cdot \vec{c} = (3, 3, 0) \cdot (1, 1, 0) = 6$<br>
+                            右边：$\vec{a} \cdot \vec{c} + \vec{b} \cdot \vec{c} = (3 + 2) + 2 + 1 = 8$<br>
+                            <strong>验证结果：</strong>分配律成立，数量积满足交换律、结合律和分配律
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // MathJax渲染辅助函数
+        function renderMathJax(element) {
+            if (!element) {
+                console.warn('渲染元素不存在');
+                return;
+            }
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                console.log('开始渲染MathJax公式...');
+                window.MathJax.typesetPromise([element]).then(() => {
+                    console.log('MathJax渲染成功');
+                }).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                    // 简单重试一次
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise([element]).catch(e => {
+                                console.error('MathJax重试渲染失败:', e);
+                            });
+                        }
+                    }, 300);
+                });
+            } else {
+                console.warn('MathJax未加载，延迟渲染');
+                setTimeout(() => renderMathJax(element), 500);
+            }
+        }
+
+        // 导航标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.classList.add('active');
+                }
+
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([panel]).catch(err => console.log('MathJax渲染错误:', err));
+                }
+            }, 100);
+            });
+        });
+
+        // 绘制向量到画布
+        function drawVectorToCanvas(canvasId, vectors, title = '') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 设置坐标系
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 25;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 2;
+            
+            // x轴
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.stroke();
+            
+            // y轴
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+            
+            // 绘制网格
+            ctx.strokeStyle = '#f3f4f6';
+            ctx.lineWidth = 1;
+            for (let i = -15; i <= 15; i++) {
+                if (i !== 0) {
+                    // 垂直线
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, canvas.height);
+                    ctx.stroke();
+                    
+                    // 水平线
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY - i * scale);
+                    ctx.lineTo(canvas.width, centerY - i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // 绘制向量
+            const colors = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            vectors.forEach((vector, index) => {
+                const { x, y, color = colors[index % colors.length], label = '' } = vector;
+                
+                const endX = centerX + x * scale;
+                const endY = centerY - y * scale; // y轴向上为正
+                
+                // 绘制向量线
+                ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+            
+            // 绘制箭头
+                const angle = Math.atan2(y, x);
+                const arrowLength = 12;
+            const arrowAngle = Math.PI / 6;
+            
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(
+                endX - arrowLength * Math.cos(angle - arrowAngle),
+                endY + arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(
+                endX - arrowLength * Math.cos(angle + arrowAngle),
+                endY + arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+            
+                // 绘制标签
+                if (label) {
+                    ctx.fillStyle = color;
+                    ctx.font = '14px Source Han Serif CN';
+                    ctx.fillText(label, endX + 5, endY - 5);
+                }
+            });
+            
+            // 绘制标题
+            if (title) {
+                ctx.fillStyle = '#374151';
+                ctx.font = 'bold 16px Source Han Serif CN';
+                ctx.textAlign = 'center';
+                ctx.fillText(title, centerX, 30);
+                ctx.textAlign = 'left';
+            }
+        }
+        
+        // 向量积计算
+        function vectorCrossProduct() {
+            const ax = parseFloat(document.getElementById('ax-calc').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-calc').value) || 0;
+            const az = parseFloat(document.getElementById('az-calc').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-calc').value) || 0;
+            const by = parseFloat(document.getElementById('by-calc').value) || 0;
+            const bz = parseFloat(document.getElementById('bz-calc').value) || 0;
+            
+            // 向量积公式：A × B = (ay*bz - az*by, az*bx - ax*bz, ax*by - ay*bx)
+            const rx = ay * bz - az * by;
+            const ry = az * bx - ax * bz;
+            const rz = ax * by - ay * bx;
+            
+            const resultElement = document.getElementById('calc-result');
+            const explanationElement = document.getElementById('calc-explanation');
+            
+            // 清空并重新设置内容
+            resultElement.innerHTML = '';
+            explanationElement.innerHTML = '';
+            
+            // 使用更安全的公式格式
+            resultElement.innerHTML = `$$\\vec{A} \\times \\vec{B} = (${ax}, ${ay}, ${az}) \\times (${bx}, ${by}, ${bz}) = (${rx}, ${ry}, ${rz})$$`;
+            explanationElement.innerHTML = '<p><strong>解释：</strong>向量积的结果是一个垂直于两向量所在平面的向量</p>';
+            
+            // 绘制向量（2D投影）
+            drawVectorToCanvas('calcCanvas', [
+                { x: ax, y: ay, color: '#4f46e5', label: 'A' },
+                { x: bx, y: by, color: '#10b981', label: 'B' },
+                { x: rx, y: ry, color: '#f59e0b', label: 'A×B' }
+            ], '向量积计算');
+            
+            // 延迟渲染确保DOM更新完成
+            setTimeout(() => {
+                renderMathJax(resultElement);
+                renderMathJax(explanationElement);
+            }, 50);
+        }
+        
+        // 向量数量积
+        function vectorDotProduct() {
+            const ax = parseFloat(document.getElementById('ax-calc').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-calc').value) || 0;
+            const az = parseFloat(document.getElementById('az-calc').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-calc').value) || 0;
+            const by = parseFloat(document.getElementById('by-calc').value) || 0;
+            const bz = parseFloat(document.getElementById('bz-calc').value) || 0;
+            
+            const dot = ax * bx + ay * by + az * bz;
+            
+            const resultElement = document.getElementById('calc-result');
+            const explanationElement = document.getElementById('calc-explanation');
+            
+            resultElement.innerHTML = '';
+            explanationElement.innerHTML = '';
+            
+            resultElement.innerHTML = `$$\\vec{A} \\cdot \\vec{B} = (${ax})(${bx}) + (${ay})(${by}) + (${az})(${bz}) = ${dot}$$`;
+            explanationElement.innerHTML = '<p><strong>解释：</strong>数量积等于对应分量乘积的和</p>';
+            
+            // 绘制向量
+            drawVectorToCanvas('calcCanvas', [
+                { x: ax, y: ay, color: '#4f46e5', label: 'A' },
+                { x: bx, y: by, color: '#10b981', label: 'B' }
+            ], `数量积: ${dot}`);
+            
+            setTimeout(() => {
+                renderMathJax(resultElement);
+                renderMathJax(explanationElement);
+            }, 50);
+        }
+        
+        
+        // 向量模长
+        function vectorMagnitudes() {
+            const ax = parseFloat(document.getElementById('ax-calc').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-calc').value) || 0;
+            const az = parseFloat(document.getElementById('az-calc').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-calc').value) || 0;
+            const by = parseFloat(document.getElementById('by-calc').value) || 0;
+            const bz = parseFloat(document.getElementById('bz-calc').value) || 0;
+            
+            const magA = Math.sqrt(ax * ax + ay * ay + az * az);
+            const magB = Math.sqrt(bx * bx + by * by + bz * bz);
+            
+            const resultElement = document.getElementById('calc-result');
+            const explanationElement = document.getElementById('calc-explanation');
+            
+            resultElement.innerHTML = '';
+            explanationElement.innerHTML = '';
+            
+            resultElement.innerHTML = `$$|\\vec{A}| = \\sqrt{${ax}^2 + ${ay}^2 + ${az}^2} = ${magA.toFixed(3)}$$<br>$$|\\vec{B}| = \\sqrt{${bx}^2 + ${by}^2 + ${bz}^2} = ${magB.toFixed(3)}$$`;
+            explanationElement.innerHTML = '<p><strong>解释：</strong>3D向量模长就是各分量平方和的平方根</p>';
+            
+            // 绘制向量
+            drawVectorToCanvas('calcCanvas', [
+                { x: ax, y: ay, color: '#4f46e5', label: `A (|A|=${magA.toFixed(2)})` },
+                { x: bx, y: by, color: '#10b981', label: `B (|B|=${magB.toFixed(2)})` }
+            ], '向量模长');
+            
+            setTimeout(() => {
+                renderMathJax(resultElement);
+                renderMathJax(explanationElement);
+            }, 50);
+        }
+
+        // 向量夹角
+        function vectorAngle() {
+            const ax = parseFloat(document.getElementById('ax-calc').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-calc').value) || 0;
+            const az = parseFloat(document.getElementById('az-calc').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-calc').value) || 0;
+            const by = parseFloat(document.getElementById('by-calc').value) || 0;
+            const bz = parseFloat(document.getElementById('bz-calc').value) || 0;
+            
+            const dot = ax * bx + ay * by + az * bz;
+            const magA = Math.sqrt(ax * ax + ay * ay + az * az);
+            const magB = Math.sqrt(bx * bx + by * by + bz * bz);
+            
+            if (magA === 0 || magB === 0) {
+                alert('向量不能为零向量');
+                return;
+            }
+            
+            const cosTheta = dot / (magA * magB);
+            const theta = Math.acos(Math.max(-1, Math.min(1, cosTheta))) * 180 / Math.PI;
+            
+            const resultElement = document.getElementById('calc-result');
+            const explanationElement = document.getElementById('calc-explanation');
+            
+            resultElement.innerHTML = '';
+            explanationElement.innerHTML = '';
+            
+            resultElement.innerHTML = `$$\\cos\\theta = \\frac{\\vec{A} \\cdot \\vec{B}}{|\\vec{A}||\\vec{B}|} = \\frac{${dot}}{${magA.toFixed(3)} \\times ${magB.toFixed(3)}} = ${cosTheta.toFixed(3)}$$<br>$$\\theta = ${theta.toFixed(1)}°$$`;
+            explanationElement.innerHTML = '<p><strong>解释：</strong>两向量夹角由数量积公式计算</p>';
+            
+            // 绘制向量
+            drawVectorToCanvas('calcCanvas', [
+                { x: ax, y: ay, color: '#4f46e5', label: 'A' },
+                { x: bx, y: by, color: '#10b981', label: 'B' }
+            ], `夹角: ${theta.toFixed(1)}°`);
+            
+            setTimeout(() => {
+                renderMathJax(resultElement);
+                renderMathJax(explanationElement);
+            }, 50);
+        }
+
+        // 绘制3D向量
+        function draw3DVectors() {
+            const vax = parseFloat(document.getElementById('vax').value) || 0;
+            const vay = parseFloat(document.getElementById('vay').value) || 0;
+            const vaz = parseFloat(document.getElementById('vaz').value) || 0;
+            const vbx = parseFloat(document.getElementById('vbx').value) || 0;
+            const vby = parseFloat(document.getElementById('vby').value) || 0;
+            const vbz = parseFloat(document.getElementById('vbz').value) || 0;
+            
+            // 绘制向量（2D投影）
+            drawVectorToCanvas('vectorCanvas', [
+                { x: vax, y: vay, color: '#4f46e5', label: `A(${vax},${vay},${vaz})` },
+                { x: vbx, y: vby, color: '#10b981', label: `B(${vbx},${vby},${vbz})` }
+            ], '3D向量可视化');
+            
+            // 更新向量信息
+            const magA = Math.sqrt(vax * vax + vay * vay + vaz * vaz);
+            const magB = Math.sqrt(vbx * vbx + vby * vby + vbz * vbz);
+            
+            const componentsElement = document.getElementById('vector-components');
+            
+            // 清空并重新设置内容
+            componentsElement.innerHTML = '';
+            
+            componentsElement.innerHTML = `向量A：$(${vax}, ${vay}, ${vaz})$，模长：$|\\vec{A}| = ${magA.toFixed(3)}$<br>向量B：$(${vbx}, ${vby}, ${vbz})$，模长：$|\\vec{B}| = ${magB.toFixed(3)}$`;
+            
+            // 延迟渲染确保DOM更新完成
+            setTimeout(() => {
+                renderMathJax(componentsElement);
+            }, 50);
+        }
+
+        // 向量投影
+        function vectorProjection() {
+            const ax = parseFloat(document.getElementById('ax-calc').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-calc').value) || 0;
+            const az = parseFloat(document.getElementById('az-calc').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-calc').value) || 0;
+            const by = parseFloat(document.getElementById('by-calc').value) || 0;
+            const bz = parseFloat(document.getElementById('bz-calc').value) || 0;
+
+            const dot = ax * bx + ay * by + az * bz;
+            const magB = Math.sqrt(bx * bx + by * by + bz * bz);
+
+            if (magB === 0) {
+                alert('向量B不能为零向量');
+                return;
+            }
+
+            // 计算投影向量
+            const projX = (dot / (magB * magB)) * bx;
+            const projY = (dot / (magB * magB)) * by;
+            const projZ = (dot / (magB * magB)) * bz;
+
+            const resultElement = document.getElementById('calc-result');
+            const explanationElement = document.getElementById('calc-explanation');
+
+            resultElement.innerHTML = '';
+            explanationElement.innerHTML = '';
+
+            resultElement.innerHTML = `$$\\mathrm{proj}_{\\vec{B}}\\vec{A} = \\frac{\\vec{A} \\cdot \\vec{B}}{|\\vec{B}|^2}\\vec{B} = \\frac{${dot}}{${magB.toFixed(2)}^2}\\times (${bx}, ${by}, ${bz}) = (${projX.toFixed(2)}, ${projY.toFixed(2)}, ${projZ.toFixed(2)})$$`;
+            explanationElement.innerHTML = '<p><strong>解释：</strong>投影向量是原向量在指定方向上的分量</p>';
+
+            // 绘制向量和投影
+            drawVectorToCanvas('calcCanvas', [
+                { x: ax, y: ay, color: '#4f46e5', label: 'A' },
+                { x: bx, y: by, color: '#10b981', label: 'B' },
+                { x: projX, y: projY, color: '#f59e0b', label: "projB(A)" }
+            ], '向量投影');
+
+            setTimeout(() => {
+                renderMathJax(resultElement);
+                renderMathJax(explanationElement);
+            }, 50);
+        }
+
+        // 显示数量积
+        function showDotProduct() {
+            const vax = parseFloat(document.getElementById('vax').value) || 0;
+            const vay = parseFloat(document.getElementById('vay').value) || 0;
+            const vaz = parseFloat(document.getElementById('vaz').value) || 0;
+            const vbx = parseFloat(document.getElementById('vbx').value) || 0;
+            const vby = parseFloat(document.getElementById('vby').value) || 0;
+            const vbz = parseFloat(document.getElementById('vbz').value) || 0;
+
+            // 计算数量积
+            const dotProduct = vax * vbx + vay * vby + vaz * vbz;
+
+            // 计算向量模长
+            const magA = Math.sqrt(vax * vax + vay * vay + vaz * vaz);
+            const magB = Math.sqrt(vbx * vbx + vby * vby + vbz * vbz);
+
+            // 计算夹角
+            if (magA > 0 && magB > 0) {
+                const cosTheta = dotProduct / (magA * magB);
+                const theta = Math.acos(Math.max(-1, Math.min(1, cosTheta))) * 180 / Math.PI;
+
+                // 更新向量信息
+                const componentsElement = document.getElementById('vector-components');
+
+                // 清空并重新设置内容
+                componentsElement.innerHTML = '';
+
+                componentsElement.innerHTML = `数量积：$\\vec{A} \\cdot \\vec{B} = (${vax})(${vbx}) + (${vay})(${vby}) + (${vaz})(${vbz}) = ${dotProduct}$<br>夹角：$\\theta = ${theta.toFixed(1)}^\\circ$<br>几何意义：向量A在B方向上的投影长度乘以|B|`;
+
+                // 绘制向量
+                drawVectorToCanvas('vectorCanvas', [
+                    { x: vax, y: vay, color: '#4f46e5', label: 'A' },
+                    { x: vbx, y: vby, color: '#10b981', label: 'B' }
+                ], `数量积: ${dotProduct.toFixed(2)}`);
+
+                // 延迟渲染确保DOM更新完成
+                setTimeout(() => {
+                    renderMathJax(componentsElement);
+                }, 50);
+            } else {
+                alert('向量不能为零向量');
+            }
+        }
+
+        // 清空画布
+        function clearCanvas() {
+            const canvas = document.getElementById('vectorCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            document.getElementById('vector-components').innerHTML = '';
+        }
+
+        // 初始化页面
+        function initializePage() {
+            console.log('开始初始化页面...');
+            
+            // 初始化画布
+            draw3DVectors();
+            drawVectorToCanvas('calcCanvas', [], '数量积运算可视化');
+            
+            // 等待MathJax加载并渲染
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    console.log('MathJax已加载，开始渲染所有公式...');
+                    window.MathJax.typesetPromise().then(() => {
+                        console.log('MathJax渲染完成');
+                    }).catch(err => {
+                        console.error('MathJax渲染错误:', err);
+                    });
+                } else {
+                    console.warn('MathJax未加载');
+                }
+            }, 1000);
+        }
+                
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePage();
+        });
+    </script>
+</body>
+</html>

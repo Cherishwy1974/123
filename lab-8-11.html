@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泊松过程与大数定律演示</title>
+    <link rel="stylesheet" href="common-assets/css/frame.css">
+    <link rel="stylesheet" href="common-assets/css/google-fonts.css">
+    <link rel="stylesheet" href="common-assets/css/fonts.css">
+    <script src="common-assets/js/math.min.js"></script>
+    <script src="common-assets/js/mathjax-config.js"></script>
+    <script src="common-assets/js/tex-svg.js"></script>
+    <script src="common-assets/js/plotly.min.js"></script>
+    <style>
+        /* CSS变量定义 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 间距 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* 圆角 */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            /* 阴影 */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            color: var(--light);
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            margin: 0 0 var(--spacing-sm) 0;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: var(--text-size);
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            height: 100%;
+            flex: 1;
+        }
+
+        .left-panel, .right-panel {
+            background: var(--light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--light);
+        }
+
+        .right-panel {
+            background: var(--light);
+            color: var(--gray-800);
+        }
+
+        /* 控制面板 */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .control-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: block;
+            font-size: var(--text-size);
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            color: var(--light);
+        }
+
+        .control-input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: var(--text-size);
+            transition: all 0.3s ease;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: var(--light);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-size: var(--btn-size);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #6d28d9;
+        }
+
+        /* 可视化区域 */
+        .visualization {
+            flex: 1;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visualization h3 {
+            margin: 0 0 var(--spacing-md) 0;
+            font-size: var(--h3-size);
+            color: var(--gray-800);
+            text-align: center;
+        }
+
+        #poissonChart {
+            width: 100%;
+            height: 400px;
+        }
+
+        /* 统计信息显示 */
+        .stats-display {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-left: 4px solid var(--primary);
+            color: #10b981;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .stat-item {
+            background: var(--light);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>泊松过程与大数定律演示</h1>
+            <p>通过交互式可视化理解泊松过程和大数定律的原理</p>
+        </div>
+
+        <div class="interactive-layout">
+            <!-- 左侧控制面板 -->
+            <div class="left-panel">
+                <div class="control-panel">
+                    <div class="control-group">
+                        <label class="control-label">泊松参数 λ</label>
+                        <input type="range" class="control-input" id="lambda" min="0.1" max="10" step="0.1" value="2">
+                        <span id="lambdaValue">2.0</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">时间间隔</label>
+                        <input type="range" class="control-input" id="timeInterval" min="1" max="20" step="1" value="10">
+                        <span id="timeIntervalValue">10</span>
+                </div>
+                
+                    <div class="control-group">
+                        <label class="control-label">模拟次数</label>
+                        <input type="range" class="control-input" id="simulations" min="100" max="5000" step="100" value="1000">
+                        <span id="simulationsValue">1000</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="btn" onclick="updateVisualization()">更新可视化</button>
+                        <button class="btn btn-secondary" onclick="resetValues()">重置</button>
+                        </div>
+                    </div>
+                    
+                <div class="stats-display">
+                    <h3>泊松分布参数</h3>
+                    <p>泊松分布描述在固定时间间隔内事件发生次数的概率分布。</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="mean">2.00</div>
+                            <div class="stat-label">期望值 μ = λ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="variance">2.00</div>
+                            <div class="stat-label">方差 σ² = λ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="std">1.41</div>
+                            <div class="stat-label">标准差 σ = √λ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mode">2</div>
+                            <div class="stat-label">众数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧可视化区域 -->
+            <div class="right-panel">
+                <div class="visualization">
+                    <h3>泊松分布与大数定律</h3>
+                    <div id="poissonChart"></div>
+                    
+                    <div class="stats-display">
+                        <h4>大数定律</h4>
+                        <p id="lawExplanation">
+                            大数定律表明，当试验次数趋于无穷时，样本均值收敛于总体期望值。
+                            在泊松过程中，随着模拟次数增加，样本均值越来越接近理论期望值λ。
+                        </p>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+    </div>
+
+    <script>
+        // 计算阶乘
+        function factorial(n) {
+            if (n <= 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        // 计算泊松分布概率
+        function poissonProbability(lambda, k) {
+            return Math.exp(-lambda) * Math.pow(lambda, k) / factorial(k);
+        }
+
+        // 生成泊松随机数
+        function generatePoissonRandom(lambda) {
+            let k = 0;
+            let p = Math.exp(-lambda);
+            let F = p;
+            const u = Math.random();
+            
+            while (u > F) {
+                k++;
+                p = p * lambda / k;
+                F += p;
+            }
+            return k;
+        }
+
+        // 初始化可视化
+        function initVisualization() {
+            updateVisualization();
+        }
+
+        // 更新可视化
+        function updateVisualization() {
+            const lambda = parseFloat(document.getElementById('lambda').value);
+            const timeInterval = parseInt(document.getElementById('timeInterval').value);
+            const simulations = parseInt(document.getElementById('simulations').value);
+            
+            // 更新显示值
+            document.getElementById('lambdaValue').textContent = lambda.toFixed(1);
+            document.getElementById('timeIntervalValue').textContent = timeInterval;
+            document.getElementById('simulationsValue').textContent = simulations;
+            
+            // 计算理论统计量
+            const mean = lambda;
+            const variance = lambda;
+            const std = Math.sqrt(lambda);
+            const mode = Math.floor(lambda);
+            
+            // 更新统计显示
+            document.getElementById('mean').textContent = mean.toFixed(2);
+            document.getElementById('variance').textContent = variance.toFixed(2);
+            document.getElementById('std').textContent = std.toFixed(2);
+            document.getElementById('mode').textContent = mode;
+            
+            // 更新解释
+            updateExplanation(lambda, timeInterval, simulations, mean);
+            
+            // 创建图表
+            createPoissonChart(lambda, timeInterval, simulations);
+        }
+
+        // 更新解释
+        function updateExplanation(lambda, timeInterval, simulations, mean) {
+            const explanation = document.getElementById('lawExplanation');
+            explanation.innerHTML = `
+                <p><strong>当前参数：</strong></p>
+                <ul>
+                    <li>泊松参数 λ = ${lambda.toFixed(1)}</li>
+                    <li>时间间隔 = ${timeInterval}</li>
+                    <li>模拟次数 = ${simulations}</li>
+                </ul>
+                <p><strong>大数定律验证：</strong></p>
+                <p>理论期望值：μ = λ = ${mean.toFixed(1)}</p>
+                <p>随着模拟次数增加，样本均值将越来越接近理论期望值，这验证了大数定律。</p>
+                <p>泊松过程具有无记忆性，即未来事件的发生概率不依赖于过去事件的历史。</p>
+            `;
+        }
+
+        // 创建泊松分布图表
+        function createPoissonChart(lambda, timeInterval, simulations) {
+            // 计算理论概率
+            const maxK = Math.min(20, Math.floor(lambda * 3));
+            const xValues = [];
+            const theoreticalProbs = [];
+            const simulatedCounts = new Array(maxK + 1).fill(0);
+            
+            for (let k = 0; k <= maxK; k++) {
+                xValues.push(k);
+                theoreticalProbs.push(poissonProbability(lambda, k));
+            }
+            
+            // 模拟数据
+            for (let i = 0; i < simulations; i++) {
+                const count = generatePoissonRandom(lambda);
+                if (count <= maxK) {
+                    simulatedCounts[count]++;
+                }
+            }
+            
+            // 归一化模拟数据
+            const simulatedProbs = simulatedCounts.map(count => count / simulations);
+            
+            // 计算样本均值
+            let sampleSum = 0;
+            for (let i = 0; i < simulations; i++) {
+                sampleSum += generatePoissonRandom(lambda);
+            }
+            const sampleMean = sampleSum / simulations;
+            
+            const data = [
+                {
+                    x: xValues,
+                    y: theoreticalProbs,
+                    type: 'bar',
+                    name: '理论概率',
+                    marker: {
+                        color: 'rgba(79, 70, 229, 0.6)',
+                        line: {
+                            color: 'rgba(79, 70, 229, 0.8)',
+                            width: 1
+                        }
+                    }
+                },
+                {
+                    x: xValues,
+                    y: simulatedProbs,
+                    type: 'scatter',
+                    mode: 'markers',
+                    name: '模拟结果',
+                    marker: {
+                        color: '#ef4444',
+                        size: 8,
+                        symbol: 'circle'
+                    }
+                }
+            ];
+
+            const layout = {
+                title: {
+                    text: `泊松分布 Pois(${lambda.toFixed(1)}) - 样本均值: ${sampleMean.toFixed(2)}`,
+                    font: { size: 16, color: '#1f2937' }
+                },
+                xaxis: {
+                    title: '事件发生次数',
+                    titlefont: { size: 14, color: '#4b5563' },
+                    tickfont: { size: 12, color: '#6b7280' }
+                },
+                yaxis: {
+                    title: '概率',
+                    titlefont: { size: 14, color: '#4b5563' },
+                    tickfont: { size: 12, color: '#6b7280' }
+                },
+                margin: { t: 60, r: 30, b: 60, l: 60 },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Source Han Serif SC, Noto Serif SC, serif' },
+                legend: {
+                    x: 0.7,
+                    y: 0.9
+                }
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('poissonChart', data, layout, config);
+        }
+
+        // 重置值
+        function resetValues() {
+            document.getElementById('lambda').value = 2;
+            document.getElementById('timeInterval').value = 10;
+            document.getElementById('simulations').value = 1000;
+            updateVisualization();
+        }
+
+        // 事件监听器
+        document.getElementById('lambda').addEventListener('input', updateVisualization);
+        document.getElementById('timeInterval').addEventListener('input', updateVisualization);
+        document.getElementById('simulations').addEventListener('input', updateVisualization);
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initVisualization();
+        });
+    </script>
+</body>
+</html>

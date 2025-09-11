@@ -1,0 +1,1598 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二阶导数与原函数图像2 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base', 'newcommand']},
+                macros: {
+                    lim: "\\mathop{\\mathrm{lim}}\\limits",
+                    limsup: "\\mathop{\\mathrm{lim\\,sup}}\\limits",
+                    liminf: "\\mathop{\\mathrm{lim\\,inf}}\\limits"
+                }
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false,
+                displayAlign: 'left',
+                displayIndent: '0'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库和可视化库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    <!-- 隐藏滚动条样式 -->
+    <link rel="stylesheet" href="../common-assets/css/hidden-scrollbar.css">
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 20px;
+            --h2-size: 16px;
+            --h3-size: 14px;
+            --btn-size: 13px;
+            --formula-size: 14px;
+            --text-size: 13px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            height: calc(100vh - 60px);
+            overflow: hidden;
+        }
+
+        /* 优化布局 - 可视化优先 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 12px;
+            height: 100%;
+        }
+
+        /* 增强可视化区域 - 突出位置 */
+        .visualization-area {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 8px;
+            margin: 8px 0;
+            flex: 1;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+            position: relative;
+        }
+
+        .visualization-area::before {
+            content: '🎯 交互式可视化';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 5;
+        }
+
+        .canvas-container {
+            width: 100%;
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 450px;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            grid-area: header;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+
+        .panel {
+            display: none;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: var(--font-h2)px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .demo-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 120px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.85em;
+        }
+
+        .control-group input, .control-group select {
+            padding: 6px 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.3s ease;
+            min-height: 44px;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .visualization-area {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #dee2e6;
+            position: relative;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 370px;
+            position: relative;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .result-display {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .result-display h4 {
+            color: #155724;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .calculation-steps {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 8px 0;
+        }
+
+        .step {
+            margin: 8px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+            font-size: 0.9em;
+        }
+
+        .formula-display {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            font-size: 1.1em;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            border: 1px solid #ddd;
+        }
+
+        .function-legend {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            border: 1px solid #ddd;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 2px 0;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 3px;
+            margin-right: 5px;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 1024px) {
+            .layout-container {
+                grid-template-areas: 
+                    "header header"
+                    "sidebar main";
+                grid-template-columns: 180px 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .layout-container {
+                grid-template-areas: 
+                    "header"
+                    "sidebar"
+                    "main";
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+
+            .header {
+                padding: 15px 10px;
+            }
+
+            .header h1 {
+                font-size: var(--h1-size);
+                margin-bottom: 5px;
+            }
+
+            .header-subtitle {
+                display: none;
+            }
+
+            .sidebar {
+                padding: 10px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 4px;
+                padding: 0 10px;
+            }
+
+            .nav-item {
+                min-width: 120px;
+                flex-shrink: 0;
+            }
+
+            .panel {
+                padding: 15px 10px;
+                min-height: calc(100vh - 200px);
+            }
+
+            .demo-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .control-group {
+                min-width: auto;
+            }
+
+            .visualization-area {
+                min-height: 320px;
+                padding: 10px;
+            }
+
+            .canvas-container {
+                height: 290px;
+            }
+
+            .interactive-demo {
+                padding: 15px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 2px;
+                font-size: 18px /* 标准正文字号 */;
+            }
+
+            .container {
+                border-radius: 5px;
+                min-height: calc(100vh - 4px);
+            }
+
+            .header {
+                padding: 12px 8px;
+            }
+
+            .header h1 {
+                font-size: var(--font-h1);
+            }
+
+            .panel {
+                padding: 12px 8px;
+            }
+
+            .tab {
+                padding: 8px 6px;
+                font-size: 13px;
+            }
+
+            .btn {
+                padding: 10px 18px /* 增大按钮 */;
+                font-size: var(--font-button)px;
+            }
+
+            .visualization-area {
+                min-height: 260px;
+                padding: 8px;
+            }
+
+            .canvas-container {
+                height: 230px;
+            overflow: auto;}
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }
+
+        /* 加载指示器 */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: var(--h3-size);
+            font-weight: 500;
+        }
+
+        .loading.hidden {
+            display: none;
+        }</style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div>页面加载中，请稍候...</div>
+    </div>
+
+    <div class="layout-container">
+        <!-- 顶部标题栏 -->
+        <header class="header">
+            <h1>二阶导数与原函数图像</h1>
+            <span class="header-subtitle">深入分析函数性质与图像特征的关系</span>
+        </header>
+
+        <!-- 侧边导航栏 -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-panel="advanced">高级分析</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-panel="comparison">对比研究</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-panel="synthesis">综合应用</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+
+        <div class="panel active" id="advanced">
+            <div class="section">
+
+                <div class="formula-display">
+                    简单理解：$f(x)$、$f'(x)$、$f''(x)$ 的图像关系
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>函数图像分析</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="advancedFunction">选择函数:</label>
+                            <select id="advancedFunction" onchange="updateAdvancedAnalysis()">
+                                <option value="polynomial4">f(x) = x⁴ - 4x³ + 6x²</option>
+                                <option value="polynomial5">f(x) = x⁵ - 5x³ + 4x</option>
+                                <option value="trigonometric">f(x) = x + sin(2x)</option>
+                                <option value="exponential">f(x) = xe^(-x)</option>
+                                <option value="rational">f(x) = x/(x²+1)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="customFunction">自定义函数:</label>
+                            <input type="text" id="customFunction" placeholder="例如: x^3 - 2*x^2 + x" onchange="parseCustomFunction()">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="analysisRange">分析区间:</label>
+                            <select id="analysisRange" onchange="updateAdvancedAnalysis()">
+                                <option value="[-3, 3]">[-3, 3]</option>
+                                <option value="[-5, 5]">[-5, 5]</option>
+                                <option value="[-2, 4]">[-2, 4]</option>
+                                <option value="[0, 2π]">[0, 2π]</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="showOriginal2">原函数:</label>
+                            <input type="checkbox" id="showOriginal2" checked onchange="updateAdvancedAnalysis()">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="showFirst2">一阶导数:</label>
+                            <input type="checkbox" id="showFirst2" checked onchange="updateAdvancedAnalysis()">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="showSecond2">二阶导数:</label>
+                            <input type="checkbox" id="showSecond2" checked onchange="updateAdvancedAnalysis()">
+                        </div>
+
+                        <button class="btn" onclick="findAllCriticalPoints()">找所有临界点</button>
+                        <button class="btn" onclick="analyzeMonotonicity()">单调性分析</button>
+                        <button class="btn" onclick="analyzeConcavity()">凹凸性分析</button>
+                    </div>
+
+                    <div class="visualization-area">
+                        <div class="canvas-container">
+                            <canvas id="advancedCanvas" width="700" height="370"></canvas>
+                            <div class="coordinate-info" id="advancedCoordInfo">
+                                坐标: (0, 0)
+                            </div>
+                            <div class="function-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #667eea;"></div>
+                                    <span>f(x)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #ff6b6b;"></div>
+                                    <span>f'(x)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #4ecdc4;"></div>
+                                    <span>f''(x)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>高级分析结果</h4>
+                        <div class="calculation-steps" id="advancedResults">
+                            <div class="step">选择函数进行高级分析</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>重要点标记</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="markExtrema">标记极值点:</label>
+                            <input type="checkbox" id="markExtrema" onchange="updateMarkings()">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="markInflection">标记拐点:</label>
+                            <input type="checkbox" id="markInflection" onchange="updateMarkings()">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="markZeros">标记零点:</label>
+                            <input type="checkbox" id="markZeros" onchange="updateMarkings()">
+                        </div>
+
+                        <button class="btn" onclick="showPointDetails()">点详情</button>
+                        <button class="btn" onclick="exportAnalysis()">导出分析</button>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>重要点信息</h4>
+                        <div class="calculation-steps" id="pointDetails">
+                            <div class="step">启用标记查看重要点信息</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" id="comparison">
+            <div class="section">
+
+                <div class="interactive-demo">
+                    <h3>多函数对比</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="function1">函数1:</label>
+                            <select id="function1" onchange="updateComparison()">
+                                <option value="quadratic">f₁(x) = x²</option>
+                                <option value="cubic">f₁(x) = x³</option>
+                                <option value="quartic">f₁(x) = x⁴</option>
+                                <option value="sine">f₁(x) = sin(x)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="function2">函数2:</label>
+                            <select id="function2" onchange="updateComparison()">
+                                <option value="quadratic">f₂(x) = x²</option>
+                                <option value="cubic" selected>f₂(x) = x³</option>
+                                <option value="quartic">f₂(x) = x⁴</option>
+                                <option value="sine">f₂(x) = sin(x)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="comparisonType">对比类型:</label>
+                            <select id="comparisonType" onchange="updateComparison()">
+                                <option value="original">原函数对比</option>
+                                <option value="first">一阶导数对比</option>
+                                <option value="second">二阶导数对比</option>
+                                <option value="all">全部对比</option>
+                            </select>
+                        </div>
+
+                        <button class="btn" onclick="compareProperties()">对比性质</button>
+                        <button class="btn" onclick="findIntersections()">找交点</button>
+                    </div>
+
+                    <div class="visualization-area">
+                        <div class="canvas-container">
+                            <canvas id="comparisonCanvas" width="700" height="370"></canvas>
+                            <div class="coordinate-info" id="comparisonCoordInfo">
+                                坐标: (0, 0)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>对比分析</h4>
+                        <div class="calculation-steps" id="comparisonResults">
+                            <div class="step">选择两个函数进行对比分析</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>参数影响分析</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="parameterFunction">参数函数:</label>
+                            <select id="parameterFunction" onchange="updateParameterAnalysis()">
+                                <option value="quadratic_a">f(x) = ax²</option>
+                                <option value="cubic_a">f(x) = ax³</option>
+                                <option value="sine_a">f(x) = a·sin(x)</option>
+                                <option value="exp_a">f(x) = ae^x</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="parameterA">参数 a:</label>
+                            <input type="range" id="parameterA" min="-3" max="3" step="0.1" value="1" onchange="updateParameterAnalysis()">
+                            <span id="parameterValue">1.0</span>
+                        </div>
+
+                        <button class="btn" onclick="animateParameter()">参数动画</button>
+                        <button class="btn" onclick="resetParameter()">重置参数</button>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>参数影响</h4>
+                        <div class="calculation-steps" id="parameterResults">
+                            <div class="step">调整参数观察函数变化</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" id="synthesis">
+            <div class="section">
+
+                <div class="interactive-demo">
+                    <h3>函数设计器</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="customExpression">自定义函数:</label>
+                            <input type="text" id="customExpression" placeholder="例如: x^3 - 2*x^2 + x" onchange="parseCustomFunction()">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="designGoal">设计目标:</label>
+                            <select id="designGoal" onchange="updateDesignGoal()">
+                                <option value="extrema">指定极值点</option>
+                                <option value="inflection">指定拐点</option>
+                                <option value="monotonic">单调区间</option>
+                                <option value="concave">凹凸区间</option>
+                            </select>
+                        </div>
+
+                        <button class="btn" onclick="designFunction()">设计函数</button>
+                        <button class="btn" onclick="validateDesign()">验证设计</button>
+                        <button class="btn" onclick="optimizeDesign()">优化设计</button>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>设计结果</h4>
+                        <div class="calculation-steps" id="designResults">
+                            <div class="step">输入函数表达式或选择设计目标</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>实际问题建模</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="modelType">模型类型:</label>
+                            <select id="modelType" onchange="updateModel()">
+                                <option value="population">人口增长模型</option>
+                                <option value="economics">经济增长模型</option>
+                                <option value="physics">物理运动模型</option>
+                                <option value="biology">生物增长模型</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="modelParameter">模型参数:</label>
+                            <input type="number" id="modelParameter" value="1" step="0.1" onchange="updateModel()">
+                        </div>
+
+                        <button class="btn" onclick="solveModel()">求解模型</button>
+                        <button class="btn" onclick="analyzeModel()">分析模型</button>
+                        <button class="btn" onclick="predictModel()">预测趋势</button>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>模型分析</h4>
+                        <div class="calculation-steps" id="modelResults">
+                            <div class="step">选择模型类型进行分析</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>综合练习</h3>
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="exerciseLevel">难度等级:</label>
+                            <select id="exerciseLevel" onchange="generateExercise()">
+                                <option value="basic">基础</option>
+                                <option value="intermediate">中级</option>
+                                <option value="advanced">高级</option>
+                                <option value="expert">专家</option>
+                            </select>
+                        </div>
+
+                        <button class="btn" onclick="generateExercise()">生成练习</button>
+                        <button class="btn" onclick="checkAnswer()">检查答案</button>
+                        <button class="btn" onclick="showHint()">显示提示</button>
+                        <button class="btn" onclick="showSolution()">显示解答</button>
+                    </div>
+
+                    <div class="result-display">
+                        <h4>练习题目</h4>
+                        <div class="calculation-steps" id="exerciseContent">
+                            <div class="step">选择难度等级生成练习题</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label for="userAnswer">你的答案:</label>
+                            <input type="text" id="userAnswer" placeholder="输入你的答案">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 导航功能
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const panels = document.querySelectorAll('.panel');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // 移除所有活动状态
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    panels.forEach(panel => panel.classList.remove('active'));
+                    
+                    // 添加当前活动状态
+                    link.classList.add('active');
+                    const panelId = link.getAttribute('data-panel');
+                    document.getElementById(panelId).classList.add('active');
+                });
+            });
+        }
+
+        let advancedCanvas, advancedCtx;
+        let comparisonCanvas, comparisonCtx;
+        let currentAdvancedFunction = 'polynomial4';
+        let animationId = null;
+
+        // 高级函数定义
+        const advancedFunctions = {
+            polynomial4: {
+                name: 'f(x) = x⁴ - 4x³ + 6x²',
+                formula: x => Math.pow(x, 4) - 4 * Math.pow(x, 3) + 6 * x * x,
+                firstDerivative: x => 4 * Math.pow(x, 3) - 12 * x * x + 12 * x,
+                secondDerivative: x => 12 * x * x - 24 * x + 12,
+                latex: 'x^4 - 4x^3 + 6x^2'
+            },
+            polynomial5: {
+                name: 'f(x) = x⁵ - 5x³ + 4x',
+                formula: x => Math.pow(x, 5) - 5 * Math.pow(x, 3) + 4 * x,
+                firstDerivative: x => 5 * Math.pow(x, 4) - 15 * x * x + 4,
+                secondDerivative: x => 20 * Math.pow(x, 3) - 30 * x,
+                latex: 'x^5 - 5x^3 + 4x'
+            },
+            trigonometric: {
+                name: 'f(x) = x + sin(2x)',
+                formula: x => x + Math.sin(2 * x),
+                firstDerivative: x => 1 + 2 * Math.cos(2 * x),
+                secondDerivative: x => -4 * Math.sin(2 * x),
+                latex: 'x + \\sin(2x)'
+            },
+            exponential: {
+                name: 'f(x) = xe^(-x)',
+                formula: x => x * Math.exp(-x),
+                firstDerivative: x => Math.exp(-x) * (1 - x),
+                secondDerivative: x => Math.exp(-x) * (x - 2),
+                latex: 'xe^{-x}'
+            },
+            rational: {
+                name: 'f(x) = x/(x²+1)',
+                formula: x => x / (x * x + 1),
+                firstDerivative: x => (1 - x * x) / Math.pow(x * x + 1, 2),
+                secondDerivative: x => (2 * x * (x * x - 3)) / Math.pow(x * x + 1, 3),
+                latex: '\\frac{x}{x^2+1}'
+            }
+        };
+
+        // 基础函数定义
+        const basicFunctions = {
+            quadratic: {
+                name: 'x²',
+                formula: x => x * x,
+                firstDerivative: x => 2 * x,
+                secondDerivative: x => 2
+            },
+            cubic: {
+                name: 'x³',
+                formula: x => x * x * x,
+                firstDerivative: x => 3 * x * x,
+                secondDerivative: x => 6 * x
+            },
+            quartic: {
+                name: 'x⁴',
+                formula: x => Math.pow(x, 4),
+                firstDerivative: x => 4 * Math.pow(x, 3),
+                secondDerivative: x => 12 * x * x
+            },
+            sine: {
+                name: 'sin(x)',
+                formula: x => Math.sin(x),
+                firstDerivative: x => Math.cos(x),
+                secondDerivative: x => -Math.sin(x)
+            }
+        };
+
+        // 标签页切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                document.getElementById(panelId).classList.add('active');
+            });
+        });
+
+        // 初始化画布
+        function initCanvases() {
+            // 高级分析画布
+            advancedCanvas = document.getElementById('advancedCanvas');
+            if (advancedCanvas) {
+                advancedCtx = advancedCanvas.getContext('2d');
+
+                advancedCanvas.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - this.width/2) / 50;
+                    const y = -(e.clientY - rect.top - this.height/2) / 50;
+                    document.getElementById('advancedCoordInfo').textContent = `坐标: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+                });
+            }
+
+            // 对比分析画布
+            comparisonCanvas = document.getElementById('comparisonCanvas');
+            if (comparisonCanvas) {
+                comparisonCtx = comparisonCanvas.getContext('2d');
+
+                comparisonCanvas.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - this.width/2) / 50;
+                    const y = -(e.clientY - rect.top - this.height/2) / 50;
+                    document.getElementById('comparisonCoordInfo').textContent = `坐标: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+                });
+            }
+        }
+
+        // 绘制坐标轴
+        function drawAxes(ctx, canvas) {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+
+            // X轴
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height/2);
+            ctx.lineTo(canvas.width, canvas.height/2);
+            ctx.stroke();
+
+            // Y轴
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2, 0);
+            ctx.lineTo(canvas.width/2, canvas.height);
+            ctx.stroke();
+
+            // 网格线
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+
+            for (let i = -14; i <= 14; i++) {
+                if (i !== 0) {
+                    // 垂直网格线
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width/2 + i * 50, 0);
+                    ctx.lineTo(canvas.width/2 + i * 50, canvas.height);
+                    ctx.stroke();
+
+                    // 水平网格线
+                    ctx.beginPath();
+                    ctx.moveTo(0, canvas.height/2 + i * 25);
+                    ctx.lineTo(canvas.width, canvas.height/2 + i * 25);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // 绘制函数
+        function drawFunction(ctx, canvas, func, color, lineWidth = 2) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+
+            let first = true;
+            for (let x = -7; x <= 7; x += 0.01) {
+                const y = func(x);
+                if (!isNaN(y) && isFinite(y) && Math.abs(y) < 15) {
+                    const screenX = canvas.width/2 + x * 50;
+                    const screenY = canvas.height/2 - y * 25;
+
+                    if (first) {
+                        ctx.moveTo(screenX, screenY);
+                        first = false;
+                    } else {
+                        ctx.lineTo(screenX, screenY);
+                    }
+                } else if (!first) {
+                    // 如果函数值无效，重新开始路径
+                    ctx.stroke();
+                    ctx.beginPath();
+                    first = true;
+                }
+            }
+            ctx.stroke();
+        }
+
+        // 绘制特殊点
+        function drawSpecialPoints(ctx, canvas, func, points, color, radius = 4) {
+            ctx.fillStyle = color;
+            points.forEach(point => {
+                const y = func(point);
+                if (!isNaN(y) && isFinite(y)) {
+                    const screenX = canvas.width/2 + point * 50;
+                    const screenY = canvas.height/2 - y * 25;
+                    
+                    ctx.beginPath();
+                    ctx.arc(screenX, screenY, radius, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    // 添加标签
+                    ctx.fillStyle = '#333';
+                    ctx.font = '12px Arial';
+                    ctx.fillText(`(${point.toFixed(1)}, ${y.toFixed(1)})`, screenX + 5, screenY - 5);
+                    ctx.fillStyle = color;
+                }
+            });
+        }
+
+        // 更新高级分析
+        function updateAdvancedAnalysis() {
+            currentAdvancedFunction = document.getElementById('advancedFunction').value;
+
+            if (!advancedCtx) return;
+
+            advancedCtx.clearRect(0, 0, advancedCanvas.width, advancedCanvas.height);
+            drawAxes(advancedCtx, advancedCanvas);
+
+            const func = advancedFunctions[currentAdvancedFunction];
+            const showOriginal = document.getElementById('showOriginal2').checked;
+            const showFirst = document.getElementById('showFirst2').checked;
+            const showSecond = document.getElementById('showSecond2').checked;
+
+            if (showOriginal) {
+                drawFunction(advancedCtx, advancedCanvas, func.formula, '#667eea', 3);
+            }
+
+            if (showFirst) {
+                drawFunction(advancedCtx, advancedCanvas, func.firstDerivative, '#ff6b6b', 2);
+            }
+
+            if (showSecond) {
+                drawFunction(advancedCtx, advancedCanvas, func.secondDerivative, '#4ecdc4', 2);
+            }
+
+            // 绘制特殊点
+            updateMarkings();
+
+            updateAdvancedResults();
+        }
+
+        // 更新标记
+        function updateMarkings() {
+            if (!advancedCtx) return;
+
+            const func = advancedFunctions[currentAdvancedFunction];
+            const markExtrema = document.getElementById('markExtrema').checked;
+            const markInflection = document.getElementById('markInflection').checked;
+            const markZeros = document.getElementById('markZeros').checked;
+
+            if (markExtrema) {
+                const extremaPoints = findExtremaPoints(func);
+                drawSpecialPoints(advancedCtx, advancedCanvas, func.formula, extremaPoints, '#ff6b6b', 5);
+            }
+
+            if (markInflection) {
+                const inflectionPoints = findInflectionPoints(func);
+                drawSpecialPoints(advancedCtx, advancedCanvas, func.formula, inflectionPoints, '#4ecdc4', 5);
+            }
+
+            if (markZeros) {
+                const zeroPoints = findZeroPoints(func);
+                drawSpecialPoints(advancedCtx, advancedCanvas, func.formula, zeroPoints, '#28a745', 5);
+            }
+        }
+
+        // 找极值点
+        function findExtremaPoints(func) {
+            const points = [];
+            for (let x = -7; x <= 7; x += 0.1) {
+                const derivative = func.firstDerivative(x);
+                if (Math.abs(derivative) < 0.1) {
+                    points.push(x);
+                }
+            }
+            return points;
+        }
+
+        // 找拐点
+        function findInflectionPoints(func) {
+            const points = [];
+            for (let x = -7; x <= 7; x += 0.1) {
+                const secondDerivative = func.secondDerivative(x);
+                if (Math.abs(secondDerivative) < 0.1) {
+                    points.push(x);
+                }
+            }
+            return points;
+        }
+
+        // 找零点
+        function findZeroPoints(func) {
+            const points = [];
+            for (let x = -7; x <= 7; x += 0.1) {
+                const y = func.formula(x);
+                if (Math.abs(y) < 0.1) {
+                    points.push(x);
+                }
+            }
+            return points;
+        }
+
+        // 更新高级分析结果
+        function updateAdvancedResults() {
+            const func = advancedFunctions[currentAdvancedFunction];
+            const resultsDiv = document.getElementById('advancedResults');
+
+            resultsDiv.innerHTML = `
+                <div class="step">当前函数: ${func.name}</div>
+                <div class="step">函数类型: ${getFunctionType(currentAdvancedFunction)}</div>
+                <div class="step">定义域: 实数集 ℝ</div>
+                <div class="step">值域: ${getValueRange(currentAdvancedFunction)}</div>
+                <div class="step">对称性: ${getSymmetry(currentAdvancedFunction)}</div>
+            `;
+        }
+
+        // 获取函数类型
+        function getFunctionType(funcName) {
+            const types = {
+                polynomial4: '四次多项式函数',
+                polynomial5: '五次多项式函数',
+                trigonometric: '三角复合函数',
+                exponential: '指数复合函数',
+                rational: '有理函数'
+            };
+            return types[funcName] || '未知类型';
+        }
+
+        // 获取值域
+        function getValueRange(funcName) {
+            const ranges = {
+                polynomial4: '[-2, +∞)',
+                polynomial5: '(-∞, +∞)',
+                trigonometric: '(-∞, +∞)',
+                exponential: '(-∞, 1/e]',
+                rational: '(-1/2, 1/2)'
+            };
+            return ranges[funcName] || '待分析';
+        }
+
+        // 获取对称性
+        function getSymmetry(funcName) {
+            const symmetries = {
+                polynomial4: '无明显对称性',
+                polynomial5: '关于原点对称',
+                trigonometric: '无明显对称性',
+                exponential: '无对称性',
+                rational: '关于原点对称'
+            };
+            return symmetries[funcName] || '待分析';
+        }
+
+        // 找所有临界点
+        function findAllCriticalPoints() {
+            const func = advancedFunctions[currentAdvancedFunction];
+            const resultsDiv = document.getElementById('advancedResults');
+
+            // 简化的临界点查找
+            let criticalPoints = [];
+            let inflectionPoints = [];
+
+            switch(currentAdvancedFunction) {
+                case 'polynomial4':
+                    criticalPoints = [0, 2];
+                    inflectionPoints = [1];
+                    break;
+                case 'polynomial5':
+                    criticalPoints = [-1.73, 0, 1.73];
+                    inflectionPoints = [-1, 1];
+                    break;
+                case 'trigonometric':
+                    criticalPoints = ['π/4 + nπ/2'];
+                    inflectionPoints = ['nπ/2'];
+                    break;
+                case 'exponential':
+                    criticalPoints = [1];
+                    inflectionPoints = [2];
+                    break;
+                case 'rational':
+                    criticalPoints = [-1, 1];
+                    inflectionPoints = [0];
+                    break;
+            }
+
+            resultsDiv.innerHTML += `
+                <div class="step"><strong>临界点分析完成:</strong></div>
+                <div class="step">极值点: ${criticalPoints.join(', ')}</div>
+                <div class="step">拐点: ${inflectionPoints.join(', ')}</div>
+            `;
+        }
+
+        // 单调性分析
+        function analyzeMonotonicity() {
+            const resultsDiv = document.getElementById('advancedResults');
+
+            let increasing = '';
+            let decreasing = '';
+
+            switch(currentAdvancedFunction) {
+                case 'polynomial4':
+                    increasing = '(-∞, 0) ∪ (2, +∞)';
+                    decreasing = '(0, 2)';
+                    break;
+                case 'polynomial5':
+                    increasing = '(-1.73, 0) ∪ (1.73, +∞)';
+                    decreasing = '(-∞, -1.73) ∪ (0, 1.73)';
+                    break;
+                default:
+                    increasing = '待分析';
+                    decreasing = '待分析';
+            }
+
+            resultsDiv.innerHTML += `
+                <div class="step"><strong>单调性分析:</strong></div>
+                <div class="step">递增区间: ${increasing}</div>
+                <div class="step">递减区间: ${decreasing}</div>
+            `;
+        }
+
+        // 凹凸性分析
+        function analyzeConcavity() {
+            const resultsDiv = document.getElementById('advancedResults');
+
+            let concaveUp = '';
+            let concaveDown = '';
+
+            switch(currentAdvancedFunction) {
+                case 'polynomial4':
+                    concaveUp = '(-∞, 1) ∪ (1, +∞)';
+                    concaveDown = '无';
+                    break;
+                case 'polynomial5':
+                    concaveUp = '(-1, 1)';
+                    concaveDown = '(-∞, -1) ∪ (1, +∞)';
+                    break;
+                default:
+                    concaveUp = '待分析';
+                    concaveDown = '待分析';
+            }
+
+            resultsDiv.innerHTML += `
+                <div class="step"><strong>凹凸性分析:</strong></div>
+                <div class="step">凹向上区间: ${concaveUp}</div>
+                <div class="step">凹向下区间: ${concaveDown}</div>
+            `;
+        }
+
+        // 更新对比分析
+        function updateComparison() {
+            if (!comparisonCtx) return;
+
+            comparisonCtx.clearRect(0, 0, comparisonCanvas.width, comparisonCanvas.height);
+            drawAxes(comparisonCtx, comparisonCanvas);
+
+            const func1Name = document.getElementById('function1').value;
+            const func2Name = document.getElementById('function2').value;
+            const comparisonType = document.getElementById('comparisonType').value;
+
+            const func1 = basicFunctions[func1Name];
+            const func2 = basicFunctions[func2Name];
+
+            switch(comparisonType) {
+                case 'original':
+                    drawFunction(comparisonCtx, comparisonCanvas, func1.formula, '#667eea', 3);
+                    drawFunction(comparisonCtx, comparisonCanvas, func2.formula, '#ff6b6b', 3);
+                    break;
+                case 'first':
+                    drawFunction(comparisonCtx, comparisonCanvas, func1.firstDerivative, '#667eea', 3);
+                    drawFunction(comparisonCtx, comparisonCanvas, func2.firstDerivative, '#ff6b6b', 3);
+                    break;
+                case 'second':
+                    drawFunction(comparisonCtx, comparisonCanvas, func1.secondDerivative, '#667eea', 3);
+                    drawFunction(comparisonCtx, comparisonCanvas, func2.secondDerivative, '#ff6b6b', 3);
+                    break;
+                case 'all':
+                    drawFunction(comparisonCtx, comparisonCanvas, func1.formula, '#667eea', 2);
+                    drawFunction(comparisonCtx, comparisonCanvas, func1.firstDerivative, '#4ecdc4', 2);
+                    drawFunction(comparisonCtx, comparisonCanvas, func2.formula, '#ff6b6b', 2);
+                    drawFunction(comparisonCtx, comparisonCanvas, func2.firstDerivative, '#ffa726', 2);
+                    break;
+            }
+
+            updateComparisonResults();
+        }
+
+        // 更新对比结果
+        function updateComparisonResults() {
+            const func1Name = document.getElementById('function1').value;
+            const func2Name = document.getElementById('function2').value;
+            const resultsDiv = document.getElementById('comparisonResults');
+
+            resultsDiv.innerHTML = `
+                <div class="step">对比函数: f₁(x) = ${basicFunctions[func1Name].name} vs f₂(x) = ${basicFunctions[func2Name].name}</div>
+                <div class="step">增长速度: ${compareGrowthRate(func1Name, func2Name)}</div>
+                <div class="step">凹凸性: ${compareConcavity(func1Name, func2Name)}</div>
+                <div class="step">对称性: ${compareSymmetry(func1Name, func2Name)}</div>
+            `;
+        }
+
+        // 比较增长速度
+        function compareGrowthRate(func1, func2) {
+            const rates = {
+                quadratic: 2,
+                cubic: 3,
+                quartic: 4,
+                sine: 0
+            };
+
+            const rate1 = rates[func1];
+            const rate2 = rates[func2];
+
+            if (rate1 > rate2) return `f₁增长更快（${rate1}次 vs ${rate2}次）`;
+            if (rate1 < rate2) return `f₂增长更快（${rate2}次 vs ${rate1}次）`;
+            return '增长速度相同';
+        }
+
+        // 比较凹凸性
+        function compareConcavity(func1, func2) {
+            const concavities = {
+                quadratic: '恒凹向上',
+                cubic: '有拐点',
+                quartic: '恒凹向上',
+                sine: '周期性凹凸变化'
+            };
+
+            return `f₁: ${concavities[func1]}, f₂: ${concavities[func2]}`;
+        }
+
+        // 比较对称性
+        function compareSymmetry(func1, func2) {
+            const symmetries = {
+                quadratic: '偶函数',
+                cubic: '奇函数',
+                quartic: '偶函数',
+                sine: '奇函数'
+            };
+
+            return `f₁: ${symmetries[func1]}, f₂: ${symmetries[func2]}`;
+        }
+
+        // 解析自定义函数
+        function parseCustomFunction() {
+            try {
+                const expression = document.getElementById('customFunction').value;
+                if (!expression) return;
+
+                // 使用math.js解析函数
+                const func = math.compile(expression);
+                
+                // 创建自定义函数对象
+                const customFunc = {
+                    name: `f(x) = ${expression}`,
+                    formula: (x) => {
+                        try {
+                            return func.evaluate({x: x});
+                        } catch (e) {
+                            return NaN;
+                        }
+                    },
+                    firstDerivative: (x) => {
+                        try {
+                            const derivative = math.derivative(expression, 'x');
+                            return derivative.evaluate({x: x});
+                        } catch (e) {
+                            return NaN;
+                        }
+                    },
+                    secondDerivative: (x) => {
+                        try {
+                            const derivative = math.derivative(expression, 'x');
+                            const secondDerivative = math.derivative(derivative, 'x');
+                            return secondDerivative.evaluate({x: x});
+                        } catch (e) {
+                            return NaN;
+                        }
+                    },
+                    latex: expression.replace(/\*/g, '')
+                };
+
+                // 添加到函数列表
+                advancedFunctions.custom = customFunc;
+                
+                // 更新选择框
+                const select = document.getElementById('advancedFunction');
+                const customOption = select.querySelector('option[value="custom"]');
+                if (customOption) {
+                    customOption.textContent = customFunc.name;
+                } else {
+                    const option = document.createElement('option');
+                    option.value = 'custom';
+                    option.textContent = customFunc.name;
+                    select.appendChild(option);
+                }
+                
+                // 选择自定义函数
+                select.value = 'custom';
+                currentAdvancedFunction = 'custom';
+                
+                // 更新分析
+                updateAdvancedAnalysis();
+                
+                console.log('自定义函数解析成功:', customFunc.name);
+            } catch (error) {
+                console.error('自定义函数解析错误:', error);
+                alert('函数表达式有误，请检查语法');
+            }
+        }
+
+        // 生成练习
+        function generateExercise() {
+            const level = document.getElementById('exerciseLevel').value;
+            const contentDiv = document.getElementById('exerciseContent');
+
+            const exercises = {
+                basic: `
+                    <div class="step">基础题：求函数 f(x) = x³ - 3x 的极值点</div>
+                    <div class="step">提示：先求一阶导数，令其为零</div>
+                `,
+                intermediate: `
+                    <div class="step">中级题：分析函数 f(x) = x⁴ - 4x³ + 6x² 的单调性和凹凸性</div>
+                    <div class="step">要求：找出所有临界点和拐点</div>
+                `,
+                advanced: `
+                    <div class="step">高级题：设计一个三次函数，使其在 x = 1 处有极大值 2，在 x = 3 处有极小值 -2</div>
+                    <div class="step">要求：写出完整的函数表达式</div>
+                `,
+                expert: `
+                    <div class="step">专家题：证明函数 f(x) = xe^(-x) 在 x = 1 处取得最大值</div>
+                    <div class="step">要求：使用二阶导数判定法给出完整证明</div>
+                `
+            };
+
+            contentDiv.innerHTML = exercises[level] || '<div class="step">选择难度等级</div>';
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏加载指示器
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.classList.add('hidden');
+                setTimeout(() => loading.remove(), 500);
+            }
+
+            initNavigation();
+            initCanvases();
+            updateAdvancedAnalysis();
+            updateComparison();
+            
+            // 确保MathJax重新渲染
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise();
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+

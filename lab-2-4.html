@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数列极限交互式序列图 - 高等应用数学虚拟实验室</title>
+
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base']}
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+
+    
+    <!-- 隐藏滚动条样式 -->
+    <style>
+        /* 隐藏滚动条但保持滚动功能 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+    </style>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 22px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 20px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            /* 灰度色阶 */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 边框和阴影 */
+            --border: var(--gray-200);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* 过渡动画 */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            min-height: auto;
+            overflow: visible;
+            color: var(--gray-800);
+            font-size: var(--text-size);
+            line-height: 1.6;
+        }
+
+        /* 全屏容器布局 */
+        .app-container { width:100vw; min-height: 100vh; display: flex; flex-direction: column; background: var(--light); }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* 主内容区域 - 使用Grid布局 */
+        .main-content {
+            display: flex; min-height: calc(100vh - 120px); width:100vw;
+        }
+
+        /* 侧边导航栏 */
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 60%;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-tab.active::before {
+            
+            background: white;
+        }
+
+        .nav-tab-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* 内容面板区域 */
+        .content-area {
+            flex: 1;
+            overflow: visible;
+            position: relative;
+        }
+
+        .panel {
+            display: none; width:100vw;  padding: 0;}
+
+        .panel.active {
+            display: block;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        /* 序列图面板 - 左右布局 */
+        .sequence-section {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+            padding: 20px;
+        }
+
+        .sequence-left {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sequence-right {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sequence-controls, .sequence-results {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+            color: var(--gray-800);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--formula-size);
+        }
+
+        .result-display {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .operation-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 可视化面板 */
+        .visualization-container {
+            
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-container {
+            flex: 1;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            overflow: visible;
+            background: white;
+            margin: 16px 0;
+            position: relative;
+            min-height: 400px;
+            width: 100%;
+        }
+
+        #sequenceCanvas, #sequenceCanvas2 {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: white;
+        }
+
+        .chart-info {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* 分析面板 */
+        .analysis-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .analysis-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .analysis-section h4 {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .analysis-section p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        /* MathJax 优化 */
+        mjx-container {
+            font-size: var(--formula-size) !important;
+        }
+
+        .formula-block {
+            display: block;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .formula-inline {
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-content {
+                
+                
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 16px 0;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .nav-tab {
+                white-space: nowrap;
+                min-width: 120px;
+            }
+
+            .sequence-section {
+                
+                gap: 16px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 4px;
+                border-radius: 12px;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    
+        /* 页面截断修复 */
+        html, body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: auto !important;
+            min-height: 100vh !important;
+        }
+        
+        .app-container {
+            min-height: 100vh !important;
+            height: auto !important;
+        }
+        
+        .main-content {
+            display: flex !important;
+            flex-direction: row !important;
+            min-height: auto !important;
+            height: auto !important;
+            align-items: stretch !important;
+        }
+        
+        .sidebar {
+            width: 200px !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            height: auto !important;
+        }
+        
+        .content-area {
+            flex: 1 !important;
+            flex-grow: 1 !important;
+            min-width: 0 !important;
+            position: relative !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        
+        .panel {
+            position: static !important;
+            display: none !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 20px !important;
+            overflow: visible !important;
+        }
+        
+        .panel.active {
+            display: block !important;
+        }</style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="header-content">
+                <h1>交互式序列图</h1>
+                <span class="header-subtitle">数列极限的动态可视化</span>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 侧边导航栏 -->
+            <div class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="sequence">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                        </svg>
+                        序列图
+                    </button>
+                    <button class="nav-tab" data-panel="analysis">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        收敛分析
+                    </button>
+                </div>
+            </div>
+
+            <!-- 内容面板区域 -->
+            <div class="content-area">
+                <!-- 序列图面板 -->
+                <div class="panel active" id="sequence">
+                    <div class="sequence-section">
+                        <!-- 左侧控制区 -->
+                        <div class="sequence-left">
+                            <div class="sequence-controls">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                    </svg>
+                                    序列控制
+                                </h3>
+
+                                <div class="input-group">
+                                    <label for="sequenceFormula">数列公式:</label>
+                                    <select id="sequenceFormula">
+                                        <option value="1/n">aₙ = 1/n</option>
+                                        <option value="1/n^2">aₙ = 1/n²</option>
+                                        <option value="(-1)^n/n">aₙ = (-1)ⁿ/n</option>
+                                        <option value="sin(n)/n">aₙ = sin(n)/n</option>
+                                        <option value="n/(n+1)">aₙ = n/(n+1)</option>
+                                        <option value="sqrt(n)/(n+1)">aₙ = √n/(n+1)</option>
+                                    </select>
+
+                                    <div class="formula-display" id="currentSequenceFormula" style="margin-top: 12px;">
+                                        $a_n = \frac{1}{n}$
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="sequenceTerms">显示项数:</label>
+                                    <input type="number" id="sequenceTerms" value="50" min="10" max="200" step="10">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="plotType">图表类型:</label>
+                                    <select id="plotType">
+                                        <option value="points">散点图</option>
+                                        <option value="lines">折线图</option>
+                                        <option value="bars">柱状图</option>
+                                        <option value="combined">组合图</option>
+                                    </select>
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="generateSequencePlot()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                        </svg>
+                                        生成序列图
+                                    </button>
+                                    <button class="btn" onclick="startAnimation()" style="background: var(--success);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        动画演示
+                                    </button>
+                                    <button class="btn" onclick="testSequenceCanvas()" style="background: var(--warning);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                        测试
+                                    </button>
+                                    <button class="btn" onclick="exportSequenceData()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                        </svg>
+                                        导出数据
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="sequence-results">
+                                <div class="result-display" id="limitResult">
+                                    极限值: $\lim\limits_{n \to \infty} a_n = 0$
+                                </div>
+
+                                <div id="sequenceInfo" style="background: white; padding: 16px; border-radius: 12px; margin-top: 16px; border: 1px solid var(--border);">
+                                    <h4 style="color: var(--primary); margin-bottom: 10px;">序列信息</h4>
+                                    <p id="sequenceDetails">当前序列: aₙ = 1/n，共50项</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧可视化区 -->
+                        <div class="sequence-right">
+                            <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid var(--border); flex: 1;">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                    </svg>
+                                    序列图像
+                                </h3>
+
+                                <div class="canvas-container">
+                                    <canvas id="sequenceCanvas"></canvas>
+                                    <div id="canvasDebug" style="position: absolute; top: 10px; left: 10px; background: rgba(255,0,0,0.8); color: white; padding: 5px; font-size: 12px; z-index: 1000;">
+                                        画布调试信息
+                                    </div>
+                                </div>
+
+                                <div class="chart-info">
+                                    <p style="margin-bottom: 8px; color: var(--gray-600);">
+                                        <span style="color: var(--primary); font-weight: bold;">●</span> 数列项
+                                        <span style="margin-left: 20px; color: var(--success); font-weight: bold;">━</span> 极限线
+                                        <span style="margin-left: 20px; color: var(--danger); font-weight: bold;">●</span> 当前项
+                                    </p>
+                                    <p id="chartInfo">准备开始序列演示...</p>
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="startAnimation()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        开始动画
+                                    </button>
+                                    <button class="btn" onclick="pauseAnimation()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                        </svg>
+                                        暂停
+                                    </button>
+                                    <button class="btn" onclick="resetAnimation()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                        </svg>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 分析面板 -->
+                <div class="panel" id="analysis">
+                    <div class="analysis-content">
+
+                        <div class="analysis-section">
+                            <h4>数列收敛的定义</h4>
+                            <p><strong>直观理解：</strong>当项数n越来越大时，数列的项aₙ越来越接近某个确定的数L，我们就说数列收敛于L。</p>
+                            <p><strong>形象比喻：</strong>就像"一尺之梼，日取其半，万世不竭"，木棍长度会无限接近于0。</p>
+                            <div class="formula-display">
+                                当 n 很大时，|aₙ - L| 很小（可以任意小）
+                        </div>
+                            <p><strong>实用判断标准：</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>观察数列图像，看数列项是否趋向某个水平线</li>
+                                <li>计算后面几项的值，看是否越来越接近某个数</li>
+                                <li>计算误差|aₙ - L|，看是否越来越小</li>
+                            </ul>
+            </div>
+
+                        <div class="analysis-section">
+                            <h4>收敛速度分析</h4>
+                            <p>不同类型的数列收敛速度不同，通过观察图像可以直观判断：</p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li><strong>$aₙ = \frac{1}{n}$：</strong>下降较慢，像1/1, 1/2, 1/3, 1/4...逐步减小</li>
+                                <li><strong>$aₙ = \frac{1}{n²}$：</strong>下降较快，像1/1, 1/4, 1/9, 1/16...快速减小</li>
+                                <li><strong>$aₙ = \frac{(-1)ⁿ}{n}$：</strong>上下摆动但幅度越来越小，最终趋于0</li>
+                                <li><strong>$aₙ = \frac{n}{n+1}$：</strong>从下方逐步上升接近1</li>
+                            </ul>
+                            <p><strong>实用技巧：</strong>在图像中，曲线越"陡峭"收敛越快，越"平缓"收敛越慢。</p>
+                    </div>
+
+                        <div class="analysis-section">
+                            <h4>单调性与有界性</h4>
+                            <p>数列收敛需要满足一定条件，重点掌握：</p>
+                            <div class="formula-display">
+                                有界 + 单调 → 一定收敛
+                            </div>
+                            <p><strong>实用理解：</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li><strong>有界：</strong>数列的值不会无限增大或减小，有一个"范围"</li>
+                                <li><strong>单调：</strong>要么一直增加，要么一直减少，不来回摆动</li>
+                                <li><strong>收敛：</strong>同时满足上述两个条件，数列一定会趋向某个确定值</li>
+                            </ul>
+                            <p>通过观察序列图，可以直观判断数列的单调性和有界性。</p>
+                </div>
+
+                        <div class="analysis-section">
+                            <h4>判断数列收敛的实用方法</h4>
+                            <p>我们主要通过以下实用方法判断数列是否收敛：</p>
+                            <div class="formula-display">
+                                图像观察法 + 数值计算法 = 收敛判断
+                            </div>
+                            <p><strong>具体步骤：</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li><strong>第1步：</strong>画出数列的图像，观察趋势</li>
+                                <li><strong>第2步：</strong>计算前几项和后几项的值</li>
+                                <li><strong>第3步：</strong>看是否存在一条水平线，数列项越来越接近它</li>
+                                <li><strong>第4步：</strong>计算误差，验证接近程度</li>
+                            </ul>
+                            <p><strong>记忆口诀：</strong>"项数大，误差小，趋向线，就收敛"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sequenceData = [];
+        let animationId = null;
+        let currentAnimationStep = 0;
+        let isAnimating = false;
+
+        // 标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                // 添加活动状态
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                document.getElementById(panelId).classList.add('active');
+
+            });
+        });
+
+        // 数列公式选择事件
+        document.getElementById('sequenceFormula').addEventListener('change', function() {
+            updateCurrentFormula();
+            generateSequencePlot();
+        });
+
+        // 更新当前公式显示
+        function updateCurrentFormula() {
+            const formula = document.getElementById('sequenceFormula').value;
+            const display = document.getElementById('currentSequenceFormula');
+            
+            let latexFormula = '';
+            switch (formula) {
+                case '1/n':
+                    latexFormula = '\\frac{1}{n}';
+                    break;
+                case '1/n^2':
+                    latexFormula = '\\frac{1}{n^2}';
+                    break;
+                case '(-1)^n/n':
+                    latexFormula = '\\frac{(-1)^n}{n}';
+                    break;
+                case 'sin(n)/n':
+                    latexFormula = '\\frac{\\sin(n)}{n}';
+                    break;
+                case 'n/(n+1)':
+                    latexFormula = '\\frac{n}{n+1}';
+                    break;
+                case 'sqrt(n)/(n+1)':
+                    latexFormula = '\\frac{\\sqrt{n}}{n+1}';
+                    break;
+            }
+            
+            display.innerHTML = `$a_n = ${latexFormula}$`;
+            
+            setTimeout(() => {
+                renderMath([display]);
+            }, 50);
+        }
+
+        // 计算数列项的值
+        function calculateSequenceValue(n, formula) {
+            switch (formula) {
+                case '1/n':
+                    return 1 / n;
+                case '1/n^2':
+                    return 1 / (n * n);
+                case '(-1)^n/n':
+                    return Math.pow(-1, n) / n;
+                case 'sin(n)/n':
+                    return Math.sin(n) / n;
+                case 'n/(n+1)':
+                    return n / (n + 1);
+                case 'sqrt(n)/(n+1)':
+                    return Math.sqrt(n) / (n + 1);
+                default:
+                    return 1 / n;
+            }
+        }
+
+        // 获取数列极限
+        function getSequenceLimit(formula) {
+            switch (formula) {
+                case '1/n':
+                case '1/n^2':
+                case '(-1)^n/n':
+                case 'sin(n)/n':
+                case 'sqrt(n)/(n+1)':
+                    return 0;
+                case 'n/(n+1)':
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+
+        // 生成序列图
+        function generateSequencePlot() {
+            const formula = document.getElementById('sequenceFormula').value;
+            const terms = parseInt(document.getElementById('sequenceTerms').value);
+            const plotType = document.getElementById('plotType').value;
+            
+            sequenceData = [];
+            const limit = getSequenceLimit(formula);
+            
+            // 计算序列值
+            for (let n = 1; n <= terms; n++) {
+                const value = calculateSequenceValue(n, formula);
+                sequenceData.push({
+                    n: n,
+                    value: value,
+                    error: Math.abs(value - limit)
+                });
+            }
+            
+            // 更新统计信息
+            updateStatistics();
+            
+            // 更新表格
+            updateSequenceTable();
+            
+            // 绘制图表
+            drawSequencePlot(plotType);
+            
+            // 更新极限结果显示
+            updateLimitDisplay(formula, limit);
+        }
+
+        // 生成第二个序列图
+        function generateSequencePlot2() {
+            const formula = document.getElementById('sequenceFormula').value;
+            const terms = parseInt(document.getElementById('sequenceTerms').value);
+            const plotType = document.getElementById('plotType').value;
+            
+            // 使用相同的数据，但绘制到第二个画布
+            drawSequencePlot2(plotType);
+        }
+
+        // 更新统计信息
+        function updateStatistics() {
+            if (sequenceData.length === 0) return;
+            
+            const values = sequenceData.map(d => d.value);
+            const maxValue = Math.max(...values);
+            const minValue = Math.min(...values);
+            
+            document.getElementById('maxValue').textContent = maxValue.toFixed(6);
+            document.getElementById('minValue').textContent = minValue.toFixed(6);
+            
+            // 判断单调性
+            let isIncreasing = true;
+            let isDecreasing = true;
+            for (let i = 1; i < sequenceData.length; i++) {
+                if (sequenceData[i].value > sequenceData[i-1].value) {
+                    isDecreasing = false;
+                }
+                if (sequenceData[i].value < sequenceData[i-1].value) {
+                    isIncreasing = false;
+                }
+            }
+            
+            let monotonicity = '非单调';
+            if (isIncreasing) monotonicity = '严格递增';
+            else if (isDecreasing) monotonicity = '严格递减';
+            
+            document.getElementById('monotonicity').textContent = monotonicity;
+            
+            // 估算收敛速度
+            const formula = document.getElementById('sequenceFormula').value;
+            let convergenceRate = 'O(1/n)';
+            if (formula === '1/n^2') convergenceRate = 'O(1/n²)';
+            else if (formula === 'sqrt(n)/(n+1)') convergenceRate = 'O(1/√n)';
+            
+            document.getElementById('convergenceRate').textContent = convergenceRate;
+        }
+
+        // 更新序列表格
+        function updateSequenceTable() {
+            const tbody = document.getElementById('sequenceTableBody');
+            tbody.innerHTML = '';
+            
+            // 只显示前20项
+            const displayTerms = Math.min(20, sequenceData.length);
+            for (let i = 0; i < displayTerms; i++) {
+                const data = sequenceData[i];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px;">${data.n}</td>
+                    <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px;">${data.value.toFixed(6)}</td>
+                    <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px;">${data.error.toFixed(6)}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        // 绘制序列图
+        function drawSequencePlot(plotType) {
+            const canvas = document.getElementById('sequenceCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            
+            // 修复画布尺寸设置
+            const containerWidth = rect.width || canvas.parentElement.clientWidth || 800;
+            const containerHeight = rect.height || 400;
+            
+            canvas.width = Math.max(containerWidth, 600);
+            canvas.height = Math.max(containerHeight, 300);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 50;
+
+            // 清空画布
+            ctx.clearRect(0, 0, width, height);
+
+            if (sequenceData.length === 0) return;
+
+            // 计算坐标范围
+            const xMax = sequenceData.length;
+            const values = sequenceData.map(d => d.value);
+            const yMin = Math.min(...values);
+            const yMax = Math.max(...values);
+            const yRange = yMax - yMin;
+            const yMargin = yRange * 0.1;
+
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            // x轴
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            // y轴
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+
+            // 绘制极限线
+            const limit = getSequenceLimit(document.getElementById('sequenceFormula').value);
+            if (limit >= yMin - yMargin && limit <= yMax + yMargin) {
+                const limitY = height - padding - ((limit - (yMin - yMargin)) / (yRange + 2 * yMargin)) * (height - 2 * padding);
+                ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+                ctx.moveTo(padding, limitY);
+                ctx.lineTo(width - padding, limitY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            }
+
+            // 根据图表类型绘制数据
+            switch (plotType) {
+                case 'points':
+                    drawPoints(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+                case 'lines':
+                    drawLines(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+                case 'bars':
+                    drawBars(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+                case 'combined':
+                    drawLines(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    drawPoints(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+            }
+
+            // 绘制坐标轴标签
+            ctx.fillStyle = '#374151';
+            ctx.font = '12px Source Han Serif SC';
+            ctx.textAlign = 'center';
+            ctx.fillText('n', width - 20, height - 10);
+            
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('aₙ', 0, 0);
+            ctx.restore();
+        }
+
+        // 绘制第二个序列图
+        function drawSequencePlot2(plotType) {
+            const canvas = document.getElementById('sequenceCanvas2');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            
+            // 修复画布尺寸设置
+            const containerWidth = rect.width || canvas.parentElement.clientWidth || 800;
+            const containerHeight = rect.height || 400;
+            
+            canvas.width = Math.max(containerWidth, 600);
+            canvas.height = Math.max(containerHeight, 300);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 50;
+
+            // 清空画布
+            ctx.clearRect(0, 0, width, height);
+
+            if (sequenceData.length === 0) return;
+
+            // 计算坐标范围
+            const xMax = sequenceData.length;
+            const values = sequenceData.map(d => d.value);
+            const yMin = Math.min(...values);
+            const yMax = Math.max(...values);
+            const yRange = yMax - yMin;
+            const yMargin = yRange * 0.1;
+
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            // x轴
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            // y轴
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+
+            // 绘制极限线
+            const limit = getSequenceLimit(document.getElementById('sequenceFormula').value);
+            if (limit >= yMin - yMargin && limit <= yMax + yMargin) {
+                const limitY = height - padding - ((limit - (yMin - yMargin)) / (yRange + 2 * yMargin)) * (height - 2 * padding);
+                ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+                ctx.moveTo(padding, limitY);
+                ctx.lineTo(width - padding, limitY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            }
+
+            // 根据图表类型绘制数据
+            switch (plotType) {
+                case 'points':
+                    drawPoints(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+                case 'lines':
+                    drawLines(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+                case 'bars':
+                    drawBars(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+                case 'combined':
+                    drawLines(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    drawPoints(ctx, width, height, padding, xMax, yMin, yMax, yMargin);
+                    break;
+            }
+
+            // 绘制坐标轴标签
+            ctx.fillStyle = '#374151';
+            ctx.font = '12px Source Han Serif SC';
+            ctx.textAlign = 'center';
+            ctx.fillText('n', width - 20, height - 10);
+            
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('aₙ', 0, 0);
+            ctx.restore();
+        }
+
+        // 绘制散点
+        function drawPoints(ctx, width, height, padding, xMax, yMin, yMax, yMargin) {
+            ctx.fillStyle = '#4f46e5';
+            sequenceData.forEach(data => {
+                const x = padding + ((data.n - 1) / (xMax - 1)) * (width - 2 * padding);
+                const y = height - padding - ((data.value - (yMin - yMargin)) / (yMax - yMin + 2 * yMargin)) * (height - 2 * padding);
+
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+
+        // 绘制折线
+        function drawLines(ctx, width, height, padding, xMax, yMin, yMax, yMargin) {
+            ctx.strokeStyle = '#4f46e5';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            sequenceData.forEach((data, index) => {
+                const x = padding + ((data.n - 1) / (xMax - 1)) * (width - 2 * padding);
+                const y = height - padding - ((data.value - (yMin - yMargin)) / (yMax - yMin + 2 * yMargin)) * (height - 2 * padding);
+
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+
+            ctx.stroke();
+        }
+
+        // 绘制柱状图
+        function drawBars(ctx, width, height, padding, xMax, yMin, yMax, yMargin) {
+            const barWidth = (width - 2 * padding) / sequenceData.length * 0.8;
+            ctx.fillStyle = '#4f46e5';
+
+            sequenceData.forEach(data => {
+                const x = padding + ((data.n - 1) / (xMax - 1)) * (width - 2 * padding) - barWidth / 2;
+                const y = height - padding - ((data.value - (yMin - yMargin)) / (yMax - yMin + 2 * yMargin)) * (height - 2 * padding);
+                const barHeight = height - padding - y;
+
+                ctx.fillRect(x, y, barWidth, barHeight);
+            });
+        }
+
+        // 更新极限显示
+        function updateLimitDisplay(formula, limit) {
+            const display = document.getElementById('limitResult');
+            let latexFormula = '';
+            
+            switch (formula) {
+                case '1/n':
+                    latexFormula = '\\frac{1}{n}';
+                    break;
+                case '1/n^2':
+                    latexFormula = '\\frac{1}{n^2}';
+                    break;
+                case '(-1)^n/n':
+                    latexFormula = '\\frac{(-1)^n}{n}';
+                    break;
+                case 'sin(n)/n':
+                    latexFormula = '\\frac{\\sin(n)}{n}';
+                    break;
+                case 'n/(n+1)':
+                    latexFormula = '\\frac{n}{n+1}';
+                    break;
+                case 'sqrt(n)/(n+1)':
+                    latexFormula = '\\frac{\\sqrt{n}}{n+1}';
+                    break;
+            }
+            
+            display.innerHTML = `极限值: $\\lim\\limits_{n \\to \\infty} ${latexFormula} = ${limit}$`;
+            
+            setTimeout(() => {
+                renderMath([display]);
+            }, 100);
+        }
+
+        // 初始化画布
+        function initCanvas() {
+            const canvas = document.getElementById('sequenceCanvas');
+            if (!canvas) return;
+            
+            // 确保画布有正确的尺寸
+            const rect = canvas.getBoundingClientRect();
+            const containerWidth = rect.width || canvas.parentElement.clientWidth || 800;
+            const containerHeight = rect.height || 400;
+            
+            canvas.width = Math.max(containerWidth, 600);
+            canvas.height = Math.max(containerHeight, 300);
+            
+            generateSequencePlot();
+        }
+
+        // 初始化第二个画布
+        function initCanvas2() {
+            const canvas = document.getElementById('sequenceCanvas2');
+            if (!canvas) return;
+            
+            // 确保画布有正确的尺寸
+            const rect = canvas.getBoundingClientRect();
+            const containerWidth = rect.width || canvas.parentElement.clientWidth || 800;
+            const containerHeight = rect.height || 400;
+            
+            canvas.width = Math.max(containerWidth, 600);
+            canvas.height = Math.max(containerHeight, 300);
+            
+            generateSequencePlot2();
+        }
+
+        // 开始动画
+        function startAnimation() {
+            console.log('开始动画演示...');
+
+            if (isAnimating) {
+                console.log('动画已在进行中');
+                return;
+            }
+
+            // 确保有数据
+            if (sequenceData.length === 0) {
+                console.log('数据为空，先生成序列图');
+                generateSequencePlot();
+            }
+
+            isAnimating = true;
+            currentAnimationStep = 0;
+
+            const animationInfo = document.getElementById('animationInfo');
+            if (animationInfo) {
+                animationInfo.textContent = '开始动画演示...';
+            }
+
+            console.log(`准备动画，数据长度: ${sequenceData.length}`);
+            animateSequence();
+        }
+
+        // 暂停动画
+        function pauseAnimation() {
+            isAnimating = false;
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+            }
+        }
+
+        // 重置动画
+        function resetAnimation() {
+            pauseAnimation();
+            currentAnimationStep = 0;
+            generateSequencePlot();
+            document.getElementById('animationInfo').textContent = '准备开始动画演示...';
+        }
+
+        // 动画序列
+        function animateSequence() {
+            console.log(`动画步骤: ${currentAnimationStep}/${sequenceData.length}, 动画状态: ${isAnimating}`);
+
+            if (!isAnimating || currentAnimationStep >= sequenceData.length) {
+                isAnimating = false;
+                const animationInfo = document.getElementById('animationInfo');
+                if (animationInfo) {
+                    animationInfo.textContent = '动画演示完成！';
+                }
+                console.log('动画演示完成');
+                return;
+            }
+
+            const currentData = sequenceData[currentAnimationStep];
+            const animationInfo = document.getElementById('animationInfo');
+            if (animationInfo) {
+                animationInfo.innerHTML =
+                    `第 ${currentData.n} 项: aₙ = ${currentData.value.toFixed(6)}, 误差 = ${currentData.error.toFixed(6)}`;
+            }
+
+            // 重新绘制图表，高亮当前项
+            drawAnimationFrame(currentAnimationStep);
+
+            currentAnimationStep++;
+            animationId = setTimeout(animateSequence, 800); // 稍微慢一点，便于观察
+        }
+
+        // 绘制动画帧
+        function drawAnimationFrame(currentStep) {
+            const canvas = document.getElementById('sequenceCanvas');
+            if (!canvas) return;
+
+            // 先绘制完整的序列图
+            drawSequencePlot('combined');
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 50;
+
+            // 计算坐标范围
+            const xMax = sequenceData.length;
+            const values = sequenceData.map(d => d.value);
+            const yMin = Math.min(...values);
+            const yMax = Math.max(...values);
+            const yRange = yMax - yMin;
+            const yMargin = yRange * 0.1;
+
+            // 高亮当前项
+            if (currentStep < sequenceData.length) {
+                const data = sequenceData[currentStep];
+                const x = padding + ((data.n - 1) / (xMax - 1)) * (width - 2 * padding);
+                const y = height - padding - ((data.value - (yMin - yMargin)) / (yRange + 2 * yMargin)) * (height - 2 * padding);
+
+                // 绘制高亮圆点
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // 绘制三角形标记
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.moveTo(x, y - 15);
+                ctx.lineTo(x - 8, y - 25);
+                ctx.lineTo(x + 8, y - 25);
+                ctx.closePath();
+                ctx.fill();
+                
+                // 添加文字标注
+                ctx.fillStyle = '#374151';
+                ctx.font = '12px Source Han Serif SC';
+                ctx.textAlign = 'center';
+                ctx.fillText(`n=${data.n}`, x, y - 35);
+            }
+        }
+
+        // 导出序列数据
+        function exportSequenceData() {
+            if (sequenceData.length === 0) {
+                alert('请先生成序列数据！');
+                return;
+            }
+
+            let csvContent = 'n,a_n,error\n';
+            sequenceData.forEach(data => {
+                csvContent += `${data.n},${data.value},${data.error}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sequence_data.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // 改进的MathJax渲染函数
+        let renderingInProgress = false;
+        function renderMath(elements = null) {
+            if (renderingInProgress) {
+                return Promise.resolve();
+            }
+            
+            const targets = elements || [document.body];
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                renderingInProgress = true;
+                return window.MathJax.typesetPromise(targets).then(() => {
+                    renderingInProgress = false;
+                }).catch(err => {
+                    renderingInProgress = false;
+                    console.warn('MathJax渲染错误:', err);
+                });
+            }
+            
+            return Promise.resolve();
+        }
+
+
+
+        // 测试函数
+        function testSequenceCanvas() {
+            console.log('=== 测试序列画布 ===');
+            
+            // 更新调试信息显示
+            const debugDiv = document.getElementById('canvasDebug');
+            if (debugDiv) {
+                debugDiv.innerHTML = '测试中...';
+            }
+            
+            const canvas = document.getElementById('sequenceCanvas');
+            console.log('画布元素:', canvas);
+            
+            if (canvas) {
+                // 强制设置画布尺寸
+                canvas.width = 800;
+                canvas.height = 400;
+                console.log('强制设置画布尺寸:', canvas.width, 'x', canvas.height);
+                
+                // 测试画布绘制
+                const ctx = canvas.getContext('2d');
+                
+                // 清空画布
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制背景
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制彩色方块
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(50, 50, 100, 100);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(200, 50, 100, 100);
+                ctx.fillStyle = '#0000ff';
+                ctx.fillRect(350, 50, 100, 100);
+                
+                // 绘制文字
+                ctx.fillStyle = '#000000';
+                ctx.font = '20px Arial';
+                ctx.fillText('序列画布测试成功！', 50, 200);
+                
+                console.log('测试绘制完成');
+                
+                // 更新调试信息
+                if (debugDiv) {
+                    debugDiv.innerHTML = `画布: ${canvas.width}x${canvas.height}`;
+                }
+            } else {
+                console.error('画布元素未找到！');
+                if (debugDiv) {
+                    debugDiv.innerHTML = '画布未找到！';
+                }
+            }
+            
+            // 测试动画函数
+            if (typeof window.startAnimation === 'function') {
+                console.log('动画函数存在，3秒后开始测试...');
+                setTimeout(() => {
+                    console.log('开始测试动画...');
+                    window.startAnimation();
+                }, 3000);
+            } else {
+                console.error('动画函数不存在！');
+            }
+            
+            alert('测试完成！如果看到彩色方块和文字，说明画布工作正常。');
+        }
+
+        // 确保函数在全局作用域中可用
+        window.generateSequencePlot = generateSequencePlot;
+        window.generateSequencePlot2 = generateSequencePlot2;
+        window.startAnimation = startAnimation;
+        window.pauseAnimation = pauseAnimation;
+        window.resetAnimation = resetAnimation;
+        window.exportSequenceData = exportSequenceData;
+        window.testSequenceCanvas = testSequenceCanvas;
+        window.initCanvas2 = initCanvas2;
+
+        // 输入变化时重新生成
+        document.getElementById('sequenceTerms').addEventListener('input', generateSequencePlot);
+        document.getElementById('plotType').addEventListener('change', generateSequencePlot);
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM加载完成，开始初始化页面...');
+
+            setTimeout(() => {
+                updateCurrentFormula();
+                // 初始化序列面板中的画布
+                generateSequencePlot();
+
+                // 渲染所有静态公式
+                const staticFormulaElements = document.querySelectorAll('.formula-display, .result-display, .analysis-section, th');
+                renderMath(Array.from(staticFormulaElements)).then(() => {
+                    console.log('MathJax初始化完成');
+                });
+            }, 500);
+        });
+
+        // 窗口大小改变时重新绘制
+        window.addEventListener('resize', function() {
+            setTimeout(generateSequencePlot, 100);
+        });
+    </script>
+</body>
+</html>
+
+

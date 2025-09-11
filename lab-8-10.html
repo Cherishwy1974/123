@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二项分布动画演示</title>
+    <link rel="stylesheet" href="common-assets/css/frame.css">
+    <link rel="stylesheet" href="common-assets/css/google-fonts.css">
+    <link rel="stylesheet" href="common-assets/css/fonts.css">
+    <script src="common-assets/js/math.min.js"></script>
+    <script src="common-assets/js/mathjax-config.js"></script>
+    <script src="common-assets/js/tex-svg.js"></script>
+    <script src="common-assets/js/plotly.min.js"></script>
+    <style>
+        /* CSS变量定义 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 间距 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* 圆角 */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            /* 阴影 */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            color: var(--light);
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            margin: 0 0 var(--spacing-sm) 0;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: var(--text-size);
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            height: 100%;
+            flex: 1;
+        }
+
+        .left-panel, .right-panel {
+            background: var(--light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--light);
+        }
+
+        .right-panel {
+            background: var(--light);
+            color: var(--gray-800);
+        }
+
+        /* 控制面板 */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .control-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: block;
+            font-size: var(--text-size);
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            color: var(--light);
+        }
+
+        .control-input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: var(--text-size);
+            transition: all 0.3s ease;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: var(--light);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-size: var(--btn-size);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #6d28d9;
+        }
+
+        /* 可视化区域 */
+        .visualization {
+            flex: 1;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visualization h3 {
+            margin: 0 0 var(--spacing-md) 0;
+            font-size: var(--h3-size);
+            color: var(--gray-800);
+            text-align: center;
+        }
+
+        #binomialChart {
+            width: 100%;
+            height: 400px;
+        }
+
+        /* 统计信息显示 */
+        .stats-display {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-left: 4px solid var(--primary);
+            color: #10b981;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .stat-item {
+            background: var(--light);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>二项分布动画演示</h1>
+            <p>通过交互式可视化理解二项分布的特性和应用</p>
+        </div>
+
+        <div class="interactive-layout">
+            <!-- 左侧控制面板 -->
+            <div class="left-panel">
+                <div class="control-panel">
+                    <div class="control-group">
+                        <label class="control-label">试验次数 n</label>
+                        <input type="range" class="control-input" id="trials" min="1" max="50" step="1" value="10">
+                        <span id="trialsValue">10</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">成功概率 p</label>
+                        <input type="range" class="control-input" id="probability" min="0" max="1" step="0.01" value="0.5">
+                        <span id="probabilityValue">0.50</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">模拟次数</label>
+                        <input type="range" class="control-input" id="simulations" min="100" max="10000" step="100" value="1000">
+                        <span id="simulationsValue">1000</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="btn" onclick="updateVisualization()">更新可视化</button>
+                        <button class="btn btn-secondary" onclick="resetValues()">重置</button>
+                    </div>
+                </div>
+
+                <div class="stats-display">
+                    <h3>二项分布参数</h3>
+                    <p>二项分布描述在n次独立试验中成功次数的概率分布。</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="mean">5.00</div>
+                            <div class="stat-label">期望值 μ = np</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="variance">2.50</div>
+                            <div class="stat-label">方差 σ² = np(1-p)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="std">1.58</div>
+                            <div class="stat-label">标准差 σ = √np(1-p)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mode">5</div>
+                            <div class="stat-label">众数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧可视化区域 -->
+            <div class="right-panel">
+                <div class="visualization">
+                    <h3>二项分布概率质量函数</h3>
+                    <div id="binomialChart"></div>
+                    
+                    <div class="stats-display">
+                        <h4>分布特性</h4>
+                        <p id="binomialExplanation">
+                            二项分布是离散概率分布，用于描述在固定次数的独立试验中成功次数的概率。
+                            当n足够大且p接近0.5时，二项分布近似正态分布。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 计算组合数 C(n,k)
+        function combination(n, k) {
+            if (k > n || k < 0) return 0;
+            if (k === 0 || k === n) return 1;
+            
+            let result = 1;
+            for (let i = 0; i < k; i++) {
+                result = result * (n - i) / (i + 1);
+            }
+            return result;
+        }
+
+        // 计算二项分布概率
+        function binomialProbability(n, k, p) {
+            return combination(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+        }
+
+        // 初始化可视化
+        function initVisualization() {
+            updateVisualization();
+        }
+
+        // 更新可视化
+        function updateVisualization() {
+            const n = parseInt(document.getElementById('trials').value);
+            const p = parseFloat(document.getElementById('probability').value);
+            const simulations = parseInt(document.getElementById('simulations').value);
+            
+            // 更新显示值
+            document.getElementById('trialsValue').textContent = n;
+            document.getElementById('probabilityValue').textContent = p.toFixed(2);
+            document.getElementById('simulationsValue').textContent = simulations;
+            
+            // 计算理论统计量
+            const mean = n * p;
+            const variance = n * p * (1 - p);
+            const std = Math.sqrt(variance);
+            const mode = Math.floor((n + 1) * p);
+            
+            // 更新统计显示
+            document.getElementById('mean').textContent = mean.toFixed(2);
+            document.getElementById('variance').textContent = variance.toFixed(2);
+            document.getElementById('std').textContent = std.toFixed(2);
+            document.getElementById('mode').textContent = mode;
+            
+            // 更新解释
+            updateExplanation(n, p, mean, variance, std);
+            
+            // 创建图表
+            createBinomialChart(n, p, simulations);
+        }
+
+        // 更新解释
+        function updateExplanation(n, p, mean, variance, std) {
+            const explanation = document.getElementById('binomialExplanation');
+            explanation.innerHTML = `
+                <p><strong>当前参数：</strong></p>
+                <ul>
+                    <li>试验次数 n = ${n}</li>
+                    <li>成功概率 p = ${p.toFixed(2)}</li>
+                </ul>
+                <p><strong>理论统计量：</strong></p>
+                <ul>
+                    <li>期望值 μ = np = ${n} × ${p.toFixed(2)} = ${mean.toFixed(2)}</li>
+                    <li>方差 σ² = np(1-p) = ${n} × ${p.toFixed(2)} × ${(1-p).toFixed(2)} = ${variance.toFixed(2)}</li>
+                    <li>标准差 σ = √np(1-p) = ${std.toFixed(2)}</li>
+                </ul>
+                <p>当n足够大时，二项分布可以用正态分布近似：X ~ N(${mean.toFixed(2)}, ${variance.toFixed(2)})</p>
+            `;
+        }
+
+        // 创建二项分布图表
+        function createBinomialChart(n, p, simulations) {
+            // 计算理论概率
+            const xValues = [];
+            const theoreticalProbs = [];
+            const simulatedCounts = new Array(n + 1).fill(0);
+            
+            for (let k = 0; k <= n; k++) {
+                xValues.push(k);
+                theoreticalProbs.push(binomialProbability(n, k, p));
+            }
+            
+            // 模拟数据
+            for (let i = 0; i < simulations; i++) {
+                let successes = 0;
+                for (let j = 0; j < n; j++) {
+                    if (Math.random() < p) {
+                        successes++;
+                    }
+                }
+                simulatedCounts[successes]++;
+            }
+            
+            // 归一化模拟数据
+            const simulatedProbs = simulatedCounts.map(count => count / simulations);
+            
+            const data = [
+                {
+                    x: xValues,
+                    y: theoreticalProbs,
+                    type: 'bar',
+                    name: '理论概率',
+                    marker: {
+                        color: 'rgba(79, 70, 229, 0.6)',
+                        line: {
+                            color: 'rgba(79, 70, 229, 0.8)',
+                            width: 1
+                        }
+                    }
+                },
+                {
+                    x: xValues,
+                    y: simulatedProbs,
+                    type: 'scatter',
+                    mode: 'markers',
+                    name: '模拟结果',
+                    marker: {
+                        color: '#ef4444',
+                        size: 8,
+                        symbol: 'circle'
+                    }
+                }
+            ];
+
+            const layout = {
+                title: {
+                    text: `二项分布 B(${n}, ${p.toFixed(2)})`,
+                    font: { size: 16, color: '#1f2937' }
+                },
+                xaxis: {
+                    title: '成功次数',
+                    titlefont: { size: 14, color: '#4b5563' },
+                    tickfont: { size: 12, color: '#6b7280' }
+                },
+                yaxis: {
+                    title: '概率',
+                    titlefont: { size: 14, color: '#4b5563' },
+                    tickfont: { size: 12, color: '#6b7280' }
+                },
+                margin: { t: 60, r: 30, b: 60, l: 60 },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Source Han Serif SC, Noto Serif SC, serif' },
+                legend: {
+                    x: 0.7,
+                    y: 0.9
+                }
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('binomialChart', data, layout, config);
+        }
+
+        // 重置值
+        function resetValues() {
+            document.getElementById('trials').value = 10;
+            document.getElementById('probability').value = 0.5;
+            document.getElementById('simulations').value = 1000;
+            updateVisualization();
+        }
+
+        // 事件监听器
+        document.getElementById('trials').addEventListener('input', updateVisualization);
+        document.getElementById('probability').addEventListener('input', updateVisualization);
+        document.getElementById('simulations').addEventListener('input', updateVisualization);
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initVisualization();
+        });
+    </script>
+</body>
+</html>

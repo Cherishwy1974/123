@@ -1,0 +1,1490 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矩阵的秩动画演示 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    <!-- 本地化MathJax配置 -->
+    <script src="../common-assets/js/mathjax-config.js"></script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    
+    <!-- 加载D3.js用于可视化 -->
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+            min-height: 44px;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: hidden;
+            background: var(--light);
+            height: 100%;
+        }
+
+        .panel {
+            display: none;
+            padding: 8px;
+            overflow-y: auto;
+            flex: 1;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--gray-200);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .control-panel {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .result-container {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .input-group {
+            margin-bottom: 8px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+            font-size: var(--text-size);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: var(--text-size);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light);
+            min-height: 44px;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin: 4px;
+            min-height: 36px;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.3s ease;
+            margin: 6px 0;
+            min-height: 60px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .animation-area {
+            background: transparent;
+            padding: 8px;
+            text-align: center;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .animation-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .step-description {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 24px;
+            padding: 12px;
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .matrix-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 32px 0;
+            position: relative;
+            flex: 1;
+        }
+
+        .matrix-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease;
+        }
+
+        .matrix-label {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary);
+            padding: 6px 12px;
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+        }
+
+        .matrix-visual {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .matrix-bracket {
+            font-size: 50px;
+            color: var(--primary);
+            font-weight: bold;
+            line-height: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .matrix-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .matrix-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .matrix-cell {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 3px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .matrix-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .matrix-cell.highlight {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.4);
+        }
+
+        .matrix-cell.highlight::before {
+            left: 100%;
+        }
+
+        .matrix-cell.pivot {
+            background: linear-gradient(135deg, var(--warning) 0%, #fd7e14 100%);
+            border-color: var(--warning);
+            color: white;
+            animation: bounce 0.8s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .matrix-cell.zero {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            border-color: #6c757d;
+            color: white;
+            opacity: 0.7;
+        }
+
+        .matrix-cell.linearly-independent {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+            border-color: var(--success);
+            color: white;
+            animation: glow 1.5s ease-in-out;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
+        }
+
+        .rank-info {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(79, 70, 229, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+        }
+
+        .rank-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .rank-label {
+            font-size: 0.95rem;
+            color: #666;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .control-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.4);
+        }
+
+        .control-btn:hover::before {
+            left: 100%;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-btn.play {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+        }
+
+        .control-btn.pause {
+            background: linear-gradient(135deg, var(--warning) 0%, #fd7e14 100%);
+        }
+
+        .control-btn.reset {
+            background: linear-gradient(135deg, var(--danger) 0%, #e83e8c 100%);
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        /* 数学公式样式 */
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: var(--formula-size) !important;
+            font-weight: normal !important;
+        }
+
+        /* 行内公式样式 */
+        .inline-math {
+            display: inline;
+            font-size: inherit;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 160px 1fr;
+                height: calc(100vh - 80px);
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+                height: calc(100vh - 80px);
+            }
+            
+            .sidebar {
+                padding: 10px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                height: auto;
+            }
+            
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 10px;
+                gap: 4px;
+            }
+            
+            .nav-tab {
+                min-width: 100px;
+                padding: 8px 12px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .nav-tab::before {
+                display: none;
+            }
+
+            .header-subtitle {
+                display: none;
+            }
+
+            .interactive-layout {
+                height: 100%;
+            }
+
+            .matrix-cell {
+                width: 60px;
+                height: 60px;
+                font-size: 18px;
+            }
+
+            .matrix-bracket {
+                font-size: 50px;
+            }
+
+            .rank-info {
+                position: static;
+                margin: 20px auto;
+                width: fit-content;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel {
+                padding: 16px;
+            }
+
+            .control-panel {
+                padding: 16px;
+            }
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>矩阵的秩动画演示</h1>
+                <p class="header-subtitle">通过行阶梯形变换动画演示矩阵秩的计算过程</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="calculator">
+                        <span class="nav-icon">🧮</span>
+                        <span>计算器</span>
+                    </button>
+                    <button class="nav-tab" data-panel="animation">
+                        <span class="nav-icon">🎬</span>
+                        <span>动画演示</span>
+                    </button>
+                    <button class="nav-tab" data-panel="theory">
+                        <span class="nav-icon">📚</span>
+                        <span>理论基础</span>
+                    </button>
+                    <button class="nav-tab" data-panel="practice">
+                        <span class="nav-icon">📝</span>
+                        <span>练习</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="content-area">
+                <!-- 计算器面板 -->
+                <div class="panel active" id="calculator">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="input-group">
+                                <label for="matrixInput">输入矩阵:</label>
+                                <textarea id="matrixInput" placeholder="例如: [[2,4,6,8],[1,2,3,4],[3,6,9,12]]" rows="4" onchange="calculateRank()"></textarea>
+                            </div>
+
+                            <div style="text-align: center;">
+                                <button class="btn" onclick="calculateRank()">计算秩</button>
+                                <button class="btn btn-secondary" onclick="clearMatrixInput()">清空</button>
+                            </div>
+
+                            <div class="formula-display" id="rankResult">
+                                输入矩阵并点击"计算秩"按钮
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="animation-area">
+                                <div class="animation-title">矩阵秩计算演示</div>
+                                <div class="step-description" id="step-description">
+                                    通过行变换将矩阵化为行阶梯形，非零行的个数即为矩阵的秩
+                                </div>
+                                
+                                <div class="rank-info">
+                                    <div class="rank-value" id="rank-value">?</div>
+                                    <div class="rank-label">矩阵的秩</div>
+                                </div>
+                                
+                                <div class="matrix-display" id="matrix-display">
+                                    <!-- 矩阵将在这里动态显示 -->
+                                </div>
+                                
+                                <div class="controls">
+                                    <button class="control-btn play" id="play-btn">▶ 开始动画</button>
+                                    <button class="control-btn pause" id="pause-btn" disabled>⏸ 暂停</button>
+                                    <button class="control-btn" id="step-btn">⏭ 单步</button>
+                                    <button class="control-btn reset" id="reset-btn">🔄 重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 动画演示面板 -->
+                <div class="panel" id="animation">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">矩阵秩的定义</h4>
+                                <p style="font-size: 12px; margin: 2px 0;">矩阵的秩是矩阵中线性无关行（或列）的最大个数</p>
+                            </div>
+
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">计算方法</h4>
+                                <p style="font-size: 12px; margin: 2px 0;">通过初等行变换将矩阵化为行阶梯形</p>
+                                <p style="font-size: 12px; margin: 2px 0;">非零行的个数即为矩阵的秩</p>
+                            </div>
+
+                            <div class="controls">
+                                <button class="control-btn play" id="animation-play-btn">▶ 开始动画</button>
+                                <button class="control-btn pause" id="animation-pause-btn" disabled>⏸ 暂停</button>
+                                <button class="control-btn" id="animation-step-btn">⏭ 单步</button>
+                                <button class="control-btn reset" id="animation-reset-btn">🔄 重置</button>
+                            </div>
+
+                            <div class="progress-indicator" id="progress-indicator">
+                                <!-- 进度点将在这里动态生成 -->
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="animation-area">
+                                <div class="animation-title">矩阵秩计算动画</div>
+                                <div class="step-description" id="animation-step-description">
+                                    通过行变换将矩阵化为行阶梯形，非零行的个数即为矩阵的秩
+                                </div>
+                                
+                                <div class="rank-info">
+                                    <div class="rank-value" id="animation-rank-value">?</div>
+                                    <div class="rank-label">矩阵的秩</div>
+                                </div>
+                                
+                                <div class="matrix-display" id="animation-matrix-display">
+                                    <!-- 动画矩阵将在这里动态显示 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 理论基础面板 -->
+                <div class="panel" id="theory">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">矩阵秩的定义</h4>
+                                <p style="font-size: 12px; margin: 2px 0;">设 $A$ 为 $m \times n$ 矩阵，$A$ 的秩记为 $r(A)$</p>
+                                <p style="font-size: 12px; margin: 2px 0;">$r(A) = $ 矩阵 $A$ 中线性无关行（或列）的最大个数</p>
+                            </div>
+
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">行阶梯形矩阵</h4>
+                                <p style="font-size: 12px; margin: 2px 0;">满足以下条件的矩阵：</p>
+                                <ul style="text-align: left; margin: 2px 0; font-size: 11px; padding-left: 12px; line-height: 1.3;">
+                                    <li>零行在非零行下方</li>
+                                    <li>非零行的首非零元在上一行首非零元右侧</li>
+                                </ul>
+                            </div>
+
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">初等行变换</h4>
+                                <ul style="text-align: left; margin: 2px 0; font-size: 11px; padding-left: 12px; line-height: 1.3;">
+                                    <li>交换两行：$r_i \leftrightarrow r_j$</li>
+                                    <li>数乘某行：$r_i \rightarrow kr_i$</li>
+                                    <li>行加运算：$r_i \rightarrow r_i + kr_j$</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">重要性质</h4>
+                                <ul style="text-align: left; margin: 2px 0; font-size: 11px; padding-left: 12px; line-height: 1.3;">
+                                    <li>$0 \leq r(A) \leq \min(m, n)$</li>
+                                    <li>$r(A) = 0$ 当且仅当 $A$ 为零矩阵</li>
+                                    <li>$r(A) = n$ 当且仅当 $A$ 的列向量线性无关</li>
+                                    <li>$r(A) = m$ 当且仅当 $A$ 的行向量线性无关</li>
+                                </ul>
+                            </div>
+
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">计算步骤</h4>
+                                <ul style="text-align: left; margin: 2px 0; font-size: 11px; padding-left: 12px; line-height: 1.3;">
+                                    <li>选择主元（非零元素）</li>
+                                    <li>将主元所在行移到顶部</li>
+                                    <li>用主元消去下方行的对应元素</li>
+                                    <li>重复上述步骤直到化为行阶梯形</li>
+                                    <li>统计非零行个数</li>
+                                </ul>
+                            </div>
+
+                            <div class="formula-display">
+                                <h4 style="color: var(--primary); margin-bottom: 4px; font-size: 14px; font-weight: 600;">应用</h4>
+                                <ul style="text-align: left; margin: 2px 0; font-size: 11px; padding-left: 12px; line-height: 1.3;">
+                                    <li>判断线性方程组解的情况</li>
+                                    <li>求向量组的极大无关组</li>
+                                    <li>判断矩阵的可逆性</li>
+                                    <li>计算矩阵的行列式</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 练习面板 -->
+                <div class="panel" id="practice">
+                    <div class="interactive-layout">
+                        <!-- 左侧：练习题 -->
+                        <div class="control-panel">
+                            <div class="input-group">
+                                <label>练习1：计算矩阵的秩</label>
+                                <p>已知矩阵 $A = \begin{bmatrix} 2 & 4 & 6 & 8 \\ 1 & 2 & 3 & 4 \\ 3 & 6 & 9 & 12 \end{bmatrix}$</p>
+                                <p>计算 $r(A)$：</p>
+                                <button class="btn" onclick="showPractice1Answer()">显示答案</button>
+                            </div>
+
+                            <div class="input-group">
+                                <label>练习2：判断矩阵的秩</label>
+                                <p>矩阵 $B = \begin{bmatrix} 1 & 2 & 3 \\ 0 & 1 & 2 \\ 0 & 0 & 1 \end{bmatrix}$ 的秩是多少？</p>
+                                <button class="btn" onclick="showPractice2Answer()">显示答案</button>
+                            </div>
+
+                            <div class="input-group">
+                                <label>练习3：特殊矩阵的秩</label>
+                                <p>单位矩阵 $I_n$ 的秩是多少？</p>
+                                <button class="btn" onclick="showPractice3Answer()">显示答案</button>
+                            </div>
+                        </div>
+
+                        <!-- 右侧：练习答案 -->
+                        <div class="result-container">
+                            <div class="formula-display" id="practice1-result" style="display: none;">
+                                点击左侧"显示答案"查看练习1结果
+                            </div>
+                            <div class="formula-display" id="practice2-result" style="display: none;">
+                                点击左侧"显示答案"查看练习2结果
+                            </div>
+                            <div class="formula-display" id="practice3-result" style="display: none;">
+                                点击左侧"显示答案"查看练习3结果
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let animationRunning = false;
+        let animationStep = 0;
+        let animationInterval = null;
+        let currentMatrix = null;
+
+        // 原始矩阵
+        const defaultMatrix = [
+            [2, 4, 6, 8],
+            [1, 2, 3, 4],
+            [3, 6, 9, 12]
+        ];
+
+        // MathJax渲染辅助函数
+        function renderMathJax(element) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([element]).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise([element]).catch(e => console.warn('MathJax延迟渲染也失败:', e));
+                        }
+                    }, 100);
+                });
+            } else {
+                setTimeout(() => renderMathJax(element), 200);
+            }
+        }
+
+        // 导航标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.classList.add('active');
+                }
+
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([panel]).catch(err => console.log('MathJax渲染错误:', err));
+                    }
+                }, 100);
+            });
+        });
+
+        // 矩阵解析函数
+        function parseMatrix(matrixStr) {
+            try {
+                const cleaned = matrixStr.replace(/\s/g, '');
+                const match = cleaned.match(/^\[(.*)\]$/);
+                if (!match) return null;
+                
+                const rows = match[1].split('],[').map(row => 
+                    row.replace(/[\[\]]/g, '').split(',').map(x => {
+                        const num = parseFloat(x.trim());
+                        return isNaN(num) ? 0 : num;
+                    })
+                );
+                
+                if (rows.length === 0 || rows[0].length === 0) return null;
+                const colCount = rows[0].length;
+                for (let row of rows) {
+                    if (row.length !== colCount) return null;
+                }
+                
+                return rows;
+            } catch (e) {
+                console.error('矩阵解析错误:', e);
+                return null;
+            }
+        }
+
+        // 计算矩阵的秩
+        function calculateRank() {
+            const matrixStr = document.getElementById('matrixInput').value;
+            const resultDiv = document.getElementById('rankResult');
+
+            if (!matrixStr.trim()) {
+                resultDiv.innerHTML = '请输入矩阵';
+                return;
+            }
+
+            const matrix = parseMatrix(matrixStr);
+            if (!matrix) {
+                resultDiv.innerHTML = '矩阵格式错误，请使用格式如 [[2,4,6,8],[1,2,3,4],[3,6,9,12]]';
+                return;
+            }
+
+            currentMatrix = matrix;
+            const rank = computeMatrixRank(matrix);
+            
+            resultDiv.innerHTML = `矩阵的秩为：<span class="highlight">${rank}</span>`;
+            renderMathJax(resultDiv);
+
+            // 更新右侧动画区域的矩阵
+            renderMatrix(matrix, 'matrix-display');
+        }
+
+        // 计算矩阵秩的算法
+        function computeMatrixRank(matrix) {
+            const rows = matrix.length;
+            const cols = matrix[0].length;
+            let rank = 0;
+            
+            // 复制矩阵以避免修改原矩阵
+            const workMatrix = matrix.map(row => [...row]);
+            
+            for (let col = 0; col < cols && rank < rows; col++) {
+                // 寻找主元
+                let pivotRow = -1;
+                for (let row = rank; row < rows; row++) {
+                    if (Math.abs(workMatrix[row][col]) > 1e-10) {
+                        pivotRow = row;
+                        break;
+                    }
+                }
+                
+                if (pivotRow === -1) continue; // 该列全为零
+                
+                // 交换行
+                if (pivotRow !== rank) {
+                    [workMatrix[rank], workMatrix[pivotRow]] = [workMatrix[pivotRow], workMatrix[rank]];
+                }
+                
+                // 消元
+                for (let row = rank + 1; row < rows; row++) {
+                    if (Math.abs(workMatrix[row][col]) > 1e-10) {
+                        const factor = workMatrix[row][col] / workMatrix[rank][col];
+                        for (let c = col; c < cols; c++) {
+                            workMatrix[row][c] -= factor * workMatrix[rank][c];
+                        }
+                    }
+                }
+                
+                rank++;
+            }
+            
+            return rank;
+        }
+
+        // 清空矩阵输入
+        function clearMatrixInput() {
+            document.getElementById('matrixInput').value = '';
+            document.getElementById('rankResult').innerHTML = '输入矩阵并点击"计算秩"按钮';
+        }
+
+        // 初始化页面
+        function initializePage() {
+            setupEventListeners();
+            renderMatrix(defaultMatrix, 'matrix-display');
+            renderMatrix(defaultMatrix, 'animation-matrix-display');
+            updateProgressIndicator();
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 计算器面板控制
+            document.getElementById('play-btn').addEventListener('click', startAnimation);
+            document.getElementById('pause-btn').addEventListener('click', pauseAnimation);
+            document.getElementById('step-btn').addEventListener('click', stepAnimation);
+            document.getElementById('reset-btn').addEventListener('click', resetAnimation);
+
+            // 动画演示面板控制
+            document.getElementById('animation-play-btn').addEventListener('click', startAnimation);
+            document.getElementById('animation-pause-btn').addEventListener('click', pauseAnimation);
+            document.getElementById('animation-step-btn').addEventListener('click', stepAnimation);
+            document.getElementById('animation-reset-btn').addEventListener('click', resetAnimation);
+        }
+
+        // 渲染矩阵
+        function renderMatrix(matrix, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `
+                <div class="matrix-container">
+                    <div class="matrix-label">矩阵 A</div>
+                    <div class="matrix-visual">
+                        <span class="matrix-bracket">[</span>
+                        <div class="matrix-inner">
+                            ${matrix.map((row, i) => `
+                                <div class="matrix-row">
+                                    ${row.map((val, j) => `
+                                        <div class="matrix-cell" data-row="${i}" data-col="${j}">${val}</div>
+                                    `).join('')}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <span class="matrix-bracket">]</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 开始动画
+        function startAnimation() {
+            if (!animationRunning) {
+                animationRunning = true;
+                document.getElementById('play-btn').disabled = true;
+                document.getElementById('pause-btn').disabled = false;
+                document.getElementById('animation-play-btn').disabled = true;
+                document.getElementById('animation-pause-btn').disabled = false;
+
+                animationInterval = setInterval(() => {
+                    stepAnimation();
+                }, 2500);
+            }
+        }
+
+        // 暂停动画
+        function pauseAnimation() {
+            animationRunning = false;
+            document.getElementById('play-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+            document.getElementById('animation-play-btn').disabled = false;
+            document.getElementById('animation-pause-btn').disabled = true;
+
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
+        }
+
+        // 单步动画
+        function stepAnimation() {
+            const matrix = currentMatrix || defaultMatrix;
+            const steps = [
+                () => {
+                    document.getElementById('step-description').textContent =
+                        '步骤1: 选择第1行第1列元素作为主元';
+                    document.getElementById('animation-step-description').textContent =
+                        '步骤1: 选择第1行第1列元素作为主元';
+                    highlightPivot(0, 0);
+                },
+                () => {
+                    document.getElementById('step-description').textContent =
+                        '步骤2: 第1行除以2，使主元为1';
+                    document.getElementById('animation-step-description').textContent =
+                        '步骤2: 第1行除以2，使主元为1';
+                    highlightRow(0);
+                    setTimeout(() => {
+                        const newMatrix = matrix.map((row, i) => 
+                            i === 0 ? row.map(val => val / 2) : [...row]
+                        );
+                        updateMatrixDisplay(newMatrix);
+                        markRowChanged(0);
+                    }, 1000);
+                },
+                () => {
+                    document.getElementById('step-description').textContent =
+                        '步骤3: 第2行减去第1行，消除第2行第1列元素';
+                    document.getElementById('animation-step-description').textContent =
+                        '步骤3: 第2行减去第1行，消除第2行第1列元素';
+                    highlightRows([0, 1]);
+                    setTimeout(() => {
+                        const newMatrix = matrix.map((row, i) => 
+                            i === 1 ? row.map((val, j) => val - matrix[0][j]) : [...row]
+                        );
+                        updateMatrixDisplay(newMatrix);
+                        markRowZero(1);
+                    }, 1000);
+                },
+                () => {
+                    document.getElementById('step-description').textContent =
+                        '步骤4: 第3行减去3倍第1行，消除第3行第1列元素';
+                    document.getElementById('animation-step-description').textContent =
+                        '步骤4: 第3行减去3倍第1行，消除第3行第1列元素';
+                    highlightRows([0, 2]);
+                    setTimeout(() => {
+                        const newMatrix = matrix.map((row, i) => 
+                            i === 2 ? row.map((val, j) => val - 3 * matrix[0][j]) : [...row]
+                        );
+                        updateMatrixDisplay(newMatrix);
+                        markRowZero(2);
+                    }, 1000);
+                },
+                () => {
+                    document.getElementById('step-description').textContent =
+                        '完成！矩阵已化为行阶梯形，非零行个数为1，所以矩阵的秩为1';
+                    document.getElementById('animation-step-description').textContent =
+                        '完成！矩阵已化为行阶梯形，非零行个数为1，所以矩阵的秩为1';
+                    highlightLinearlyIndependentRows();
+                    document.getElementById('rank-value').textContent = '1';
+                    document.getElementById('animation-rank-value').textContent = '1';
+                    document.getElementById('rank-value').style.animation = 'glow 2s ease-in-out';
+                    document.getElementById('animation-rank-value').style.animation = 'glow 2s ease-in-out';
+                }
+            ];
+
+            if (animationStep < steps.length) {
+                steps[animationStep]();
+                animationStep++;
+            } else {
+                pauseAnimation();
+            }
+
+            updateProgressIndicator();
+        }
+
+        // 重置动画
+        function resetAnimation() {
+            pauseAnimation();
+            animationStep = 0;
+
+            const matrix = currentMatrix || defaultMatrix;
+            renderMatrix(matrix, 'matrix-display');
+            renderMatrix(matrix, 'animation-matrix-display');
+
+            document.getElementById('step-description').textContent =
+                '通过行变换将矩阵化为行阶梯形，非零行的个数即为矩阵的秩';
+            document.getElementById('animation-step-description').textContent =
+                '通过行变换将矩阵化为行阶梯形，非零行的个数即为矩阵的秩';
+
+            document.getElementById('rank-value').textContent = '?';
+            document.getElementById('animation-rank-value').textContent = '?';
+            document.getElementById('rank-value').style.animation = '';
+            document.getElementById('animation-rank-value').style.animation = '';
+
+            updateProgressIndicator();
+        }
+
+        // 更新矩阵显示
+        function updateMatrixDisplay(matrix) {
+            const cells = document.querySelectorAll('.matrix-cell');
+            matrix.forEach((row, i) => {
+                row.forEach((val, j) => {
+                    const cellIndex = i * row.length + j;
+                    if (cells[cellIndex]) {
+                        cells[cellIndex].textContent = Math.abs(val) < 1e-10 ? 0 : val;
+                    }
+                });
+            });
+        }
+
+        // 更新进度指示器
+        function updateProgressIndicator() {
+            const indicator = document.getElementById('progress-indicator');
+            const totalSteps = 5;
+
+            indicator.innerHTML = '';
+            for (let i = 0; i < totalSteps; i++) {
+                const dot = document.createElement('div');
+                dot.className = `progress-dot ${i <= animationStep ? 'active' : ''}`;
+                indicator.appendChild(dot);
+            }
+        }
+
+        // 高亮主元
+        function highlightPivot(row, col) {
+            clearHighlights();
+            const cells = document.querySelectorAll('.matrix-cell');
+            const cellIndex = row * 4 + col;
+            if (cells[cellIndex]) {
+                cells[cellIndex].classList.add('pivot');
+            }
+        }
+
+        // 高亮行
+        function highlightRow(rowIndex) {
+            clearHighlights();
+            const cells = document.querySelectorAll(`[data-row="${rowIndex}"]`);
+            cells.forEach(cell => cell.classList.add('highlight'));
+        }
+
+        // 高亮多行
+        function highlightRows(rowIndices) {
+            clearHighlights();
+            rowIndices.forEach(rowIndex => {
+                const cells = document.querySelectorAll(`[data-row="${rowIndex}"]`);
+                cells.forEach(cell => cell.classList.add('highlight'));
+            });
+        }
+
+        // 标记行已改变
+        function markRowChanged(rowIndex) {
+            const cells = document.querySelectorAll(`[data-row="${rowIndex}"]`);
+            cells.forEach(cell => {
+                cell.classList.remove('highlight', 'pivot');
+                cell.classList.add('linearly-independent');
+            });
+        }
+
+        // 标记零行
+        function markRowZero(rowIndex) {
+            const cells = document.querySelectorAll(`[data-row="${rowIndex}"]`);
+            cells.forEach(cell => {
+                cell.classList.remove('highlight', 'pivot');
+                cell.classList.add('zero');
+            });
+        }
+
+        // 高亮线性无关行
+        function highlightLinearlyIndependentRows() {
+            clearHighlights();
+            const cells = document.querySelectorAll(`[data-row="0"]`);
+            cells.forEach(cell => {
+                cell.classList.add('linearly-independent');
+            });
+        }
+
+        // 清除高亮
+        function clearHighlights() {
+            document.querySelectorAll('.matrix-cell').forEach(cell => {
+                cell.classList.remove('highlight', 'pivot', 'linearly-independent', 'zero');
+            });
+        }
+
+        // 练习答案切换显示函数
+        function showPractice1Answer() {
+            // 隐藏其他答案
+            hideAllPracticeAnswers();
+            
+            const resultDiv = document.getElementById('practice1-result');
+            resultDiv.style.display = 'flex';
+            resultDiv.innerHTML = `
+                <p><strong>答案：</strong></p>
+                <p>$r(A) = 1$</p>
+                <p><strong>计算过程：</strong></p>
+                <p>通过初等行变换：</p>
+                <p>$\\begin{bmatrix} 2 & 4 & 6 & 8 \\\\ 1 & 2 & 3 & 4 \\\\ 3 & 6 & 9 & 12 \\end{bmatrix} \\rightarrow \\begin{bmatrix} 1 & 2 & 3 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0 \\end{bmatrix}$</p>
+                <p>非零行个数为1，所以 $r(A) = 1$</p>
+            `;
+            renderMathJax(resultDiv);
+        }
+
+        function showPractice2Answer() {
+            // 隐藏其他答案
+            hideAllPracticeAnswers();
+            
+            const resultDiv = document.getElementById('practice2-result');
+            resultDiv.style.display = 'flex';
+            resultDiv.innerHTML = `
+                <p><strong>答案：</strong></p>
+                <p>$r(B) = 3$</p>
+                <p><strong>说明：</strong></p>
+                <p>矩阵 $B$ 已经是行阶梯形矩阵，且没有零行，所以 $r(B) = 3$</p>
+                <p>这是一个上三角矩阵，对角线元素都不为零，因此满秩</p>
+            `;
+            renderMathJax(resultDiv);
+        }
+
+        function showPractice3Answer() {
+            // 隐藏其他答案
+            hideAllPracticeAnswers();
+            
+            const resultDiv = document.getElementById('practice3-result');
+            resultDiv.style.display = 'flex';
+            resultDiv.innerHTML = `
+                <p><strong>答案：</strong></p>
+                <p>$r(I_n) = n$</p>
+                <p><strong>说明：</strong></p>
+                <p>单位矩阵 $I_n$ 的 $n$ 行都是线性无关的，所以 $r(I_n) = n$</p>
+                <p>单位矩阵是满秩矩阵，其秩等于矩阵的阶数</p>
+            `;
+            renderMathJax(resultDiv);
+        }
+
+        // 隐藏所有练习答案
+        function hideAllPracticeAnswers() {
+            const practiceResults = ['practice1-result', 'practice2-result', 'practice3-result'];
+            practiceResults.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+        }
+
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePage();
+
+            // MathJax 初始化
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
+                }
+            }, 300);
+        });
+    </script>
+</body>
+</html>
+

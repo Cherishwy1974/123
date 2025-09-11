@@ -1,0 +1,1301 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>参数方程求导 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    <!-- 本地化MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                macros: {
+                    frac: '\\frac',
+                    sin: '\\sin',
+                    cos: '\\cos',
+                    ln: '\\ln',
+                    exp: '\\exp',
+                    sqrt: '\\sqrt',
+                    lim: '\\lim',
+                    limto: ['\\lim_{#1 \\to #2}', 2]
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                ready: function () {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is loaded, but not yet initialized');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    
+    <!-- 隐藏滚动条样式 -->
+    <link rel="stylesheet" href="../common-assets/css/hidden-scrollbar.css">
+
+<style>
+        /* CSS变量定义 */
+        :root {
+            --gray-100: #f8f9fa;
+            --gray-300: #dee2e6;
+            --gray-600: #6c757d;
+        }
+
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif CJK SC', serif;
+            font-size: 16px;
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+            overflow: auto;
+        }
+
+        /* 主容器 - 三栏布局 */
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-right: 20px;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 180px;
+            background: #2c3e50;
+            color: white;
+            padding-top: 70px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .nav-item:hover {
+            background: #34495e;
+            border-left-color: #3498db;
+        }
+
+        .nav-item.active {
+            background: #34495e;
+            border-left-color: #e74c3c;
+        }
+
+        .nav-item .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            fill: currentColor;
+        }
+
+        .nav-item .text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 70px 0 0 0;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .theory-section {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+        }
+
+        .theory-left {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .theory-right {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .content-panel {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+
+        .card-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* 表单控件 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-height: 44px;
+            min-width: 44px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        /* 公式显示区域 */
+        .formula-display {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px solid #1976d2;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* 滑块控件 */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .slider-value {
+            min-width: 80px;
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid #667eea;
+            font-size: 16px;
+        }
+
+        /* Canvas容器 */
+        .canvas-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: auto;}
+
+        #parametricCanvas {
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            max-width: 100%;
+            height: 400px;
+            width: 100%;
+        }
+
+        /* 结果显示面板 */
+        .result-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+            margin: 15px 0;
+        }
+
+        .result-panel h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .result-value {
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* 示例网格 */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .example-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #28a745;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .example-card h3 {
+            font-size: 18px;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .example-card .formula {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 16px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .example-card .description {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 知识卡片 */
+        .knowledge-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .knowledge-card h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .knowledge-card .formula {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        /* 输入组合 */
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 20px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .nav-item .text {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 15px 10px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header .subtitle {
+                display: none;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* MathJax样式调整 */
+        .MathJax {
+            font-size: 1em !important;
+        }
+
+        .MathJax_Display {
+            margin: 0.5em 0 !important;
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }</style>
+</head>
+<body>
+    <!-- 顶部标题栏 -->
+    <div class="header">
+        <h1>参数方程求导</h1>
+        <div class="subtitle">掌握参数方程的求导方法和几何意义</div>
+    </div>
+
+    <div class="container">
+        <!-- 侧边栏导航 -->
+        <div class="sidebar">
+            <div class="nav-item active" onclick="showPanel('theory')">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span class="text">理论</span>
+            </div>
+            <div class="nav-item" onclick="showPanel('calculator')">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                </svg>
+                <span class="text">计算器</span>
+            </div>
+            <div class="nav-item" onclick="showPanel('examples')">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z"/>
+                </svg>
+                <span class="text">例题</span>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 理论面板 -->
+            <div id="theory" class="content-panel active">
+                <div class="theory-section">
+                    <!-- 左侧理论区 -->
+                    <div class="theory-left">
+                        <div class="knowledge-card">
+                            <h3>参数方程求导法则</h3>
+                            <div class="formula">
+                            $\frac{dy}{dx} = \frac{\frac{dy}{dt}}{\frac{dx}{dt}} = \frac{y'(t)}{x'(t)}$
+                            </div>
+                            <p>当曲线由参数方程 $\begin{cases} x = x(t) \\ y = y(t) \end{cases}$ 给出时，可以利用链式法则求导</p>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>参数方程求导的方法</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="formula-display">
+                                    <strong>简单理解：</strong>分别对参数 $t$ 求导，然后相除
+                                </div>
+                                <div class="formula-display">
+                                    $\frac{dy}{dx} = \frac{\frac{dy}{dt}}{\frac{dx}{dt}}$ （分子除以分母）
+                                </div>
+                                
+                                <h4 style="margin: 20px 0 10px 0; color: #667eea;">实用技巧</h4>
+                                <ul style="margin-left: 20px; color: #6c757d;">
+                                    <li><strong>第一步：</strong>分别计算 $\frac{dx}{dt}$ 和 $\frac{dy}{dt}$</li>
+                                    <li><strong>第二步：</strong>用 $\frac{dy}{dt}$ 除以 $\frac{dx}{dt}$</li>
+                                    <li><strong>注意：</strong>当分母为0时，切线是垂直的</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>二阶导数</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="formula-display">
+                                    $\frac{d^2y}{dx^2} = \frac{d}{dx}\left(\frac{dy}{dx}\right) = \frac{d}{dt}\left(\frac{dy}{dx}\right) \cdot \frac{dt}{dx}$
+                                </div>
+                                <div class="formula-display">
+                                    $= \frac{\frac{d}{dt}\left(\frac{y'(t)}{x'(t)}\right)}{\frac{dx}{dt}} = \frac{x'(t)y''(t) - y'(t)x''(t)}{[x'(t)]^3}$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧可视化区 -->
+                    <div class="theory-right">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>参数曲线图像与切线</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="canvas-container">
+                                    <canvas id="parametricCanvas"></canvas>
+                                </div>
+
+                                <div style="text-align: center; margin: 15px 0; color: #6c757d; font-size: 12px;">
+                                    <span style="color: #667eea;">●</span> 参数曲线　
+                                    <span style="color: #e74c3c;">●</span> 当前点　
+                                    <span style="color: #28a745;">●</span> 切线
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="visualCurve">选择要绘制的曲线:</label>
+                                    <select id="visualCurve" class="form-control" onchange="updateVisualization()">
+                                        <option value="circle">圆</option>
+                                        <option value="ellipse">椭圆</option>
+                                        <option value="cycloid">摆线</option>
+                                        <option value="cardioid">心形线</option>
+                                        <option value="parabola">抛物线</option>
+                                        <option value="astroid">星形线</option>
+                                    </select>
+                                </div>
+
+                                <div style="margin-top: 15px;">
+                                    <button class="btn btn-primary" onclick="updateVisualization()">更新图像</button>
+                                    <button class="btn btn-secondary" onclick="toggleTangentLine()">
+                                        <span id="tangentText">显示切线</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>常见参数曲线</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="examples-grid">
+                            <div class="example-card">
+                                <h3>圆</h3>
+                                <div class="formula">$\begin{cases} x = r\cos t \\ y = r\sin t \end{cases}$</div>
+                                <div class="description">$\frac{dy}{dx} = -\cot t$</div>
+                            </div>
+                            
+                            <div class="example-card">
+                                <h3>椭圆</h3>
+                                <div class="formula">$\begin{cases} x = a\cos t \\ y = b\sin t \end{cases}$</div>
+                                <div class="description">$\frac{dy}{dx} = -\frac{b}{a}\cot t$</div>
+                            </div>
+                            
+                            <div class="example-card">
+                                <h3>摆线</h3>
+                                <div class="formula">$\begin{cases} x = r(t - \sin t) \\ y = r(1 - \cos t) \end{cases}$</div>
+                                <div class="description">圆在直线上滚动的轨迹</div>
+                            </div>
+                            
+                            <div class="example-card">
+                                <h3>心形线</h3>
+                                <div class="formula">$\begin{cases} x = a(2\cos t - \cos 2t) \\ y = a(2\sin t - \sin 2t) \end{cases}$</div>
+                                <div class="description">心形曲线的参数方程</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计算器面板 -->
+            <div id="calculator" class="content-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>参数方程求导计算器</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="curveSelect">选择参数曲线:</label>
+                            <select id="curveSelect" class="form-control" onchange="updateCurve()">
+                                <option value="circle">圆: $x = \cos t, y = \sin t$</option>
+                                <option value="ellipse">椭圆: $x = 2\cos t, y = 3\sin t$</option>
+                                <option value="cycloid">摆线: $x = t - \sin t, y = 1 - \cos t$</option>
+                                <option value="cardioid">心形线: $x = 2\cos t - \cos 2t, y = 2\sin t - \sin 2t$</option>
+                                <option value="parabola">抛物线: $x = t^2, y = 2t$</option>
+                                <option value="astroid">星形线: $x = \cos^3 t, y = \sin^3 t$</option>
+                            </select>
+                        </div>
+
+                        <div class="formula-display" id="equationDisplay">
+                            $\begin{cases} x = \cos t \\ y = \sin t \end{cases}$
+                        </div>
+
+                        <div class="form-group">
+                    <label>参数 t 的值:</label>
+                    <div class="slider-container">
+                        <input type="range" id="parameterSlider" class="slider" min="0" max="6.28" step="0.1" value="1.57" oninput="updateParameter()">
+                                <div class="slider-value" id="parameterValue">1.57</div>
+                    </div>
+                </div>
+
+                        <div class="input-group">
+                            <div class="form-group" style="margin-bottom: 0;">
+                    <label for="tValue">或输入具体值:</label>
+                                <input type="number" id="tValue" class="form-control" value="1.57" step="0.1" onchange="setParameter()">
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateDerivative()">
+                                <svg style="width: 16px; height: 16px; margin-right: 8px;" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                                计算导数
+                            </button>
+                </div>
+
+                        <div class="result-panel" id="resultPanel">
+                    <h4>计算结果</h4>
+                            <div class="result-item">
+                                <span class="result-label">参数值:</span>
+                                <span class="result-value" id="currentT">t = 1.57</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">点坐标:</span>
+                                <span class="result-value" id="currentPoint">(0.000, 1.000)</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">dx/dt:</span>
+                                <span class="result-value" id="dxdt">-1.000</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">dy/dt:</span>
+                                <span class="result-value" id="dydt">0.000</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">dy/dx:</span>
+                                <span class="result-value" id="dydx">0.000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 例题面板 -->
+            <div id="examples" class="content-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>典型例题</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="examples-grid">
+                            <div class="example-card" onclick="showExample(1)">
+                                <h3>例题1：圆的切线</h3>
+                                <div class="formula">$\begin{cases} x = \cos t \\ y = \sin t \end{cases}$</div>
+                                <div class="description">求单位圆在 $t = \frac{\pi}{4}$ 处的切线斜率</div>
+                            </div>
+
+                            <div class="example-card" onclick="showExample(2)">
+                                <h3>例题2：椭圆切线</h3>
+                                <div class="formula">$\begin{cases} x = 3\cos t \\ y = 2\sin t \end{cases}$</div>
+                                <div class="description">求椭圆在 $t = \frac{\pi}{6}$ 处的切线方程</div>
+                        </div>
+
+                            <div class="example-card" onclick="showExample(3)">
+                                <h3>例题3：摆线的尖点</h3>
+                                <div class="formula">$\begin{cases} x = t - \sin t \\ y = 1 - \cos t \end{cases}$</div>
+                                <div class="description">分析摆线在 $t = 2\pi$ 处的切线性质</div>
+                    </div>
+
+                            <div class="example-card" onclick="showExample(4)">
+                                <h3>例题4：星形线</h3>
+                                <div class="formula">$\begin{cases} x = \cos^3 t \\ y = \sin^3 t \end{cases}$</div>
+                                <div class="description">求星形线的导数和二阶导数</div>
+                        </div>
+
+                            <div class="example-card" onclick="showExample(5)">
+                                <h3>例题5：心形线面积</h3>
+                                <div class="formula">$\begin{cases} x = 2\cos t - \cos 2t \\ y = 2\sin t - \sin 2t \end{cases}$</div>
+                                <div class="description">利用参数方程求心形线围成的面积</div>
+                    </div>
+
+                            <div class="example-card" onclick="showExample(6)">
+                                <h3>例题6：抛物线弧长</h3>
+                                <div class="formula">$\begin{cases} x = t^2 \\ y = 2t \end{cases}$</div>
+                                <div class="description">求抛物线从 $t = 0$ 到 $t = 1$ 的弧长</div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                <div id="exampleSolution" class="card" style="display: none;">
+                    <div class="card-header">
+                        <h2>例题解答</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="solutionContent">
+                            <!-- 解答内容将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentCurve = 'circle';
+        let currentT = Math.PI / 2;
+        let showTangent = true;
+        let animationId = null;
+
+        // 参数曲线定义数据
+        const curves = {
+            circle: {
+                name: '单位圆',
+                x: t => Math.cos(t),
+                y: t => Math.sin(t),
+                dx: t => -Math.sin(t),
+                dy: t => Math.cos(t),
+                latex: '$\\begin{cases} x = \\cos t \\\\ y = \\sin t \\end{cases}$',
+                range: [0, 2 * Math.PI],
+                scale: 100
+            },
+            ellipse: {
+                name: '椭圆',
+                x: t => 2 * Math.cos(t),
+                y: t => 3 * Math.sin(t),
+                dx: t => -2 * Math.sin(t),
+                dy: t => 3 * Math.cos(t),
+                latex: '$\\begin{cases} x = 2\\cos t \\\\ y = 3\\sin t \\end{cases}$',
+                range: [0, 2 * Math.PI],
+                scale: 80
+            },
+            cycloid: {
+                name: '摆线',
+                x: t => t - Math.sin(t),
+                y: t => 1 - Math.cos(t),
+                dx: t => 1 - Math.cos(t),
+                dy: t => Math.sin(t),
+                latex: '$\\begin{cases} x = t - \\sin t \\\\ y = 1 - \\cos t \\end{cases}$',
+                range: [0, 4 * Math.PI],
+                scale: 40
+            },
+            cardioid: {
+                name: '心形线',
+                x: t => 2 * Math.cos(t) - Math.cos(2 * t),
+                y: t => 2 * Math.sin(t) - Math.sin(2 * t),
+                dx: t => -2 * Math.sin(t) + 2 * Math.sin(2 * t),
+                dy: t => 2 * Math.cos(t) - 2 * Math.cos(2 * t),
+                latex: '$\\begin{cases} x = 2\\cos t - \\cos 2t \\\\ y = 2\\sin t - \\sin 2t \\end{cases}$',
+                range: [0, 2 * Math.PI],
+                scale: 60
+            },
+            parabola: {
+                name: '抛物线',
+                x: t => t * t,
+                y: t => 2 * t,
+                dx: t => 2 * t,
+                dy: t => 2,
+                latex: '$\\begin{cases} x = t^2 \\\\ y = 2t \\end{cases}$',
+                range: [-2, 2],
+                scale: 50
+            },
+            astroid: {
+                name: '星形线',
+                x: t => Math.pow(Math.cos(t), 3),
+                y: t => Math.pow(Math.sin(t), 3),
+                dx: t => -3 * Math.pow(Math.cos(t), 2) * Math.sin(t),
+                dy: t => 3 * Math.pow(Math.sin(t), 2) * Math.cos(t),
+                latex: '$\\begin{cases} x = \\cos^3 t \\\\ y = \\sin^3 t \\end{cases}$',
+                range: [0, 2 * Math.PI],
+                scale: 120
+            }
+        };
+
+        // MathJax渲染函数
+        function renderMath(element = document.body) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([element]).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                });
+            } else if (window.MathJax && window.MathJax.Hub) {
+                // 兼容旧版本MathJax
+                window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, element]);
+            }
+        }
+
+        // 显示面板
+        function showPanel(panelId) {
+            // 隐藏所有面板
+            const panels = document.querySelectorAll('.content-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            // 移除所有导航项的活动状态
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            // 显示选中的面板
+            document.getElementById(panelId).classList.add('active');
+
+            // 激活对应的导航项
+            event.target.closest('.nav-item').classList.add('active');
+
+            // 重新渲染MathJax
+            setTimeout(() => renderMath(document.getElementById(panelId)), 100);
+
+            // 如果是可视化面板，更新图像
+            if (panelId === 'visualization') {
+                setTimeout(() => updateVisualization(), 200);
+            }
+        }
+
+        // 更新曲线
+        function updateCurve() {
+            currentCurve = document.getElementById('curveSelect').value;
+            const curve = curves[currentCurve];
+
+            document.getElementById('equationDisplay').innerHTML = curve.latex;
+
+            // 更新参数范围
+            const range = curve.range;
+            document.getElementById('parameterSlider').min = range[0];
+            document.getElementById('parameterSlider').max = range[1];
+
+            // 设置默认参数值
+            currentT = range[0] + (range[1] - range[0]) / 4;
+            document.getElementById('parameterSlider').value = currentT;
+            document.getElementById('tValue').value = currentT.toFixed(2);
+            document.getElementById('parameterValue').textContent = currentT.toFixed(2);
+
+            calculateDerivative();
+            renderMath(document.getElementById('equationDisplay'));
+        }
+
+        // 更新参数
+        function updateParameter() {
+            currentT = parseFloat(document.getElementById('parameterSlider').value);
+            document.getElementById('parameterValue').textContent = currentT.toFixed(2);
+            document.getElementById('tValue').value = currentT.toFixed(2);
+            calculateDerivative();
+        }
+
+        // 设置参数
+        function setParameter() {
+            currentT = parseFloat(document.getElementById('tValue').value);
+            document.getElementById('parameterSlider').value = currentT;
+            document.getElementById('parameterValue').textContent = currentT.toFixed(2);
+            calculateDerivative();
+        }
+
+        // 计算导数
+        function calculateDerivative() {
+            const curve = curves[currentCurve];
+
+            const x = curve.x(currentT);
+            const y = curve.y(currentT);
+            const dxdt = curve.dx(currentT);
+            const dydt = curve.dy(currentT);
+            const dydx = dxdt !== 0 ? dydt / dxdt : (dydt > 0 ? '+∞' : dydt < 0 ? '-∞' : '未定义');
+
+            document.getElementById('currentT').textContent = `t = ${currentT.toFixed(2)}`;
+            document.getElementById('currentPoint').textContent = `(${x.toFixed(3)}, ${y.toFixed(3)})`;
+            document.getElementById('dxdt').textContent = dxdt.toFixed(3);
+            document.getElementById('dydt').textContent = dydt.toFixed(3);
+            document.getElementById('dydx').textContent = typeof dydx === 'number' ? dydx.toFixed(3) : dydx;
+
+            // 如果可视化面板是活动的，更新图像
+            if (document.getElementById('visualization').classList.contains('active')) {
+                updateVisualization();
+            }
+        }
+
+        // 更新可视化
+        function updateVisualization() {
+            const canvas = document.getElementById('parametricCanvas');
+            const ctx = canvas.getContext('2d');
+            const visualCurve = document.getElementById('visualCurve').value;
+            const curve = curves[visualCurve];
+
+            // 设置画布尺寸
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth - 40;
+            canvas.height = 400;
+
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 设置坐标系
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = curve.scale;
+
+            // 绘制网格
+            ctx.strokeStyle = '#f8f9fa';
+            ctx.lineWidth = 0.5;
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * 30, 0);
+                    ctx.lineTo(centerX + i * 30, canvas.height);
+                    ctx.moveTo(0, centerY + i * 30);
+                    ctx.lineTo(canvas.width, centerY + i * 30);
+                    ctx.stroke();
+                }
+            }
+
+            // 绘制坐标轴
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+
+            // 绘制坐标轴箭头
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 10, centerY - 5);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.lineTo(canvas.width - 10, centerY + 5);
+            ctx.moveTo(centerX - 5, 10);
+            ctx.lineTo(centerX, 0);
+            ctx.lineTo(centerX + 5, 10);
+            ctx.stroke();
+
+            // 绘制参数曲线
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            const range = curve.range;
+            const step = (range[1] - range[0]) / 1000;
+            let firstPoint = true;
+
+            for (let t = range[0]; t <= range[1]; t += step) {
+                const x = curve.x(t);
+                const y = curve.y(t);
+                const canvasX = centerX + x * scale;
+                const canvasY = centerY - y * scale;
+
+                if (firstPoint) {
+                    ctx.moveTo(canvasX, canvasY);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+
+            // 绘制当前点
+            const currentX = curve.x(currentT);
+            const currentY = curve.y(currentT);
+            const currentCanvasX = centerX + currentX * scale;
+            const currentCanvasY = centerY - currentY * scale;
+
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(currentCanvasX, currentCanvasY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // 绘制切线
+            if (showTangent) {
+                const dxdt = curve.dx(currentT);
+                const dydt = curve.dy(currentT);
+
+                if (dxdt !== 0 || dydt !== 0) {
+                    ctx.strokeStyle = '#28a745';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+
+                    const length = 80;
+                    const norm = Math.sqrt(dxdt * dxdt + dydt * dydt);
+                    const unitX = dxdt / norm;
+                    const unitY = dydt / norm;
+
+                    ctx.beginPath();
+                    ctx.moveTo(currentCanvasX - unitX * length, currentCanvasY + unitY * length);
+                    ctx.lineTo(currentCanvasX + unitX * length, currentCanvasY - unitY * length);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            }
+        }
+
+        // 切换切线显示
+        function toggleTangentLine() {
+            showTangent = !showTangent;
+            document.getElementById('tangentText').textContent = showTangent ? '隐藏切线' : '显示切线';
+            updateVisualization();
+        }
+
+        // 窗口大小变化时重新绘制
+        window.addEventListener('resize', function() {
+            setTimeout(() => {
+                updateVisualization();
+            }, 100);
+        });
+
+        // 参数动画
+        function animateParameter() {
+            if (animationId) {
+                clearInterval(animationId);
+                animationId = null;
+                return;
+            }
+
+            const curve = curves[document.getElementById('visualCurve').value];
+            const range = curve.range;
+            let t = range[0];
+            const step = (range[1] - range[0]) / 200;
+
+            animationId = setInterval(() => {
+                t += step;
+                if (t > range[1]) {
+                    t = range[0];
+                }
+
+                // 更新计算器面板的参数
+                if (document.getElementById('calculator').classList.contains('active')) {
+                    currentT = t;
+                    document.getElementById('parameterSlider').value = t;
+                    document.getElementById('tValue').value = t.toFixed(2);
+                    document.getElementById('parameterValue').textContent = t.toFixed(2);
+                    calculateDerivative();
+                } else {
+                    // 仅更新可视化
+                    currentT = t;
+                    updateVisualization();
+                }
+            }, 50);
+        }
+
+        // 显示例题
+        function showExample(num) {
+            const examples = {
+                1: {
+                    title: '例题1：圆的切线',
+                    problem: '求单位圆 $\\begin{cases} x = \\cos t \\\\ y = \\sin t \\end{cases}$ 在 $t = \\frac{\\pi}{4}$ 处的切线斜率',
+                    solution: [
+                        '对参数方程求导：',
+                        '$\\frac{dx}{dt} = -\\sin t, \\quad \\frac{dy}{dt} = \\cos t$',
+                        '应用公式：$\\frac{dy}{dx} = \\frac{\\frac{dy}{dt}}{\\frac{dx}{dt}} = \\frac{\\cos t}{-\\sin t} = -\\cot t$',
+                        '在 $t = \\frac{\\pi}{4}$ 处：$\\frac{dy}{dx} = -\\cot\\frac{\\pi}{4} = -1$',
+                        '因此切线斜率为 $-1$'
+                    ]
+                },
+                2: {
+                    title: '例题2：椭圆切线',
+                    problem: '求椭圆 $\\begin{cases} x = 3\\cos t \\\\ y = 2\\sin t \\end{cases}$ 在 $t = \\frac{\\pi}{6}$ 处的切线方程',
+                    solution: [
+                        '求导：$\\frac{dx}{dt} = -3\\sin t, \\quad \\frac{dy}{dt} = 2\\cos t$',
+                        '切线斜率：$\\frac{dy}{dx} = \\frac{2\\cos t}{-3\\sin t} = -\\frac{2\\cos t}{3\\sin t}$',
+                        '在 $t = \\frac{\\pi}{6}$ 处：$x = 3\\cos\\frac{\\pi}{6} = \\frac{3\\sqrt{3}}{2}, \\quad y = 2\\sin\\frac{\\pi}{6} = 1$',
+                        '切线斜率：$\\frac{dy}{dx} = -\\frac{2\\cos\\frac{\\pi}{6}}{3\\sin\\frac{\\pi}{6}} = -\\frac{2 \\cdot \\frac{\\sqrt{3}}{2}}{3 \\cdot \\frac{1}{2}} = -\\frac{2\\sqrt{3}}{3}$',
+                        '切线方程：$y - 1 = -\\frac{2\\sqrt{3}}{3}(x - \\frac{3\\sqrt{3}}{2})$'
+                    ]
+                },
+                3: {
+                    title: '例题3：摆线的尖点',
+                    problem: '分析摆线 $\\begin{cases} x = t - \\sin t \\\\ y = 1 - \\cos t \\end{cases}$ 在 $t = 2\\pi$ 处的切线性质',
+                    solution: [
+                        '求导：$\\frac{dx}{dt} = 1 - \\cos t, \\quad \\frac{dy}{dt} = \\sin t$',
+                        '在 $t = 2\\pi$ 处：$\\frac{dx}{dt} = 1 - \\cos(2\\pi) = 1 - 1 = 0$',
+                        '$\\frac{dy}{dt} = \\sin(2\\pi) = 0$',
+                        '由于 $\\frac{dx}{dt} = \\frac{dy}{dt} = 0$，这是一个奇点',
+                        '需要用洛必达法则或高阶导数分析切线性质',
+                        '实际上，$t = 2\\pi$ 处是摆线的尖点（cusp）'
+                    ]
+                },
+                4: {
+                    title: '例题4：星形线',
+                    problem: '求星形线 $\\begin{cases} x = \\cos^3 t \\\\ y = \\sin^3 t \\end{cases}$ 的导数和二阶导数',
+                    solution: [
+                        '一阶导数：',
+                        '$\\frac{dx}{dt} = -3\\cos^2 t \\sin t, \\quad \\frac{dy}{dt} = 3\\sin^2 t \\cos t$',
+                        '$\\frac{dy}{dx} = \\frac{3\\sin^2 t \\cos t}{-3\\cos^2 t \\sin t} = -\\frac{\\sin t}{\\cos t} = -\\tan t$',
+                        '二阶导数：',
+                        '$\\frac{d^2y}{dx^2} = \\frac{d}{dt}(-\\tan t) \\cdot \\frac{dt}{dx} = -\\sec^2 t \\cdot \\frac{1}{-3\\cos^2 t \\sin t}$',
+                        '$= \\frac{\\sec^2 t}{3\\cos^2 t \\sin t} = \\frac{1}{3\\cos^4 t \\sin t}$'
+                    ]
+                },
+                5: {
+                    title: '例题5：心形线面积',
+                    problem: '利用参数方程求心形线围成的面积',
+                    solution: [
+                        '心形线：$\\begin{cases} x = 2\\cos t - \\cos 2t \\\\ y = 2\\sin t - \\sin 2t \\end{cases}$',
+                        '参数方程围成的面积公式：$S = \\frac{1}{2}\\oint (x\\,dy - y\\,dx)$',
+                        '或者：$S = \\int_{t_1}^{t_2} y \\frac{dx}{dt} dt$',
+                        '代入得：$S = \\int_0^{2\\pi} (2\\sin t - \\sin 2t)(-2\\sin t + 2\\sin 2t) dt$',
+                        '经过计算可得：$S = 6\\pi$'
+                    ]
+                },
+                6: {
+                    title: '例题6：抛物线弧长',
+                    problem: '求抛物线 $\\begin{cases} x = t^2 \\\\ y = 2t \\end{cases}$ 从 $t = 0$ 到 $t = 1$ 的弧长',
+                    solution: [
+                        '弧长公式：$s = \\int_{t_1}^{t_2} \\sqrt{\\left(\\frac{dx}{dt}\\right)^2 + \\left(\\frac{dy}{dt}\\right)^2} dt$',
+                        '求导：$\\frac{dx}{dt} = 2t, \\quad \\frac{dy}{dt} = 2$',
+                        '代入：$s = \\int_0^1 \\sqrt{(2t)^2 + 2^2} dt = \\int_0^1 \\sqrt{4t^2 + 4} dt$',
+                        '$= 2\\int_0^1 \\sqrt{t^2 + 1} dt$',
+                        '使用三角替换 $t = \\tan u$，得：',
+                        '$s = 2[\\frac{t\\sqrt{t^2+1}}{2} + \\frac{1}{2}\\ln(t + \\sqrt{t^2+1})]_0^1$',
+                        '$= \\sqrt{2} + \\ln(1 + \\sqrt{2})$'
+                    ]
+                }
+            };
+
+            const example = examples[num];
+            if (example) {
+                const solutionDiv = document.getElementById('solutionContent');
+                let content = `<h4 style="color: #667eea; margin-bottom: 15px;">${example.title}</h4>`;
+                content += `<div class="formula-display">${example.problem}</div>`;
+                content += `<h5 style="color: #28a745; margin: 15px 0 10px 0;">解答：</h5>`;
+                
+                example.solution.forEach((step, index) => {
+                    content += `<div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 6px;">${step}</div>`;
+                });
+
+                solutionDiv.innerHTML = content;
+                document.getElementById('exampleSolution').style.display = 'block';
+                renderMath(solutionDiv);
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            // 初始化
+            updateCurve();
+            calculateDerivative();
+
+            // 初始化可视化
+            setTimeout(() => {
+                updateVisualization();
+            }, 500);
+
+            // 延迟渲染MathJax
+            setTimeout(() => {
+                renderMath();
+            }, 1000);
+        });
+
+        // MathJax加载完成后的处理
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                window.MathJax.startup.promise.then(() => {
+                    console.log('MathJax initialized');
+                    renderMath();
+                }).catch(err => {
+                    console.error('MathJax initialization failed:', err);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

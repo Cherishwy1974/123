@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>截杖问题 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base']}
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    
+    <!-- 隐藏滚动条样式 -->
+    <style>
+        /* 隐藏滚动条但保持滚动功能 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+    </style>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 22px;      /* 一级标题 */
+            --h2-size: 20px;      /* 二级标题 */
+            --h3-size: 18px;      /* 三级标题 */
+            --btn-size: 16px;     /* 按钮文字 */
+            --formula-size: 20px; /* 数学公式 */
+            --text-size: 16px;    /* 正文文字 */
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            /* 灰度色阶 */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 边框和阴影 */
+            --border: var(--gray-200);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* 过渡动画 */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            min-height: auto;
+            overflow: visible;
+            color: var(--gray-800);
+            font-size: var(--text-size);
+            line-height: 1.6;
+        }
+
+        /* 全屏容器布局 */
+        .app-container {
+            width:100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--light);
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* 主内容区域 - 使用Grid布局 */
+        .main-content {
+            display: flex; min-height: calc(100vh - 120px); width:100vw;
+        }
+
+        /* 侧边导航栏 */
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 60%;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-tab.active::before {
+
+            background: white;
+        }
+
+        .nav-tab-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* 内容面板区域 */
+        .content-area {
+            flex: 1;
+            overflow: visible;
+            position: relative;
+        }
+
+        .panel {
+            display: none; width:100vw;  padding: 0;}
+
+        .panel.active {
+            display: block;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        /* 演示面板 - 左右布局 */
+        .demo-section {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+            padding: 20px;
+        }
+
+        .demo-left {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .demo-right {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .demo-controls, .demo-results {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+            color: var(--gray-800);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--formula-size);
+        }
+
+        .result-display {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .operation-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 可视化面板 */
+        .visualization-container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .canvas-container {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: visible;
+            background: white;
+            margin-bottom: 16px;
+            position: relative;
+            min-height: 400px;
+            width: 100%;
+        }
+
+        #stickCanvas, #stickCanvas2 {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: white;
+        }
+
+        .chart-info {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        /* 理论面板 */
+        .theory-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .theory-section h3 {
+            color: var(--primary);
+            font-size: var(--h3-size);
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theory-section h4 {
+            color: var(--primary-dark);
+            font-size: 16px;
+            font-weight: 600;
+            margin: 16px 0 12px 0;
+        }
+
+        .theory-section p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        /* MathJax 优化 */
+        mjx-container {
+            font-size: var(--formula-size) !important;
+        }
+
+        .formula-block {
+            display: block;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .formula-inline {
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-content {
+                
+                
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 16px 0;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .nav-tab {
+                white-space: nowrap;
+                min-width: 120px;
+            }
+
+            .demo-section {
+                
+                gap: 16px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 4px;
+                border-radius: 12px;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    
+        /* 页面截断修复 */
+        html, body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: auto !important;
+            min-height: 100vh !important;
+        }
+        
+        .app-container {
+            min-height: 100vh !important;
+            height: auto !important;
+        }
+        
+        .main-content {
+            display: flex !important;
+            flex-direction: row !important;
+            min-height: auto !important;
+            height: auto !important;
+            align-items: stretch !important;
+        }
+        
+        .sidebar {
+            width: 200px !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            height: auto !important;
+        }
+        
+        .content-area {
+            flex: 1 !important;
+            flex-grow: 1 !important;
+            min-width: 0 !important;
+            position: relative !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        
+        .panel {
+            position: static !important;
+            display: none !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 20px !important;
+            overflow: visible !important;
+        }
+        
+        .panel.active {
+            display: block !important;
+        }</style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="header-content">
+                <h1>截杖问题</h1>
+                <span class="header-subtitle">数列极限的经典应用</span>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 侧边导航栏 -->
+            <div class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="demo">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        演示实验
+                    </button>
+                    <button class="nav-tab" data-panel="theory">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        理论背景
+                    </button>
+                </div>
+            </div>
+
+            <!-- 内容面板区域 -->
+            <div class="content-area">
+                <!-- 演示实验面板 -->
+                <div class="panel active" id="demo">
+                    <div class="demo-section">
+                        <!-- 左侧控制区 -->
+                        <div class="demo-left">
+                            <div class="demo-controls">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                    实验控制
+                                </h3>
+
+                                <div class="input-group">
+                                    <label for="stickLength">杖的初始长度 (米):</label>
+                                    <input type="number" id="stickLength" value="1" min="0.1" max="10" step="0.1">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="cutRatio">每次截取比例:</label>
+                                    <input type="number" id="cutRatio" value="0.5" min="0.1" max="0.9" step="0.1">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="cutTimes">截取次数:</label>
+                                    <input type="number" id="cutTimes" value="10" min="1" max="50" step="1">
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="startCutting()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        开始截杖
+                                    </button>
+                                    <button class="btn" onclick="resetStick()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                        </svg>
+                                        重置
+                                    </button>
+                                    <button class="btn" onclick="visualizeStepByStep()" style="background: var(--success);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        动画演示
+                                    </button>
+                                    <button class="btn" onclick="testButtons()" style="background: var(--warning);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                        测试
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="demo-results">
+                                <div class="formula-display" id="formulaDisplay">
+                                    $a_n = L \cdot r^n$，其中 $L = 1$，$r = 0.5$
+                                </div>
+
+                                <div class="result-display" id="resultDisplay">
+                                    第 0 次截取后，杖长 = 1.000 米
+                                </div>
+
+                                <div id="sequenceTable" style="max-height: 200px; overflow-y: auto; margin-top: 20px;">
+                                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                                        <thead>
+                                            <tr style="background: var(--gray-50);">
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">次数</th>
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">杖长 (米)</th>
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">截取长度</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sequenceTableBody">
+                                            <tr>
+                                                <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px;">0</td>
+                                                <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px;">1.000</td>
+                                                <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px;">-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧可视化区 -->
+                        <div class="demo-right">
+                            <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid var(--border); flex: 1;">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                    </svg>
+                                    实时可视化
+                                </h3>
+
+                                <div class="canvas-container">
+                                    <canvas id="stickCanvas"></canvas>
+                                    <div id="canvasDebug" style="position: absolute; top: 10px; left: 10px; background: rgba(255,0,0,0.8); color: white; padding: 5px; font-size: 12px; z-index: 1000;">
+                                        画布调试信息
+                                    </div>
+                                </div>
+
+                                <div class="chart-info">
+                                    <p style="margin-bottom: 8px; color: var(--gray-600);">
+                                        <span style="color: var(--primary); font-weight: bold;">━</span> 当前杖长
+                                        <span style="margin-left: 20px; color: var(--danger); font-weight: bold;">━</span> 截取部分
+                                    </p>
+                                    <p id="visualInfo">准备开始截杖演示...</p>
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="showLengthChart()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                        </svg>
+                                        长度变化图
+                                    </button>
+                                    <button class="btn" onclick="resetVisualization()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                        </svg>
+                                        重置可视化
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 理论背景面板 -->
+                <div class="panel" id="theory">
+                    <div class="theory-content">
+                        <div class="theory-section">
+                            <h4>问题描述</h4>
+                            <p>截杖问题是数列极限的一个经典应用。假设有一根长度为 $L$ 的杖，每次都截去其长度的一定比例 $r$（$0 < r < 1$），问经过无穷多次截取后，杖的长度趋向于多少？</p>
+                        </div>
+
+                        <div class="theory-section">
+                            <h4>数学建模</h4>
+                            <p>设初始杖长为 $L$，每次截取比例为 $r$，则：</p>
+                            <div class="formula-display">
+                                $a_n = L \cdot (1-r)^n$
+                            </div>
+                            <p>其中 $a_n$ 表示第 $n$ 次截取后的杖长。</p>
+                        </div>
+
+                        <div class="theory-section">
+                            <h4>极限分析</h4>
+                            <p>当 $n \to \infty$ 时：</p>
+                            <div class="formula-display">
+                                $\lim_{n \to \infty} a_n = \lim_{n \to \infty} L \cdot (1-r)^n = L \cdot 0 = 0$
+                            </div>
+                            <p>因为 $0 < 1-r < 1$，所以 $(1-r)^n \to 0$。</p>
+                        </div>
+
+                        <div class="theory-section">
+                            <h4>收敛速度</h4>
+                            <p>截取比例 $r$ 越大，$(1-r)$ 越小，数列收敛到 0 的速度越快：</p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>当 $r = 0.5$ 时，$a_n = L \cdot 0.5^n$，收敛较快</li>
+                                <li>当 $r = 0.1$ 时，$a_n = L \cdot 0.9^n$，收敛较慢</li>
+                                <li>当 $r = 0.9$ 时，$a_n = L \cdot 0.1^n$，收敛很快</li>
+                            </ul>
+                        </div>
+
+                        <div class="theory-section">
+                            <h4>实际应用</h4>
+                            <p>截杖问题的数学模型在实际中有广泛应用：</p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li><strong>放射性衰变：</strong>放射性物质的衰变过程</li>
+                                <li><strong>药物代谢：</strong>药物在体内的浓度变化</li>
+                                <li><strong>经济学：</strong>折旧、通胀等经济现象</li>
+                                <li><strong>人口增长：</strong>在资源有限的情况下的人口变化</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let stickData = [];
+        let animationId = null;
+
+        // 标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                // 添加活动状态
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                document.getElementById(panelId).classList.add('active');
+
+            });
+        });
+
+        // 开始截杖
+        function startCutting() {
+            const length = parseFloat(document.getElementById('stickLength').value);
+            const ratio = parseFloat(document.getElementById('cutRatio').value);
+            const times = parseInt(document.getElementById('cutTimes').value);
+
+            stickData = [];
+            currentStep = 0;
+
+            // 计算每次截取后的长度
+            let currentLength = length;
+            stickData.push({ step: 0, length: currentLength, cut: 0 });
+
+            for (let i = 1; i <= times; i++) {
+                const cutLength = currentLength * ratio;
+                currentLength = currentLength - cutLength;
+                stickData.push({ step: i, length: currentLength, cut: cutLength });
+            }
+
+            updateDisplay();
+            updateTable();
+        }
+
+        // 重置
+        function resetStick() {
+            const length = parseFloat(document.getElementById('stickLength').value);
+            stickData = [{ step: 0, length: length, cut: 0 }];
+            currentStep = 0;
+            updateDisplay();
+            updateTable();
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            const length = parseFloat(document.getElementById('stickLength').value);
+            const ratio = parseFloat(document.getElementById('cutRatio').value);
+
+            // 更新公式显示
+            document.getElementById('formulaDisplay').innerHTML = 
+                `$a_n = ${length} \\cdot ${(1-ratio).toFixed(1)}^n$`;
+
+            // 更新结果显示
+            if (stickData.length > 0) {
+                const current = stickData[Math.min(currentStep, stickData.length - 1)];
+                document.getElementById('resultDisplay').innerHTML = 
+                    `第 ${current.step} 次截取后，杖长 = ${current.length.toFixed(6)} 米`;
+            }
+
+            // 重新渲染MathJax
+            setTimeout(() => {
+                renderMath([
+                    document.getElementById('formulaDisplay'),
+                    document.getElementById('resultDisplay')
+                ]);
+            }, 100);
+        }
+
+        // 更新表格
+        function updateTable() {
+            const tbody = document.getElementById('sequenceTableBody');
+            tbody.innerHTML = '';
+
+            stickData.forEach((data, index) => {
+                const row = document.createElement('tr');
+                row.id = `table-row-${index}`;
+                row.innerHTML = `
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${data.step}</td>
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${data.length.toFixed(6)}</td>
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${data.step === 0 ? '-' : data.cut.toFixed(6)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 更新表格高亮
+        function updateTableHighlight(step) {
+            // 清除所有高亮
+            clearTableHighlight();
+            
+            // 高亮当前步骤
+            const row = document.getElementById(`table-row-${step}`);
+            if (row) {
+                row.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+                row.style.transition = 'background-color 0.3s ease';
+            }
+        }
+
+        // 清除表格高亮
+        function clearTableHighlight() {
+            const rows = document.querySelectorAll('#sequenceTableBody tr');
+            rows.forEach(row => {
+                row.style.backgroundColor = '';
+            });
+        }
+
+        // 初始化画布
+        function initCanvas(canvasId = 'stickCanvas') {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) {
+                console.error('画布元素未找到:', canvasId);
+                return;
+            }
+
+            console.log('初始化画布...', canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // 获取容器尺寸
+            const container = canvas.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            
+            // 设置画布尺寸 - 使用容器实际尺寸
+            const containerWidth = containerRect.width || 800;
+            const containerHeight = containerRect.height || 400;
+            
+            // 设置画布显示尺寸
+            canvas.style.width = containerWidth + 'px';
+            canvas.style.height = containerHeight + 'px';
+            
+            // 设置画布实际尺寸（考虑设备像素比）
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            canvas.width = containerWidth * devicePixelRatio;
+            canvas.height = containerHeight * devicePixelRatio;
+            
+            // 缩放上下文以匹配设备像素比
+            ctx.scale(devicePixelRatio, devicePixelRatio);
+
+            console.log('画布尺寸设置为:', canvas.width, 'x', canvas.height, '显示尺寸:', containerWidth, 'x', containerHeight);
+
+            // 清空画布
+            ctx.clearRect(0, 0, containerWidth, containerHeight);
+
+            // 如果没有数据，先初始化数据
+            if (stickData.length === 0) {
+                console.log('数据为空，初始化数据...');
+                resetStick();
+            }
+
+            console.log('当前数据长度:', stickData.length);
+
+            // 绘制初始状态
+            drawStick(ctx, containerWidth, containerHeight, canvasId);
+            console.log('画布初始化完成');
+        }
+
+        // 绘制杖
+        function drawStick(ctx, width, height, canvasId = 'stickCanvas') {
+            console.log('开始绘制杖，画布尺寸:', width, 'x', height, '画布ID:', canvasId);
+
+            const centerY = height / 2;
+            const maxWidth = width - 100;
+            const stickHeight = 20;
+
+            if (stickData.length === 0) {
+                console.log('数据为空，无法绘制');
+                return;
+            }
+
+            const current = stickData[Math.min(currentStep, stickData.length - 1)];
+            const initialLength = stickData[0].length;
+            const currentWidth = (current.length / initialLength) * maxWidth;
+
+            console.log('当前数据:', current, '初始长度:', initialLength, '当前宽度:', currentWidth);
+
+            // 绘制背景网格
+            ctx.strokeStyle = '#f3f4f6';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const x = 50 + (i * maxWidth / 10);
+                ctx.beginPath();
+                ctx.moveTo(x, centerY - 50);
+                ctx.lineTo(x, centerY + 50);
+                ctx.stroke();
+            }
+
+            // 绘制当前杖长 - 添加渐变效果
+            const gradient = ctx.createLinearGradient(50, centerY - stickHeight/2, 50 + currentWidth, centerY + stickHeight/2);
+            gradient.addColorStop(0, '#6366f1');
+            gradient.addColorStop(1, '#4f46e5');
+            ctx.fillStyle = gradient;
+            
+            // 添加圆角效果
+            ctx.beginPath();
+            ctx.roundRect(50, centerY - stickHeight/2, currentWidth, stickHeight, 8);
+            ctx.fill();
+
+            // 绘制截取部分（如果有）- 添加动画效果
+            if (current.step > 0 && currentStep < stickData.length - 1) {
+                const ratio = parseFloat(document.getElementById('cutRatio').value);
+                const cutWidth = currentWidth * ratio;
+                
+                // 截取部分的渐变
+                const cutGradient = ctx.createLinearGradient(50 + currentWidth - cutWidth, centerY - stickHeight/2, 50 + currentWidth, centerY + stickHeight/2);
+                cutGradient.addColorStop(0, '#f87171');
+                cutGradient.addColorStop(1, '#ef4444');
+                ctx.fillStyle = cutGradient;
+                
+                // 添加闪烁效果
+                const alpha = 0.7 + 0.3 * Math.sin(Date.now() * 0.01);
+                ctx.globalAlpha = alpha;
+                ctx.beginPath();
+                ctx.roundRect(50 + currentWidth - cutWidth, centerY - stickHeight/2, cutWidth, stickHeight, 8);
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+
+            // 绘制长度标注 - 添加背景
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillRect(50 + currentWidth/2 - 40, centerY + 25, 80, 20);
+            
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 14px Source Han Serif SC';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${current.length.toFixed(4)} 米`, 50 + currentWidth/2, centerY + 40);
+
+            // 绘制刻度
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Source Han Serif SC';
+            for (let i = 0; i <= 10; i++) {
+                const x = 50 + (i * maxWidth / 10);
+                const value = (i * initialLength / 10).toFixed(1);
+                ctx.fillText(value, x, centerY + 65);
+            }
+
+            // 添加进度指示器
+            if (currentStep > 0) {
+                const progress = currentStep / (stickData.length - 1);
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(50, centerY - 60, maxWidth * progress, 4);
+                
+                // 进度文字
+                ctx.fillStyle = '#374151';
+                ctx.font = '12px Source Han Serif SC';
+                ctx.textAlign = 'left';
+                ctx.fillText(`进度: ${(progress * 100).toFixed(1)}%`, 50, centerY - 45);
+            }
+
+            // 更新信息显示
+            const visualInfo = document.getElementById('visualInfo');
+            if (visualInfo) {
+                visualInfo.innerHTML = `当前状态：第 ${current.step} 步，杖长 = ${current.length.toFixed(6)} 米`;
+            }
+        }
+
+        // 逐步演示
+        function visualizeStepByStep() {
+            console.log('开始逐步演示...');
+
+            // 确保数据存在
+            if (stickData.length === 0) {
+                console.log('数据为空，开始生成数据...');
+                startCutting();
+            }
+
+            // 停止之前的动画
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+            }
+
+            currentStep = 0;
+            const canvas = document.getElementById('stickCanvas');
+            if (!canvas) {
+                console.error('画布元素未找到');
+                return;
+            }
+
+            console.log('画布找到，开始动画...');
+            
+            // 重新初始化画布确保尺寸正确
+            initCanvas('stickCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 获取画布显示尺寸
+            const container = canvas.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const displayWidth = containerRect.width || 800;
+            const displayHeight = containerRect.height || 400;
+
+            function animate() {
+                if (currentStep < stickData.length) {
+                    console.log(`动画步骤 ${currentStep}/${stickData.length}`);
+
+                    // 清空画布
+                    ctx.clearRect(0, 0, displayWidth, displayHeight);
+                    
+                    // 绘制背景
+                    ctx.fillStyle = '#f8f9fa';
+                    ctx.fillRect(0, 0, displayWidth, displayHeight);
+                    
+                    // 绘制当前状态
+                    drawStick(ctx, displayWidth, displayHeight, 'stickCanvas');
+
+                    // 更新信息显示
+                    const current = stickData[currentStep];
+                    const visualInfo = document.getElementById('visualInfo');
+                    if (visualInfo) {
+                        visualInfo.innerHTML =
+                            `第 ${current.step} 步：杖长 = ${current.length.toFixed(6)} 米`;
+                    }
+
+                    // 更新表格高亮当前行
+                    updateTableHighlight(currentStep);
+
+                    currentStep++;
+                    if (currentStep < stickData.length) {
+                        animationId = setTimeout(animate, 1200); // 优化动画速度
+                    } else {
+                        if (visualInfo) {
+                            visualInfo.innerHTML =
+                                `演示完成！最终杖长趋向于 0`;
+                        }
+                        // 清除表格高亮
+                        clearTableHighlight();
+                        console.log('动画演示完成');
+                    }
+                } else {
+                    console.log('动画条件不满足，停止');
+                }
+            }
+
+            // 开始动画
+            animate();
+        }
+
+        // 显示长度变化图
+        function showLengthChart() {
+            console.log('开始显示长度变化图...');
+            
+            // 确保数据存在
+            if (stickData.length === 0) {
+                console.log('数据为空，开始生成数据...');
+                startCutting();
+            }
+
+            const canvas = document.getElementById('stickCanvas');
+            if (!canvas) {
+                console.error('画布元素未找到，尝试重新初始化...');
+                // 尝试重新初始化画布
+                setTimeout(() => {
+                    initCanvas();
+                    showLengthChart();
+                }, 100);
+                return;
+            }
+            
+            console.log('画布找到，开始绘制图表...');
+            const ctx = canvas.getContext('2d');
+            
+            // 确保画布尺寸正确
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width || 800;
+            canvas.height = rect.height || 400;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const padding = 50;
+            const chartWidth = width - 2 * padding;
+            const chartHeight = height - 2 * padding;
+
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+
+            // 绘制数据点和连线
+            if (stickData.length > 0) {
+                const maxLength = stickData[0].length;
+                ctx.strokeStyle = '#4f46e5';
+                ctx.fillStyle = '#4f46e5';
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                stickData.forEach((data, index) => {
+                    const x = padding + (index / (stickData.length - 1)) * chartWidth;
+                    const y = height - padding - (data.length / maxLength) * chartHeight;
+
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+
+                    // 绘制数据点
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                });
+                ctx.stroke();
+            }
+
+            // 绘制标签
+            ctx.fillStyle = '#374151';
+            ctx.font = '12px Source Han Serif SC';
+            ctx.textAlign = 'center';
+            ctx.fillText('截取次数', width / 2, height - 10);
+            
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('杖长 (米)', 0, 0);
+            ctx.restore();
+
+            const visualInfo = document.getElementById('visualInfo');
+            if (visualInfo) {
+                visualInfo.innerHTML = 
+                    `长度变化图：显示了杖长随截取次数的变化趋势`;
+            }
+            console.log('长度变化图绘制完成');
+        }
+
+        // 重置可视化
+        function resetVisualization() {
+            console.log('重置可视化...');
+            
+            // 清除动画
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+            }
+            
+            // 重置步骤
+            currentStep = 0;
+            
+            // 重新初始化数据
+            resetStick();
+            
+            // 重新初始化画布
+            setTimeout(() => {
+                initCanvas();
+            }, 100);
+            
+            // 更新信息显示
+            const visualInfo = document.getElementById('visualInfo');
+            if (visualInfo) {
+                visualInfo.innerHTML = '准备开始截杖演示...';
+            }
+            console.log('可视化重置完成');
+        }
+
+        // 强制重新初始化画布
+        function forceReinitCanvas() {
+            console.log('强制重新初始化画布...');
+            const canvas = document.getElementById('stickCanvas');
+            if (canvas) {
+                // 强制设置画布尺寸
+                canvas.width = 800;
+                canvas.height = 400;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制测试内容
+                ctx.fillStyle = '#4f46e5';
+                ctx.fillRect(50, 150, 200, 50);
+                ctx.fillStyle = '#374151';
+                ctx.font = '16px Arial';
+                ctx.fillText('画布测试 - 如果看到这个，画布工作正常', 60, 180);
+                
+                console.log('强制初始化完成');
+            }
+        }
+
+        // 改进的MathJax渲染函数
+        function renderMath(elements = null) {
+            const targets = elements || [document.body];
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                return window.MathJax.typesetPromise(targets).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise(targets).catch(e => 
+                                console.warn('MathJax延迟渲染失败:', e)
+                            );
+                        }
+                    }, 200);
+                });
+            }
+            
+            return Promise.resolve();
+        }
+
+        // 测试按钮功能
+        function testButtons() {
+            console.log('=== 测试按钮功能 ===');
+            
+            // 更新调试信息显示
+            const debugDiv = document.getElementById('canvasDebug');
+            if (debugDiv) {
+                debugDiv.innerHTML = '测试中...';
+            }
+            
+            const canvas = document.getElementById('stickCanvas');
+            console.log('画布元素:', canvas);
+            
+            if (canvas) {
+                // 强制设置画布尺寸
+                canvas.width = 800;
+                canvas.height = 400;
+                console.log('强制设置画布尺寸:', canvas.width, 'x', canvas.height);
+                
+                // 测试画布绘制
+                const ctx = canvas.getContext('2d');
+                
+                // 清空画布
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制背景
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制彩色方块
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(50, 50, 100, 100);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(200, 50, 100, 100);
+                ctx.fillStyle = '#0000ff';
+                ctx.fillRect(350, 50, 100, 100);
+                
+                // 绘制文字
+                ctx.fillStyle = '#000000';
+                ctx.font = '20px Arial';
+                ctx.fillText('画布测试成功！', 50, 200);
+                
+                console.log('测试绘制完成');
+                
+                // 更新调试信息
+                if (debugDiv) {
+                    debugDiv.innerHTML = `画布: ${canvas.width}x${canvas.height}`;
+                }
+            } else {
+                console.error('画布元素未找到！');
+                if (debugDiv) {
+                    debugDiv.innerHTML = '画布未找到！';
+                }
+            }
+            
+            // 测试动画函数
+            if (typeof window.visualizeStepByStep === 'function') {
+                console.log('动画函数存在，3秒后开始测试...');
+                setTimeout(() => {
+                    console.log('开始测试动画...');
+                    window.visualizeStepByStep();
+                }, 3000);
+            } else {
+                console.error('动画函数不存在！');
+            }
+            
+            alert('测试完成！如果看到彩色方块和文字，说明画布工作正常。');
+        }
+
+        // 确保函数在全局作用域中可用
+        window.visualizeStepByStep = visualizeStepByStep;
+        window.showLengthChart = showLengthChart;
+        window.resetVisualization = resetVisualization;
+        window.testButtons = testButtons;
+        window.forceReinitCanvas = forceReinitCanvas;
+        window.startCutting = startCutting;
+        window.resetStick = resetStick;
+
+        // 兼容性检查：为不支持 roundRect 的浏览器添加 polyfill
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM加载完成，开始初始化页面...');
+
+            // 立即初始化数据
+            resetStick();
+            console.log('数据初始化完成');
+
+            // 延迟初始化画布，确保CSS样式已应用
+            setTimeout(() => {
+                console.log('开始初始化画布...');
+                // 初始化演示面板中的画布
+                initCanvas('stickCanvas');
+
+                // 渲染所有静态公式
+                const staticFormulaElements = document.querySelectorAll('.formula-display, .result-display, .theory-section, .formula-display, th');
+                renderMath(Array.from(staticFormulaElements)).then(() => {
+                    console.log('MathJax初始化完成');
+                });
+
+                // 测试按钮功能
+                console.log('测试按钮功能...');
+                console.log('visualizeStepByStep 函数:', typeof window.visualizeStepByStep);
+                console.log('showLengthChart 函数:', typeof window.showLengthChart);
+                console.log('resetVisualization 函数:', typeof window.resetVisualization);
+            }, 500);
+        });
+
+        // 窗口大小改变时重新绘制
+        window.addEventListener('resize', function() {
+            setTimeout(initCanvas, 100);
+        });
+
+        // 输入变化时更新显示
+        document.getElementById('stickLength').addEventListener('input', updateDisplay);
+        document.getElementById('cutRatio').addEventListener('input', updateDisplay);
+        document.getElementById('cutTimes').addEventListener('input', updateDisplay);
+    </script>
+</body>
+</html>
+

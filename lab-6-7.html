@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向量几何应用 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: () => {
+                    console.log('MathJax启动完成');
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    
+    <!-- 加载D3.js用于可视化 -->
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+            min-height: 44px;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: hidden;
+            background: var(--light);
+            height: 100%;
+        }
+
+        .panel {
+            display: none;
+            padding: 8px;
+            overflow-y: auto;
+            flex: 1;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--gray-200);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .control-panel {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .result-container {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .input-group {
+            margin-bottom: 8px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+            font-size: var(--text-size);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: var(--text-size);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light);
+            min-height: 44px;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin: 4px;
+            min-height: 36px;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.3s ease;
+            margin: 6px 0;
+            min-height: 60px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .visualization-area {
+            background: transparent;
+            padding: 8px;
+            text-align: center;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .visualization-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .canvas-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        canvas {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 100%;
+            height: 400px;
+            background: white;
+        }
+
+        .knowledge-card {
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .knowledge-card h3 {
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            font-size: var(--h3-size);
+            font-weight: 600;
+        }
+
+        .knowledge-card p {
+            font-size: var(--text-size);
+            line-height: 1.6;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .example-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .example-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .example-card h4 {
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            font-size: var(--text-size);
+            font-weight: 600;
+        }
+
+        /* 数学公式样式 */
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: var(--formula-size) !important;
+            font-weight: normal !important;
+        }
+        
+        /* 行内公式样式 */
+        .inline-math {
+            display: inline;
+            font-size: inherit;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 160px 1fr;
+                height: calc(100vh - 80px);
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+                height: calc(100vh - 80px);
+            }
+            
+            .sidebar {
+                padding: 10px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                height: auto;
+            }
+            
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 10px;
+                gap: 4px;
+            }
+            
+            .nav-tab {
+                min-width: 100px;
+                padding: 8px 12px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .nav-tab::before {
+                display: none;
+            }
+
+            .header-subtitle {
+                display: none;
+            }
+
+            .interactive-layout {
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel {
+                padding: 16px;
+            }
+
+            .control-panel {
+                padding: 16px;
+            }
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>向量几何应用</h1>
+                <p class="header-subtitle">探索向量在几何中的应用：距离、角度、面积、体积等</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="calculator">
+                        <span class="nav-icon">🧮</span>
+                        <span>计算器</span>
+                    </button>
+                    <button class="nav-tab" data-panel="distance">
+                        <span class="nav-icon">📏</span>
+                        <span>点线距离</span>
+                    </button>
+                    <button class="nav-tab" data-panel="area">
+                        <span class="nav-icon">📐</span>
+                        <span>面积计算</span>
+                    </button>
+                    <button class="nav-tab" data-panel="volume">
+                        <span class="nav-icon">📦</span>
+                        <span>体积计算</span>
+                    </button>
+                    <button class="nav-tab" data-panel="projection">
+                        <span class="nav-icon">📊</span>
+                        <span>向量投影</span>
+                    </button>
+                    <button class="nav-tab" data-panel="applications">
+                        <span class="nav-icon">🔧</span>
+                        <span>实际应用</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="content-area">
+                <!-- 计算器面板 -->
+                <div class="panel active" id="calculator">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="input-group">
+                                <label for="vectorA">向量A:</label>
+                                <input type="number" id="ax" placeholder="x分量" value="3" step="0.1">
+                                <input type="number" id="ay" placeholder="y分量" value="4" step="0.1">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="vectorB">向量B:</label>
+                                <input type="number" id="bx" placeholder="x分量" value="1" step="0.1">
+                                <input type="number" id="by" placeholder="y分量" value="2" step="0.1">
+                            </div>
+
+                            <div style="text-align: center;">
+                                <button class="btn" onclick="calculateDotProduct()">数量积</button>
+                                <button class="btn" onclick="calculateCrossProduct()">叉积</button>
+                                <button class="btn" onclick="calculateAngle()">夹角</button>
+                                <button class="btn btn-secondary" onclick="clearInputs()">清空</button>
+                            </div>
+
+                            <div class="formula-display" id="result">
+                                输入向量并选择计算类型
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="animation-area">
+                              
+
+                                <div class="canvas-container">
+                                    <canvas id="vectorCanvas" width="700" height="500"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 点线距离面板 -->
+                <div id="distance" class="panel">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="formula-display">
+
+                                <p style="font-size: 12px; margin: 2px 0;">$d = \frac{|\vec{AP} \times \vec{AB}|}{|\vec{AB}|}$</p>
+                                <p style="font-size: 12px; margin: 2px 0;">其中P是点，直线过点A，方向向量为$\vec{AB}$</p>
+                            </div>
+
+                        <div class="input-group">
+                            <label>点P坐标:</label>
+                            <input type="number" id="px" placeholder="x" value="2">
+                            <input type="number" id="py" placeholder="y" value="3">
+                        </div>
+                        <div class="input-group">
+                            <label>直线上点A:</label>
+                            <input type="number" id="ax-dist" placeholder="x" value="0">
+                            <input type="number" id="ay-dist" placeholder="y" value="0">
+                        </div>
+                        <div class="input-group">
+                            <label>直线方向向量:</label>
+                            <input type="number" id="dx" placeholder="x方向" value="1">
+                            <input type="number" id="dy" placeholder="y方向" value="1">
+                        </div>
+                        <button class="btn" onclick="calculateDistance()">计算距离</button>
+
+                            <div id="distance-result" class="formula-display" style="display: none;">
+                            <h4>计算结果：</h4>
+                                <div id="distance-formula"></div>
+                            <div id="distance-steps"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="animation-area">
+                               
+
+                        <div class="canvas-container">
+                            <canvas id="distanceCanvas" width="700" height="500"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 面积计算面板 -->
+                <div id="area" class="panel">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="knowledge-card">
+                                <h3>面积计算公式</h3>
+                                <div class="example-grid">
+                                    <div class="example-card">
+                                        <h4>三角形面积</h4>
+                                        <div class="formula">$S = \frac{1}{2}|\vec{AB} \times \vec{AC}|$</div>
+                                        <p>向量叉积的模长的一半</p>
+                                    </div>
+                                    <div class="example-card">
+                                        <h4>平行四边形面积</h4>
+                                        <div class="formula">$S = |\vec{AB} \times \vec{AC}|$</div>
+                                        <p>向量叉积的模长</p>
+                                    </div>
+                                </div>
+
+                                <p><strong>2D向量叉积：</strong></p>
+                                <div class="formula">
+                                    $\vec{a} \times \vec{b} = a_x b_y - a_y b_x$
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>点A坐标:</label>
+                                <input type="number" id="ax-area" placeholder="x" value="0">
+                                <input type="number" id="ay-area" placeholder="y" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>点B坐标:</label>
+                                <input type="number" id="bx-area" placeholder="x" value="4">
+                                <input type="number" id="by-area" placeholder="y" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>点C坐标:</label>
+                                <input type="number" id="cx-area" placeholder="x" value="2">
+                                <input type="number" id="cy-area" placeholder="y" value="3">
+                            </div>
+                            <div style="text-align: center; margin: 10px 0;">
+                                <button class="btn" onclick="calculateTriangleArea()">三角形面积</button>
+                                <button class="btn" onclick="calculateParallelogramArea()">平行四边形面积</button>
+                            </div>
+
+                            <div id="area-result" class="result-display" style="display: none;">
+                                <h4>计算结果：</h4>
+                                <div id="area-formula" class="formula"></div>
+                                <div id="area-details"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="canvas-container">
+                                <canvas id="areaCanvas" width="600" height="350"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 体积计算面板 -->
+                <div id="volume" class="panel">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="knowledge-card">
+                                <h3>体积计算公式</h3>
+                                <p><strong>四面体体积：</strong></p>
+                                <div class="formula">
+                                    $V = \frac{1}{6}|\vec{AB} \cdot (\vec{AC} \times \vec{AD})|$
+                                </div>
+                                <p>标量三重积（混合积）</p>
+
+                                <p><strong>平行六面体体积：</strong></p>
+                                <div class="formula">
+                                    $V = |\vec{AB} \cdot (\vec{AC} \times \vec{AD})|$
+                                </div>
+
+                                <p><strong>计算步骤：</strong></p>
+                                <ul style="margin-left: 15px; color: #475569; font-size: 12px;">
+                                    <li>1. 计算两个向量的叉积</li>
+                                    <li>2. 将叉积与第三个向量做数量积</li>
+                                    <li>3. 取绝对值得到体积</li>
+                                </ul>
+                            </div>
+
+                            <div class="input-group">
+                                <label>点A坐标:</label>
+                                <input type="number" id="ax-vol" placeholder="x" value="0">
+                                <input type="number" id="ay-vol" placeholder="y" value="0">
+                                <input type="number" id="az-vol" placeholder="z" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>点B坐标:</label>
+                                <input type="number" id="bx-vol" placeholder="x" value="1">
+                                <input type="number" id="by-vol" placeholder="y" value="0">
+                                <input type="number" id="bz-vol" placeholder="z" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>点C坐标:</label>
+                                <input type="number" id="cx-vol" placeholder="x" value="0">
+                                <input type="number" id="cy-vol" placeholder="y" value="1">
+                                <input type="number" id="cz-vol" placeholder="z" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>点D坐标:</label>
+                                <input type="number" id="dx-vol" placeholder="x" value="0">
+                                <input type="number" id="dy-vol" placeholder="y" value="0">
+                                <input type="number" id="dz-vol" placeholder="z" value="1">
+                            </div>
+                            <div style="text-align: center; margin: 8px 0;">
+                                <button class="btn" onclick="calculateTetrahedronVolume()">四面体体积</button>
+                                <button class="btn" onclick="calculateParallelepipedVolume()">平行六面体体积</button>
+                            </div>
+
+                            <div id="volume-result" class="result-display" style="display: none;">
+                                <h4>计算结果：</h4>
+                                <div id="volume-formula" class="formula"></div>
+                                <div id="volume-details"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="canvas-container">
+                                <canvas id="volumeCanvas" width="600" height="350"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 向量投影面板 -->
+                <div id="projection" class="panel">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <div class="knowledge-card">
+                                <h3>投影公式</h3>
+                                <p><strong>向量$\vec{a}$在向量$\vec{b}$上的投影：</strong></p>
+                                <div class="formula">
+                                    $\text{proj}_{\vec{b}}\vec{a} = \frac{\vec{a} \cdot \vec{b}}{|\vec{b}|^2}\vec{b}$
+                                </div>
+
+                                <p><strong>投影长度：</strong></p>
+                                <div class="formula">
+                                    $|\text{proj}_{\vec{b}}\vec{a}| = \frac{|\vec{a} \cdot \vec{b}|}{|\vec{b}|}$
+                                </div>
+
+                                <p><strong>理解：</strong>$\vec{a}$在$\vec{b}$方向上的"影子"长度</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label>向量a:</label>
+                                <input type="number" id="ax-proj" placeholder="x" value="3">
+                                <input type="number" id="ay-proj" placeholder="y" value="4">
+                            </div>
+                            <div class="input-group">
+                                <label>向量b:</label>
+                                <input type="number" id="bx-proj" placeholder="x" value="1">
+                                <input type="number" id="by-proj" placeholder="y" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>自定义向量:</label>
+                                <input type="text" id="customVector" placeholder="例如: (3,4) 投影到 (1,0)" onchange="parseCustomVector()">
+                            </div>
+                            <div style="text-align: center; margin: 8px 0;">
+                                <button class="btn" onclick="calculateProjection()">计算投影</button>
+                            </div>
+
+                            <div id="projection-result" class="result-display" style="display: none;">
+                                <h4>计算结果：</h4>
+                                <div id="projection-formula" class="formula"></div>
+                                <div id="projection-details"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <div class="canvas-container">
+                                <canvas id="projectionCanvas" width="600" height="350"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实际应用面板 -->
+                <div id="applications" class="panel">
+
+                    <div class="example-grid">
+                        <div class="example-card">
+                            <h4>建筑工程</h4>
+                            <p><strong>应用：</strong>计算屋顶面积、材料用量</p>
+                            <p><strong>例子：</strong>三角形屋顶，已知三个顶点坐标，用向量叉积求面积</p>
+                            <div class="formula">面积 = $\frac{1}{2}|\vec{AB} \times \vec{AC}|$</div>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>机械设计</h4>
+                            <p><strong>应用：</strong>计算力矩、扭矩</p>
+                            <p><strong>例子：</strong>力$\vec{F}$作用在距离转轴$\vec{r}$处</p>
+                            <div class="formula">力矩 = $\vec{r} \times \vec{F}$</div>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>计算机图形学</h4>
+                            <p><strong>应用：</strong>判断点是否在三角形内部</p>
+                            <p><strong>方法：</strong>利用叉积判断点与三角形各边的位置关系</p>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>物理学</h4>
+                            <p><strong>应用：</strong>计算功、冲量</p>
+                            <p><strong>例子：</strong>力$\vec{F}$沿位移$\vec{s}$做功</p>
+                            <div class="formula">功 = $\vec{F} \cdot \vec{s}$</div>
+                        </div>
+                    </div>
+
+                    <div class="interactive-section">
+                        <h3>综合应用练习</h3>
+                        <div class="example-grid">
+                            <div class="example-card">
+                                <h4>练习1：房间面积</h4>
+                                <p>房间四个角的坐标为：A(0,0), B(6,0), C(6,4), D(0,4)</p>
+                                <button class="btn" onclick="solveRoomArea()">计算面积</button>
+                                <div id="room-result" style="margin-top: 10px;"></div>
+                            </div>
+
+                            <div class="example-card">
+                                <h4>练习2：最短距离</h4>
+                                <p>点P(3,2)到直线y=x的最短距离</p>
+                                <button class="btn" onclick="solveShortestDistance()">计算距离</button>
+                                <div id="distance-exercise-result" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // MathJax渲染辅助函数
+        function renderMathJax(element) {
+            if (!element) {
+                console.warn('渲染元素不存在');
+                return;
+            }
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                console.log('开始渲染MathJax公式...');
+                window.MathJax.typesetPromise([element]).then(() => {
+                    console.log('MathJax渲染成功');
+                }).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                    // 简单重试一次
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise([element]).catch(e => {
+                                console.error('MathJax重试渲染失败:', e);
+                            });
+                        }
+                    }, 300);
+                });
+            } else {
+                console.warn('MathJax未加载，延迟渲染');
+                setTimeout(() => renderMathJax(element), 500);
+            }
+        }
+
+        // 导航标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.classList.add('active');
+
+                    // 强制渲染MathJax公式
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise([panel]).then(() => {
+                                console.log('MathJax渲染成功:', panelId);
+                            }).catch(err => {
+                                console.log('MathJax渲染错误:', err);
+                                // 尝试重新渲染整个页面
+                                if (window.MathJax && window.MathJax.typesetPromise) {
+                                    window.MathJax.typesetPromise().catch(e => console.error('全局MathJax渲染失败:', e));
+                                }
+                            });
+                        } else {
+                            console.warn('MathJax未加载，等待加载...');
+                            // 等待MathJax加载完成后重试
+                            setTimeout(() => {
+                                if (window.MathJax && window.MathJax.typesetPromise) {
+                                    window.MathJax.typesetPromise([panel]).catch(e => console.error('延迟MathJax渲染失败:', e));
+                                }
+                            }, 1000);
+                        }
+                    }, 200);
+                }
+            });
+        });
+
+        // 绘制向量到画布
+        function drawVectorToCanvas(canvasId, vectors, title = '') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 设置坐标系
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 25;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 2;
+            
+            // x轴
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.stroke();
+            
+            // y轴
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+            
+            // 绘制网格
+            ctx.strokeStyle = '#f3f4f6';
+            ctx.lineWidth = 1;
+            for (let i = -15; i <= 15; i++) {
+                if (i !== 0) {
+                    // 垂直线
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, canvas.height);
+                    ctx.stroke();
+                    
+                    // 水平线
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY - i * scale);
+                    ctx.lineTo(canvas.width, centerY - i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // 绘制向量
+            const colors = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            vectors.forEach((vector, index) => {
+                const { x, y, color = colors[index % colors.length], label = '' } = vector;
+                
+                const endX = centerX + x * scale;
+                const endY = centerY - y * scale; // y轴向上为正
+                
+                // 绘制向量线
+                ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+            
+            // 绘制箭头
+                const angle = Math.atan2(y, x);
+                const arrowLength = 12;
+            const arrowAngle = Math.PI / 6;
+            
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(
+                endX - arrowLength * Math.cos(angle - arrowAngle),
+                endY + arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(
+                endX - arrowLength * Math.cos(angle + arrowAngle),
+                endY + arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+            
+                // 绘制标签
+                if (label) {
+                    ctx.fillStyle = color;
+                    ctx.font = '14px Source Han Serif CN';
+                    ctx.fillText(label, endX + 5, endY - 5);
+                }
+            });
+            
+            // 绘制标题
+            if (title) {
+                ctx.fillStyle = '#374151';
+                ctx.font = 'bold 16px Source Han Serif CN';
+                ctx.textAlign = 'center';
+                ctx.fillText(title, centerX, 30);
+                ctx.textAlign = 'left';
+            }
+        }
+        
+        // 计算器功能
+        function calculateDotProduct() {
+            const ax = parseFloat(document.getElementById('ax').value) || 0;
+            const ay = parseFloat(document.getElementById('ay').value) || 0;
+            const bx = parseFloat(document.getElementById('bx').value) || 0;
+            const by = parseFloat(document.getElementById('by').value) || 0;
+
+            const dotProduct = ax * bx + ay * by;
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.innerHTML = `
+                <h4>数量积计算结果</h4>
+                <p>$\\vec{A} \\cdot \\vec{B} = ${ax} \\times ${bx} + ${ay} \\times ${by} = ${dotProduct}$</p>
+                <p><strong>结果：</strong><span class="highlight">${dotProduct}</span></p>
+            `;
+
+            renderMathJax(resultDiv);
+            drawVectors(ax, ay, bx, by, 'dot');
+        }
+
+        function calculateCrossProduct() {
+            const ax = parseFloat(document.getElementById('ax').value) || 0;
+            const ay = parseFloat(document.getElementById('ay').value) || 0;
+            const bx = parseFloat(document.getElementById('bx').value) || 0;
+            const by = parseFloat(document.getElementById('by').value) || 0;
+
+            const crossProduct = ax * by - ay * bx;
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.innerHTML = `
+                <h4>叉积计算结果</h4>
+                <p>$\\vec{A} \\times \\vec{B} = ${ax} \\times ${by} - ${ay} \\times ${bx} = ${crossProduct}$</p>
+                <p><strong>结果：</strong><span class="highlight">${crossProduct}</span></p>
+            `;
+
+            renderMathJax(resultDiv);
+            drawVectors(ax, ay, bx, by, 'cross');
+        }
+
+        function calculateAngle() {
+            const ax = parseFloat(document.getElementById('ax').value) || 0;
+            const ay = parseFloat(document.getElementById('ay').value) || 0;
+            const bx = parseFloat(document.getElementById('bx').value) || 0;
+            const by = parseFloat(document.getElementById('by').value) || 0;
+
+            const dotProduct = ax * bx + ay * by;
+            const magA = Math.sqrt(ax * ax + ay * ay);
+            const magB = Math.sqrt(bx * bx + by * by);
+            const angle = Math.acos(dotProduct / (magA * magB)) * 180 / Math.PI;
+
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.innerHTML = `
+                <h4>夹角计算结果</h4>
+                <p>$\\cos\\theta = \\frac{\\vec{A} \\cdot \\vec{B}}{|\\vec{A}||\\vec{B}|} = \\frac{${dotProduct}}{${magA.toFixed(3)} \\times ${magB.toFixed(3)}} = ${(dotProduct/(magA*magB)).toFixed(3)}$</p>
+                <p>$\\theta = \\arccos(${(dotProduct/(magA*magB)).toFixed(3)}) = ${angle.toFixed(2)}°$</p>
+                <p><strong>夹角：</strong><span class="highlight">${angle.toFixed(2)}°</span></p>
+            `;
+
+            renderMathJax(resultDiv);
+            drawVectors(ax, ay, bx, by, 'angle');
+        }
+
+        function clearInputs() {
+            document.getElementById('ax').value = '';
+            document.getElementById('ay').value = '';
+            document.getElementById('bx').value = '';
+            document.getElementById('by').value = '';
+            document.getElementById('result').innerHTML = '输入向量并选择计算类型';
+
+            const canvas = document.getElementById('vectorCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // 绘制向量
+        function drawVector() {
+            const vx = parseFloat(document.getElementById('vx').value) || 0;
+            const vy = parseFloat(document.getElementById('vy').value) || 0;
+
+            // 绘制向量
+            drawVectorToCanvas('vectorCanvas', [
+                { x: vx, y: vy, color: '#4f46e5', label: `(${vx}, ${vy})` }
+            ], '向量可视化');
+
+            // 更新向量信息
+            const magnitude = Math.sqrt(vx * vx + vy * vy);
+            const angleRad = Math.atan2(vy, vx);
+            const angleDeg = angleRad * 180 / Math.PI;
+
+            const componentsElement = document.getElementById('vector-components');
+
+            // 清空并重新设置内容，将所有信息放在一行
+            componentsElement.innerHTML = '';
+
+            componentsElement.innerHTML = `向量分量：$$(${vx}, ${vy})$$，向量模长：$$|\\vec{v}| = ${magnitude.toFixed(3)}$$，与x轴夹角：$$${angleDeg.toFixed(1)}°$$`;
+
+            // 延迟渲染确保DOM更新完成
+            setTimeout(() => {
+                renderMathJax(componentsElement);
+            }, 50);
+        }
+
+        // 清空画布
+        function clearCanvas() {
+            const canvas = document.getElementById('vectorCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            document.getElementById('vector-components').innerHTML = '';
+        }
+
+        // 绘制向量（计算器用）
+        function drawVectors(ax, ay, bx, by, type) {
+            const canvas = document.getElementById('vectorCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 50;
+
+            // 绘制坐标轴
+            drawAxes(ctx, centerX, centerY);
+
+            // 绘制向量A
+            drawVector(ctx, centerX, centerY, centerX + ax * scale, centerY - ay * scale, '#3b82f6', 'A');
+
+            // 绘制向量B
+            drawVector(ctx, centerX, centerY, centerX + bx * scale, centerY - by * scale, '#10b981', 'B');
+
+            if (type === 'angle') {
+                // 绘制角度弧
+                const angleA = Math.atan2(-ay, ax);
+                const angleB = Math.atan2(-by, bx);
+                const startAngle = Math.min(angleA, angleB);
+                const endAngle = Math.max(angleA, angleB);
+
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 30, startAngle, endAngle);
+                ctx.stroke();
+
+                // 添加角度标注
+                const midAngle = (startAngle + endAngle) / 2;
+                const labelX = centerX + 40 * Math.cos(midAngle);
+                const labelY = centerY + 40 * Math.sin(midAngle);
+                ctx.fillStyle = '#f59e0b';
+                ctx.font = '14px Arial';
+                ctx.fillText('θ', labelX, labelY);
+            }
+        }
+
+        // 计算点到直线距离
+        function calculateDistance() {
+            const px = parseFloat(document.getElementById('px').value) || 0;
+            const py = parseFloat(document.getElementById('py').value) || 0;
+            const ax = parseFloat(document.getElementById('ax-dist').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-dist').value) || 0;
+            const dx = parseFloat(document.getElementById('dx').value) || 1;
+            const dy = parseFloat(document.getElementById('dy').value) || 1;
+
+            // 计算AP向量
+            const apx = px - ax;
+            const apy = py - ay;
+
+            // 计算叉积 (2D叉积的z分量)
+            const cross = apx * dy - apy * dx;
+
+            // 计算方向向量的模长
+            const dirMag = Math.sqrt(dx * dx + dy * dy);
+
+            // 计算距离
+            const distance = Math.abs(cross) / dirMag;
+
+            const resultDiv = document.getElementById('distance-result');
+            resultDiv.innerHTML = `
+                <h4>距离计算结果</h4>
+                <p>$d = \\frac{|\\vec{AP} \\times \\vec{AB}|}{|\\vec{AB}|} = \\frac{|${cross.toFixed(3)}|}{${dirMag.toFixed(3)}} = ${distance.toFixed(3)}$</p>
+                <p><strong>计算步骤：</strong></p>
+                <p>1. $\\vec{AP} = (${px} - ${ax}, ${py} - ${ay}) = (${apx}, ${apy})$</p>
+                <p>2. 方向向量 $\\vec{d} = (${dx}, ${dy})$</p>
+                <p>3. 叉积：$\\vec{AP} \\times \\vec{d} = ${apx} \\times ${dy} - ${apy} \\times ${dx} = ${cross.toFixed(3)}$</p>
+                <p>4. 距离：$d = \\frac{|${cross.toFixed(3)}|}{${dirMag.toFixed(3)}} = ${distance.toFixed(3)}$</p>
+                <p><strong>结果：</strong><span class="highlight">${distance.toFixed(3)}</span></p>
+            `;
+
+            resultDiv.style.display = 'flex';
+            renderMathJax(resultDiv);
+
+            // 绘制图形
+            drawDistanceDiagram(px, py, ax, ay, dx, dy, distance);
+        }
+
+        function drawDistanceDiagram(px, py, ax, ay, dx, dy, distance) {
+            const canvas = document.getElementById('distanceCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 40;
+
+            // 绘制坐标轴
+            drawAxes(ctx, centerX, centerY);
+
+            // 绘制点P
+            const pScreenX = centerX + px * scale;
+            const pScreenY = centerY - py * scale;
+
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath();
+            ctx.arc(pScreenX, pScreenY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillText('P(' + px + ',' + py + ')', pScreenX + 10, pScreenY - 10);
+
+            // 绘制直线
+            const lineStart = -10;
+            const lineEnd = 10;
+
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            for (let t = lineStart; t <= lineEnd; t += 0.1) {
+                const x = ax + t * dx;
+                const y = ay + t * dy;
+                const screenX = centerX + x * scale;
+                const screenY = centerY - y * scale;
+
+                if (t === lineStart) {
+                    ctx.moveTo(screenX, screenY);
+                } else {
+                    ctx.lineTo(screenX, screenY);
+                }
+            }
+            ctx.stroke();
+
+            // 绘制垂线
+            const normalX = -dy;
+            const normalY = dx;
+            const normalMag = Math.sqrt(normalX * normalX + normalY * normalY);
+            const unitNormalX = normalX / normalMag;
+            const unitNormalY = normalY / normalMag;
+
+            const footX = px - distance * unitNormalX;
+            const footY = py - distance * unitNormalY;
+
+            ctx.strokeStyle = '#10b981';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(pScreenX, pScreenY);
+            ctx.lineTo(centerX + footX * scale, centerY - footY * scale);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 标记距离
+            const midX = (pScreenX + centerX + footX * scale) / 2;
+            const midY = (pScreenY + centerY - footY * scale) / 2;
+            ctx.fillStyle = '#10b981';
+            ctx.fillText('d = ' + distance.toFixed(2), midX, midY);
+        }
+
+        // 计算三角形面积
+        function calculateTriangleArea() {
+            const ax = parseFloat(document.getElementById('ax-area').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-area').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-area').value) || 0;
+            const by = parseFloat(document.getElementById('by-area').value) || 0;
+            const cx = parseFloat(document.getElementById('cx-area').value) || 0;
+            const cy = parseFloat(document.getElementById('cy-area').value) || 0;
+
+            // 计算向量AB和AC
+            const abx = bx - ax;
+            const aby = by - ay;
+            const acx = cx - ax;
+            const acy = cy - ay;
+
+            // 计算叉积
+            const cross = abx * acy - aby * acx;
+            const area = Math.abs(cross) / 2;
+
+            const formula = `$S = \\frac{1}{2}|\\vec{AB} \\times \\vec{AC}| = \\frac{1}{2}|${cross.toFixed(3)}| = ${area.toFixed(3)}$`;
+
+            let details = `<p><strong>计算过程：</strong></p>`;
+            details += `<p>$\\vec{AB} = (${bx} - ${ax}, ${by} - ${ay}) = (${abx}, ${aby})$</p>`;
+            details += `<p>$\\vec{AC} = (${cx} - ${ax}, ${cy} - ${ay}) = (${acx}, ${acy})$</p>`;
+            details += `<p>叉积：$\\vec{AB} \\times \\vec{AC} = ${abx} \\times ${acy} - ${aby} \\times ${acx} = ${cross.toFixed(3)}$</p>`;
+
+            document.getElementById('area-formula').innerHTML = formula;
+            document.getElementById('area-details').innerHTML = details;
+            document.getElementById('area-result').style.display = 'block';
+
+            // 绘制三角形
+            drawTriangle(ax, ay, bx, by, cx, cy, 'triangle');
+
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([document.getElementById('area-result')]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 100);
+        }
+
+        // 计算平行四边形面积
+        function calculateParallelogramArea() {
+            const ax = parseFloat(document.getElementById('ax-area').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-area').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-area').value) || 0;
+            const by = parseFloat(document.getElementById('by-area').value) || 0;
+            const cx = parseFloat(document.getElementById('cx-area').value) || 0;
+            const cy = parseFloat(document.getElementById('cy-area').value) || 0;
+
+            const abx = bx - ax;
+            const aby = by - ay;
+            const acx = cx - ax;
+            const acy = cy - ay;
+
+            const cross = abx * acy - aby * acx;
+            const area = Math.abs(cross);
+
+            const formula = `$S = |\\vec{AB} \\times \\vec{AC}| = |${cross.toFixed(3)}| = ${area.toFixed(3)}$`;
+
+            let details = `<p><strong>平行四边形面积是三角形面积的2倍</strong></p>`;
+            details += `<p>三角形面积：${(area/2).toFixed(3)}</p>`;
+            details += `<p>平行四边形面积：${area.toFixed(3)}</p>`;
+
+            document.getElementById('area-formula').innerHTML = formula;
+            document.getElementById('area-details').innerHTML = details;
+            document.getElementById('area-result').style.display = 'block';
+
+            // 绘制平行四边形
+            drawTriangle(ax, ay, bx, by, cx, cy, 'parallelogram');
+
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([document.getElementById('area-result')]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 100);
+        }
+
+        function drawTriangle(ax, ay, bx, by, cx, cy, type) {
+            const canvas = document.getElementById('areaCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 40;
+
+            drawAxes(ctx, centerX, centerY);
+
+            const aScreenX = centerX + ax * scale;
+            const aScreenY = centerY - ay * scale;
+            const bScreenX = centerX + bx * scale;
+            const bScreenY = centerY - by * scale;
+            const cScreenX = centerX + cx * scale;
+            const cScreenY = centerY - cy * scale;
+
+            if (type === 'triangle') {
+                // 绘制三角形
+                ctx.strokeStyle = '#3b82f6';
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(aScreenX, aScreenY);
+                ctx.lineTo(bScreenX, bScreenY);
+                ctx.lineTo(cScreenX, cScreenY);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            } else {
+                // 绘制平行四边形
+                const dx = cScreenX - aScreenX;
+                const dy = cScreenY - aScreenY;
+                const dScreenX = bScreenX + dx;
+                const dScreenY = bScreenY + dy;
+
+                ctx.strokeStyle = '#3b82f6';
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(aScreenX, aScreenY);
+                ctx.lineTo(bScreenX, bScreenY);
+                ctx.lineTo(dScreenX, dScreenY);
+                ctx.lineTo(cScreenX, cScreenY);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            // 绘制点和标签
+            drawPoint(ctx, aScreenX, aScreenY, 'A', '#dc2626');
+            drawPoint(ctx, bScreenX, bScreenY, 'B', '#dc2626');
+            drawPoint(ctx, cScreenX, cScreenY, 'C', '#dc2626');
+        }
+
+        // 计算四面体体积
+        function calculateTetrahedronVolume() {
+            const ax = parseFloat(document.getElementById('ax-vol').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-vol').value) || 0;
+            const az = parseFloat(document.getElementById('az-vol').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-vol').value) || 0;
+            const by = parseFloat(document.getElementById('by-vol').value) || 0;
+            const bz = parseFloat(document.getElementById('bz-vol').value) || 0;
+            const cx = parseFloat(document.getElementById('cx-vol').value) || 0;
+            const cy = parseFloat(document.getElementById('cy-vol').value) || 0;
+            const cz = parseFloat(document.getElementById('cz-vol').value) || 0;
+            const dx = parseFloat(document.getElementById('dx-vol').value) || 0;
+            const dy = parseFloat(document.getElementById('dy-vol').value) || 0;
+            const dz = parseFloat(document.getElementById('dz-vol').value) || 0;
+
+            // 计算向量
+            const abx = bx - ax, aby = by - ay, abz = bz - az;
+            const acx = cx - ax, acy = cy - ay, acz = cz - az;
+            const adx = dx - ax, ady = dy - ay, adz = dz - az;
+
+            // 计算叉积 AC × AD
+            const crossX = acy * adz - acz * ady;
+            const crossY = acz * adx - acx * adz;
+            const crossZ = acx * ady - acy * adx;
+
+            // 计算混合积 AB · (AC × AD)
+            const scalarTriple = abx * crossX + aby * crossY + abz * crossZ;
+
+            // 四面体体积
+            const volume = Math.abs(scalarTriple) / 6;
+
+            const formula = `$V = \\frac{1}{6}|\\vec{AB} \\cdot (\\vec{AC} \\times \\vec{AD})| = \\frac{1}{6}|${scalarTriple.toFixed(3)}| = ${volume.toFixed(3)}$`;
+
+            let details = `<p><strong>计算过程：</strong></p>`;
+            details += `<p>$\\vec{AB} = (${abx}, ${aby}, ${abz})$</p>`;
+            details += `<p>$\\vec{AC} = (${acx}, ${acy}, ${acz})$</p>`;
+            details += `<p>$\\vec{AD} = (${adx}, ${ady}, ${adz})$</p>`;
+            details += `<p>$\\vec{AC} \\times \\vec{AD} = (${crossX.toFixed(3)}, ${crossY.toFixed(3)}, ${crossZ.toFixed(3)})$</p>`;
+            details += `<p>混合积 = ${scalarTriple.toFixed(3)}</p>`;
+
+            document.getElementById('volume-formula').innerHTML = formula;
+            document.getElementById('volume-details').innerHTML = details;
+            document.getElementById('volume-result').style.display = 'block';
+
+            // 绘制四面体图形
+            drawTetrahedron(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, volume);
+
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([document.getElementById('volume-result')]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 100);
+        }
+
+        // 计算平行六面体体积
+        function calculateParallelepipedVolume() {
+            calculateTetrahedronVolume(); // 先计算四面体
+
+            // 获取四面体体积并乘以6
+            const tetraVolume = parseFloat(document.getElementById('volume-formula').textContent.match(/[\d.]+$/)[0]);
+            const parallelepipedVolume = tetraVolume * 6;
+
+            const formula = `$V = |\\vec{AB} \\cdot (\\vec{AC} \\times \\vec{AD})| = ${parallelepipedVolume.toFixed(3)}$`;
+
+            let details = document.getElementById('volume-details').innerHTML;
+            details += `<p><strong>平行六面体体积 = 6 × 四面体体积 = ${parallelepipedVolume.toFixed(3)}</strong></p>`;
+
+            document.getElementById('volume-formula').innerHTML = formula;
+            document.getElementById('volume-details').innerHTML = details;
+
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([document.getElementById('volume-result')]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 100);
+        }
+
+        // 计算向量投影
+        function calculateProjection() {
+            const ax = parseFloat(document.getElementById('ax-proj').value) || 0;
+            const ay = parseFloat(document.getElementById('ay-proj').value) || 0;
+            const bx = parseFloat(document.getElementById('bx-proj').value) || 0;
+            const by = parseFloat(document.getElementById('by-proj').value) || 0;
+
+            // 计算数量积
+            const dot = ax * bx + ay * by;
+
+            // 计算b的模长平方
+            const bMagSquared = bx * bx + by * by;
+            const bMag = Math.sqrt(bMagSquared);
+
+            // 计算投影向量
+            const projX = (dot / bMagSquared) * bx;
+            const projY = (dot / bMagSquared) * by;
+
+            // 计算投影长度
+            const projLength = Math.abs(dot) / bMag;
+
+            const formula = `$\\text{proj}_{\\vec{b}}\\vec{a} = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{b}|^2}\\vec{b} = (${projX.toFixed(3)}, ${projY.toFixed(3)})$`;
+
+            let details = `<p><strong>计算过程：</strong></p>`;
+            details += `<p>$\\vec{a} \\cdot \\vec{b} = ${ax} \\times ${bx} + ${ay} \\times ${by} = ${dot}$</p>`;
+            details += `<p>$|\\vec{b}|^2 = ${bx}^2 + ${by}^2 = ${bMagSquared}$</p>`;
+            details += `<p>投影长度：$|\\text{proj}_{\\vec{b}}\\vec{a}| = \\frac{|${dot}|}{${bMag.toFixed(3)}} = ${projLength.toFixed(3)}$</p>`;
+
+            document.getElementById('projection-formula').innerHTML = formula;
+            document.getElementById('projection-details').innerHTML = details;
+            document.getElementById('projection-result').style.display = 'block';
+
+            // 绘制投影图
+            drawProjection(ax, ay, bx, by, projX, projY);
+
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([document.getElementById('projection-result')]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 100);
+        }
+
+        function drawProjection(ax, ay, bx, by, projX, projY) {
+            const canvas = document.getElementById('projectionCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 50;
+
+            drawAxes(ctx, centerX, centerY);
+
+            // 绘制向量a
+            drawVector(ctx, centerX, centerY, centerX + ax * scale, centerY - ay * scale, '#3b82f6', 'a');
+
+            // 绘制向量b
+            drawVector(ctx, centerX, centerY, centerX + bx * scale, centerY - by * scale, '#10b981', 'b');
+
+            // 绘制投影向量
+            drawVector(ctx, centerX, centerY, centerX + projX * scale, centerY - projY * scale, '#dc2626', 'proj');
+
+            // 绘制垂线
+            ctx.strokeStyle = '#94a3b8';
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(centerX + ax * scale, centerY - ay * scale);
+            ctx.lineTo(centerX + projX * scale, centerY - projY * scale);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 添加角度标注
+            const angle = Math.atan2(ay, ax) - Math.atan2(by, bx);
+            const angleDeg = Math.abs(angle * 180 / Math.PI);
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Arial';
+            ctx.fillText(`角度: ${angleDeg.toFixed(1)}°`, 10, 30);
+
+            // 添加投影长度标注
+            const projLength = Math.sqrt(projX * projX + projY * projY);
+            ctx.fillText(`投影长度: ${projLength.toFixed(2)}`, 10, 50);
+        }
+
+        // 解析自定义向量
+        function parseCustomVector() {
+            try {
+                const input = document.getElementById('customVector').value;
+                if (!input) return;
+
+                // 解析输入格式，例如 "(3,4) 投影到 (1,0)"
+                const match = input.match(/\(([^,]+),([^)]+)\)\s*投影到\s*\(([^,]+),([^)]+)\)/);
+                if (match) {
+                    const ax = parseFloat(match[1]);
+                    const ay = parseFloat(match[2]);
+                    const bx = parseFloat(match[3]);
+                    const by = parseFloat(match[4]);
+
+                    // 更新输入框
+                    document.getElementById('ax-proj').value = ax;
+                    document.getElementById('ay-proj').value = ay;
+                    document.getElementById('bx-proj').value = bx;
+                    document.getElementById('by-proj').value = by;
+
+                    // 自动计算投影
+                    calculateProjection();
+
+                    console.log('自定义向量解析成功:', {ax, ay, bx, by});
+                } else {
+                    alert('请输入正确格式，例如：(3,4) 投影到 (1,0)');
+                }
+            } catch (error) {
+                console.error('自定义向量解析错误:', error);
+                alert('向量表达式有误，请检查格式');
+            }
+        }
+
+        // 综合应用练习
+        function solveRoomArea() {
+            // 房间是矩形，可以分成两个三角形计算
+            const area1 = 0.5 * Math.abs(6 * 4 - 0 * 0); // 三角形ABC
+            const area2 = 0.5 * Math.abs(6 * 4 - 0 * 0); // 三角形ACD
+            const totalArea = 6 * 4; // 直接计算矩形面积
+
+            document.getElementById('room-result').innerHTML =
+                `<p><strong>房间面积：</strong>${totalArea} 平方米</p>
+                 <p><strong>验证：</strong>长×宽 = 6×4 = 24 平方米</p>`;
+        }
+
+        function solveShortestDistance() {
+            // 点P(3,2)到直线y=x，即x-y=0
+            // 使用点到直线距离公式：d = |ax₀+by₀+c|/√(a²+b²)
+            const distance = Math.abs(3 - 2) / Math.sqrt(1 + 1);
+
+            document.getElementById('distance-exercise-result').innerHTML =
+                `<p><strong>最短距离：</strong>${distance.toFixed(3)}</p>
+                 <p><strong>计算：</strong>|3-2|/√2 = 1/√2 ≈ 0.707</p>`;
+        }
+
+        // 绘制四面体图形
+        function drawTetrahedron(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, volume) {
+            const canvas = document.getElementById('volumeCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 30;
+
+            // 绘制坐标轴
+            drawAxes(ctx, centerX, centerY);
+
+            // 简单的3D到2D投影 (等角投影)
+            const project3D = (x, y, z) => ({
+                x: centerX + (x * scale - y * scale * 0.5),
+                y: centerY - (y * scale * 0.3 + z * scale)
+            });
+
+            // 投影点
+            const a = project3D(ax, ay, az);
+            const b = project3D(bx, by, bz);
+            const c = project3D(cx, cy, cz);
+            const d = project3D(dx, dy, dz);
+
+            // 绘制四面体的边
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 2;
+
+            // 绘制四面体的四条边
+            drawLine(ctx, a.x, a.y, b.x, b.y);
+            drawLine(ctx, a.x, a.y, c.x, c.y);
+            drawLine(ctx, a.x, a.y, d.x, d.y);
+            drawLine(ctx, b.x, b.y, c.x, c.y);
+            drawLine(ctx, b.x, b.y, d.x, d.y);
+            drawLine(ctx, c.x, c.y, d.x, d.y);
+
+            // 绘制点
+            drawPoint(ctx, a.x, a.y, 'A', '#dc2626');
+            drawPoint(ctx, b.x, b.y, 'B', '#10b981');
+            drawPoint(ctx, c.x, c.y, 'C', '#f59e0b');
+            drawPoint(ctx, d.x, d.y, 'D', '#8b5cf6');
+
+            // 添加体积标注
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 16px Source Han Serif CN';
+            ctx.textAlign = 'center';
+            ctx.fillText(`四面体体积: ${volume.toFixed(3)}`, centerX, 40);
+
+            // 添加说明文字
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px Source Han Serif CN';
+            ctx.fillText('3D 四面体简化投影图', centerX, canvas.height - 20);
+        }
+
+        // 绘制线段
+        function drawLine(ctx, x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        // 辅助绘图函数
+        function drawAxes(ctx, centerX, centerY) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+
+            // x轴
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(ctx.canvas.width, centerY);
+            ctx.stroke();
+
+            // y轴
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, ctx.canvas.height);
+            ctx.stroke();
+        }
+
+        function drawVector(ctx, startX, startY, endX, endY, color, label) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // 箭头
+            const angle = Math.atan2(endY - startY, endX - startX);
+            const arrowLength = 12;
+            const arrowAngle = Math.PI / 6;
+
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(
+                endX - arrowLength * Math.cos(angle - arrowAngle),
+                endY - arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(
+                endX - arrowLength * Math.cos(angle + arrowAngle),
+                endY - arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+
+            // 标签
+            ctx.fillStyle = color;
+            ctx.font = '14px Arial';
+            ctx.fillText(label, endX + 5, endY - 5);
+        }
+
+        function drawPoint(ctx, x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.font = '14px Arial';
+            ctx.fillText(label, x + 8, y - 8);
+        }
+
+        // 初始化页面
+        function initializePage() {
+            console.log('开始初始化页面...');
+            
+            // 初始化画布
+            drawVector();
+            drawVectorToCanvas('calcCanvas', [], '向量运算可视化');
+            
+            // 等待MathJax加载并渲染
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    console.log('MathJax已加载，开始渲染所有公式...');
+                    window.MathJax.typesetPromise().then(() => {
+                        console.log('MathJax渲染完成');
+                    }).catch(err => {
+                        console.error('MathJax渲染错误:', err);
+                    });
+                } else {
+                    console.warn('MathJax未加载');
+                }
+            }, 1000);
+        }
+                
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            initializePage();
+        });
+    </script>
+</body>
+</html>

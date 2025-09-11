@@ -1,0 +1,31 @@
+/* 统一字体配置 - 思源宋体 */
+@font-face {
+  font-family: 'Source Han Serif SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/SourceHanSerifSC-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Source Han Serif SC';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/SourceHanSerifSC-Regular.otf') format('opentype');
+}
+
+/* 全局字体设置 - 添加系统字体作为fallback */
+* {
+  font-family: 'Source Han Serif SC', 'Noto Serif CJK SC', 'SimSun', '宋体', serif !important;
+}
+
+/* 数学公式字体 */
+.MathJax, .katex {
+  font-family: 'Source Han Serif SC', serif !important;
+}
+
+/* 代码字体也使用思源宋体 */
+code, pre, .code {
+  font-family: 'Source Han Serif SC', monospace !important;
+}

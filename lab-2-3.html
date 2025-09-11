@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数极限 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base']}
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>   
+    <script async src="../common-assets/js/tex-svg.js"></script>
+
+    
+    <!-- 隐藏滚动条样式 -->
+    <style>
+        /* 隐藏滚动条但保持滚动功能 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+    </style>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 22px;      /* 一级标题 */
+            --h2-size: 20px;      /* 二级标题 */
+            --h3-size: 18px;      /* 三级标题 */
+            --btn-size: 16px;     /* 按钮文字 */
+            --formula-size: 20px; /* 数学公式 */
+            --text-size: 16px;    /* 正文文字 */
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            /* 灰度色阶 */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 边框和阴影 */
+            --border: var(--gray-200);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* 过渡动画 */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            min-height: auto;
+            overflow: visible;
+            color: var(--gray-800);
+            font-size: var(--text-size);
+            line-height: 1.6;
+        }
+
+        /* 全屏容器布局 */
+        .app-container { width:100vw; min-height: 100vh; display: flex; flex-direction: column; background: var(--light); }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* 主内容区域 - 使用Grid布局 */
+        .main-content {
+            display: flex; min-height: calc(100vh - 120px); width:100vw;
+        }
+
+        /* 侧边导航栏 */
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 60%;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-tab.active::before {
+            
+            background: white;
+        }
+
+        .nav-tab-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* 内容面板区域 */
+        .content-area {
+            flex: 1;
+            overflow: visible;
+            position: relative;
+        }
+
+        .panel {
+            display: none; width:100vw;  padding: 0;}
+
+        .panel.active {
+            display: block;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        /* 计算器面板 - 左右布局 */
+        .calc-section {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+            padding: 20px;
+        }
+
+        .calc-left {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .calc-right {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .calc-inputs, .calc-results {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+            color: var(--gray-800);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--formula-size);
+        }
+
+        .result-display {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .operation-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 可视化面板 */
+        .visualization-container {
+            
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-container {
+            flex: 1;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            overflow: visible;
+            background: white;
+            margin: 16px 0;
+            position: relative;
+            min-height: 400px;
+            width: 100%;
+        }
+
+        #functionCanvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: white;
+        }
+
+        .chart-info {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* 例题面板 */
+        .examples-grid {
+            display: block;
+            
+            gap: 20px;
+            height: fit-content;
+        }
+
+        .example-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .example-card:hover {
+            transform: translateY(-4px);
+            box-shadow: none;
+        }
+
+        .example-card h4 {
+            color: var(--success);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .example-card .formula {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 12px 0;
+            font-size: var(--formula-size);
+        }
+
+        .example-card .description {
+            color: var(--gray-600);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* MathJax 优化 */
+        mjx-container {
+            font-size: var(--formula-size) !important;
+        }
+
+        .formula-block {
+            display: block;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .formula-inline {
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-content {
+                
+                
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 16px 0;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .nav-tab {
+                white-space: nowrap;
+                min-width: 120px;
+            }
+
+            .calc-section {
+                
+                gap: 16px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 4px;
+                border-radius: 12px;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .examples-grid {
+                
+            }
+        }
+    
+        /* 页面截断修复 */
+        html, body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: auto !important;
+            min-height: 100vh !important;
+        }
+        
+        .app-container {
+            min-height: 100vh !important;
+            height: auto !important;
+        }
+        
+        .main-content {
+            display: flex !important;
+            flex-direction: row !important;
+            min-height: auto !important;
+            height: auto !important;
+            align-items: stretch !important;
+        }
+        
+        .sidebar {
+            width: 200px !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            height: auto !important;
+        }
+        
+        .content-area {
+            flex: 1 !important;
+            flex-grow: 1 !important;
+            min-width: 0 !important;
+            position: relative !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        
+        .panel {
+            position: static !important;
+            display: none !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 20px !important;
+            overflow: visible !important;
+        }
+        
+        .panel.active {
+            display: block !important;
+        }</style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="header-content">
+                <h1>函数极限</h1>
+                <span class="header-subtitle">探索函数在某点的极限行为</span>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 侧边导航栏 -->
+            <div class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="calculator">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
+                        </svg>
+                        极限计算
+                    </button>
+                    <button class="nav-tab" data-panel="examples">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        经典例题
+                    </button>
+                </div>
+            </div>
+
+            <!-- 内容面板区域 -->
+            <div class="content-area">
+                <!-- 计算器面板 -->
+                <div class="panel active" id="calculator">
+                    <div class="calc-section">
+                        <!-- 左侧控制区 -->
+                        <div class="calc-left">
+                            <div class="calc-inputs">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
+                                    </svg>
+                                    极限计算器
+                                </h3>
+
+                                <div class="input-group">
+                                    <label for="functionType">选择函数类型:</label>
+                                    <select id="functionType">
+                                        <option value="polynomial">多项式函数</option>
+                                        <option value="rational">有理函数</option>
+                                        <option value="trigonometric">三角函数</option>
+                                        <option value="exponential">指数函数</option>
+                                        <option value="logarithmic">对数函数</option>
+                                        <option value="custom">自定义函数</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group" id="customFunctionInput" style="display: none;">
+                                    <label for="customFunction">自定义函数表达式:</label>
+                                    <input type="text" id="customFunction" placeholder="例如: x^2 - 1, sin(x)/x, (x-1)/(x+1)">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="limitPoint">极限点 x₀:</label>
+                                    <input type="number" id="limitPoint" value="0" step="0.1">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="limitType">极限类型:</label>
+                                    <select id="limitType">
+                                        <option value="both">双侧极限</option>
+                                        <option value="left">左极限</option>
+                                        <option value="right">右极限</option>
+                                        <option value="infinity">趋于无穷</option>
+                                    </select>
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="calculateFunctionLimit()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
+                                        </svg>
+                                        计算极限
+                                    </button>
+                                    <button class="btn" onclick="showApproachTable()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        逼近表
+                                    </button>
+                                    <button class="btn" onclick="animateApproach()" style="background: var(--success);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        动画演示
+                                    </button>
+                                    <button class="btn" onclick="stopAnimation()" style="background: var(--danger);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M6 6h12v12H6z"/>
+                                        </svg>
+                                        停止动画
+                                    </button>
+                                    <button class="btn" onclick="testFunctionCanvas()" style="background: var(--warning);">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                        测试
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="calc-results">
+                                <div class="formula-display" id="formulaDisplay">
+                                    $\lim\limits_{x \to 0} \frac{\sin x}{x} = 1$
+                                </div>
+
+                                <div class="result-display" id="resultDisplay">
+                                    函数在 x = 0 处的极限值为 1
+                                </div>
+
+                                <div id="approachTableContainer" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 20px;">
+                                    <h4 style="font-size: 16px; margin-bottom: 10px;">函数值逼近表</h4>
+                                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                                        <thead>
+                                            <tr style="background: var(--gray-50);">
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">x</th>
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">f(x)</th>
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">x</th>
+                                                <th style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 14px;">f(x)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="approachTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧可视化区 -->
+                        <div class="calc-right">
+                            <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid var(--border); flex: 1;">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                    </svg>
+                                    函数图像
+                                </h3>
+
+                                <div class="canvas-container">
+                                    <canvas id="functionCanvas"></canvas>
+                                    <div id="canvasDebug" style="position: absolute; top: 10px; left: 10px; background: rgba(255,0,0,0.8); color: white; padding: 5px; font-size: 12px; z-index: 1000;">
+                                        画布调试信息
+                                    </div>
+                                </div>
+
+                                <div class="chart-info">
+                                    <p style="margin-bottom: 8px; color: var(--gray-600);">
+                                        <span style="color: var(--primary); font-weight: bold;">━</span> 函数图像
+                                        <span style="margin-left: 20px; color: var(--danger); font-weight: bold;">●</span> 极限点
+                                        <span style="margin-left: 20px; color: var(--success); font-weight: bold;">━</span> 极限值
+                                    </p>
+                                    <p id="chartInfo">准备开始函数极限演示...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 例题面板 -->
+                <div class="panel" id="examples">
+
+                    <div class="examples-grid">
+                        <div class="example-card">
+                            <h4>重要极限 I</h4>
+                            <div class="formula">$\lim\limits_{x \to 0} \frac{\sin x}{x} = 1$</div>
+                            <div class="description">
+                                这是第一个重要极限，在三角函数极限计算中经常用到。可以通过几何方法或泰勒展开证明。
+                            </div>
+                    </div>
+
+                        <div class="example-card">
+                            <h4>重要极限 II</h4>
+                            <div class="formula">$\lim\limits_{x \to \infty} \left(1+\frac{1}{x}\right)^x = e$</div>
+                            <div class="description">
+                                这是第二个重要极限，定义了自然常数 e。在指数函数和对数函数的极限计算中非常重要。
+                            </div>
+                    </div>
+
+                        <div class="example-card">
+                            <h4>有理函数极限</h4>
+                            <div class="formula">$\lim\limits_{x \to 1} \frac{x^2-1}{x-1} = 2$</div>
+                            <div class="description">
+                                通过因式分解约去使分母为零的因子：$\frac{x^2-1}{x-1} = \frac{(x+1)(x-1)}{x-1} = x+1$。
+                            </div>
+                    </div>
+
+                        <div class="example-card">
+                            <h4>无穷大极限</h4>
+                            <div class="formula">$\lim\limits_{x \to +\infty} \frac{2x^2+3x+1}{x^2+1} = 2$</div>
+                            <div class="description">
+                                对于有理函数，当 x 趋于无穷时，极限值等于最高次项系数的比值。
+                    </div>
+                </div>
+
+                        <div class="example-card">
+                            <h4>指数函数极限</h4>
+                            <div class="formula">$\lim\limits_{x \to 0} \frac{e^x-1}{x} = 1$</div>
+                            <div class="description">
+                                这个极限可以通过 L'Hôpital 法则或泰勒展开来计算，结果是指数函数的导数。
+                            </div>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>对数函数极限</h4>
+                            <div class="formula">$\lim\limits_{x \to 0^+} \frac{\ln(1+x)}{x} = 1$</div>
+                            <div class="description">
+                                这是对数函数的重要极限，可以通过换元或泰勒展开来证明，结果是对数函数的导数。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                // 添加活动状态
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                document.getElementById(panelId).classList.add('active');
+
+            });
+        });
+
+        // 函数类型选择事件
+        document.getElementById('functionType').addEventListener('change', function() {
+            const customInput = document.getElementById('customFunctionInput');
+            
+            if (this.value === 'custom') {
+                customInput.style.display = 'block';
+            } else {
+                customInput.style.display = 'none';
+            }
+            calculateFunctionLimit();
+        });
+
+        // 预定义函数
+        const predefinedFunctions = {
+            'polynomial': { expr: 'x^2 - 1', point: 1, limit: 0 },
+            'rational': { expr: '(x^2-1)/(x-1)', point: 1, limit: 2 },
+            'trigonometric': { expr: 'sin(x)/x', point: 0, limit: 1 },
+            'exponential': { expr: '(e^x-1)/x', point: 0, limit: 1 },
+            'logarithmic': { expr: 'ln(1+x)/x', point: 0, limit: 1 }
+        };
+
+        // 计算函数值
+        function evaluateFunction(x, expr) {
+            try {
+                // 简单的表达式求值（实际应用中应使用更安全的数学解析库）
+                let formula = expr.toLowerCase();
+                formula = formula.replace(/\^/g, '**');
+                formula = formula.replace(/sin/g, 'Math.sin');
+                formula = formula.replace(/cos/g, 'Math.cos');
+                formula = formula.replace(/tan/g, 'Math.tan');
+                formula = formula.replace(/ln/g, 'Math.log');
+                formula = formula.replace(/log/g, 'Math.log10');
+                formula = formula.replace(/e\*\*/g, 'Math.exp');
+                formula = formula.replace(/\be\b/g, 'Math.E');
+                formula = formula.replace(/x/g, `(${x})`);
+                
+                return eval(formula);
+            } catch (e) {
+                return NaN;
+            }
+        }
+
+        // 计算函数极限
+        function calculateFunctionLimit() {
+            const type = document.getElementById('functionType').value;
+            const customExpr = document.getElementById('customFunction').value;
+            const limitPoint = parseFloat(document.getElementById('limitPoint').value);
+            const limitType = document.getElementById('limitType').value;
+
+            let expr, theoreticalLimit;
+            
+            if (type === 'custom') {
+                expr = customExpr || 'sin(x)/x';
+                theoreticalLimit = null;
+            } else {
+                const func = predefinedFunctions[type];
+                expr = func.expr;
+                theoreticalLimit = func.limit;
+                document.getElementById('limitPoint').value = func.point;
+            }
+
+            // 更新公式显示
+            let limitNotation = '';
+            switch (limitType) {
+                case 'left':
+                    limitNotation = `\\lim\\limits_{x \\to ${limitPoint}^-}`;
+                    break;
+                case 'right':
+                    limitNotation = `\\lim\\limits_{x \\to ${limitPoint}^+}`;
+                    break;
+                case 'infinity':
+                    limitNotation = `\\lim\\limits_{x \\to +\\infty}`;
+                    break;
+                default:
+                    limitNotation = `\\lim\\limits_{x \\to ${limitPoint}}`;
+            }
+
+            // 格式化表达式用于显示
+            let displayExpr = expr;
+            displayExpr = displayExpr.replace(/\*/g, '\\cdot');
+            displayExpr = displayExpr.replace(/\^/g, '^');
+            
+            document.getElementById('formulaDisplay').innerHTML = 
+                `$${limitNotation} ${displayExpr} = ${theoreticalLimit !== null ? theoreticalLimit : '?'}$`;
+
+            // 数值计算极限
+            const numericLimit = calculateNumericLimit(expr, limitPoint, limitType);
+            
+            document.getElementById('resultDisplay').innerHTML = 
+                `数值计算结果: ${numericLimit !== null ? numericLimit.toFixed(6) : '不存在或无穷大'}`;
+
+            // 重新渲染MathJax，避免重复渲染
+            setTimeout(() => {
+                const elementsToRender = [
+                    document.getElementById('formulaDisplay'),
+                    document.getElementById('resultDisplay')
+                ].filter(el => el && el.innerHTML.includes('$'));
+                
+                if (elementsToRender.length > 0) {
+                    renderMath(elementsToRender);
+                }
+            }, 100);
+        }
+
+        // 数值计算极限
+        function calculateNumericLimit(expr, point, type) {
+            const steps = [0.1, 0.01, 0.001, 0.0001, 0.00001];
+            let values = [];
+
+            for (let step of steps) {
+                let x;
+                switch (type) {
+                    case 'left':
+                        x = point - step;
+                        break;
+                    case 'right':
+                        x = point + step;
+                        break;
+                    case 'infinity':
+                        x = 1 / step;
+                        break;
+                    default:
+                        x = point + step;
+                }
+
+                const value = evaluateFunction(x, expr);
+                if (!isNaN(value) && isFinite(value)) {
+                    values.push(value);
+                }
+            }
+
+            if (values.length === 0) return null;
+            return values[values.length - 1];
+        }
+
+        // 显示逼近表
+        function showApproachTable() {
+            const type = document.getElementById('functionType').value;
+            const customExpr = document.getElementById('customFunction').value;
+            const limitPoint = parseFloat(document.getElementById('limitPoint').value);
+            const limitType = document.getElementById('limitType').value;
+
+            let expr;
+            if (type === 'custom') {
+                expr = customExpr || 'sin(x)/x';
+                } else {
+                expr = predefinedFunctions[type].expr;
+            }
+
+            const tableContainer = document.getElementById('approachTableContainer');
+            const tableBody = document.getElementById('approachTableBody');
+
+            // 清空表格
+            tableBody.innerHTML = '';
+
+            // 生成逼近值
+            const steps = [0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005, 0.00001, 0.000005];
+            
+            for (let i = 0; i < steps.length; i += 2) {
+                const row = document.createElement('tr');
+
+                const step1 = steps[i];
+                const step2 = i + 1 < steps.length ? steps[i + 1] : null;
+
+                let x1, x2;
+                switch (limitType) {
+                    case 'left':
+                        x1 = limitPoint - step1;
+                        x2 = step2 ? limitPoint - step2 : null;
+                        break;
+                    case 'right':
+                        x1 = limitPoint + step1;
+                        x2 = step2 ? limitPoint + step2 : null;
+                        break;
+                    case 'infinity':
+                        x1 = 1 / step1;
+                        x2 = step2 ? 1 / step2 : null;
+                        break;
+                    default:
+                        x1 = limitPoint + step1;
+                        x2 = step2 ? limitPoint + step2 : null;
+                }
+
+                const value1 = evaluateFunction(x1, expr);
+                const value2 = x2 ? evaluateFunction(x2, expr) : null;
+
+                row.innerHTML = `
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${x1.toFixed(6)}</td>
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${isNaN(value1) ? 'N/A' : value1.toFixed(6)}</td>
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${x2 ? x2.toFixed(6) : ''}</td>
+                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border);">${value2 ? (isNaN(value2) ? 'N/A' : value2.toFixed(6)) : ''}</td>
+                `;
+
+                tableBody.appendChild(row);
+            }
+
+            tableContainer.style.display = 'block';
+        }
+
+        // 更新函数图像
+        function updateFunctionChart() {
+            const canvas = document.getElementById('functionCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            
+            // 修复画布尺寸设置
+            const containerWidth = rect.width || canvas.parentElement.clientWidth || 800;
+            const containerHeight = rect.height || 400;
+            
+            canvas.width = Math.max(containerWidth, 600);
+            canvas.height = Math.max(containerHeight, 300);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 50;
+
+            // 清空画布
+            ctx.clearRect(0, 0, width, height);
+
+            const type = document.getElementById('functionType').value;
+            const customExpr = document.getElementById('customFunction').value;
+            const limitPoint = parseFloat(document.getElementById('limitPoint').value);
+
+            let expr;
+            if (type === 'custom') {
+                expr = customExpr || 'sin(x)/x';
+            } else {
+                expr = predefinedFunctions[type].expr;
+            }
+
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            // x轴
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            // y轴
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+
+            // 绘制函数图像
+            const xMin = limitPoint - 2;
+            const xMax = limitPoint + 2;
+            const points = [];
+
+            for (let i = 0; i <= 200; i++) {
+                const x = xMin + (i / 200) * (xMax - xMin);
+                if (Math.abs(x - limitPoint) > 0.001) { // 避免在极限点处计算
+                    const y = evaluateFunction(x, expr);
+                    if (!isNaN(y) && isFinite(y)) {
+                        points.push({ x, y });
+                    }
+                }
+            }
+
+            if (points.length > 0) {
+                // 计算y轴范围
+                const yValues = points.map(p => p.y);
+                const yMin = Math.min(...yValues);
+                const yMax = Math.max(...yValues);
+                const yRange = yMax - yMin;
+                const yCenter = (yMax + yMin) / 2;
+                const ySpan = Math.max(yRange * 1.2, 2);
+
+                // 绘制函数曲线
+                ctx.strokeStyle = '#4f46e5';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+                points.forEach((point, index) => {
+                    const canvasX = padding + ((point.x - xMin) / (xMax - xMin)) * (width - 2 * padding);
+                    const canvasY = height - padding - ((point.y - (yCenter - ySpan/2)) / ySpan) * (height - 2 * padding);
+
+                    if (index === 0) {
+                        ctx.moveTo(canvasX, canvasY);
+                    } else {
+                        ctx.lineTo(canvasX, canvasY);
+                    }
+                });
+
+            ctx.stroke();
+
+                // 标记极限点
+                const limitX = padding + ((limitPoint - xMin) / (xMax - xMin)) * (width - 2 * padding);
+                const numericLimit = calculateNumericLimit(expr, limitPoint, 'both');
+                
+                if (numericLimit !== null) {
+                    const limitY = height - padding - ((numericLimit - (yCenter - ySpan/2)) / ySpan) * (height - 2 * padding);
+                    
+                    // 绘制极限点
+                    ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                    ctx.arc(limitX, limitY, 6, 0, 2 * Math.PI);
+                ctx.fill();
+
+                    // 绘制极限值水平线
+                    ctx.strokeStyle = '#10b981';
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(padding, limitY);
+                    ctx.lineTo(width - padding, limitY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                // 绘制极限点垂直线
+                ctx.strokeStyle = '#6b7280';
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(limitX, padding);
+                ctx.lineTo(limitX, height - padding);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // 绘制坐标轴标签
+            ctx.fillStyle = '#374151';
+            ctx.font = '12px Source Han Serif SC';
+            ctx.textAlign = 'center';
+            ctx.fillText('x', width - 20, height - 10);
+            
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('f(x)', 0, 0);
+            ctx.restore();
+
+            // 更新图表信息
+            let displayExpr = expr;
+            displayExpr = displayExpr.replace(/\*/g, '\\cdot');
+            displayExpr = displayExpr.replace(/\^/g, '^');
+            
+            document.getElementById('chartInfo').innerHTML = 
+                `当前函数: $f(x) = ${displayExpr}$，在 $x \\to ${limitPoint}$ 时的极限`;
+
+            setTimeout(() => {
+                renderMath([document.getElementById('chartInfo')]);
+            }, 100);
+        }
+
+        // 动画逼近 - 实现 xy 同时逼近
+        function animateApproach() {
+            console.log('开始 xy 同时逼近动画...');
+
+            const canvas = document.getElementById('functionCanvas');
+            if (!canvas) {
+                console.error('画布元素未找到');
+                return;
+            }
+
+            const type = document.getElementById('functionType').value;
+            const customExpr = document.getElementById('customFunction').value;
+            const limitPoint = parseFloat(document.getElementById('limitPoint').value);
+            const limitType = document.getElementById('limitType').value;
+
+            let expr;
+            if (type === 'custom') {
+                expr = customExpr || 'sin(x)/x';
+            } else {
+                expr = predefinedFunctions[type].expr;
+            }
+
+            console.log('动画参数:', { type, expr, limitPoint, limitType });
+
+            // 更精细的逼近步骤
+            const steps = [1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.002, 0.001, 0.0005, 0.0001];
+            let currentStep = 0;
+
+            // 停止之前的动画
+            if (currentAnimationId) {
+                clearTimeout(currentAnimationId);
+                currentAnimationId = null;
+            }
+
+            function animate() {
+                if (currentStep >= steps.length) {
+                    // 动画完成，显示最终结果
+                    updateFunctionChart();
+                    const chartInfo = document.getElementById('chartInfo');
+                    if (chartInfo) {
+                        let displayExpr = expr;
+                        displayExpr = displayExpr.replace(/\*/g, '\\cdot');
+                        displayExpr = displayExpr.replace(/\^/g, '^');
+                        
+                        chartInfo.innerHTML =
+                            `动画完成！当前函数: $f(x) = ${displayExpr}$，在 $x \\to ${limitPoint}$ 时的极限`;
+                        setTimeout(() => {
+                            renderMath([chartInfo]);
+                        }, 100);
+                    }
+                    console.log('xy 同时逼近动画完成');
+                    return;
+                }
+
+                const step = steps[currentStep];
+                let x;
+                switch (limitType) {
+                    case 'left':
+                        x = limitPoint - step;
+                        break;
+                    case 'right':
+                        x = limitPoint + step;
+                        break;
+                    case 'infinity':
+                        x = 1 / step;
+                        break;
+                    default:
+                        x = limitPoint + step;
+                }
+
+                const value = evaluateFunction(x, expr);
+                console.log(`逼近步骤 ${currentStep + 1}: x = ${x.toFixed(6)}, f(x) = ${value.toFixed(6)}`);
+
+                // 更新画布显示当前逼近点
+                updateFunctionChart();
+
+                // 在画布上标记当前逼近点
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+                const padding = 50;
+                
+                // 计算当前点在画布上的位置
+                const xMin = limitPoint - 2;
+                const xMax = limitPoint + 2;
+                
+                // 获取函数值范围用于 y 轴映射
+                const points = [];
+                for (let i = 0; i <= 200; i++) {
+                    const testX = xMin + (i / 200) * (xMax - xMin);
+                    if (Math.abs(testX - limitPoint) > 0.001) {
+                        const testY = evaluateFunction(testX, expr);
+                        if (!isNaN(testY) && isFinite(testY)) {
+                            points.push({ x: testX, y: testY });
+                        }
+                    }
+                }
+                
+                if (points.length > 0) {
+                    const yValues = points.map(p => p.y);
+                    const yMin = Math.min(...yValues);
+                    const yMax = Math.max(...yValues);
+                    const yRange = yMax - yMin;
+                    const yCenter = (yMax + yMin) / 2;
+                    const ySpan = Math.max(yRange * 1.2, 2);
+
+                    const canvasX = padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
+                    const canvasY = height - padding - ((value - (yCenter - ySpan/2)) / ySpan) * (height - 2 * padding);
+
+                    // 绘制逼近点（x 和 y 同时逼近）
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(canvasX, canvasY, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+
+                    // 绘制从 x 轴到逼近点的垂直线
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(canvasX, height - padding);
+                    ctx.lineTo(canvasX, canvasY);
+                    ctx.stroke();
+
+                    // 绘制从 y 轴到逼近点的水平线
+                    ctx.strokeStyle = '#10b981';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(padding, canvasY);
+                    ctx.lineTo(canvasX, canvasY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // 绘制坐标标签
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = 'bold 12px Source Han Serif SC';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`x=${x.toFixed(4)}`, canvasX, height - 10);
+                    
+                    ctx.fillStyle = '#10b981';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(`f(x)=${value.toFixed(4)}`, padding + 5, canvasY - 5);
+                }
+
+                // 更新信息显示
+                const chartInfo = document.getElementById('chartInfo');
+                if (chartInfo) {
+                    chartInfo.innerHTML =
+                        `逼近步骤 ${currentStep + 1}: x = ${x.toFixed(6)}, f(x) = ${isNaN(value) ? 'N/A' : value.toFixed(6)}`;
+                }
+
+                currentStep++;
+                currentAnimationId = setTimeout(animate, 1200); // 优化动画速度
+            }
+
+            console.log('开始执行 xy 同时逼近动画...');
+            animate();
+        }
+
+        // 改进的MathJax渲染函数，避免重复渲染
+        let renderingInProgress = false;
+        function renderMath(elements = null) {
+            if (renderingInProgress) {
+                return Promise.resolve();
+            }
+            
+            const targets = elements || [document.body];
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                renderingInProgress = true;
+                return window.MathJax.typesetPromise(targets).then(() => {
+                    renderingInProgress = false;
+                    console.log('MathJax渲染完成');
+                }).catch(err => {
+                    renderingInProgress = false;
+                    console.warn('MathJax渲染错误:', err);
+                    // 重试渲染
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise(targets).catch(e => 
+                                console.warn('MathJax重试渲染失败:', e)
+                            );
+                        }
+                    }, 200);
+                });
+            }
+            
+            return Promise.resolve();
+        }
+
+        // 测试函数
+        function testFunctionCanvas() {
+            console.log('=== 测试函数画布 ===');
+            
+            // 更新调试信息显示
+            const debugDiv = document.getElementById('canvasDebug');
+            if (debugDiv) {
+                debugDiv.innerHTML = '测试中...';
+            }
+            
+            const canvas = document.getElementById('functionCanvas');
+            console.log('画布元素:', canvas);
+            
+            if (canvas) {
+                // 强制设置画布尺寸
+                canvas.width = 800;
+                canvas.height = 400;
+                console.log('强制设置画布尺寸:', canvas.width, 'x', canvas.height);
+                
+                // 测试画布绘制
+                const ctx = canvas.getContext('2d');
+                
+                // 清空画布
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制背景
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制彩色方块
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(50, 50, 100, 100);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(200, 50, 100, 100);
+                ctx.fillStyle = '#0000ff';
+                ctx.fillRect(350, 50, 100, 100);
+                
+                // 绘制文字
+                ctx.fillStyle = '#000000';
+                ctx.font = '20px Arial';
+                ctx.fillText('函数画布测试成功！', 50, 200);
+                
+                console.log('测试绘制完成');
+                
+                // 更新调试信息
+                if (debugDiv) {
+                    debugDiv.innerHTML = `画布: ${canvas.width}x${canvas.height}`;
+                }
+            } else {
+                console.error('画布元素未找到！');
+                if (debugDiv) {
+                    debugDiv.innerHTML = '画布未找到！';
+                }
+            }
+            
+            // 测试动画函数
+            if (typeof window.animateApproach === 'function') {
+                console.log('动画函数存在，3秒后开始测试...');
+                setTimeout(() => {
+                    console.log('开始测试动画...');
+                    window.animateApproach();
+                }, 3000);
+            } else {
+                console.error('动画函数不存在！');
+            }
+            
+            alert('测试完成！如果看到彩色方块和文字，说明画布工作正常。');
+        }
+
+        // 停止动画函数
+        let currentAnimationId = null;
+        function stopAnimation() {
+            if (currentAnimationId) {
+                clearTimeout(currentAnimationId);
+                currentAnimationId = null;
+                console.log('动画已停止');
+                
+                // 更新信息显示
+                const chartInfo = document.getElementById('chartInfo');
+                if (chartInfo) {
+                    chartInfo.innerHTML = '动画已停止';
+                }
+            }
+        }
+
+        // 确保函数在全局作用域中可用
+        window.calculateFunctionLimit = calculateFunctionLimit;
+        window.showApproachTable = showApproachTable;
+        window.animateApproach = animateApproach;
+        window.updateFunctionChart = updateFunctionChart;
+        window.testFunctionCanvas = testFunctionCanvas;
+        window.stopAnimation = stopAnimation;
+
+        // 输入变化时重新计算
+        document.getElementById('limitPoint').addEventListener('input', calculateFunctionLimit);
+        document.getElementById('limitType').addEventListener('change', calculateFunctionLimit);
+        document.getElementById('customFunction').addEventListener('input', calculateFunctionLimit);
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM加载完成，开始初始化页面...');
+            calculateFunctionLimit();
+
+            setTimeout(() => {
+                // 初始化计算器面板中的画布
+                updateFunctionChart();
+
+                // 渲染所有静态公式，包括例题中的公式
+                const staticFormulaElements = document.querySelectorAll('.formula, .formula-display, .result-display, #chartInfo, .example-card .formula, .example-card .description, th');
+                renderMath(Array.from(staticFormulaElements)).then(() => {
+                    console.log('MathJax初始化完成');
+                });
+            }, 500);
+        });
+
+        // 窗口大小改变时重新绘制图像
+        window.addEventListener('resize', function() {
+            setTimeout(updateFunctionChart, 100);
+        });
+    </script>
+</body>
+</html>
+

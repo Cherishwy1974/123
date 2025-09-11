@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>高等应用数学虚拟实验室（全悬浮版）</title>
+
+<style>
+/* 极简性能优化设计 */
+:root {
+    --primary: #4f46e5; /* Indigo-600 */
+    --primary-dark: #4338ca; /* Indigo-700 */
+    --primary-light: #6366f1; /* Indigo-500 */
+    --secondary: #7c3aed; /* Violet-600 */
+    --dark: #0f172a;
+    --light: #ffffff;
+    --border: #334155;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+    font-size: 18px; /* 标准正文字号 */
+    background-color: #000;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    color: var(--text);
+}
+
+/* 高性能星空背景 */
+#starry-sky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, #1e1b4b 0%, #0f172a 100%); /* Deep blue space background */
+}
+
+/* 主内容区 - 全屏iframe */
+.main-content {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+#contentFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #0f172a; /* iframe背景与主题匹配 */
+}
+
+/* 欢迎页 */
+.welcome-page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    color: white;
+    padding: 60px 20px 20px 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    background: transparent; /* 背景由canvas提供 */
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    gap: 30px;
+    align-items: center;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    background: rgba(15, 23, 42, 0.6); /* 半透明深色背景 */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+}
+
+.welcome-title-section {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.welcome-items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.welcome-title {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 0;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, var(--primary-light), #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    line-height: 1.1;
+    -webkit-text-fill-color: transparent;
+}
+
+.welcome-subtitle {
+    font-size: 18px;
+    opacity: 0.95;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: var(--text);
+}
+
+.welcome-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+}
+
+.welcome-features::-webkit-scrollbar {
+    display: none;
+}
+
+.welcome-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(8px);
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.3);
+    border-color: var(--primary);
+}
+
+.welcome-item-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: var(--primary-light);
+}
+
+.welcome-item-icon svg {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 0 5px var(--primary));
+}
+
+.welcome-item:hover .welcome-item-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.welcome-item-text {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--text);
+}
+
+
+.welcome-preview {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 25px;
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    position: relative;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.welcome-preview::-webkit-scrollbar {
+    display: none;
+}
+
+.preview-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--primary-light);
+    position: relative;
+}
+
+.preview-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.preview-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.preview-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.preview-item:hover::before {
+    left: 100%;
+}
+
+.preview-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(8px) scale(1.03);
+    box-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
+    border-color: var(--primary);
+}
+
+.preview-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: var(--primary-light);
+}
+.preview-icon svg{
+    width: 20px;
+    height: 20px;
+    filter: drop-shadow(0 0 5px var(--primary));
+}
+.preview-item:hover .preview-icon {
+    transform: scale(1.1) rotate(3deg);
+}
+
+.preview-text {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* 页面加载动画 */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.welcome-title-section { animation: slideInLeft 0.8s ease-out forwards; animation-delay: 0.1s; }
+.welcome-items-grid .welcome-item { animation: slideInRight 0.8s ease-out forwards; }
+.welcome-items-grid .welcome-item:nth-child(1) { animation-delay: 0.2s; }
+.welcome-items-grid .welcome-item:nth-child(2) { animation-delay: 0.3s; }
+.welcome-items-grid .welcome-item:nth-child(3) { animation-delay: 0.4s; }
+.welcome-items-grid .welcome-item:nth-child(4) { animation-delay: 0.5s; }
+.welcome-items-grid .welcome-item:nth-child(5) { animation-delay: 0.6s; }
+.welcome-items-grid .welcome-item:nth-child(6) { animation-delay: 0.7s; }
+.welcome-items-grid .welcome-item:nth-child(7) { animation-delay: 0.8s; }
+
+/* 美化的悬浮侧边栏 */
+.floating-sidebar {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.floating-sidebar.collapsed {
+    transform: translateY(-50%) translateX(-120%);
+}
+
+.nav-icon-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    color: var(--primary-light);
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.nav-icon-btn svg {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.nav-icon-btn:hover {
+    transform: translateX(5px) scale(1.1);
+    box-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
+    border-color: var(--primary);
+    background: rgba(129, 140, 248, 0.2);
+}
+
+.nav-icon-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 20px var(--primary);
+}
+
+/* 美化的工具提示 */
+.tooltip {
+    position: absolute;
+    left: 120%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--dark);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+}
+
+.nav-icon-btn:hover .tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(10px);
+}
+
+/* 悬浮章节面板 */
+.floating-chapter-panel {
+    position: fixed;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    max-height: 80vh;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: var(--shadow-xl);
+    padding: 20px;
+    display: none;
+    overflow-y: auto;
+    z-index: 999;
+    border: 1px solid var(--border);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.floating-chapter-panel::-webkit-scrollbar {
+    display: none;
+}
+
+.floating-chapter-panel.active {
+    display: block;
+    animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(-20px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+.chapter-item {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+}
+
+.chapter-item:hover {
+    background: rgba(129, 140, 248, 0.2);
+    transform: translateX(8px);
+    box-shadow: 0 0 10px rgba(129, 140, 248, 0.3);
+    border-color: var(--primary);
+}
+
+.chapter-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 10px;
+    background: var(--primary-dark);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.chapter-icon:empty { display: none; }
+
+/* 美化的顶部标题栏 */
+.floating-topbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 14px 35px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-xl);
+    z-index: 998;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    max-width: 600px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid var(--border);
+}
+
+/* 极简右下角导航栏 */
+.floating-nav-sidebar {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px; /* 增加间距 */
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.nav-btn, .sidebar-action-btn, .nav-collapse-btn {
+    width: 48px; /* 统一尺寸 */
+    height: 48px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(5px);
+    color: var(--text-muted);
+}
+
+.nav-btn:hover, .sidebar-action-btn:hover, .nav-collapse-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+    color: var(--primary-light);
+}
+
+.nav-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+#quickNavBtn {
+    font-size: 11px;
+}
+
+#feedbackBtn {
+    font-size: 11px;
+    position: relative;
+}
+
+.nav-collapse-btn {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+.nav-collapse-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.keyboard-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: opacity 0.3s;
+}
+
+.keyboard-hint.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.feedback-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.floating-nav-sidebar.collapsed > *:not(.nav-collapse-btn) {
+    opacity: 0;
+    transform: scale(0.1);
+    pointer-events: none;
+}
+
+.floating-nav-sidebar.collapsed .nav-collapse-btn {
+    transform: rotate(180deg);
+}
+
+.nav-divider {
+    width: 30px;
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+}
+
+/* 快速菜单样式 */
+.quick-menu {
+    position: fixed;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: var(--shadow-xl);
+    padding: 8px;
+    display: none;
+    z-index: 2001;
+    border: 1px solid var(--border);
+    min-width: 140px;
+}
+
+.quick-menu.active {
+    display: block;
+    animation: menuPop 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes menuPop {
+    from { opacity: 0; transform: scale(0.8) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.menu-item {
+    padding: 10px 14px;
+    margin: 4px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    color: var(--text);
+    text-align: center;
+}
+
+.menu-item:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateX(3px);
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .welcome-page { padding: 40px 10px 10px 10px; height: 100vh; overflow-y: auto; }
+    .welcome-content { gap: 20px; height: auto; max-height: none; max-width: 100%; padding: 20px; border-radius: 20px; }
+    .welcome-items-grid { grid-template-columns: 1fr; gap: 15px; }
+    .welcome-title { font-size: 32px; text-align: center; margin-bottom: 0; letter-spacing: 1px; }
+    .welcome-item { padding: 14px 16px; }
+    .welcome-item:hover { transform: translateX(8px) scale(1.02); }
+    .welcome-item-text { font-size: 13px; }
+    .floating-sidebar { left: 10px; }
+    .floating-chapter-panel { left: 70px; width: calc(100vw - 80px); }
+    .floating-topbar { top: 10px; font-size: 14px; padding: 10px 25px; width: 90%; }
+    .floating-nav-sidebar { right: 10px; bottom: 10px; gap: 8px; }
+    .nav-btn, .sidebar-action-btn, .nav-collapse-btn { width: 44px; height: 44px; }
+}
+
+/* 禁用动画优化性能 */
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+* {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+}
+*::-webkit-scrollbar {
+    display: none;
+}
+</style>
+</head>
+<body>
+
+<!-- 高性能星空背景 -->
+<canvas id="starry-sky"></canvas>
+
+<!-- 主内容区 -->
+<div class="main-content">
+    <!-- 欢迎页 -->
+    <div class="welcome-page" id="welcomePage">
+        <div class="welcome-content">
+            <div class="welcome-title-section">
+                <div class="welcome-title">高等应用数学虚拟实验室</div>
+            </div>
+            <div class="welcome-items-grid">
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </span>
+                    <span class="welcome-item-text">交互式可视化</span>
+                </div>
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.4 12.6C19.8 12.2 19.8 11.5 19.4 11.1L12.9 4.6C12.5 4.2 11.8 4.2 11.4 4.6L4.9 11.1C4.5 11.5 4.5 12.2 4.9 12.6L11.4 19.1C11.8 19.5 12.5 19.5 12.9 19.1L19.4 12.6ZM12 15.5L6.5 10H17.5L12 15.5Z"></path></svg>
+                    </span>
+                    <span class="welcome-item-text">实时计算演示</span>
+                </div>
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6H4V4H20V6ZM20 12H4V10H20V12ZM16 18H4V16H16V18Z"></path></svg>
+                    </span>
+                    <span class="welcome-item-text">理论实例结合</span>
+                </div>
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2H18C19.1 2 20 2.9 20 4V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2ZM6 4V8H18V4H6ZM6 10V14H18V10H6ZM6 16V20H18V16H6Z"></path></svg>
+                    </span>
+                    <span class="welcome-item-text">虚拟实验环境</span>
+                </div>
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    </span>
+                    <span class="welcome-item-text">8 主要章节</span>
+                </div>
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                    </span>
+                    <span class="welcome-item-text">60+ 实验项目</span>
+                </div>
+                <div class="welcome-item">
+                    <span class="welcome-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </span>
+                    <span class="welcome-item-text">100% 交互式学习</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 内容iframe -->
+    <iframe id="contentFrame" style="display: none;"></iframe>
+</div>
+
+<!-- 悬浮右上角标题 -->
+<div class="floating-topbar" id="topbar" style="position: fixed; top: 20px; right: 20px; left: auto; width: auto; z-index: 1002; text-align: right;">
+    欢迎使用数学虚拟实验室
+</div>
+
+<!-- 键盘提示 -->
+<div class="keyboard-hint hidden" id="keyboardHint">
+    使用 ← → 键导航，Home 键返回主页
+</div>
+
+<!-- 侧边栏展开/收起按钮（已移至下方） -->
+<button class="nav-icon-btn" id="collapseBtn" onclick="toggleSidebar()" style="position: fixed; left: 20px; bottom: 20px; z-index: 1001; transform: none;">
+     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z"/></svg>
+</button>
+
+<!-- 悬浮侧边栏 -->
+<div class="floating-sidebar collapsed" id="sidebar">
+    <button class="nav-icon-btn" data-category="0" onclick="showChapter(0)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+        <span class="tooltip">函数基础</span>
+    </button>
+    <button class="nav-icon-btn" data-category="1" onclick="showChapter(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        <span class="tooltip">函数与极限</span>
+    </button>
+    <button class="nav-icon-btn" data-category="2" onclick="showChapter(2)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+        <span class="tooltip">导数与微分</span>
+    </button>
+    <button class="nav-icon-btn" data-category="3" onclick="showChapter(3)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span class="tooltip">积分学</span>
+    </button>
+    <button class="nav-icon-btn" data-category="4" onclick="showChapter(4)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span class="tooltip">多元函数</span>
+    </button>
+    <button class="nav-icon-btn" data-category="5" onclick="showChapter(5)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span class="tooltip">向量与空间</span>
+    </button>
+    <button class="nav-icon-btn" data-category="6" onclick="showChapter(6)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v2H3V3zm0 4h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/></svg>
+        <span class="tooltip">线性代数</span>
+    </button>
+    <button class="nav-icon-btn" data-category="7" onclick="showChapter(7)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+        <span class="tooltip">概率统计</span>
+    </button>
+</div>
+
+<!-- 悬浮章节面板 -->
+<div class="floating-chapter-panel" id="chapterPanel">
+    <div id="chapterList"></div>
+</div>
+
+<!-- 极简右下角导航栏 -->
+<div class="floating-nav-sidebar" id="navSidebar">
+    
+    <button class="nav-btn" onclick="goPrev()" title="上一页">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <button class="nav-btn" onclick="goHome()" title="主页">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
+    </button>
+    <button class="nav-btn" onclick="goNext()" title="下一页">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </button>
+    <div class="nav-divider"></div>
+    <button class="sidebar-action-btn" id="quickNavBtn" onclick="showQuickNav()" title="跳转">
+        跳转
+    </button>
+    <button class="sidebar-action-btn" id="feedbackBtn" onclick="showFeedback()" title="反馈">
+        反馈
+        <span class="feedback-badge" id="feedbackBadge" style="display: none;">0</span>
+    </button>
+    <button class="nav-collapse-btn" id="navCollapseBtn" onclick="toggleNavSidebar()" title="收缩">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg>
+    </button>
+</div>
+
+<!-- 快速菜单 -->
+<div class="quick-menu" id="quickMenu">
+    <div class="menu-item" onclick="goHome()">返回主页</div>
+    <div class="menu-item" onclick="showQuickNav()">在新窗口打开</div>
+</div>
+
+<!-- 反馈菜单 -->
+<div class="quick-menu" id="feedbackMenu">
+    <div class="menu-item" onclick="reportIssue('performance')">性能问题</div>
+    <div class="menu-item" onclick="reportIssue('display')">显示问题</div>
+    <div class="menu-item" onclick="reportIssue('function')">功能问题</div>
+    <div class="menu-item" onclick="exportIssues()">导出反馈(JSON)</div>
+    <div class="menu-item" onclick="clearIssues()">清空记录</div>
+</div>
+
+<script>
+// Canvas星空背景
+const canvas = document.getElementById('starry-sky');
+const ctx = canvas.getContext('2d');
+
+let stars;
+let a;
+
+function setCanvasSize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    a = canvas.width + canvas.height;
+}
+
+function createStars() {
+    stars = [];
+    const starCount = Math.floor(a * 0.2);
+    for (let i = 0; i < starCount; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5,
+            vx: Math.floor(Math.random() * 50) - 25,
+            vy: Math.floor(Math.random() * 50) - 25
+        });
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = "lighter";
+
+    for (let i = 0, x = stars.length; i < x; i++) {
+        let s = stars[i];
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = "black";
+        ctx.stroke();
+    }
+}
+
+function update() {
+    for (let i = 0, x = stars.length; i < x; i++) {
+        let s = stars[i];
+        s.x += s.vx / 500;
+        s.y += s.vy / 500;
+
+        if (s.x < 0 || s.x > canvas.width) s.vx = -s.vx;
+        if (s.y < 0 || s.y > canvas.height) s.vy = -s.vy;
+    }
+}
+
+function tick() {
+    draw();
+    update();
+    requestAnimationFrame(tick);
+}
+
+window.addEventListener('resize', () => {
+    setCanvasSize();
+    createStars();
+});
+
+setCanvasSize();
+createStars();
+tick();
+
+
+// 修正后的章节数据
+const chapters = {
+    0: {
+        title: "函数基础",
+        items: [
+            { name: "指数运算", url: "lab-1-1.html",  type: "single" },
+            { name: "指数运算学习", url: "lab-1-2.html",  type: "single" },
+            { name: "对数运算", url: "lab-1-3.html",  type: "single" },
+            { name: "对数运算学习", url: "lab-1-4.html",  type: "single" },
+            { name: "区间分类", url: "lab-1-5.html",  type: "single" },
+            { name: "分数指数幂", url: "lab-1-6.html",  type: "single" },
+            { name: "函数映射", url: "lab-1-7.html",  type: "single" },
+            { name: "函数映射演示", url: "lab-1-8.html",  type: "single" },
+            { name: "函数性质", url: "lab-1-9.html",  type: "single" },
+            { name: "函数性质可视化", url: "lab-1-10.html",  type: "single" },
+            { name: "函数基础实验室", url: "lab-1-11.html",  type: "single" },
+            { name: "基本初等函数", url: "lab-1-13.html",  type: "single" },
+            { name: "反函数", url: "lab-1-14.html",  type: "single" },
+            { name: "反正切函数", url: "lab-1-15.html",  type: "single" }
+        ]
+    },
+    1: {
+        title: "函数与极限",
+        items: [
+            { name: "数列极限", url: "lab-2-1.html",  type: "single" },
+            { name: "截杖问题", url: "lab-2-2.html",  type: "single" },
+            { name: "数列极限演示", url: "lab-2-3.html",  type: "single" },
+            { name: "交互式序列图", url: "lab-2-4.html",  type: "single" },
+            { name: "极限趣味实验", url: "lab-2-5.html",  type: "single" },
+            { name: "函数极限", url: "lab-2-6.html",  type: "single" },
+            { name: "函数连续性", url: "lab-2-7.html",  type: "single" },
+            { name: "等价无穷小游戏", url: "lab-2-16.html",  type: "single" }
+        ]
+    },
+    2: {
+        title: "导数与微分",
+        items: [
+            { name: "导数的定义", url: "lab-2-8.html",  type: "single" },
+            { name: "导数的几何意义", url: "lab-2-9.html",  type: "single" },
+            { name: "导数的运算法则", url: "lab-2-10.html",  type: "single" },
+            { name: "高阶导数", url: "lab-2-11.html",  type: "single" },
+            { name: "隐函数求导", url: "lab-2-12.html",  type: "single" },
+            { name: "参数方程求导", url: "lab-2-13.html",  type: "single" },
+            { name: "微分及其应用", url: "lab-2-14.html",  type: "single" },
+            { name: "智能图像压缩工具", url: "lab-2-15.html",  type: "single" },
+            { name: "导数概念实验室", url: "lab-3-1.html",  type: "single" },
+            { name: "导数几何意义", url: "lab-3-2.html",  type: "single" },
+            { name: "导数的几何意义", url: "lab-3-3.html",  type: "single" },
+            { name: "导数直观演示", url: "lab-3-4.html",  type: "single" },
+            { name: "微分近似实验室", url: "lab-3-5.html",  type: "single" },
+            { name: "二阶导数图像", url: "lab-3-6.html",  type: "single" },
+            { name: "二阶导数图像2", url: "lab-3-7.html",  type: "single" },
+            { name: "函数图像分类", url: "lab-2-17.html",  type: "single" }
+
+        ]
+    },
+    3: {
+        title: "积分学",
+        items: [
+            { name: "不定积分基础", url: "lab-4-1.html",  type: "single" },
+            { name: "不定积分几何意义", url: "lab-4-2.html",  type: "single" },
+            { name: "曲边梯形面积", url: "lab-4-3.html",  type: "single" },
+            { name: "定积分几何意义", url: "lab-4-4.html",  type: "single" },
+            { name: "定积分的计算", url: "lab-4-5.html",  type: "single" },
+            { name: "定积分与面积", url: "lab-4-6.html",  type: "single" }
+        ]
+    },
+    4: {
+        title: "多元函数",
+        items: [
+            { name: "二元函数概念", url: "lab-5-1.html",  type: "single" },
+            { name: "二元函数极限", url: "lab-5-2.html",  type: "single" },
+            { name: "偏导数概念", url: "lab-5-3.html",  type: "single" },
+            { name: "全微分概念", url: "lab-5-4.html",  type: "single" },
+            { name: "二重积分概念", url: "lab-5-5.html",  type: "single" },
+            { name: "二重积分性质", url: "lab-5-6.html",  type: "single" }
+        ]
+    },
+    5: {
+        title: "向量与空间",
+        items: [
+            { name: "向量的表示", url: "lab-6-1.html",  type: "single" },
+            { name: "向量运算可视化", url: "lab-6-3.html",  type: "single" },
+            { name: "3D向量向量积", url: "lab-6-5.html",  type: "single" },
+            { name: "空间直线与平面", url: "lab-6-7.html",  type: "single" },
+            { name: "常见空间曲面", url: "lab-6-8.html",  type: "single" }
+        ]
+    },
+    6: {
+        title: "线性代数",
+        items: [
+            { name: "矩阵类型教学", url: "lab-7-1.html",  type: "single" },
+            { name: "矩阵运算教学", url: "lab-7-2.html",  type: "single" },
+            { name: "矩阵运算动画", url: "lab-7-3.html",  type: "single" },
+            { name: "矩阵求逆动画", url: "lab-7-4.html",  type: "single" },
+            { name: "矩阵的秩动画", url: "lab-7-5.html",  type: "single" },
+            { name: "行列式计算", url: "lab-7-6.html",  type: "single" },
+            { name: "行列式性质", url: "lab-7-7.html",  type: "single" },
+            { name: "特征值特征向量", url: "lab-7-8.html",  type: "single" },
+            { name: "矩阵初等变换", url: "lab-7-9.html",  type: "single" }
+        ]
+    },
+    7: {
+        title: "概率与统计",
+        items: [
+            { name: "蒙提霍尔问题", url: "lab-8-1.html",  type: "single" },
+            { name: "生日悖论", url: "lab-8-2.html",  type: "single" },
+            { name: "频率与概率", url: "lab-8-3.html",  type: "single" },
+            { name: "条件概率", url: "lab-8-4.html",  type: "single" },
+            { name: "贝叶斯定理", url: "lab-8-5.html",  type: "single" },
+            { name: "概率分布可视化", url: "lab-8-6.html",  type: "single" },
+            { name: "中心极限定理", url: "lab-8-7.html",  type: "single" },
+            { name: "大数定律", url: "lab-8-8.html",  type: "single" },
+            { name: "二项分布", url: "lab-8-9.html",  type: "single" },
+            { name: "泊松过程", url: "lab-8-10.html",  type: "single" },
+            { name: "指数分布", url: "lab-8-11.html",  type: "single" },
+            { name: "卡方分布", url: "lab-8-13.html",  type: "single" },
+            { name: "假设检验", url: "lab-8-14.html",  type: "single" },
+            { name: "t分布", url: "lab-8-15.html",  type: "single" },
+            { name: "F分布", url: "lab-8-16.html",  type: "single" }
+        ]
+    }
+};
+
+// 全局变量
+let currentUrl = '';
+let pageSequence = [];
+let currentIndex = -1;
+let pageIssues = {};
+let currentOpenChapter = -1;
+
+function initSequence() {
+    pageSequence = [];
+    Object.values(chapters).forEach(chapter => {
+        chapter.items.forEach(item => {
+            pageSequence.push(item.url);
+        });
+    });
+}
+
+function loadContent(url, title) {
+    const frame = document.getElementById('contentFrame');
+    const welcome = document.getElementById('welcomePage');
+    const topbar = document.getElementById('topbar');
+    const keyboardHint = document.getElementById('keyboardHint');
+
+    if (pageSequence.length === 0) {
+        initSequence();
+    }
+
+    frame.style.display = 'block';
+    welcome.style.display = 'none';
+    keyboardHint.classList.remove('hidden');
+
+    currentUrl = url;
+    const displayTitle = title || getChineseTitle(url);
+    topbar.textContent = displayTitle;
+
+    currentIndex = pageSequence.indexOf(url);
+    frame.src = url;
+    closeAllPanels();
+}
+
+function getChineseTitle(url) {
+    for (let chapter of Object.values(chapters)) {
+        for (let item of chapter.items) {
+            if (item.url === url) {
+                // 从URL中提取序号
+                const match = url.match(/lab-(\d+)-(\d+)\.html/);
+                if (match) {
+                    const chapterNum = match[1];
+                    const labNum = match[2];
+                    return `${chapterNum}-${labNum} ${item.name}`;
+                }
+                return item.name;
+            }
+        }
+    }
+    return url;
+}
+
+function showChapter(categoryId) {
+    const chapter = chapters[categoryId];
+    if (!chapter) return;
+
+    const panel = document.getElementById('chapterPanel');
+    
+    if (currentOpenChapter === categoryId && panel.classList.contains('active')) {
+        panel.classList.remove('active');
+        document.querySelectorAll('.nav-icon-btn').forEach(btn => btn.classList.remove('active'));
+        currentOpenChapter = -1;
+        return;
+    }
+
+    document.querySelectorAll('.nav-icon-btn').forEach(btn => btn.classList.remove('active'));
+    const clickedBtn = document.querySelector(`[data-category="${categoryId}"]`);
+    if (clickedBtn) clickedBtn.classList.add('active');
+
+    const list = document.getElementById('chapterList');
+    list.innerHTML = '';
+
+    chapter.items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'chapter-item';
+        div.innerHTML = `<div class="chapter-icon"></div><span>${item.name}</span>`;
+        div.onclick = () => loadContent(item.url, item.name);
+        list.appendChild(div);
+    });
+
+    panel.classList.add('active');
+    currentOpenChapter = categoryId;
+}
+
+function closeAllPanels() {
+    document.getElementById('chapterPanel')?.classList.remove('active');
+    document.getElementById('quickMenu')?.classList.remove('active');
+    document.getElementById('feedbackMenu')?.classList.remove('active');
+    
+    currentOpenChapter = -1;
+    document.querySelectorAll('.nav-icon-btn').forEach(btn => btn.classList.remove('active'));
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
+    closeAllPanels();
+}
+
+function goPrev() {
+    if (pageSequence.length === 0) initSequence();
+    currentIndex = (currentIndex > 0) ? currentIndex - 1 : pageSequence.length - 1;
+    loadContent(pageSequence[currentIndex], getChineseTitle(pageSequence[currentIndex]));
+}
+
+function goNext() {
+    if (pageSequence.length === 0) initSequence();
+    currentIndex = (currentIndex < pageSequence.length - 1) ? currentIndex + 1 : 0;
+    loadContent(pageSequence[currentIndex], getChineseTitle(pageSequence[currentIndex]));
+}
+
+function goHome() {
+    document.getElementById('contentFrame').style.display = 'none';
+    document.getElementById('welcomePage').style.display = 'flex';
+    document.getElementById('topbar').textContent = '欢迎使用数学虚拟实验室';
+    document.getElementById('keyboardHint').classList.add('hidden');
+    currentUrl = '';
+    currentIndex = -1;
+    closeAllPanels();
+}
+
+function toggleNavSidebar() {
+    const sidebar = document.getElementById('navSidebar');
+    sidebar.classList.toggle('collapsed');
+}
+
+function showFeedback() {
+    const menu = document.getElementById('feedbackMenu');
+    const btn = document.getElementById('feedbackBtn');
+    const btnRect = btn.getBoundingClientRect();
+    
+    menu.style.bottom = (window.innerHeight - btnRect.bottom) + 'px';
+    menu.style.right = (window.innerWidth - btnRect.left + 10) + 'px';
+    menu.style.left = 'auto';
+    menu.style.top = 'auto';
+
+    menu.classList.toggle('active');
+}
+
+function reportIssue(type) {
+    if (!currentUrl) return;
+    if (!pageIssues[currentUrl]) pageIssues[currentUrl] = [];
+    pageIssues[currentUrl].push({ type: type, time: new Date().toLocaleString() });
+    localStorage.setItem('mathLabIssues', JSON.stringify(pageIssues));
+    updateFeedbackBadge();
+    closeAllPanels();
+}
+
+function clearIssues() {
+    pageIssues = {};
+    localStorage.removeItem('mathLabIssues');
+    updateFeedbackBadge();
+    closeAllPanels();
+}
+
+function exportIssues() {
+    try {
+        let data = (pageIssues && Object.keys(pageIssues).length > 0)
+            ? pageIssues
+            : JSON.parse(localStorage.getItem('mathLabIssues') || '{}');
+        if (!data || Object.keys(data).length === 0) {
+            closeAllPanels();
+            return;
+        }
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const ts = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const filename = `math-lab-feedback-${ts.getFullYear()}${pad(ts.getMonth()+1)}${pad(ts.getDate())}-${pad(ts.getHours())}${pad(ts.getMinutes())}${pad(ts.getSeconds())}.json`;
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        closeAllPanels();
+    } catch (e) {
+        console.error('导出失败:', e);
+    }
+}
+
+function updateFeedbackBadge() {
+    const badge = document.getElementById('feedbackBadge');
+    const count = Object.values(pageIssues).reduce((acc, val) => acc + val.length, 0);
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
+function showQuickNav() {
+    if (currentUrl) window.open(currentUrl, '_blank');
+}
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.quick-menu, .sidebar-action-btn, .floating-chapter-panel, .nav-icon-btn')) {
+        closeAllPanels();
+    }
+});
+
+function initKeyboardNavigation() {
+    document.addEventListener('keydown', function(event) {
+        const activeElement = document.activeElement;
+        if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable)) return;
+        
+        const contentFrameVisible = document.getElementById('contentFrame').style.display !== 'none';
+        if (!contentFrameVisible) return;
+
+        switch(event.key) {
+            case 'ArrowLeft': event.preventDefault(); goPrev(); break;
+            case 'ArrowRight': event.preventDefault(); goNext(); break;
+            case 'Home': case 'Escape': event.preventDefault(); goHome(); break;
+        }
+    });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    initSequence();
+    initKeyboardNavigation();
+
+    const saved = localStorage.getItem('mathLabIssues');
+    if (saved) {
+        try {
+            pageIssues = JSON.parse(saved);
+            updateFeedbackBadge();
+        } catch (e) { console.error(e); }
+    }
+});
+</script>
+
+</body>
+</html>
+
+

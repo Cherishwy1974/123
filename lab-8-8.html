@@ -1,0 +1,613 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大数定律动画演示 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    <!-- 本地化MathJax配置 -->
+    <script src="../common-assets/js/mathjax-config.js"></script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    
+    <!-- 加载D3.js用于可视化 -->
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+            min-height: 44px;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: hidden;
+            background: var(--light);
+            height: 100%;
+        }
+
+        .panel {
+            display: none;
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--gray-200);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .control-panel {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .control-panel:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .result-container {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .result-container:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            font-size: var(--text-size);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: var(--text-size);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light);
+            min-height: 44px;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin: 8px 0;
+            min-height: 44px;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 160px 1fr;
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+            
+            .sidebar {
+                padding: 10px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 4px;
+                padding: 0 8px;
+            }
+            
+            .nav-tab {
+                min-width: 100px;
+                padding: 8px 12px;
+                white-space: nowrap;
+                flex-shrink: 0;
+                border-radius: 8px;
+            }
+
+            .nav-tab::before {
+                display: none;
+            }
+
+            .panel {
+                padding: 12px;
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+</style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>大数定律动画演示</h1>
+                <span class="header-subtitle">观察频率趋向理论概率的过程</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="showPanel('demo')">
+                        <span class="nav-icon">🎲</span>
+                        动画演示
+                    </button>
+                    <button class="nav-tab" onclick="showPanel('theory')">
+                        <span class="nav-icon">📚</span>
+                        理论基础
+                    </button>
+                    <button class="nav-tab" onclick="showPanel('practice')">
+                        <span class="nav-icon">✏️</span>
+                        练习题目
+                    </button>
+                </div>
+            </nav>
+
+            <div class="content-area">
+                <!-- 动画演示面板 -->
+                <div class="panel active" id="demo">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <h3 style="font-size: var(--h3-size); color: var(--primary); margin-bottom: 16px; font-weight: 700;">大数定律演示</h3>
+                            
+                            <div class="input-group">
+                                <label for="sampleSize">样本数量:</label>
+                                <input type="number" id="sampleSize" value="100" min="10" max="10000" step="10">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="probability">理论概率:</label>
+                                <input type="number" id="probability" value="0.5" min="0.1" max="0.9" step="0.1">
+                            </div>
+
+                            <button class="btn" onclick="startSimulation()">开始模拟</button>
+                            <button class="btn" onclick="resetSimulation()">重置</button>
+                        </div>
+
+                        <div class="result-container">
+                            <h3 style="font-size: var(--h3-size); color: var(--primary); margin-bottom: 16px; font-weight: 700;">模拟结果</h3>
+                            <div id="simulation-results">
+                                <p>点击"开始模拟"查看结果</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 理论基础面板 -->
+                <div class="panel" id="theory">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <h3 style="font-size: var(--h3-size); color: var(--primary); margin-bottom: 16px; font-weight: 700;">大数定律理论</h3>
+                            
+                            <div class="formula-display">
+                                <h4>大数定律</h4>
+                                <p>当试验次数趋向无穷大时，事件发生的频率趋向于其理论概率。</p>
+                                <div style="text-align: center; margin: 20px 0;">
+                                    <strong>$$\lim_{n \to \infty} \frac{S_n}{n} = p$$</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <h3 style="font-size: var(--h3-size); color: var(--primary); margin-bottom: 16px; font-weight: 700;">应用实例</h3>
+                            <div class="example-content">
+                                <p><strong>抛硬币实验：</strong></p>
+                                <p>理论概率：P(正面) = 0.5</p>
+                                <p>随着抛掷次数增加，正面出现的频率会越来越接近0.5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 练习面板 -->
+                <div class="panel" id="practice">
+                    <div class="interactive-layout">
+                        <div class="control-panel">
+                            <h3 style="font-size: var(--h3-size); color: var(--primary); margin-bottom: 16px; font-weight: 700;">练习题目</h3>
+                            
+                            <div class="input-group">
+                                <label>练习1：</label>
+                                <p>一个骰子投掷1000次，理论上每个数字出现的次数应该接近多少次？</p>
+                                <input type="number" id="practice1" placeholder="输入答案" step="1" min="0">
+                                <button class="btn" onclick="checkPractice1()">检查答案</button>
+                            </div>
+                        </div>
+
+                        <div class="result-container">
+                            <h3 style="font-size: var(--h3-size); color: var(--primary); margin-bottom: 16px; font-weight: 700;">答案解释</h3>
+                            <div id="practice-result" style="display: none;">
+                                <p>正确答案：每个数字应该出现约167次（1000÷6≈166.67）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showPanel(panelId) {
+            // 隐藏所有面板
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 移除所有导航按钮的激活状态
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中的面板
+            document.getElementById(panelId).classList.add('active');
+            
+            // 激活对应的导航按钮
+            event.target.closest('.nav-tab').classList.add('active');
+        }
+
+        function startSimulation() {
+            const sampleSize = parseInt(document.getElementById('sampleSize').value);
+            const probability = parseFloat(document.getElementById('probability').value);
+            
+            let successCount = 0;
+            let results = [];
+            
+            for (let i = 1; i <= sampleSize; i++) {
+                if (Math.random() < probability) {
+                    successCount++;
+                }
+                const frequency = successCount / i;
+                results.push({
+                    trial: i,
+                    frequency: frequency,
+                    difference: Math.abs(frequency - probability)
+                });
+            }
+            
+            displayResults(results, probability);
+        }
+
+        function displayResults(results, probability) {
+            const container = document.getElementById('simulation-results');
+            const finalResult = results[results.length - 1];
+            
+            container.innerHTML = `
+                <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <h4>最终结果</h4>
+                    <p><strong>试验次数：</strong>${finalResult.trial}</p>
+                    <p><strong>成功次数：</strong>${Math.round(finalResult.frequency * finalResult.trial)}</p>
+                    <p><strong>观察频率：</strong>${finalResult.frequency.toFixed(4)}</p>
+                    <p><strong>理论概率：</strong>${probability}</p>
+                    <p><strong>绝对误差：</strong>${finalResult.difference.toFixed(4)}</p>
+                </div>
+                <div style="background: var(--gray-50); padding: 16px; border-radius: 8px;">
+                    <h4>趋势分析</h4>
+                    <p>随着试验次数增加，观察频率逐渐趋向理论概率，验证了大数定律。</p>
+                </div>
+            `;
+        }
+
+        function resetSimulation() {
+            document.getElementById('simulation-results').innerHTML = '<p>点击"开始模拟"查看结果</p>';
+        }
+
+        function checkPractice1() {
+            const answer = parseInt(document.getElementById('practice1').value);
+            const correctAnswer = Math.round(1000 / 6);
+            const resultDiv = document.getElementById('practice-result');
+            
+            if (answer === correctAnswer) {
+                resultDiv.innerHTML = `
+                    <div style="background: var(--success); color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                        <strong>正确！</strong> 每个数字应该出现约${correctAnswer}次
+                    </div>
+                    <p>解释：1000次投掷 ÷ 6个数字 ≈ ${correctAnswer}次</p>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="background: var(--danger); color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                        <strong>不正确</strong>，正确答案是${correctAnswer}次
+                    </div>
+                    <p>解释：1000次投掷 ÷ 6个数字 ≈ ${correctAnswer}次</p>
+                `;
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

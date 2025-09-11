@@ -1,0 +1,2047 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导数计算法则虚拟实验室 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base']},
+                macros: {
+                    lim: "\\mathop{\\mathrm{lim}}\\limits",
+                    liminf: "\\mathop{\\mathrm{lim\\,inf}}\\limits",
+                    limsup: "\\mathop{\\mathrm{lim\\,sup}}\\limits"
+                }
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false,
+                mtextInheritFont: true,
+                displayAlign: 'left',
+                displayIndent: '0'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库和可视化库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 24px;      /* 一级标题 */
+            --h2-size: 20px;      /* 二级标题 */
+            --h3-size: 18px;      /* 三级标题 */
+            --btn-size: 16px;     /* 按钮文字 */
+            --formula-size: 20px; /* 数学公式 */
+            --text-size: 16px;    /* 正文文字 */
+            
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局重置和基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 本地化字体设置 - 使用思源宋体 */
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif CJK SC', 'SimSun', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 全屏容器布局 */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            background: var(--light);
+            overflow: auto;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+        }
+
+        /* 主内容区域 - 使用Grid布局 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            height: 100%;
+            overflow: auto;
+        }
+
+        /* 侧边导航栏 */
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 导航图标 */
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: auto;
+            background: var(--light);
+        }
+
+        /* 内容面板 */
+        .panel {
+            display: none;
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--gray-200);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 概念卡片和演示区域样式 */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, var(--gray-50), var(--light));
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: auto;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .concept-card:hover::before {
+            left: 100%;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.15);
+            border-color: var(--primary-light);
+        }
+
+        .concept-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: var(--h3-size);
+            font-weight: 700;
+        }
+
+        .concept-card .formula {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+            font-size: var(--formula-size);
+        }
+
+        .concept-card .description {
+            color: var(--gray-600);
+            font-size: var(--text-size);
+            line-height: 1.5;
+        }
+
+        .interactive-demo {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .demo-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: var(--text-size);
+        }
+
+        .control-group input, .control-group select {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: var(--text-size);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--gray-50);
+            color: var(--gray-800);
+            font-family: inherit;
+            min-height: 44px;
+            box-sizing: border-box;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--light);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .control-group input:hover, .control-group select:hover {
+            border-color: var(--primary-light);
+            background: var(--light);
+        }
+
+        .btn {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        /* 可视化区域和结果显示 */
+        .visualization-area {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .visualization-area:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.1);
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            background: var(--light);
+            border-radius: 8px;
+            overflow: auto;
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+        
+        .canvas-container canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .visualization-area:hover .canvas-container {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: auto;}
+
+        .result-display {
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--light) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--success);
+            transition: all 0.3s ease;
+        }
+
+        .result-display:hover {
+            border-color: var(--primary-light);
+            box-shadow: none;
+            transform: translateY(-1px);
+        }
+
+        .result-display h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: var(--h3-size);
+            font-weight: 700;
+        }
+
+        .calculation-steps {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .step {
+            margin: 10px 0;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            font-size: var(--text-size);
+        }
+
+        .step:hover {
+            background: var(--gray-100);
+            transform: translateX(4px);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow);
+            display: block;
+            transition: all 0.3s ease;
+            line-height: 1.8;
+            font-size: var(--text-size);
+        }
+
+        .formula-display:hover {
+            box-shadow: none;
+            transform: translateY(-1px);
+        }
+
+        /* MathJax公式样式 */
+        .formula-display .MathJax {
+            font-size: 18px !important;
+        }
+        
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: 16px !important;
+            font-weight: normal !important;
+        }
+        
+        .MathJax_Display {
+            font-size: 18px !important;
+        }
+        
+        .formula-inline {
+            display: inline;
+        }
+        
+        .formula-inline .MathJax {
+            font-size: 16px !important;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* MathJax样式优化 */
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: 16px !important;
+            font-weight: normal !important;
+            display: inline !important;
+        }
+        
+        .MathJax_Display {
+            font-size: 16px !important;
+            display: inline !important;
+        }
+
+        /* 优化布局 - 可视化优先 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 12px;
+            height: 100%;
+        }
+
+        .control-panel {
+            background: var(--light);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: none;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .control-panel:hover {
+            border-color: var(--primary);
+        }
+
+        .result-container {
+            background: var(--light);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: none;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .result-container:hover {
+            border-color: var(--primary);
+        }
+
+        .input-group {
+            margin-bottom: 4px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+            font-size: 13px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light);
+            min-height: 28px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        /* 增强可视化区域 - 突出位置 */
+        .visualization-area {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 8px;
+            margin: 8px 0;
+            flex: 1;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+            position: relative;
+        }
+
+        .visualization-area::before {
+            content: '🎯 交互式可视化';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 5;
+        }
+
+        .canvas-container {
+            width: 100%;
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 450px;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 紧凑布局样式 */
+        .compact-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .compact-row .input-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .compact-row .btn {
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .compact-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .compact-controls .control-group {
+            margin-bottom: 0;
+            min-width: 80px;
+        }
+
+        .compact-controls .btn {
+            margin: 0;
+        }
+
+        /* 概念区域样式 */
+        .concept-section {
+            margin-top: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+        }
+
+        .concept-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .concept-cards .concept-card {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .concept-cards .concept-card:hover {
+            background: #e9ecef;
+            border-color: var(--primary);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 160px 1fr;
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+
+            .sidebar {
+                padding: 10px 0;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 10px;
+            }
+
+            .nav-tab {
+                min-width: 120px;
+                padding: 10px 12px;
+                min-height: 44px;
+            }
+
+            .demo-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .visualization-area {
+                min-height: 300px;
+            }
+
+            .canvas-container {
+                height: 250px;
+                overflow: auto;
+            }
+            
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 全屏应用容器 -->
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <header class="header">
+            <div class="header-content">
+                <h1>导数计算法则虚拟实验室</h1>
+                <p class="header-subtitle">掌握基本导数运算法则和复合函数求导</p>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 侧边导航栏 -->
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="basic-rules">
+                        <span class="nav-icon">📋</span>
+                        <span>基本法则</span>
+                    </button>
+                    <button class="nav-tab" data-panel="calculator">
+                        <span class="nav-icon">🧮</span>
+                        <span>计算器</span>
+                    </button>
+                    <button class="nav-tab" data-panel="chain-rule">
+                        <span class="nav-icon">🔗</span>
+                        <span>链式法则</span>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- 内容区域 -->
+            <div class="content-area">
+
+                <!-- 基本法则面板 -->
+                <div class="panel active" id="basic-rules">
+                    <div class="interactive-layout">
+                        <!-- 主要内容区域 -->
+                        <div class="result-container">
+                            <div class="visualization-area">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; font-size: 18px; text-align: center; font-weight: 700;">🎯 导数计算法则学习</h3>
+
+                                <!-- 核心概念展示 -->
+                                <div class="concept-display" style="margin-bottom: 20px; text-align: center;">
+                                    <div class="formula-display" style="margin: 10px 0; padding: 16px; font-size: 16px;">
+                                        <strong>导数基本法则：</strong>
+                                    </div>
+                                    <div class="formula-display" style="margin: 10px 0; padding: 16px; font-size: 16px;">
+                                        <strong>和差法则：</strong> $(f \pm g)' = f' \pm g'$
+                                    </div>
+                                    <div class="formula-display" style="margin: 10px 0; padding: 16px; font-size: 16px;">
+                                        <strong>积法则：</strong> $(fg)' = f'g + fg'$
+                                    </div>
+                                    <div class="formula-display" style="margin: 10px 0; padding: 16px; font-size: 16px;">
+                                        <strong>商法则：</strong> $\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$
+                                    </div>
+                                </div>
+
+                                <!-- 学习步骤 -->
+                                <div class="learning-steps" style="margin-top: 20px; text-align: left;">
+                                    <h4 style="color: var(--primary); margin-bottom: 12px;">📚 学习步骤：</h4>
+                                    <div class="step" style="margin: 8px 0; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                        <strong>1. 选择基本法则</strong> - 从下拉菜单选择要学习的导数法则
+                                    </div>
+                                    <div class="step" style="margin: 8px 0; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                        <strong>2. 查看公式</strong> - 观察导数法则的数学表达式
+                                    </div>
+                                    <div class="step" style="margin: 8px 0; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                        <strong>3. 应用例子</strong> - 通过具体例子理解法则的应用
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 计算结果区域 -->
+                            <div class="formula-display" id="derivativeResults" style="margin-top: 20px;">
+                                <div class="step">请选择一个导数法则开始学习</div>
+                            </div>
+                        </div>
+
+                        <!-- 简化的控制面板 -->
+                        <div class="control-panel">
+                            <h3 style="font-size: 16px; color: var(--primary); margin-bottom: 16px; font-weight: 700;">⚙️ 学习控制</h3>
+
+                            <div class="input-group" style="margin-bottom: 16px;">
+                                <label for="ruleType" style="font-size: 14px; font-weight: 600;">选择导数法则:</label>
+                                <select id="ruleType" onchange="updateRuleDemo()" style="font-size: 14px; padding: 12px;">
+                                    <option value="">-- 请选择法则 --</option>
+                                    <option value="sum">和差法则</option>
+                                    <option value="product">积法则</option>
+                                    <option value="quotient">商法则</option>
+                                    <option value="constant">常数倍法则</option>
+                                    <option value="power">幂法则</option>
+                                </select>
+                            </div>
+
+                            <button class="btn" onclick="showRuleFormula()" style="width: 100%; margin-bottom: 12px;">📐 显示公式</button>
+                            <button class="btn btn-secondary" onclick="showRuleExample()" style="width: 100%; margin-bottom: 12px;">📝 显示例子</button>
+                            <button class="btn" onclick="showRuleSteps()" style="width: 100%;">📚 显示步骤</button>
+
+                            <!-- 核心概念说明 -->
+                            <div class="concept-section" style="margin-top: 20px; padding-top: 16px; border-top: 2px solid var(--border);">
+                                <h4 style="font-size: 14px; color: var(--primary); margin-bottom: 12px; font-weight: 600;">💡 导数法则分类</h4>
+
+                                <div class="concept-card" style="margin: 8px 0; padding: 12px; background: #f0f7ff; border: 1px solid var(--primary); border-radius: 8px;">
+                                    <h5 style="font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 600;">基本运算法则</h5>
+                                    <div class="description" style="font-size: 13px; line-height: 1.5;">
+                                        处理函数的和、差、积、商的导数计算
+                                    </div>
+                                </div>
+
+                                <div class="concept-card" style="margin: 8px 0; padding: 12px; background: #f0f7ff; border: 1px solid var(--primary); border-radius: 8px;">
+                                    <h5 style="font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 600;">复合函数法则</h5>
+                                    <div class="description" style="font-size: 13px; line-height: 1.5;">
+                                        链式法则处理复合函数的导数计算
+                                    </div>
+                                </div>
+
+                                <div class="concept-card" style="margin: 8px 0; padding: 12px; background: #f0f7ff; border: 1px solid var(--primary); border-radius: 8px;">
+                                    <h5 style="font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 600;">特殊函数法则</h5>
+                                    <div class="description" style="font-size: 13px; line-height: 1.5;">
+                                        三角函数、指数函数、对数函数的导数
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 计算器面板 -->
+                <div class="panel" id="calculator">
+                    <div class="interactive-demo">
+                        
+                        <div class="demo-controls">
+                            <div class="control-group">
+                                <label for="compositeFunction">选择复合函数:</label>
+                                <select id="compositeFunction" onchange="updateComposite()">
+                                    <option value="sinx2">f(x) = sin(x²)</option>
+                                    <option value="ex2">f(x) = e^(x²)</option>
+                                    <option value="lnx2">f(x) = ln(x²)</option>
+                                    <option value="sqrtx2">f(x) = √(x²+1)</option>
+                                </select>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="compositePoint">计算点 x₀:</label>
+                                <input type="number" id="compositePoint" value="1" step="0.1" onchange="calculateComposite()" oninput="calculateComposite()">
+                            </div>
+
+                            <button class="btn" onclick="calculateComposite()">🔢 计算导数</button>
+                            <button class="btn" onclick="showCompositeSteps()">📝 显示步骤</button>
+                        </div>
+
+                        <div class="result-display">
+                            <h4>🎯 复合函数导数</h4>
+                            <div class="calculation-steps">
+                                <div class="step">
+                                    <strong>复合函数:</strong> f(x) = <span id="compositeExpr">sin(x²)</span>
+                                </div>
+                                <div class="step">
+                                    <strong>内函数:</strong> u = <span id="innerFunction">x²</span>
+                                </div>
+                                <div class="step">
+                                    <strong>外函数:</strong> f(u) = <span id="outerFunction">sin(u)</span>
+                                </div>
+                                <div class="step">
+                                    <strong>链式法则:</strong> f'(x) = <span id="chainRule">cos(x²) · 2x</span>
+                                </div>
+                                <div class="step">
+                                    <strong>在 x = <span id="compositeCalcPoint">1</span> 处:</strong> f'(<span id="compositeCalcPoint2">1</span>) = <span id="compositeResult">1.08</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 链式法则面板 -->
+                <div class="panel" id="chain-rule">
+                    <div class="formula-display">
+                        链式法则：$(f \circ g)'(x) = f'(g(x)) \cdot g'(x)$
+                    </div>
+
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h3>链式法则</h3>
+                            <div class="formula">$\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$</div>
+                            <div class="description">
+                                复合函数的导数等于外函数在内函数处的导数乘以内函数的导数
+                            </div>
+                        </div>
+
+                        <div class="concept-card">
+                            <h3>莱布尼茨记号</h3>
+                            <div class="formula">$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$</div>
+                            <div class="description">
+                                设 y = f(u)，u = g(x)，则复合函数 y = f(g(x)) 的导数
+                            </div>
+                        </div>
+
+                        <div class="concept-card">
+                            <h3>应用步骤</h3>
+                            <div class="formula">1. 识别内外函数 2. 求导 3. 相乘</div>
+                            <div class="description">
+                                先识别复合函数的内外函数，分别求导后相乘
+                            </div>
+                        </div>
+
+                        <div class="concept-card">
+                            <h3>常见例子</h3>
+                            <div class="formula">$(e^{x^2})' = e^{x^2} \cdot 2x$</div>
+                            <div class="description">
+                                指数函数与幂函数的复合，外函数是 e^u，内函数是 x²
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        
+                        <div class="demo-controls">
+                            <div class="control-group">
+                                <label for="chainFunction">选择复合函数:</label>
+                                <select id="chainFunction" onchange="updateChainDemo()">
+                                    <option value="sinx2">sin(x²)</option>
+                                    <option value="ex2">e^(x²)</option>
+                                    <option value="lnx2">ln(x²)</option>
+                                    <option value="sqrtx2">√(x²+1)</option>
+                                </select>
+                            </div>
+
+                            <button class="btn" onclick="showChainSteps()">📝 显示步骤</button>
+                            <button class="btn" onclick="animateChain()">🎬 动画演示</button>
+                        </div>
+
+                        <div class="result-display">
+                            <h4>🔗 链式法则步骤</h4>
+                            <div class="calculation-steps" id="chainSteps">
+                                <div class="step">选择函数查看链式法则应用步骤</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentFunction = 'quadratic';
+        let currentPoint = 1;
+        let derivativeCanvas, derivativeCtx;
+        let animationId = null;
+
+        // 函数定义
+        const functions = {
+            quadratic: {
+                name: 'f(x) = x²',
+                formula: x => x * x,
+                derivative: x => 2 * x,
+                latex: 'x^2',
+                derivativeLatex: '2x'
+            },
+            cubic: {
+                name: 'f(x) = x³',
+                formula: x => x * x * x,
+                derivative: x => 3 * x * x,
+                latex: 'x^3',
+                derivativeLatex: '3x^2'
+            },
+            sine: {
+                name: 'f(x) = sin(x)',
+                formula: x => Math.sin(x),
+                derivative: x => Math.cos(x),
+                latex: '\\sin x',
+                derivativeLatex: '\\cos x'
+            },
+            exponential: {
+                name: 'f(x) = eˣ',
+                formula: x => Math.exp(x),
+                derivative: x => Math.exp(x),
+                latex: 'e^x',
+                derivativeLatex: 'e^x'
+            },
+            rational: {
+                name: 'f(x) = 1/x',
+                formula: x => x !== 0 ? 1 / x : NaN,
+                derivative: x => x !== 0 ? -1 / (x * x) : NaN,
+                latex: '\\frac{1}{x}',
+                derivativeLatex: '-\\frac{1}{x^2}'
+            }
+        };
+
+        // 复合函数定义
+        const compositeFunctions = {
+            sinx2: {
+                name: 'f(x) = sin(x²)',
+                latex: '\\sin(x^2)',
+                inner: 'x^2',
+                outer: '\\sin(u)',
+                derivative: '\\cos(x^2) \\cdot 2x',
+                innerDerivative: '2x',
+                outerDerivative: '\\cos(u)'
+            },
+            ex2: {
+                name: 'f(x) = e^(x²)',
+                latex: 'e^{x^2}',
+                inner: 'x^2',
+                outer: 'e^u',
+                derivative: 'e^{x^2} \\cdot 2x',
+                innerDerivative: '2x',
+                outerDerivative: 'e^u'
+            },
+            lnx2: {
+                name: 'f(x) = ln(x²)',
+                latex: '\\ln(x^2)',
+                inner: 'x^2',
+                outer: '\\ln(u)',
+                derivative: '\\frac{1}{x^2} \\cdot 2x = \\frac{2}{x}',
+                innerDerivative: '2x',
+                outerDerivative: '\\frac{1}{u}'
+            },
+            sqrtx2: {
+                name: 'f(x) = √(x²+1)',
+                latex: '\\sqrt{x^2+1}',
+                inner: 'x^2+1',
+                outer: '\\sqrt{u}',
+                derivative: '\\frac{1}{2\\sqrt{x^2+1}} \\cdot 2x = \\frac{x}{\\sqrt{x^2+1}}',
+                innerDerivative: '2x',
+                outerDerivative: '\\frac{1}{2\\sqrt{u}}'
+            }
+        };
+
+        // MathJax渲染辅助函数
+        function renderMathJax(element) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([element]).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise([element]).catch(e => console.warn('MathJax延迟渲染也失败:', e));
+                        }
+                    }, 100);
+                });
+            } else {
+                setTimeout(() => renderMathJax(element), 200);
+            }
+        }
+
+        // 批量渲染多个元素
+        function renderAllMath() {
+            const elements = document.querySelectorAll('.formula-display, .formula, .step');
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise(elements).catch(err => {
+                    console.warn('批量MathJax渲染错误:', err);
+                });
+            }
+        }
+
+        // 初始化画布
+        function initDerivativeCanvas() {
+            derivativeCanvas = document.getElementById('derivativeCanvas');
+            if (derivativeCanvas) {
+                derivativeCtx = derivativeCanvas.getContext('2d');
+
+                derivativeCanvas.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - this.width/2) / 40;
+                    const y = -(e.clientY - rect.top - this.height/2) / 40;
+                    document.getElementById('derivCoordInfo').textContent = `坐标: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+                });
+            }
+        }
+
+        // 增强的坐标轴绘制
+        function drawAxes(ctx, canvas) {
+            const showGrid = document.getElementById('showGrid')?.checked !== false;
+            const showAxes = document.getElementById('showAxes')?.checked !== false;
+
+            if (!showAxes && !showGrid) return;
+
+            // 网格线
+            if (showGrid) {
+                ctx.strokeStyle = '#f0f0f0';
+                ctx.lineWidth = 0.5;
+
+                for (let i = -20; i <= 20; i++) {
+                    if (i !== 0) {
+                        // 垂直网格线
+                        ctx.beginPath();
+                        ctx.moveTo(canvas.width/2 + i * 30, 0);
+                        ctx.lineTo(canvas.width/2 + i * 30, canvas.height);
+                        ctx.stroke();
+
+                        // 水平网格线
+                        ctx.beginPath();
+                        ctx.moveTo(0, canvas.height/2 + i * 30);
+                        ctx.lineTo(canvas.width, canvas.height/2 + i * 30);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            if (showAxes) {
+                // 主坐标轴
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+
+                // X轴
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height/2);
+                ctx.lineTo(canvas.width, canvas.height/2);
+                ctx.stroke();
+
+                // Y轴
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2, 0);
+                ctx.lineTo(canvas.width/2, canvas.height);
+                ctx.stroke();
+
+                // 坐标轴标签
+                ctx.fillStyle = '#666';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+
+                // X轴刻度
+                for (let i = -8; i <= 8; i++) {
+                    if (i !== 0) {
+                        const x = canvas.width/2 + i * 30;
+                        ctx.fillText(i.toString(), x, canvas.height/2 + 15);
+                        // 刻度线
+                        ctx.beginPath();
+                        ctx.moveTo(x, canvas.height/2 - 3);
+                        ctx.lineTo(x, canvas.height/2 + 3);
+                        ctx.stroke();
+                    }
+                }
+
+                // Y轴刻度
+                ctx.textAlign = 'right';
+                for (let i = -6; i <= 6; i++) {
+                    if (i !== 0) {
+                        const y = canvas.height/2 - i * 30;
+                        ctx.fillText(i.toString(), canvas.width/2 - 8, y + 4);
+                        // 刻度线
+                        ctx.beginPath();
+                        ctx.moveTo(canvas.width/2 - 3, y);
+                        ctx.lineTo(canvas.width/2 + 3, y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // 增强的函数绘制
+        function drawFunction(ctx, canvas, func, color = '#667eea', lineWidth = 3, label = '') {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+
+            let first = true;
+            let points = [];
+            let lastValidPoint = null;
+
+            for (let x = -8; x <= 8; x += 0.01) {
+                try {
+                    const y = func.formula(x);
+                    if (!isNaN(y) && isFinite(y) && Math.abs(y) < 12) {
+                        const screenX = canvas.width/2 + x * 30;
+                        const screenY = canvas.height/2 - y * 30;
+
+                        points.push({x: screenX, y: screenY, realX: x, realY: y});
+
+                        if (first) {
+                            ctx.moveTo(screenX, screenY);
+                            first = false;
+                        } else {
+                            // 检查是否需要断开线条（处理不连续函数）
+                            if (lastValidPoint && Math.abs(y - lastValidPoint.realY) > 5) {
+                                ctx.moveTo(screenX, screenY);
+                            } else {
+                                ctx.lineTo(screenX, screenY);
+                            }
+                        }
+                        lastValidPoint = {x: screenX, y: screenY, realX: x, realY: y};
+                    } else {
+                        // 如果函数值无效，断开线条
+                        first = true;
+                    }
+                } catch (e) {
+                    // 如果计算出错，断开线条
+                    first = true;
+                }
+            }
+            ctx.stroke();
+
+            // 添加函数标签
+            if (label && points.length > 0) {
+                ctx.fillStyle = color;
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'left';
+                
+                // 找到合适的位置显示标签
+                let labelPoint = null;
+                if (points.length > 0) {
+                    // 选择中间偏右的位置
+                    const index = Math.floor(points.length * 0.6);
+                    labelPoint = points[index];
+                }
+                
+                if (labelPoint) {
+                    // 添加背景
+                    const textWidth = ctx.measureText(label).width;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.fillRect(labelPoint.x + 5, labelPoint.y - 20, textWidth + 10, 20);
+                    
+                    // 绘制文字
+                    ctx.fillStyle = color;
+                    ctx.fillText(label, labelPoint.x + 10, labelPoint.y - 5);
+                }
+            }
+
+            return points;
+        }
+
+        // 绘制切线
+        function drawTangent(ctx, canvas, func, x0, color = '#10b981', lineWidth = 3) {
+            const showTangent = document.getElementById('showTangent')?.checked !== false;
+            if (!showTangent) return;
+
+            const y0 = func.formula(x0);
+            const slope = func.derivative(x0);
+            
+            // 切线方程: y - y0 = slope * (x - x0)
+            // 即: y = slope * (x - x0) + y0
+            
+            const x1 = x0 - 3;
+            const x2 = x0 + 3;
+            const y1 = slope * (x1 - x0) + y0;
+            const y2 = slope * (x2 - x0) + y0;
+            
+            // 绘制切线
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.setLineDash([8, 4]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2 + x1 * 30, canvas.height/2 - y1 * 30);
+            ctx.lineTo(canvas.width/2 + x2 * 30, canvas.height/2 - y2 * 30);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 标记切点 - 更大的圆点
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(canvas.width/2 + x0 * 30, canvas.height/2 - y0 * 30, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 白色边框
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(canvas.width/2 + x0 * 30, canvas.height/2 - y0 * 30, 6, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // 显示斜率信息
+            ctx.fillStyle = color;
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`切线斜率 = ${slope.toFixed(3)}`, canvas.width/2 + x0 * 30, canvas.height/2 - y0 * 30 - 25);
+            
+            // 显示切点坐标
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(`切点: (${x0.toFixed(2)}, ${y0.toFixed(2)})`, canvas.width/2 + x0 * 30, canvas.height/2 - y0 * 30 + 25);
+        }
+
+        // 绘制割线
+        function drawSecant(ctx, canvas, func, x0, h = 0.5, color = '#ffa500', lineWidth = 2) {
+            const showSecant = document.getElementById('showSecant')?.checked !== false;
+            if (!showSecant) return;
+
+            const y0 = func.formula(x0);
+            const y1 = func.formula(x0 + h);
+            const slope = (y1 - y0) / h;
+            
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2 + x0 * 30, canvas.height/2 - y0 * 30);
+            ctx.lineTo(canvas.width/2 + (x0 + h) * 30, canvas.height/2 - y1 * 30);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 标记点
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(canvas.width/2 + x0 * 30, canvas.height/2 - y0 * 30, 3, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(canvas.width/2 + (x0 + h) * 30, canvas.height/2 - y1 * 30, 3, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 显示割线斜率
+            ctx.fillStyle = color;
+            ctx.font = 'bold 10px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`割线斜率 = ${slope.toFixed(2)}`, canvas.width/2 + (x0 + h/2) * 30, canvas.height/2 - (y0 + y1)/2 * 30 - 15);
+        }
+
+        // 重置视图
+        function resetDerivativeView() {
+            if (derivativeCanvas && derivativeCtx) {
+                updateDerivativeDemo();
+            }
+        }
+
+        // 更新导数演示
+        function updateDerivativeDemo() {
+            const ruleType = document.getElementById('ruleType').value;
+            updateRuleDemo();
+        }
+
+        // 更新法则演示
+        function updateRuleDemo() {
+            const ruleType = document.getElementById('ruleType').value;
+            const resultsDiv = document.getElementById('derivativeResults');
+
+            if (!ruleType) {
+                resultsDiv.innerHTML = '<div class="step">请选择一个导数法则开始学习</div>';
+                return;
+            }
+
+            let content = '';
+            switch(ruleType) {
+                case 'sum':
+                    content = `
+                        <div class="step"><strong>和差法则：</strong> $(f \pm g)' = f' \pm g'$</div>
+                        <div class="step"><strong>公式含义：</strong> 两个函数和或差的导数等于它们导数的和或差</div>
+                        <div class="step"><strong>应用例子：</strong></div>
+                        <div class="step">若 $f(x) = x^2 + 3x$，则 $f'(x) = (x^2)' + (3x)' = 2x + 3$</div>
+                        <div class="step">若 $g(x) = x^3 - 2x$，则 $g'(x) = (x^3)' - (2x)' = 3x^2 - 2$</div>
+                    `;
+                    break;
+                case 'product':
+                    content = `
+                        <div class="step"><strong>积法则：</strong> $(fg)' = f'g + fg'$</div>
+                        <div class="step"><strong>公式含义：</strong> 两个函数乘积的导数等于第一个函数的导数乘以第二个函数，加上第一个函数乘以第二个函数的导数</div>
+                        <div class="step"><strong>应用例子：</strong></div>
+                        <div class="step">若 $f(x) = (x^2 + 1)(x - 2)$，则</div>
+                        <div class="step">$f'(x) = (2x)(x - 2) + (x^2 + 1)(1) = 2x^2 - 4x + x^2 + 1 = 3x^2 - 4x + 1$</div>
+                    `;
+                    break;
+                case 'quotient':
+                    content = `
+                        <div class="step"><strong>商法则：</strong> $\\left(\\frac{f}{g}\\right)' = \\frac{f'g - fg'}{g^2}$</div>
+                        <div class="step"><strong>公式含义：</strong> 两个函数商的导数等于分子导数乘以分母减去分子乘以分母导数，再除以分母的平方</div>
+                        <div class="step"><strong>应用例子：</strong></div>
+                        <div class="step">若 $f(x) = \\frac{x^2 + 1}{x - 1}$，则</div>
+                        <div class="step">$f'(x) = \\frac{(2x)(x - 1) - (x^2 + 1)(1)}{(x - 1)^2} = \\frac{2x^2 - 2x - x^2 - 1}{(x - 1)^2} = \\frac{x^2 - 2x - 1}{(x - 1)^2}$</div>
+                    `;
+                    break;
+                case 'constant':
+                    content = `
+                        <div class="step"><strong>常数倍法则：</strong> $(cf)' = cf'$</div>
+                        <div class="step"><strong>公式含义：</strong> 常数乘以函数的导数等于常数乘以函数的导数</div>
+                        <div class="step"><strong>应用例子：</strong></div>
+                        <div class="step">若 $f(x) = 5x^3$，则 $f'(x) = 5 \\cdot (x^3)' = 5 \\cdot 3x^2 = 15x^2$</div>
+                        <div class="step">若 $g(x) = -2\\sin x$，则 $g'(x) = -2 \\cdot (\\sin x)' = -2\\cos x$</div>
+                    `;
+                    break;
+                case 'power':
+                    content = `
+                        <div class="step"><strong>幂法则：</strong> $(x^n)' = nx^{n-1}$</div>
+                        <div class="step"><strong>公式含义：</strong> 幂函数的导数等于指数乘以底数的指数减一的幂</div>
+                        <div class="step"><strong>应用例子：</strong></div>
+                        <div class="step">若 $f(x) = x^5$，则 $f'(x) = 5x^{4}$</div>
+                        <div class="step">若 $g(x) = x^{-2}$，则 $g'(x) = -2x^{-3} = -\\frac{2}{x^3}$</div>
+                        <div class="step">若 $h(x) = \\sqrt{x} = x^{1/2}$，则 $h'(x) = \\frac{1}{2}x^{-1/2} = \\frac{1}{2\\sqrt{x}}$</div>
+                    `;
+                    break;
+            }
+
+            resultsDiv.innerHTML = content;
+
+            // 延迟渲染MathJax确保DOM更新完成
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 50);
+        }
+
+        // 更新导数结果
+        function updateDerivativeResults(funcName, x0) {
+            const func = functions[funcName];
+            const resultsDiv = document.getElementById('derivativeResults');
+
+            if (isNaN(x0) || !isFinite(x0)) {
+                resultsDiv.innerHTML = '<div class="step">请输入有效的计算点</div>';
+                return;
+            }
+
+            const fx = func.formula(x0);
+            const fpx = func.derivative(x0);
+
+            resultsDiv.innerHTML = `
+                <div class="step"><strong>📊 函数信息</strong></div>
+                <div class="step">原函数: $f(x) = ${func.latex}$</div>
+                <div class="step">导数函数: $f'(x) = ${func.derivativeLatex}$</div>
+                <div class="step"><strong>🎯 计算结果</strong></div>
+                <div class="step">计算点: $x = ${x0.toFixed(2)}$</div>
+                <div class="step">函数值: $f(${x0.toFixed(2)}) = ${fx.toFixed(4)}$</div>
+                <div class="step">导数值: $f'(${x0.toFixed(2)}) = ${fpx.toFixed(4)}$</div>
+                <div class="step"><strong>📐 几何意义</strong></div>
+                <div class="step">切线斜率 = ${fpx.toFixed(4)}</div>
+                <div class="step">切点坐标: (${x0.toFixed(2)}, ${fx.toFixed(2)})</div>
+            `;
+            
+            // 延迟渲染MathJax确保DOM更新完成
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 50);
+        }
+
+        // 动画演示导数
+        function animateDerivative() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+
+            const funcName = document.getElementById('functionType').value;
+            const func = functions[funcName];
+            const startX = -3;
+            const endX = 3;
+            const duration = 3000; // 3秒
+            const startTime = Date.now();
+
+            if (!derivativeCtx || !func) return;
+
+            const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentX = startX + (endX - startX) * progress;
+
+                derivativeCtx.clearRect(0, 0, derivativeCanvas.width, derivativeCanvas.height);
+                drawAxes(derivativeCtx, derivativeCanvas);
+                drawFunction(derivativeCtx, derivativeCanvas, func, '#667eea', 3, `f(x) = ${func.latex}`);
+                
+                // 绘制移动的切线
+                drawTangent(derivativeCtx, derivativeCanvas, func, currentX, '#ff6b6b', 3);
+                
+                // 更新结果显示
+                updateDerivativeResults(funcName, currentX);
+
+                if (progress < 1) {
+                    animationId = requestAnimationFrame(animate);
+                } else {
+                    // 动画结束，显示最终结果
+                    updateDerivativeDemo();
+                }
+            };
+
+            animate();
+        }
+
+        // 找临界点
+        function findCriticalPoints() {
+            const funcName = document.getElementById('functionType').value;
+            const func = functions[funcName];
+            
+            // 简单的临界点查找（导数为0的点）
+            const criticalPoints = [];
+            for (let x = -5; x <= 5; x += 0.1) {
+                const derivative = func.derivative(x);
+                if (Math.abs(derivative) < 0.1) {
+                    criticalPoints.push({x: x, y: func.formula(x), derivative: derivative});
+                }
+            }
+            
+            if (criticalPoints.length > 0) {
+                const resultsDiv = document.getElementById('derivativeResults');
+                let criticalInfo = '<div class="step">临界点（导数为0的点）:</div>';
+                criticalPoints.forEach((point, index) => {
+                    criticalInfo += `<div class="step">点${index + 1}: (${point.x.toFixed(2)}, ${point.y.toFixed(2)})</div>`;
+                });
+                resultsDiv.innerHTML = criticalInfo;
+            } else {
+                alert('在指定范围内未找到临界点');
+            }
+        }
+
+        // 导航标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                // 添加活动状态
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.classList.add('active');
+                    
+                    // 延迟初始化Canvas，确保面板显示后再初始化
+                    setTimeout(() => {
+                        initDerivativeCanvas();
+                        
+                        // 根据面板类型执行相应的更新
+                        setTimeout(() => {
+                            if (panelId === 'basic-rules') {
+                                updateDerivativeDemo();
+                            }
+                        }, 200);
+                    }, 100);
+                    
+                    // 切换面板后重新渲染MathJax
+                    setTimeout(() => renderAllMath(), 100);
+                }
+            });
+        });
+
+        // 更新函数
+        function updateFunction() {
+            currentFunction = document.getElementById('functionType').value;
+            calculateDerivative();
+        }
+
+        // 计算导数
+        function calculateDerivative() {
+            const func = functions[currentFunction];
+            const x = parseFloat(document.getElementById('pointX').value);
+
+            if (isNaN(x)) {
+                alert('请输入有效的数值');
+                return;
+            }
+
+            const fx = func.formula(x);
+            const fpx = func.derivative(x);
+
+            // 更新显示
+            document.getElementById('functionExpr').textContent = func.latex;
+            document.getElementById('calcPoint').textContent = x.toFixed(2);
+            document.getElementById('derivX').textContent = x.toFixed(2);
+            document.getElementById('derivValue').textContent = fpx.toFixed(4);
+            document.getElementById('derivFormula').textContent = func.derivativeLatex;
+
+            // 重新渲染MathJax
+            setTimeout(() => renderAllMath(), 100);
+        }
+
+        // 显示步骤
+        function showSteps() {
+            const func = functions[currentFunction];
+            const x = parseFloat(document.getElementById('pointX').value);
+            const fpx = func.derivative(x);
+
+            const stepsContent = `
+                <div class="step"><strong>函数:</strong> $${func.latex}$</div>
+                <div class="step"><strong>计算点:</strong> $x = ${x.toFixed(2)}$</div>
+                <div class="step"><strong>导数公式:</strong> $f'(x) = ${func.derivativeLatex}$</div>
+                <div class="step"><strong>代入计算:</strong> $f'(${x.toFixed(2)}) = ${func.derivativeLatex.replace('x', x.toFixed(2))}$</div>
+                <div class="step"><strong>结果:</strong> $f'(${x.toFixed(2)}) = ${fpx.toFixed(4)}$</div>
+            `;
+
+            document.getElementById('stepByStep').innerHTML = stepsContent;
+            renderMathJax(document.getElementById('stepByStep'));
+        }
+
+        // 清空结果
+        function clearAll() {
+            document.getElementById('pointX').value = '1';
+            document.getElementById('functionExpr').textContent = 'x²';
+            document.getElementById('calcPoint').textContent = '1';
+            document.getElementById('derivX').textContent = '1';
+            document.getElementById('derivValue').textContent = '2';
+            document.getElementById('derivFormula').textContent = '2x';
+            document.getElementById('stepByStep').innerHTML = '<div class="step">点击"计算导数"查看详细步骤</div>';
+        }
+
+        // 更新复合函数
+        function updateComposite() {
+            const funcType = document.getElementById('compositeFunction').value;
+            const func = compositeFunctions[funcType];
+
+            document.getElementById('compositeExpr').textContent = func.latex;
+            document.getElementById('innerFunction').textContent = func.inner;
+            document.getElementById('outerFunction').textContent = func.outer;
+            document.getElementById('chainRule').textContent = func.derivative;
+
+            calculateComposite();
+        }
+
+        // 计算复合函数导数
+        function calculateComposite() {
+            const funcType = document.getElementById('compositeFunction').value;
+            const func = compositeFunctions[funcType];
+            const x = parseFloat(document.getElementById('compositePoint').value);
+
+            if (isNaN(x)) {
+                alert('请输入有效的数值');
+                return;
+            }
+
+            let result;
+            switch(funcType) {
+                case 'sinx2':
+                    result = Math.cos(x * x) * 2 * x;
+                    break;
+                case 'ex2':
+                    result = Math.exp(x * x) * 2 * x;
+                    break;
+                case 'lnx2':
+                    result = 2 / x;
+                    break;
+                case 'sqrtx2':
+                    result = x / Math.sqrt(x * x + 1);
+                    break;
+                default:
+                    result = 0;
+            }
+
+            document.getElementById('compositeCalcPoint').textContent = x.toFixed(2);
+            document.getElementById('compositeCalcPoint2').textContent = x.toFixed(2);
+            document.getElementById('compositeResult').textContent = result.toFixed(4);
+
+            // 重新渲染MathJax
+            setTimeout(() => renderAllMath(), 100);
+        }
+
+        // 显示复合函数步骤
+        function showCompositeSteps() {
+            const funcType = document.getElementById('compositeFunction').value;
+            const func = compositeFunctions[funcType];
+
+            const stepsContent = `
+                <div class="step"><strong>复合函数:</strong> $${func.latex}$</div>
+                <div class="step"><strong>步骤1 - 识别内外函数:</strong></div>
+                <div class="step">内函数: $u = ${func.inner}$</div>
+                <div class="step">外函数: $f(u) = ${func.outer}$</div>
+                <div class="step"><strong>步骤2 - 分别求导:</strong></div>
+                <div class="step">内函数导数: $\\frac{du}{dx} = ${func.innerDerivative}$</div>
+                <div class="step">外函数导数: $\\frac{df}{du} = ${func.outerDerivative}$</div>
+                <div class="step"><strong>步骤3 - 应用链式法则:</strong></div>
+                <div class="step">$f'(x) = \\frac{df}{du} \\cdot \\frac{du}{dx} = ${func.derivative}$</div>
+            `;
+
+            document.getElementById('chainSteps').innerHTML = stepsContent;
+            renderMathJax(document.getElementById('chainSteps'));
+        }
+
+        // 更新链式法则演示
+        function updateChainDemo() {
+            const funcType = document.getElementById('chainFunction').value;
+            showChainSteps();
+        }
+
+        // 显示链式法则步骤
+        function showChainSteps() {
+            const funcType = document.getElementById('chainFunction').value;
+            const func = compositeFunctions[funcType];
+
+            const stepsContent = `
+                <div class="step"><strong>复合函数:</strong> $${func.latex}$</div>
+                <div class="step"><strong>链式法则应用:</strong></div>
+                <div class="step">1. 识别内函数: $u = ${func.inner}$</div>
+                <div class="step">2. 识别外函数: $f(u) = ${func.outer}$</div>
+                <div class="step">3. 内函数导数: $u' = ${func.innerDerivative}$</div>
+                <div class="step">4. 外函数导数: $f'(u) = ${func.outerDerivative}$</div>
+                <div class="step">5. 链式法则: $f'(x) = f'(u) \\cdot u' = ${func.derivative}$</div>
+            `;
+
+            document.getElementById('chainSteps').innerHTML = stepsContent;
+            renderMathJax(document.getElementById('chainSteps'));
+        }
+
+        // 动画演示链式法则
+        function animateChain() {
+            showChainSteps();
+        }
+
+        // 显示法则公式
+        function showRuleFormula() {
+            const ruleType = document.getElementById('ruleType').value;
+            const resultsDiv = document.getElementById('derivativeResults');
+
+            if (!ruleType) {
+                resultsDiv.innerHTML = '<div class="step">请先选择一个导数法则</div>';
+                return;
+            }
+
+            let formula = '';
+            switch(ruleType) {
+                case 'sum':
+                    formula = '$\\frac{d}{dx}[f(x) \\pm g(x)] = f\'(x) \\pm g\'(x)$';
+                    break;
+                case 'product':
+                    formula = '$\\frac{d}{dx}[f(x) \\cdot g(x)] = f\'(x) \\cdot g(x) + f(x) \\cdot g\'(x)$';
+                    break;
+                case 'quotient':
+                    formula = '$\\frac{d}{dx}\\left[\\frac{f(x)}{g(x)}\\right] = \\frac{f\'(x) \\cdot g(x) - f(x) \\cdot g\'(x)}{[g(x)]^2}$';
+                    break;
+                case 'constant':
+                    formula = '$\\frac{d}{dx}[c \\cdot f(x)] = c \\cdot f\'(x)$';
+                    break;
+                case 'power':
+                    formula = '$\\frac{d}{dx}[x^n] = n \\cdot x^{n-1}$';
+                    break;
+            }
+
+            resultsDiv.innerHTML = `
+                <div class="step"><strong>导数法则公式：</strong></div>
+                <div class="step" style="font-size: 18px; text-align: center; margin: 20px 0;">${formula}</div>
+            `;
+
+            // 延迟渲染MathJax确保DOM更新完成
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 50);
+        }
+
+        // 显示法则例子
+        function showRuleExample() {
+            const ruleType = document.getElementById('ruleType').value;
+            const resultsDiv = document.getElementById('derivativeResults');
+
+            if (!ruleType) {
+                resultsDiv.innerHTML = '<div class="step">请先选择一个导数法则</div>';
+                return;
+            }
+
+            let example = '';
+            switch(ruleType) {
+                case 'sum':
+                    example = `
+                        <div class="step"><strong>例子：</strong> 计算 $y = x^2 + 3x - 5$ 的导数</div>
+                        <div class="step">$y' = \\frac{d}{dx}[x^2] + \\frac{d}{dx}[3x] + \\frac{d}{dx}[-5]$</div>
+                        <div class="step">$y' = 2x + 3 + 0$</div>
+                        <div class="step">$y' = 2x + 3$</div>
+                    `;
+                    break;
+                case 'product':
+                    example = `
+                        <div class="step"><strong>例子：</strong> 计算 $y = (x^2 + 1)(x - 2)$ 的导数</div>
+                        <div class="step">$y' = \\frac{d}{dx}[x^2 + 1] \\cdot (x - 2) + (x^2 + 1) \\cdot \\frac{d}{dx}[x - 2]$</div>
+                        <div class="step">$y' = (2x)(x - 2) + (x^2 + 1)(1)$</div>
+                        <div class="step">$y' = 2x^2 - 4x + x^2 + 1$</div>
+                        <div class="step">$y' = 3x^2 - 4x + 1$</div>
+                    `;
+                    break;
+                case 'quotient':
+                    example = `
+                        <div class="step"><strong>例子：</strong> 计算 $y = \\frac{x^2 + 1}{x - 1}$ 的导数</div>
+                        <div class="step">$y' = \\frac{\\frac{d}{dx}[x^2 + 1] \\cdot (x - 1) - (x^2 + 1) \\cdot \\frac{d}{dx}[x - 1]}{(x - 1)^2}$</div>
+                        <div class="step">$y' = \\frac{(2x)(x - 1) - (x^2 + 1)(1)}{(x - 1)^2}$</div>
+                        <div class="step">$y' = \\frac{2x^2 - 2x - x^2 - 1}{(x - 1)^2}$</div>
+                        <div class="step">$y' = \\frac{x^2 - 2x - 1}{(x - 1)^2}$</div>
+                    `;
+                    break;
+                case 'constant':
+                    example = `
+                        <div class="step"><strong>例子：</strong> 计算 $y = 5x^3$ 的导数</div>
+                        <div class="step">$y' = 5 \\cdot \\frac{d}{dx}[x^3]$</div>
+                        <div class="step">$y' = 5 \\cdot 3x^2$</div>
+                        <div class="step">$y' = 15x^2$</div>
+                    `;
+                    break;
+                case 'power':
+                    example = `
+                        <div class="step"><strong>例子：</strong> 计算 $y = x^4$ 的导数</div>
+                        <div class="step">$y' = 4 \\cdot x^{4-1}$</div>
+                        <div class="step">$y' = 4x^3$</div>
+                        <div class="step"><strong>另一个例子：</strong> $y = \\sqrt{x} = x^{1/2}$</div>
+                        <div class="step">$y' = \\frac{1}{2} \\cdot x^{1/2 - 1} = \\frac{1}{2} x^{-1/2} = \\frac{1}{2\\sqrt{x}}$</div>
+                    `;
+                    break;
+            }
+
+            resultsDiv.innerHTML = example;
+
+            // 延迟渲染MathJax确保DOM更新完成
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 50);
+        }
+
+        // 显示法则步骤
+        function showRuleSteps() {
+            const ruleType = document.getElementById('ruleType').value;
+            const resultsDiv = document.getElementById('derivativeResults');
+
+            if (!ruleType) {
+                resultsDiv.innerHTML = '<div class="step">请先选择一个导数法则</div>';
+                return;
+            }
+
+            let steps = '';
+            switch(ruleType) {
+                case 'sum':
+                    steps = `
+                        <div class="step"><strong>和差法则应用步骤：</strong></div>
+                        <div class="step">1. 将复合函数分解为各项：$f(x) \\pm g(x)$</div>
+                        <div class="step">2. 分别对每一项求导数：$f'(x), g'(x)$</div>
+                        <div class="step">3. 保持原有的运算符号：$f'(x) \\pm g'(x)$</div>
+                        <div class="step">4. 常数项的导数为零</div>
+                    `;
+                    break;
+                case 'product':
+                    steps = `
+                        <div class="step"><strong>积法则应用步骤：</strong></div>
+                        <div class="step">1. 识别两个函数：$u = f(x), v = g(x)$</div>
+                        <div class="step">2. 分别求导：$u', v'$</div>
+                        <div class="step">3. 应用公式：$(uv)' = u'v + uv'$</div>
+                        <div class="step">4. 代入具体函数进行计算</div>
+                    `;
+                    break;
+                case 'quotient':
+                    steps = `
+                        <div class="step"><strong>商法则应用步骤：</strong></div>
+                        <div class="step">1. 识别分子和分母：$u = f(x), v = g(x)$</div>
+                        <div class="step">2. 分别求导：$u', v'$</div>
+                        <div class="step">3. 应用公式：$\\left(\\frac{u}{v}\\right)' = \\frac{u'v - uv'}{v^2}$</div>
+                        <div class="step">4. 注意分母不能为零</div>
+                    `;
+                    break;
+                case 'constant':
+                    steps = `
+                        <div class="step"><strong>常数倍法则应用步骤：</strong></div>
+                        <div class="step">1. 识别常数因子：$c \\cdot f(x)$</div>
+                        <div class="step">2. 将常数提到导数符号外面：$c \\cdot \\frac{d}{dx}[f(x)]$</div>
+                        <div class="step">3. 对函数求导：$c \\cdot f'(x)$</div>
+                        <div class="step">4. 常数与导数相乘</div>
+                    `;
+                    break;
+                case 'power':
+                    steps = `
+                        <div class="step"><strong>幂法则应用步骤：</strong></div>
+                        <div class="step">1. 识别幂函数形式：$x^n$</div>
+                        <div class="step">2. 应用公式：$(x^n)' = n \\cdot x^{n-1}$</div>
+                        <div class="step">3. 指数减1，系数为原指数</div>
+                        <div class="step">4. 对于分数指数，同样适用</div>
+                    `;
+                    break;
+            }
+
+            resultsDiv.innerHTML = steps;
+
+            // 延迟渲染MathJax确保DOM更新完成
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 50);
+        }
+
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            // 初始化各种计算
+            setTimeout(() => {
+                initDerivativeCanvas();
+                updateDerivativeDemo();
+                calculateDerivative();
+                updateComposite();
+                renderAllMath();
+                
+                console.log('导数计算法则虚拟实验室加载完成');
+            }, 1000);
+        });
+
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.error('页面错误:', e.error);
+        });
+    </script>
+</body>
+</html>

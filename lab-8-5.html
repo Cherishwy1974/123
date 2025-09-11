@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条件概率动画演示</title>
+    <link rel="stylesheet" href="common-assets/css/frame.css">
+    <link rel="stylesheet" href="common-assets/css/google-fonts.css">
+    <link rel="stylesheet" href="common-assets/css/fonts.css">
+    <script src="common-assets/js/math.min.js"></script>
+    <script src="common-assets/js/mathjax-config.js"></script>
+    <script src="common-assets/js/tex-svg.js"></script>
+    <script src="common-assets/js/plotly.min.js"></script>
+    <style>
+        /* CSS变量定义 */
+        :root {
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 间距 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* 圆角 */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            /* 阴影 */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            color: var(--light);
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            margin: 0 0 var(--spacing-sm) 0;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: var(--text-size);
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            height: 100%;
+            flex: 1;
+        }
+
+        .left-panel, .right-panel {
+            background: var(--light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--light);
+        }
+
+        .right-panel {
+            background: var(--light);
+            color: var(--gray-800);
+        }
+
+        /* 控制面板 */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .control-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: block;
+            font-size: var(--text-size);
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            color: var(--light);
+        }
+
+        .control-input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: var(--text-size);
+            transition: all 0.3s ease;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: var(--light);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-size: var(--btn-size);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #6d28d9;
+        }
+
+        /* 可视化区域 */
+        .visualization {
+            flex: 1;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visualization h3 {
+            margin: 0 0 var(--spacing-md) 0;
+            font-size: var(--h3-size);
+            color: var(--gray-800);
+            text-align: center;
+        }
+
+        #probabilityChart {
+            width: 100%;
+            height: 400px;
+        }
+
+        /* 概率计算显示 */
+        .probability-display {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-left: 4px solid var(--primary);
+            color: blue;
+        }
+
+        .probability-formula {
+            font-size: var(--formula-size);
+            text-align: center;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .probability-result {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .container {
+                padding: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>条件概率动画演示</h1>
+            <p>通过交互式可视化理解条件概率的概念和计算</p>
+        </div>
+
+        <div class="interactive-layout">
+            <!-- 左侧控制面板 -->
+            <div class="left-panel">
+                <div class="control-panel">
+                    <div class="control-group">
+                        <label class="control-label">事件A的概率 P(A)</label>
+                        <input type="range" class="control-input" id="probA" min="0" max="1" step="0.01" value="0.3">
+                        <span id="probAValue">0.30</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">事件B的概率 P(B)</label>
+                        <input type="range" class="control-input" id="probB" min="0" max="1" step="0.01" value="0.4">
+                        <span id="probBValue">0.40</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">联合概率 P(A∩B)</label>
+                        <input type="range" class="control-input" id="probAB" min="0" max="1" step="0.01" value="0.12">
+                        <span id="probABValue">0.12</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="btn" onclick="updateVisualization()">更新可视化</button>
+                        <button class="btn btn-secondary" onclick="resetValues()">重置</button>
+                    </div>
+                </div>
+
+                <div class="probability-display">
+                    <h3>条件概率计算</h3>
+                    <div class="probability-formula">
+                        P(A|B) = P(A∩B) / P(B)
+                    </div>
+                    <div class="probability-result" id="conditionalProb">
+                        P(A|B) = 0.30
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧可视化区域 -->
+            <div class="right-panel">
+                <div class="visualization">
+                    <h3>条件概率可视化</h3>
+                    <div id="probabilityChart"></div>
+                    
+                    <div class="probability-display">
+                        <h4>概率解释</h4>
+                        <p id="probabilityExplanation">
+                            条件概率 P(A|B) 表示在事件B发生的条件下，事件A发生的概率。
+                            它等于事件A和B同时发生的概率除以事件B发生的概率。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化可视化
+        function initVisualization() {
+            updateVisualization();
+        }
+
+        // 更新可视化
+        function updateVisualization() {
+            const probA = parseFloat(document.getElementById('probA').value);
+            const probB = parseFloat(document.getElementById('probB').value);
+            const probAB = parseFloat(document.getElementById('probAB').value);
+            
+            // 更新显示值
+            document.getElementById('probAValue').textContent = probA.toFixed(2);
+            document.getElementById('probBValue').textContent = probB.toFixed(2);
+            document.getElementById('probABValue').textContent = probAB.toFixed(2);
+            
+            // 计算条件概率
+            const conditionalProb = probB > 0 ? probAB / probB : 0;
+            document.getElementById('conditionalProb').textContent = 
+                `P(A|B) = ${conditionalProb.toFixed(3)}`;
+            
+            // 更新解释
+            updateExplanation(probA, probB, probAB, conditionalProb);
+            
+            // 创建图表
+            createProbabilityChart(probA, probB, probAB, conditionalProb);
+        }
+
+        // 更新概率解释
+        function updateExplanation(probA, probB, probAB, conditionalProb) {
+            const explanation = document.getElementById('probabilityExplanation');
+            explanation.innerHTML = `
+                <p><strong>当前设置：</strong></p>
+                <ul>
+                    <li>P(A) = ${probA.toFixed(2)} - 事件A发生的概率</li>
+                    <li>P(B) = ${probB.toFixed(2)} - 事件B发生的概率</li>
+                    <li>P(A∩B) = ${probAB.toFixed(2)} - 事件A和B同时发生的概率</li>
+                </ul>
+                <p><strong>计算结果：</strong></p>
+                <p>P(A|B) = P(A∩B) / P(B) = ${probAB.toFixed(2)} / ${probB.toFixed(2)} = ${conditionalProb.toFixed(3)}</p>
+                <p>这意味着在事件B发生的条件下，事件A发生的概率是 ${(conditionalProb * 100).toFixed(1)}%。</p>
+            `;
+        }
+
+        // 创建概率图表
+        function createProbabilityChart(probA, probB, probAB, conditionalProb) {
+            const data = [
+                {
+                    x: ['P(A)', 'P(B)', 'P(A∩B)', 'P(A|B)'],
+                    y: [probA, probB, probAB, conditionalProb],
+                    type: 'bar',
+                    marker: {
+                        color: ['#4f46e5', '#7c3aed', '#06b6d4', '#10b981'],
+                        line: {
+                            color: '#ffffff',
+                            width: 2
+                        }
+                    },
+                    text: [probA.toFixed(2), probB.toFixed(2), probAB.toFixed(2), conditionalProb.toFixed(3)],
+                    textposition: 'auto',
+                }
+            ];
+
+            const layout = {
+                title: {
+                    text: '概率值比较',
+                    font: { size: 16, color: '#1f2937' }
+                },
+                xaxis: {
+                    title: '概率类型',
+                    titlefont: { size: 14, color: '#4b5563' },
+                    tickfont: { size: 12, color: '#6b7280' }
+                },
+                yaxis: {
+                    title: '概率值',
+                    titlefont: { size: 14, color: '#4b5563' },
+                    tickfont: { size: 12, color: '#6b7280' },
+                    range: [0, 1]
+                },
+                margin: { t: 60, r: 30, b: 60, l: 60 },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Source Han Serif SC, Noto Serif SC, serif' }
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: false
+            };
+
+            Plotly.newPlot('probabilityChart', data, layout, config);
+        }
+
+        // 重置值
+        function resetValues() {
+            document.getElementById('probA').value = 0.3;
+            document.getElementById('probB').value = 0.4;
+            document.getElementById('probAB').value = 0.12;
+            updateVisualization();
+        }
+
+        // 事件监听器
+        document.getElementById('probA').addEventListener('input', updateVisualization);
+        document.getElementById('probB').addEventListener('input', updateVisualization);
+        document.getElementById('probAB').addEventListener('input', updateVisualization);
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initVisualization();
+        });
+    </script>
+</body>
+</html>

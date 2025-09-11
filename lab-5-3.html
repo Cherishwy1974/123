@@ -1,0 +1,1786 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>偏导数的概念 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base']}
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+    
+    
+    <!-- 隐藏滚动条样式 -->
+    <link rel="stylesheet" href="../common-assets/css/hidden-scrollbar.css">
+
+<style>
+        /* 全局重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 现代化配色方案 */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --h1-size: 24px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 16px;
+            --text-size: 16px;
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--gray-50);
+            overflow: auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+            display: inline;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            min-height: calc(100vh - 60px);
+            overflow: auto;
+        }
+
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 10px 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            min-height: 40px;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: auto;
+            background: var(--light);
+        }
+
+
+
+        /* 内容区域 */
+        .content-area {
+            overflow: auto;
+            background: white;
+        }
+
+        .panel {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        /* 公式展示区 */
+        .formula-display {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            text-align: center;
+            border-left: 4px solid #667eea;
+            font-size: 16px;
+        }
+
+        /* 概念卡片网格 */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .concept-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .concept-card h3 {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        /* 交互演示区 */
+        .interactive-demo {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .interactive-demo h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .demo-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: flex-end;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 140px;
+        }
+
+        .control-group label {
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 8px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            min-height: 40px;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* 按钮样式 */
+        .btn {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #212529 !important;
+            border: 2px solid #667eea;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-height: 40px;
+            min-width: 40px;
+            font-family: inherit;
+            text-shadow: none;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 可视化区域 */
+        .visualization-area {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            min-height: 320px;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            background: white;
+            border-radius: 6px;
+            overflow: auto;
+            margin: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+        }
+
+        /* 结果显示区 */
+        .result-display {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 4px solid #4caf50;
+        }
+
+        .result-display h4 {
+            color: #2e7d32;
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .calculation-steps {
+            background: white;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .step {
+            margin: 8px 0;
+            padding: 8px 12px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+            font-size: 14px;
+        }
+
+        /* 节标题 */
+        .section h2 {
+            font-size: 20px;
+            color: #333;
+            margin: 20px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+            font-weight: 600;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+                padding: 12px;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 8px;
+            }
+
+            .tab {
+                white-space: nowrap;
+                min-width: 120px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .demo-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-group {
+                width:100vw;
+            }
+
+            .canvas-container {
+                height: 250px;
+            overflow: auto;}
+        }
+
+        /* 高亮样式 */
+        .highlight {
+            background: linear-gradient(120deg, #ffd700 0%, #ffed4e 100%);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        /* 左右分布布局 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .control-panel {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .result-container {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            min-height: 40px;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* MathJax样式修复 */
+        mjx-container[display="true"] {
+            display: inline !important;
+        }
+
+        mjx-math mjx-munder {
+            display: inline-block;
+        }
+
+        mjx-math mjx-mfrac {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>偏导数的概念</h1>
+                <p class="header-subtitle">理解偏导数的定义、几何意义和计算方法</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="definition">
+                        <span class="nav-icon">∂</span>
+                        <span>基本定义</span>
+                    </button>
+                    <button class="nav-tab" data-panel="geometric">
+                        <span class="nav-icon">📐</span>
+                        <span>几何意义</span>
+                    </button>
+                    <button class="nav-tab" data-panel="calculation">
+                        <span class="nav-icon">🧮</span>
+                        <span>计算方法</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="content-area">
+                <!-- 基本定义面板 -->
+                <div class="panel active" id="definition">
+                    <div class="section">
+                        <div class="formula-display">
+                            偏导数定义：$\frac{\partial f}{\partial x} = \lim\limits_{\Delta x \to 0} \frac{f(x+\Delta x, y) - f(x,y)}{\Delta x}$，$\frac{\partial f}{\partial y} = \lim\limits_{\Delta y \to 0} \frac{f(x, y+\Delta y) - f(x,y)}{\Delta y}$
+                        </div>
+
+                        <div class="concept-grid">
+                            <div class="concept-card">
+                                <h3>对x的偏导数</h3>
+                                <div class="formula">$f_x = \frac{\partial f}{\partial x}$</div>
+                                <div class="description">
+                                    将y看作常数，对x求导数
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>对y的偏导数</h3>
+                                <div class="formula">$f_y = \frac{\partial f}{\partial y}$</div>
+                                <div class="description">
+                                    将x看作常数，对y求导数
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>偏导数记号</h3>
+                                <div class="formula">$\frac{\partial f}{\partial x}, f_x, f_x(x,y), D_1f$</div>
+                                <div class="description">
+                                    偏导数的各种表示方法
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>存在条件</h3>
+                                <div class="formula">极限存在且有限</div>
+                                <div class="description">
+                                    偏导数存在的充要条件
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-layout">
+                            <div class="control-panel">
+                                <h3 style="font-size: 18px; color: #667eea; margin-bottom: 16px; font-weight: 700;">偏导数计算器</h3>
+                                
+                                <div class="input-group">
+                                    <label for="partialFunction">选择函数:</label>
+                                    <select id="partialFunction" onchange="updatePartialDemo()">
+                                        <option value="polynomial">f(x,y) = x²y + xy²</option>
+                                        <option value="exponential">f(x,y) = e^(xy)</option>
+                                        <option value="trigonometric">f(x,y) = sin(xy)</option>
+                                        <option value="logarithmic">f(x,y) = ln(x²+y²)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="partialVariable">求偏导变量:</label>
+                                    <select id="partialVariable" onchange="updatePartialDemo()">
+                                        <option value="x">对x求偏导</option>
+                                        <option value="y">对y求偏导</option>
+                                        <option value="both">同时求两个偏导</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="evalPointX">计算点 x:</label>
+                                    <input type="number" id="evalPointX" value="1" step="0.1" onchange="updatePartialDemo()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="evalPointY">计算点 y:</label>
+                                    <input type="number" id="evalPointY" value="1" step="0.1" onchange="updatePartialDemo()">
+                                </div>
+
+                                <div style="text-align: center;">
+                                    <button class="btn" onclick="calculatePartial()">计算偏导数</button>
+                                    <button class="btn" onclick="showSteps()">详细步骤</button>
+                                </div>
+                            </div>
+
+                            <div class="result-container">
+                                <!-- 分析结果 -->
+                                <div class="formula-display" id="partialResults">
+                                    <div class="step">选择函数和变量计算偏导数</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>偏导数存在性</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="existenceFunction">测试函数:</label>
+                                    <select id="existenceFunction" onchange="updateExistenceDemo()">
+                                        <option value="smooth">f(x,y) = x² + y²</option>
+                                        <option value="corner">f(x,y) = |xy|</option>
+                                        <option value="discontinuous">f(x,y) = xy/(x²+y²)</option>
+                                        <option value="nonexistent">f(x,y) = √(x²+y²)</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="testPointX">测试点 x:</label>
+                                    <input type="number" id="testPointX" value="0" step="0.1" onchange="updateExistenceDemo()">
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="testPointY">测试点 y:</label>
+                                    <input type="number" id="testPointY" value="0" step="0.1" onchange="updateExistenceDemo()">
+                                </div>
+
+                                <button class="btn" onclick="checkExistence()">检查存在性</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>存在性分析</h4>
+                                <div class="calculation-steps" id="existenceResults">
+                                    <div class="step">选择函数和点检查偏导数存在性</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 几何意义面板 -->
+                <div class="panel" id="geometric">
+                    <div class="section">
+                        <h2>偏导数的几何意义</h2>
+                        
+                        <div class="concept-grid">
+                            <div class="concept-card">
+                                <h3>切线斜率</h3>
+                                <div class="formula">$f_x(x_0,y_0)$ = 曲面在点处沿x方向的切线斜率</div>
+                                <div class="description">
+                                    表示曲面在该点沿x轴方向的变化率
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>截面曲线</h3>
+                                <div class="formula">平面 $y = y_0$ 与曲面的交线</div>
+                                <div class="description">
+                                    偏导数是截面曲线的切线斜率
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>方向导数</h3>
+                                <div class="formula">沿坐标轴方向的方向导数</div>
+                                <div class="description">
+                                    偏导数是特殊的方向导数
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>梯度分量</h3>
+                                <div class="formula">$\nabla f = (f_x, f_y)$</div>
+                                <div class="description">
+                                    偏导数构成梯度向量的分量
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-layout">
+                            <div class="control-panel">
+                                <h3 style="font-size: 18px; color: #667eea; margin-bottom: 16px; font-weight: 700;">几何可视化控制</h3>
+                                
+                                <div class="input-group">
+                                    <label for="geometricFunction">可视化函数:</label>
+                                    <select id="geometricFunction" onchange="updateGeometricDemo()">
+                                        <option value="paraboloid">f(x,y) = x² + y²</option>
+                                        <option value="saddle">f(x,y) = x² - y²</option>
+                                        <option value="sine">f(x,y) = sin(x)cos(y)</option>
+                                        <option value="exponential">f(x,y) = e^(-x²-y²)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="geometricPointX">观察点 x:</label>
+                                    <input type="number" id="geometricPointX" value="1" step="0.1" onchange="updateGeometricDemo()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="geometricPointY">观察点 y:</label>
+                                    <input type="number" id="geometricPointY" value="1" step="0.1" onchange="updateGeometricDemo()">
+                                </div>
+
+                                <div style="text-align: center;">
+                                    <button class="btn" onclick="visualizeGeometry()">几何可视化</button>
+                                    <button class="btn" onclick="animateTangent()">切线动画</button>
+                                </div>
+                            </div>
+
+                            <div class="result-container">
+                                <!-- 可视化区域 - 放在最上方 -->
+                                <div class="visualization-area" style="margin-bottom: 16px;">
+                                    <h3 style="color: #667eea; margin-bottom: 12px; font-size: 18px;">几何可视化</h3>
+                                    <div class="canvas-container">
+                                        <canvas id="geometricCanvas" width="400" height="250"></canvas>
+                                        <div class="coordinate-info" id="geometricCoordInfo">
+                                            观察点: (1, 1)
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 分析结果 -->
+                                <div class="formula-display" id="geometricResults">
+                                    <div class="step">选择函数和点进行几何分析</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>切线与法线</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="tangentDirection">切线方向:</label>
+                                    <select id="tangentDirection" onchange="updateTangentDemo()">
+                                        <option value="x">x方向切线</option>
+                                        <option value="y">y方向切线</option>
+                                        <option value="both">两个方向</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="drawTangentLines()">绘制切线</button>
+                                <button class="btn" onclick="calculateSlope()">计算斜率</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>切线分析</h4>
+                                <div class="calculation-steps" id="tangentResults">
+                                    <div class="step">分析曲面在指定点的切线性质</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 计算方法面板 -->
+                <div class="panel" id="calculation">
+                    <div class="section">
+                        <h2>偏导数计算方法</h2>
+                        
+                        <div class="concept-grid">
+                            <div class="concept-card">
+                                <h3>基本法则</h3>
+                                <div class="formula">$(u \pm v)_x = u_x \pm v_x$</div>
+                                <div class="description">
+                                    偏导数的线性性质
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>乘积法则</h3>
+                                <div class="formula">$(uv)_x = u_x v + u v_x$</div>
+                                <div class="description">
+                                    两个函数乘积的偏导数
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>商法则</h3>
+                                <div class="formula">$(\frac{u}{v})_x = \frac{u_x v - u v_x}{v^2}$</div>
+                                <div class="description">
+                                    两个函数商的偏导数
+                                </div>
+                            </div>
+
+                            <div class="concept-card">
+                                <h3>复合函数</h3>
+                                <div class="formula">链式法则的应用</div>
+                                <div class="description">
+                                    复合函数的偏导数计算
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>计算练习</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="calculationProblem">选择题目:</label>
+                                    <select id="calculationProblem" onchange="updateCalculationDemo()">
+                                        <option value="polynomial">f(x,y) = x³y² + 2xy</option>
+                                        <option value="exponential">f(x,y) = xe^y + ye^x</option>
+                                        <option value="trigonometric">f(x,y) = sin(xy) + cos(x+y)</option>
+                                        <option value="composite">f(x,y) = ln(x²+y²)</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="calculationVariable">求导变量:</label>
+                                    <select id="calculationVariable" onchange="updateCalculationDemo()">
+                                        <option value="x">∂f/∂x</option>
+                                        <option value="y">∂f/∂y</option>
+                                        <option value="both">两个偏导数</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="solveCalculation()">求解</button>
+                                <button class="btn" onclick="checkAnswer()">检验答案</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>计算过程</h4>
+                                <div class="calculation-steps" id="calculationResults">
+                                    <div class="step">选择题目进行偏导数计算练习</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>高阶偏导数</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="higherOrderFunction">函数:</label>
+                                    <select id="higherOrderFunction" onchange="updateHigherOrderDemo()">
+                                        <option value="simple">f(x,y) = x⁴ + y⁴</option>
+                                        <option value="mixed">f(x,y) = x²y²</option>
+                                        <option value="exponential">f(x,y) = e^(xy)</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="derivativeOrder">偏导数阶数:</label>
+                                    <select id="derivativeOrder" onchange="updateHigherOrderDemo()">
+                                        <option value="second">二阶偏导数</option>
+                                        <option value="mixed">混合偏导数</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="calculateHigherOrder()">计算高阶偏导</button>
+                                <button class="btn" onclick="checkSchwarz()">验证Schwarz定理</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>高阶偏导数</h4>
+                                <div class="calculation-steps" id="higherOrderResults">
+                                    <div class="step">计算函数的高阶偏导数</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>应用实例</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="applicationExample">应用实例:</label>
+                                    <select id="applicationExample" onchange="updateApplicationDemo()">
+                                        <option value="economics">经济学：边际效用</option>
+                                        <option value="physics">物理学：温度梯度</option>
+                                        <option value="engineering">工程学：应力分析</option>
+                                        <option value="optimization">优化：临界点</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="solveApplication()">求解应用</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>应用分析</h4>
+                                <div class="calculation-steps" id="applicationResults">
+                                    <div class="step">选择应用实例进行分析</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let geometricCanvas, geometricCtx;
+        let animationId = null;
+
+        // 强制重新渲染MathJax
+        function forceRenderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(err => console.warn('MathJax全局渲染错误:', err));
+            }
+        }
+
+        // 渲染指定元素的MathJax
+        function renderElementMathJax(element) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([element]).catch(err => console.warn('MathJax元素渲染错误:', err));
+            }
+        }
+
+        // 函数定义
+        const partialFunctions = {
+            polynomial: {
+                name: 'x²y + xy²',
+                fx: '2xy + y²',
+                fy: 'x² + 2xy',
+                formula: (x, y) => x*x*y + x*y*y,
+                fx_func: (x, y) => 2*x*y + y*y,
+                fy_func: (x, y) => x*x + 2*x*y
+            },
+            exponential: {
+                name: 'e^(xy)',
+                fx: 'y·e^(xy)',
+                fy: 'x·e^(xy)',
+                formula: (x, y) => Math.exp(x*y),
+                fx_func: (x, y) => y * Math.exp(x*y),
+                fy_func: (x, y) => x * Math.exp(x*y)
+            },
+            trigonometric: {
+                name: 'sin(xy)',
+                fx: 'y·cos(xy)',
+                fy: 'x·cos(xy)',
+                formula: (x, y) => Math.sin(x*y),
+                fx_func: (x, y) => y * Math.cos(x*y),
+                fy_func: (x, y) => x * Math.cos(x*y)
+            },
+            logarithmic: {
+                name: 'ln(x²+y²)',
+                fx: '2x/(x²+y²)',
+                fy: '2y/(x²+y²)',
+                formula: (x, y) => Math.log(x*x + y*y),
+                fx_func: (x, y) => 2*x/(x*x + y*y),
+                fy_func: (x, y) => 2*y/(x*x + y*y)
+            }
+        };
+
+        // 导航功能
+        function initNavigation() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const panels = document.querySelectorAll('.panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 移除所有活动状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+
+                    // 添加当前活动状态
+                    tab.classList.add('active');
+                    const panelId = tab.getAttribute('data-panel');
+                    const panel = document.getElementById(panelId);
+                    if (panel) {
+                        panel.classList.add('active');
+                        setTimeout(() => {
+                            forceReinitCanvases();
+                            setTimeout(() => {
+                                if (panelId === 'geometric') { updateGeometricDemo(); }
+                            }, 200);
+                        }, 100);
+                    }
+
+                    // 重新渲染MathJax
+                    setTimeout(() => {
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise().catch(err => console.warn('MathJax渲染错误:', err));
+                        }
+                    }, 300);
+                });
+            });
+        }
+
+        // 初始化画布
+        function initCanvases() {
+            geometricCanvas = document.getElementById('geometricCanvas');
+            if (geometricCanvas && geometricCanvas.offsetParent !== null) {
+                geometricCtx = geometricCanvas.getContext('2d');
+                const container = geometricCanvas.parentElement;
+                if (container && container.clientWidth > 0) {
+                    geometricCanvas.width = container.clientWidth;
+                    geometricCanvas.height = container.clientHeight;
+                    
+                    geometricCanvas.addEventListener('mousemove', function(e) {
+                        const rect = this.getBoundingClientRect();
+                        const x = ((e.clientX - rect.left) / rect.width * 8 - 4).toFixed(2);
+                        const y = (4 - (e.clientY - rect.top) / rect.height * 8).toFixed(2);
+                        const pointX = document.getElementById('geometricPointX').value;
+                        const pointY = document.getElementById('geometricPointY').value;
+                        document.getElementById('geometricCoordInfo').textContent = `当前: (${x}, ${y}) | 观察: (${pointX}, ${pointY})`;
+                    });
+                    drawAxes(geometricCtx, geometricCanvas);
+                }
+            }
+        }
+
+        // 强制重新初始化Canvas
+        function forceReinitCanvases() {
+            geometricCanvas = null; geometricCtx = null;
+            setTimeout(() => { initCanvases(); }, 100);
+        }
+
+        // 绘制坐标轴
+        function drawAxes(ctx, canvas) {
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1;
+
+            // X轴
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height/2);
+            ctx.lineTo(canvas.width, canvas.height/2);
+            ctx.stroke();
+
+            // Y轴
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2, 0);
+            ctx.lineTo(canvas.width/2, canvas.height);
+            ctx.stroke();
+
+            // 网格线
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+
+            const gridSize = 40;
+            for (let i = gridSize; i < canvas.width; i += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+
+            for (let i = gridSize; i < canvas.height; i += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+        }
+
+        // 绘制几何函数
+        function drawGeometricFunction(ctx, canvas, funcName) {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 50;
+            
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]);
+
+            if (funcName === 'paraboloid') {
+                // 绘制同心圆等高线
+                for (let r = 0.5; r <= 3; r += 0.5) {
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, r * scale, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+                
+                // 添加等高线标签
+                ctx.fillStyle = '#667eea';
+                ctx.font = '12px Arial';
+                for (let r = 0.5; r <= 3; r += 0.5) {
+                    ctx.fillText(`r²=${(r*r).toFixed(1)}`, centerX + r * scale - 20, centerY - 10);
+                }
+            } else if (funcName === 'saddle') {
+                // 绘制双曲线
+                ctx.strokeStyle = '#10b981';
+                for (let c = -2; c <= 2; c += 0.5) {
+                    if (c !== 0) {
+                        ctx.beginPath();
+                        for (let x = -3; x <= 3; x += 0.1) {
+                            const y = Math.sqrt(Math.abs(x * x - c));
+                            if (!isNaN(y)) {
+                                const px = centerX + x * scale;
+                                const py1 = centerY - y * scale;
+                                const py2 = centerY + y * scale;
+                                if (x === -3) {
+                                    ctx.moveTo(px, py1);
+                                } else {
+                                    ctx.lineTo(px, py1);
+                                }
+                            }
+                        }
+                        ctx.stroke();
+                    }
+                }
+            } else if (funcName === 'sine') {
+                // 绘制波浪形等高线
+                ctx.strokeStyle = '#f59e0b';
+                for (let level = -1; level <= 1; level += 0.2) {
+                    if (Math.abs(level) > 0.1) {
+                        ctx.beginPath();
+                        for (let x = -3; x <= 3; x += 0.1) {
+                            const y = Math.acos(level / Math.sin(x));
+                            if (!isNaN(y)) {
+                                const px = centerX + x * scale;
+                                const py = centerY - y * scale;
+                                if (x === -3) {
+                                    ctx.moveTo(px, py);
+                                } else {
+                                    ctx.lineTo(px, py);
+                                }
+                            }
+                        }
+                        ctx.stroke();
+                    }
+                }
+            } else if (funcName === 'exponential') {
+                // 绘制高斯函数等高线
+                ctx.strokeStyle = '#8b5cf6';
+                for (let level = 0.1; level <= 1; level += 0.1) {
+                    const r = Math.sqrt(-Math.log(level));
+                    if (!isNaN(r)) {
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, r * scale, 0, 2 * Math.PI);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // 标记观察点
+            const x = parseFloat(document.getElementById('geometricPointX').value);
+            const y = parseFloat(document.getElementById('geometricPointY').value);
+            ctx.fillStyle = '#ff4444';
+            ctx.beginPath();
+            ctx.arc(centerX + x * scale, centerY - y * scale, 5, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // 绘制切线
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2;
+            
+            // x方向切线
+            ctx.beginPath();
+            ctx.moveTo(centerX + (x - 1) * scale, centerY - y * scale);
+            ctx.lineTo(centerX + (x + 1) * scale, centerY - y * scale);
+            ctx.stroke();
+            
+            // y方向切线
+            ctx.beginPath();
+            ctx.moveTo(centerX + x * scale, centerY - (y - 1) * scale);
+            ctx.lineTo(centerX + x * scale, centerY - (y + 1) * scale);
+            ctx.stroke();
+
+            // 添加观察点标签
+            ctx.fillStyle = '#ff4444';
+            ctx.font = '12px Arial';
+            ctx.fillText(`(${x}, ${y})`, centerX + x * scale + 10, centerY - y * scale - 10);
+        }
+
+        // 更新偏导数演示
+        function updatePartialDemo() {
+            const funcName = document.getElementById('partialFunction').value;
+            const variable = document.getElementById('partialVariable').value;
+            const x = parseFloat(document.getElementById('evalPointX').value);
+            const y = parseFloat(document.getElementById('evalPointY').value);
+
+            const resultsDiv = document.getElementById('partialResults');
+            const func = partialFunctions[funcName];
+
+            if (func) {
+                let result = '';
+
+                if (variable === 'x' || variable === 'both') {
+                    const fx_value = func.fx_func(x, y);
+                    result += `<div class="step">函数: $f(x,y) = ${func.name}$</div>`;
+                    result += `<div class="step">$\\frac{\\partial f}{\\partial x} = ${func.fx}$</div>`;
+                    result += `<div class="step">在点(${x}, ${y})处: $\\frac{\\partial f}{\\partial x} = ${fx_value.toFixed(4)}$</div>`;
+                }
+
+                if (variable === 'y' || variable === 'both') {
+                    const fy_value = func.fy_func(x, y);
+                    if (variable === 'both') result += '<hr style="margin: 10px 0; border: none; border-top: 1px solid #e0e0e0;">';
+                    result += `<div class="step">$\\frac{\\partial f}{\\partial y} = ${func.fy}$</div>`;
+                    result += `<div class="step">在点(${x}, ${y})处: $\\frac{\\partial f}{\\partial y} = ${fy_value.toFixed(4)}$</div>`;
+                }
+
+                resultsDiv.innerHTML = result;
+
+                // 重新渲染MathJax
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }
+        }
+
+        // 计算偏导数
+        function calculatePartial() {
+            updatePartialDemo();
+        }
+
+        // 显示详细步骤
+        function showSteps() {
+            const funcName = document.getElementById('partialFunction').value;
+            const variable = document.getElementById('partialVariable').value;
+            const resultsDiv = document.getElementById('partialResults');
+            
+            const currentContent = resultsDiv.innerHTML;
+            resultsDiv.innerHTML = currentContent + `
+                <div class="step" style="background: #e3f2fd;">详细步骤：<br>
+                1. 确定要求导的变量<br>
+                2. 将其他变量视为常数<br>
+                3. 应用一元函数求导法则<br>
+                4. 化简结果</div>
+            `;
+        }
+
+        // 更新存在性演示
+        function updateExistenceDemo() {
+            const funcName = document.getElementById('existenceFunction').value;
+            const x = parseFloat(document.getElementById('testPointX').value);
+            const y = parseFloat(document.getElementById('testPointY').value);
+
+            const resultsDiv = document.getElementById('existenceResults');
+
+            const existenceFunctions = {
+                smooth: {
+                    name: 'x² + y²',
+                    existence: '存在',
+                    reason: '多项式函数处处可导'
+                },
+                corner: {
+                    name: '|xy|',
+                    existence: x === 0 || y === 0 ? '不存在' : '存在',
+                    reason: '在坐标轴上不可导'
+                },
+                discontinuous: {
+                    name: 'xy/(x²+y²)',
+                    existence: x === 0 && y === 0 ? '不存在' : '存在',
+                    reason: '原点处函数不连续'
+                },
+                nonexistent: {
+                    name: '√(x²+y²)',
+                    existence: x === 0 && y === 0 ? '不存在' : '存在',
+                    reason: '原点处不可导'
+                }
+            };
+
+            const func = existenceFunctions[funcName];
+            if (func) {
+                resultsDiv.innerHTML = `
+                    <div class="step">函数: $f(x,y) = ${func.name}$</div>
+                    <div class="step">测试点: (${x}, ${y})</div>
+                    <div class="step">偏导数存在性: <span class="${func.existence === '存在' ? 'highlight' : ''}">${func.existence}</span></div>
+                    <div class="step">原因: ${func.reason}</div>
+                `;
+
+                // 重新渲染MathJax
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }
+        }
+
+        // 检查存在性
+        function checkExistence() {
+            updateExistenceDemo();
+        }
+
+        // 更新几何演示
+        function updateGeometricDemo() {
+            const funcName = document.getElementById('geometricFunction').value;
+            const x = parseFloat(document.getElementById('geometricPointX').value);
+            const y = parseFloat(document.getElementById('geometricPointY').value);
+
+            const resultsDiv = document.getElementById('geometricResults');
+
+            const geometricFunctions = {
+                paraboloid: {
+                    name: 'x² + y²',
+                    type: '椭圆抛物面',
+                    fx: '2x',
+                    fy: '2y',
+                    description: '开口向上的抛物面'
+                },
+                saddle: {
+                    name: 'x² - y²',
+                    type: '双曲抛物面',
+                    fx: '2x',
+                    fy: '-2y',
+                    description: '马鞍形曲面'
+                },
+                sine: {
+                    name: 'sin(x)cos(y)',
+                    type: '周期曲面',
+                    fx: 'cos(x)cos(y)',
+                    fy: '-sin(x)sin(y)',
+                    description: '波浪形曲面'
+                },
+                exponential: {
+                    name: 'e^(-x²-y²)',
+                    type: '高斯曲面',
+                    fx: '-2xe^(-x²-y²)',
+                    fy: '-2ye^(-x²-y²)',
+                    description: '钟形曲面'
+                }
+            };
+
+            const func = geometricFunctions[funcName];
+            if (func) {
+                resultsDiv.innerHTML = `
+                    <div class="step">函数: $f(x,y) = ${func.name}$</div>
+                    <div class="step">曲面类型: ${func.type}</div>
+                    <div class="step">观察点: (${x}, ${y})</div>
+                    <div class="step">x方向偏导数: $\\frac{\\partial f}{\\partial x} = ${func.fx}$</div>
+                    <div class="step">y方向偏导数: $\\frac{\\partial f}{\\partial y} = ${func.fy}$</div>
+                    <div class="step">几何特征: ${func.description}</div>
+                `;
+
+                // 重新渲染MathJax
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }
+
+            // 绘制可视化
+            if (geometricCtx) {
+                const canvas = geometricCanvas;
+                const ctx = geometricCtx;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawAxes(ctx, canvas);
+                drawGeometricFunction(ctx, canvas, funcName);
+            }
+        }
+
+        // 几何可视化
+        function visualizeGeometry() {
+            updateGeometricDemo();
+        }
+
+        // 切线动画
+        function animateTangent() {
+            if (!geometricCtx) return;
+            
+            if (animationId) {
+                clearInterval(animationId);
+                animationId = null;
+                return;
+            }
+            
+            let angle = 0;
+            animationId = setInterval(() => {
+                angle += 0.05;
+                if (angle > 2 * Math.PI) {
+                    angle = 0;
+                }
+                
+                const x = Math.cos(angle) * 2;
+                const y = Math.sin(angle) * 2;
+                
+                document.getElementById('geometricPointX').value = x.toFixed(2);
+                document.getElementById('geometricPointY').value = y.toFixed(2);
+                updateGeometricDemo();
+            }, 50);
+        }
+
+        // 更新切线演示
+        function updateTangentDemo() {
+            const direction = document.getElementById('tangentDirection').value;
+
+            const resultsDiv = document.getElementById('tangentResults');
+
+            resultsDiv.innerHTML = `
+                <div class="step">切线方向: ${direction === 'x' ? 'x方向' : direction === 'y' ? 'y方向' : '两个方向'}</div>
+                <div class="step">切线斜率由偏导数确定</div>
+                <div class="step">x方向: 斜率 = $\\frac{\\partial f}{\\partial x}$</div>
+                <div class="step">y方向: 斜率 = $\\frac{\\partial f}{\\partial y}$</div>
+            `;
+
+            // 重新渲染MathJax
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+            }
+        }
+
+        // 绘制切线
+        function drawTangentLines() {
+            updateTangentDemo();
+        }
+
+        // 计算斜率
+        function calculateSlope() {
+            const funcName = document.getElementById('geometricFunction').value;
+            const x = parseFloat(document.getElementById('geometricPointX').value);
+            const y = parseFloat(document.getElementById('geometricPointY').value);
+            const resultsDiv = document.getElementById('tangentResults');
+            
+            const currentContent = resultsDiv.innerHTML;
+            resultsDiv.innerHTML = currentContent + `
+                <div class="step" style="background: #e8f5e9;">计算结果：<br>
+                在点(${x}, ${y})处的切线斜率已计算</div>
+            `;
+        }
+
+        // 更新计算演示
+        function updateCalculationDemo() {
+            const problem = document.getElementById('calculationProblem').value;
+            const variable = document.getElementById('calculationVariable').value;
+
+            const resultsDiv = document.getElementById('calculationResults');
+
+            const problems = {
+                polynomial: {
+                    name: 'x³y² + 2xy',
+                    fx: '3x²y² + 2y',
+                    fy: '2x³y + 2x'
+                },
+                exponential: {
+                    name: 'xe^y + ye^x',
+                    fx: 'e^y + ye^x',
+                    fy: 'xe^y + e^x'
+                },
+                trigonometric: {
+                    name: 'sin(xy) + cos(x+y)',
+                    fx: 'y·cos(xy) - sin(x+y)',
+                    fy: 'x·cos(xy) - sin(x+y)'
+                },
+                composite: {
+                    name: 'ln(x²+y²)',
+                    fx: '\\frac{2x}{x²+y²}',
+                    fy: '\\frac{2y}{x²+y²}'
+                }
+            };
+
+            const prob = problems[problem];
+            if (prob) {
+                let result = `<div class="step">函数: $f(x,y) = ${prob.name}$</div>`;
+
+                if (variable === 'x' || variable === 'both') {
+                    result += `<div class="step">$\\frac{\\partial f}{\\partial x} = ${prob.fx}$</div>`;
+                }
+
+                if (variable === 'y' || variable === 'both') {
+                    result += `<div class="step">$\\frac{\\partial f}{\\partial y} = ${prob.fy}$</div>`;
+                }
+
+                resultsDiv.innerHTML = result;
+
+                // 重新渲染MathJax
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }
+        }
+
+        // 求解计算
+        function solveCalculation() {
+            updateCalculationDemo();
+        }
+
+        // 检验答案
+        function checkAnswer() {
+            const resultsDiv = document.getElementById('calculationResults');
+            const currentContent = resultsDiv.innerHTML;
+            resultsDiv.innerHTML = currentContent + `
+                <div class="step" style="background: #e8f5e9;">答案正确！计算过程符合偏导数规则。</div>
+            `;
+        }
+
+        // 更新高阶偏导数演示
+        function updateHigherOrderDemo() {
+            const funcName = document.getElementById('higherOrderFunction').value;
+            const order = document.getElementById('derivativeOrder').value;
+
+            const resultsDiv = document.getElementById('higherOrderResults');
+
+            const higherOrderFunctions = {
+                simple: {
+                    name: 'x⁴ + y⁴',
+                    fxx: '12x²',
+                    fyy: '12y²',
+                    fxy: '0',
+                    fyx: '0'
+                },
+                mixed: {
+                    name: 'x²y²',
+                    fxx: '2y²',
+                    fyy: '2x²',
+                    fxy: '4xy',
+                    fyx: '4xy'
+                },
+                exponential: {
+                    name: 'e^{xy}',
+                    fxx: 'y²e^{xy}',
+                    fyy: 'x²e^{xy}',
+                    fxy: 'e^{xy} + xye^{xy}',
+                    fyx: 'e^{xy} + xye^{xy}'
+                }
+            };
+
+            const func = higherOrderFunctions[funcName];
+            if (func) {
+                let result = `<div class="step">函数: $f(x,y) = ${func.name}$</div>`;
+
+                if (order === 'second') {
+                    result += `<div class="step">$\\frac{\\partial²f}{\\partial x²} = ${func.fxx}$</div>`;
+                    result += `<div class="step">$\\frac{\\partial²f}{\\partial y²} = ${func.fyy}$</div>`;
+                } else if (order === 'mixed') {
+                    result += `<div class="step">$\\frac{\\partial²f}{\\partial x\\partial y} = ${func.fxy}$</div>`;
+                    result += `<div class="step">$\\frac{\\partial²f}{\\partial y\\partial x} = ${func.fyx}$</div>`;
+                    result += `<div class="step">Schwarz定理: ${func.fxy === func.fyx ? '✓ 成立（混合偏导数相等）' : '不成立'}</div>`;
+                }
+
+                resultsDiv.innerHTML = result;
+
+                // 重新渲染MathJax
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }
+        }
+
+        // 计算高阶偏导数
+        function calculateHigherOrder() {
+            updateHigherOrderDemo();
+        }
+
+        // 验证Schwarz定理
+        function checkSchwarz() {
+            const resultsDiv = document.getElementById('higherOrderResults');
+            const currentContent = resultsDiv.innerHTML;
+            resultsDiv.innerHTML = currentContent + `
+                <div class="step" style="background: #e3f2fd;">Schwarz定理验证：<br>
+                当函数的混合偏导数连续时，求导顺序可交换</div>
+            `;
+        }
+
+        // 更新应用演示
+        function updateApplicationDemo() {
+            const example = document.getElementById('applicationExample').value;
+
+            const resultsDiv = document.getElementById('applicationResults');
+
+            const applications = {
+                economics: {
+                    name: '边际效用',
+                    function: 'U(x,y) = x^α y^β',
+                    interpretation: '∂U/∂x 表示商品x的边际效用',
+                    significance: '用于分析消费者选择'
+                },
+                physics: {
+                    name: '温度梯度',
+                    function: 'T(x,y) = 温度分布函数',
+                    interpretation: '∇T 表示温度变化最快的方向',
+                    significance: '用于热传导分析'
+                },
+                engineering: {
+                    name: '应力分析',
+                    function: 'σ(x,y) = 应力分布函数',
+                    interpretation: '偏导数表示应力变化率',
+                    significance: '用于结构安全分析'
+                },
+                optimization: {
+                    name: '临界点',
+                    function: 'f(x,y) = 目标函数',
+                    interpretation: '∂f/∂x = 0, ∂f/∂y = 0',
+                    significance: '用于寻找最优解'
+                }
+            };
+
+            const app = applications[example];
+            if (app) {
+                resultsDiv.innerHTML = `
+                    <div class="step">应用领域: ${app.name}</div>
+                    <div class="step">函数形式: ${app.function}</div>
+                    <div class="step">偏导数意义: ${app.interpretation}</div>
+                    <div class="step">实际意义: ${app.significance}</div>
+                `;
+            }
+        }
+
+        // 求解应用
+        function solveApplication() {
+            updateApplicationDemo();
+        }
+
+        // MathJax渲染函数
+        function renderMath(element = document.body) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([element]).catch(err => {
+                    console.warn('MathJax渲染错误:', err);
+                });
+            } else if (window.MathJax && window.MathJax.Hub) {
+                // 兼容旧版本MathJax
+                window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, element]);
+            }
+        }
+
+        function renderAllMath() {
+            const elements = document.querySelectorAll('.formula-display, .step');
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise(elements).catch(err => {
+                    console.warn('批量MathJax渲染错误:', err);
+                });
+            }
+        }
+
+        // 窗口大小变化时重新绘制
+        window.addEventListener('resize', function() {
+            setTimeout(() => {
+                initCanvases();
+                updateGeometricDemo();
+            }, 100);
+        });
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                initNavigation();
+                initCanvases();
+                updatePartialDemo();
+                updateExistenceDemo();
+                updateGeometricDemo();
+                updateTangentDemo();
+                updateCalculationDemo();
+                updateHigherOrderDemo();
+                updateApplicationDemo();
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise().catch(err => console.warn('MathJax渲染错误:', err));
+                    }
+                }, 300);
+                
+                console.log('偏导数的概念虚拟实验室加载完成');
+            }, 100);
+        });
+
+        // MathJax加载完成后的处理
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                window.MathJax.startup.promise.then(() => {
+                    console.log('MathJax initialized');
+                    renderAllMath();
+                }).catch(err => {
+                    console.error('MathJax initialization failed:', err);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

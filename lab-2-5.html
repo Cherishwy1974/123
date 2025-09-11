@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数列极限趣味实验 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'base']}
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    
+    <!-- 隐藏滚动条样式 -->
+    <style>
+        /* 隐藏滚动条但保持滚动功能 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+    </style>
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 22px;
+            --h2-size: 20px;
+            --h3-size: 18px;
+            --btn-size: 16px;
+            --formula-size: 20px;
+            --text-size: 16px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            /* 灰度色阶 */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* 边框和阴影 */
+            --border: var(--gray-200);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* 过渡动画 */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif SC', 'Noto Serif SC', serif;
+            min-height: auto;
+            overflow: visible;
+            color: var(--gray-800);
+            font-size: var(--text-size);
+            line-height: 1.6;
+        }
+
+        /* 全屏容器布局 */
+        .app-container { width:100vw; min-height: 100vh; display: flex; flex-direction: column; background: var(--light); }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* 主内容区域 - 使用Grid布局 */
+        .main-content {
+            display: flex; min-height: calc(100vh - 120px); width:100vw;
+        }
+
+        /* 侧边导航栏 */
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 60%;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-tab.active::before {
+            
+            background: white;
+        }
+
+        .nav-tab-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* 内容面板区域 */
+        .content-area {
+            flex: 1;
+            overflow: visible;
+            position: relative;
+        }
+
+        .panel {
+            display: none; width:100vw;  padding: 0;}
+
+        .panel.active {
+            display: block;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        /* 游戏面板 */
+        .game-section {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+        }
+
+        .game-left {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-right {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-controls, .game-results {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .input-group input, .input-group select {
+            width:100vw;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+            color: var(--gray-800);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .formula-display {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--formula-size);
+        }
+
+        .result-display {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .operation-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: var(--btn-size);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, var(--success), #059669);
+        }
+
+        .btn.warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+        }
+
+        /* 游戏区域 */
+        .game-area {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 16px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .game-question {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .game-options {
+            display: block;
+            
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .game-option {
+            padding: 16px;
+            background: var(--gray-50);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+
+        .game-option:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .game-option.correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .game-option.incorrect {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .score-display {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        /* 实验面板 */
+        .experiment-container {
+            
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-container {
+            flex: 1;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            overflow: visible;
+            background: white;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        #experimentCanvas {
+            width:100vw;
+            
+            display: block;
+        }
+
+        .chart-info {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* 挑战面板 */
+        .challenge-grid {
+            display: block;
+            
+            gap: 20px;
+            height: fit-content;
+        }
+
+        .challenge-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-4px);
+            box-shadow: none;
+        }
+
+        .challenge-card h4 {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .challenge-card .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .difficulty.easy {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .difficulty.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty.hard {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .challenge-card .description {
+            color: var(--gray-600);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .challenge-card .formula {
+            background: var(--gray-50);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 12px 0;
+            font-size: var(--formula-size);
+        }
+
+        /* MathJax 优化 */
+        mjx-container {
+            font-size: var(--formula-size) !important;
+        }
+
+        .formula-block {
+            display: block;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .formula-inline {
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-content {
+                
+                
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 16px 0;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .nav-tab {
+                white-space: nowrap;
+                min-width: 120px;
+            }
+
+            .game-section {
+                
+                gap: 16px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .game-options {
+                
+            }
+
+            .challenge-grid {
+                
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 4px;
+                border-radius: 12px;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    
+        /* 页面截断修复 */
+        html, body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: auto !important;
+            min-height: 100vh !important;
+        }
+        
+        .app-container {
+            min-height: 100vh !important;
+            height: auto !important;
+        }
+        
+        .main-content {
+            display: flex !important;
+            flex-direction: row !important;
+            min-height: auto !important;
+            height: auto !important;
+            align-items: stretch !important;
+        }
+        
+        .sidebar {
+            width: 200px !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            height: auto !important;
+        }
+        
+        .content-area {
+            flex: 1 !important;
+            flex-grow: 1 !important;
+            min-width: 0 !important;
+            position: relative !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        
+        .panel {
+            position: static !important;
+            display: none !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 20px !important;
+            overflow: visible !important;
+        }
+        
+        .panel.active {
+            display: block !important;
+        }</style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="header-content">
+                <h1>趣味实验</h1>
+                <span class="header-subtitle">数列极限的互动学习</span>
+        </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 侧边导航栏 -->
+            <div class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="game">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        知识竞赛
+                    </button>
+                    <button class="nav-tab" data-panel="challenge">
+                        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                        </svg>
+                        挑战题库
+                    </button>
+                    </div>
+                </div>
+
+            <!-- 内容面板区域 -->
+            <div class="content-area">
+                <!-- 知识竞赛面板 -->
+                <div class="panel active" id="game">
+                    <div class="game-section">
+                        <!-- 左侧游戏控制区 -->
+                        <div class="game-left">
+                            <div class="game-controls">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                    知识竞赛
+                                </h3>
+
+                                <div class="input-group">
+                                    <label for="gameMode">游戏模式:</label>
+                                    <select id="gameMode">
+                                        <option value="basic">基础模式</option>
+                                        <option value="advanced">进阶模式</option>
+                                        <option value="expert">专家模式</option>
+                                        <option value="mixed">混合模式</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="questionCount">题目数量:</label>
+                                    <input type="number" id="questionCount" value="10" min="5" max="50" step="5">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="timeLimit">时间限制 (秒):</label>
+                                    <input type="number" id="timeLimit" value="30" min="10" max="120" step="10">
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn success" onclick="startGame()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        开始游戏
+                                    </button>
+                                    <button class="btn warning" onclick="pauseGame()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                        </svg>
+                                        暂停
+                                    </button>
+                                    <button class="btn danger" onclick="resetGame()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                        </svg>
+                                        重置
+                                    </button>
+                                </div>
+
+                                <div class="score-display" id="scoreDisplay">
+                                    得分: 0 / 0
+                                </div>
+
+                                <div class="result-display" id="timeDisplay">
+                                    剩余时间: --
+                                </div>
+                            </div>
+
+                            <div class="game-results">
+                                <div class="game-area">
+                                    <div class="game-question" id="gameQuestion">
+                                        点击"开始游戏"开始挑战！
+                                    </div>
+
+                                    <div class="formula-display" id="questionFormula">
+                                        准备好了吗？
+                                    </div>
+
+                                    <div class="game-options" id="gameOptions">
+                                        <div class="game-option" onclick="selectOption(0)">选项 A</div>
+                                        <div class="game-option" onclick="selectOption(1)">选项 B</div>
+                                        <div class="game-option" onclick="selectOption(2)">选项 C</div>
+                                        <div class="game-option" onclick="selectOption(3)">选项 D</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧实验可视化区 -->
+                        <div class="game-right">
+                            <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid var(--border); flex: 1;">
+                                <h3 style="color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                    互动实验
+                                </h3>
+
+                                <div class="canvas-container">
+                                    <canvas id="experimentCanvas"></canvas>
+                                </div>
+
+                                <div class="chart-info">
+                                    <p style="margin-bottom: 8px; color: var(--gray-600);">
+                                        <span style="color: var(--primary); font-weight: bold;">●</span> 数列项
+                                        <span style="margin-left: 20px; color: var(--danger); font-weight: bold;">━</span> 极限线
+                                        <span style="margin-left: 20px; color: var(--success); font-weight: bold;">▲</span> 收敛区域
+                                    </p>
+                                    <p id="experimentInfo">选择一个实验开始探索数列极限的奥秘...</p>
+                                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="runExperiment('convergence')">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                        </svg>
+                                        收敛实验
+                                    </button>
+                                    <button class="btn" onclick="runExperiment('oscillation')">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        振荡实验
+                                    </button>
+                                    <button class="btn" onclick="runExperiment('divergence')">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
+                                        </svg>
+                                        发散实验
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                                <div class="operation-buttons">
+                                    <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                        </svg>
+                                        下一题
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+                <!-- 互动实验面板 -->
+
+                <!-- 挑战题库面板 -->
+                <div class="panel" id="challenge">
+
+                    <div class="challenge-grid">
+                        <div class="challenge-card">
+                            <h4>基础收敛判断</h4>
+                            <span class="difficulty easy">简单</span>
+                            <div class="description">
+                                判断基本数列的收敛性，掌握极限的基本概念和计算方法。
+            </div>
+                            <div class="formula">$\lim_{n \to \infty} \frac{1}{n^2} = ?$</div>
+                            <button class="btn" onclick="startChallenge('basic')">开始挑战</button>
+        </div>
+
+                        <div class="challenge-card">
+                            <h4>有理函数极限</h4>
+                            <span class="difficulty medium">中等</span>
+                            <div class="description">
+                                计算有理函数形式的数列极限，运用极限的运算法则。
+                            </div>
+                            <div class="formula">$\lim_{n \to \infty} \frac{3n^2 + 2n - 1}{2n^2 - n + 5} = ?$</div>
+                            <button class="btn" onclick="startChallenge('rational')">开始挑战</button>
+            </div>
+
+                        <div class="challenge-card">
+                            <h4>振荡数列分析</h4>
+                            <span class="difficulty medium">中等</span>
+                    <div class="description">
+                                分析带有振荡因子的数列，理解绝对收敛和条件收敛的区别。
+                    </div>
+                            <div class="formula">$\lim_{n \to \infty} \frac{(-1)^n \sin n}{n} = ?$</div>
+                            <button class="btn" onclick="startChallenge('oscillation')">开始挑战</button>
+                </div>
+
+                        <div class="challenge-card">
+                            <h4>重要极限应用</h4>
+                            <span class="difficulty hard">困难</span>
+                    <div class="description">
+                                运用重要极限公式解决复杂的数列极限问题。
+                    </div>
+                            <div class="formula">$\lim_{n \to \infty} \left(1 + \frac{2}{n}\right)^n = ?$</div>
+                            <button class="btn" onclick="startChallenge('important')">开始挑战</button>
+                </div>
+
+                        <div class="challenge-card">
+                            <h4>无穷级数收敛</h4>
+                            <span class="difficulty hard">困难</span>
+                    <div class="description">
+                                判断无穷级数的收敛性，运用各种收敛判别法。
+                    </div>
+                            <div class="formula">$\sum_{n=1}^{\infty} \frac{1}{n^2} = ?$</div>
+                            <button class="btn" onclick="startChallenge('series')">开始挑战</button>
+                </div>
+
+                        <div class="challenge-card">
+                            <h4>综合应用题</h4>
+                            <span class="difficulty hard">困难</span>
+                    <div class="description">
+                                综合运用数列极限的各种方法，解决实际应用问题。
+                    </div>
+                            <div class="formula">复合函数极限综合题</div>
+                            <button class="btn" onclick="startChallenge('comprehensive')">开始挑战</button>
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gameState = {
+            isPlaying: false,
+            currentQuestion: 0,
+            score: 0,
+            totalQuestions: 0,
+            timeLeft: 0,
+            timer: null,
+            questions: []
+        };
+
+        // 题库
+        const questionBank = {
+            basic: [
+                {
+                    question: "计算极限",
+                    formula: "$\\lim_{n \\to \\infty} \\frac{1}{n} = ?$",
+                    options: ["0", "1", "∞", "不存在"],
+                    correct: 0
+                },
+                {
+                    question: "判断数列收敛性",
+                    formula: "$\\lim_{n \\to \\infty} \\frac{1}{n^2} = ?$",
+                    options: ["0", "1", "∞", "不存在"],
+                    correct: 0
+                }
+            ],
+            advanced: [
+                {
+                    question: "有理函数极限",
+                    formula: "$\\lim_{n \\to \\infty} \\frac{n+1}{2n-1} = ?$",
+                    options: ["0", "1/2", "1", "∞"],
+                    correct: 1
+                },
+                {
+                    question: "重要极限",
+                    formula: "$\\lim_{n \\to \\infty} \\left(1+\\frac{1}{n}\\right)^n = ?$",
+                    options: ["1", "e", "∞", "不存在"],
+                    correct: 1
+                }
+            ],
+            expert: [
+                {
+                    question: "复杂极限计算",
+                    formula: "$\\lim_{n \\to \\infty} \\frac{\\sqrt{n^2+1}-n}{\\sqrt{n^2+1}+n} = ?$",
+                    options: ["0", "1", "1/2", "不存在"],
+                    correct: 0
+                }
+            ]
+        };
+
+        // 标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                // 添加活动状态
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                document.getElementById(panelId).classList.add('active');
+
+            });
+        });
+
+        // 开始游戏
+        function startGame() {
+            const mode = document.getElementById('gameMode').value;
+            const count = parseInt(document.getElementById('questionCount').value);
+            const timeLimit = parseInt(document.getElementById('timeLimit').value);
+
+            gameState.isPlaying = true;
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.totalQuestions = count;
+            gameState.timeLeft = timeLimit;
+            
+            // 生成题目
+            generateQuestions(mode, count);
+            
+            // 显示第一题
+            showQuestion();
+            
+            // 开始计时
+            startTimer();
+        }
+
+        // 生成题目
+        function generateQuestions(mode, count) {
+            let questions = [];
+            
+            if (mode === 'mixed') {
+                // 混合模式：从所有难度中随机选择
+                const allQuestions = [...questionBank.basic, ...questionBank.advanced, ...questionBank.expert];
+                for (let i = 0; i < count; i++) {
+                    const randomIndex = Math.floor(Math.random() * allQuestions.length);
+                    questions.push(allQuestions[randomIndex]);
+                }
+            } else {
+                const pool = questionBank[mode] || questionBank.basic;
+                for (let i = 0; i < count; i++) {
+                    const randomIndex = Math.floor(Math.random() * pool.length);
+                    questions.push(pool[randomIndex]);
+                }
+            }
+            
+            gameState.questions = questions;
+        }
+
+        // 显示题目
+        function showQuestion() {
+            if (gameState.currentQuestion >= gameState.questions.length) {
+                endGame();
+                return;
+            }
+
+            const question = gameState.questions[gameState.currentQuestion];
+            
+            document.getElementById('gameQuestion').textContent = 
+                `第 ${gameState.currentQuestion + 1} 题: ${question.question}`;
+            
+            document.getElementById('questionFormula').innerHTML = question.formula;
+            
+            const options = document.querySelectorAll('.game-option');
+            options.forEach((option, index) => {
+                option.textContent = question.options[index];
+                option.className = 'game-option';
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.getElementById('nextBtn').style.display = 'none';
+            
+            // 渲染MathJax
+            setTimeout(() => {
+                renderMath([document.getElementById('questionFormula')]);
+            }, 50);
+        }
+
+        // 选择选项
+        function selectOption(index) {
+            const question = gameState.questions[gameState.currentQuestion];
+            const options = document.querySelectorAll('.game-option');
+            
+            // 禁用所有选项
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // 标记正确和错误答案
+            if (index === question.correct) {
+                options[index].classList.add('correct');
+                gameState.score++;
+            } else {
+                options[index].classList.add('incorrect');
+                options[question.correct].classList.add('correct');
+            }
+            
+            // 更新得分显示
+            updateScoreDisplay();
+            
+            // 显示下一题按钮
+            document.getElementById('nextBtn').style.display = 'inline-flex';
+        }
+
+        // 下一题
+        function nextQuestion() {
+            gameState.currentQuestion++;
+            showQuestion();
+        }
+
+        // 更新得分显示
+        function updateScoreDisplay() {
+            document.getElementById('scoreDisplay').textContent = 
+                `得分: ${gameState.score} / ${gameState.currentQuestion + 1}`;
+        }
+
+        // 开始计时
+        function startTimer() {
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                document.getElementById('timeDisplay').textContent = 
+                    `剩余时间: ${gameState.timeLeft}秒`;
+                
+                if (gameState.timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // 暂停游戏
+        function pauseGame() {
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+            gameState.isPlaying = false;
+        }
+
+        // 重置游戏
+        function resetGame() {
+            pauseGame();
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.totalQuestions = 0;
+            
+            document.getElementById('gameQuestion').textContent = '点击"开始游戏"开始挑战！';
+            document.getElementById('questionFormula').textContent = '准备好了吗？';
+            document.getElementById('scoreDisplay').textContent = '得分: 0 / 0';
+            document.getElementById('timeDisplay').textContent = '剩余时间: --';
+            
+            const options = document.querySelectorAll('.game-option');
+            options.forEach((option, index) => {
+                option.textContent = `选项 ${String.fromCharCode(65 + index)}`;
+                option.className = 'game-option';
+                option.style.pointerEvents = 'auto';
+            });
+        }
+
+        // 结束游戏
+        function endGame() {
+            pauseGame();
+            
+            const percentage = Math.round((gameState.score / gameState.totalQuestions) * 100);
+            let message = '';
+            
+            if (percentage >= 90) {
+                message = '优秀！你对数列极限掌握得很好！';
+            } else if (percentage >= 70) {
+                message = '良好！继续加油，你会更棒的！';
+            } else if (percentage >= 60) {
+                message = '及格！还需要多加练习哦！';
+            } else {
+                message = '需要努力！建议重新学习相关知识点。';
+            }
+            
+            document.getElementById('gameQuestion').textContent = 
+                `游戏结束！最终得分: ${gameState.score}/${gameState.totalQuestions} (${percentage}%)`;
+            document.getElementById('questionFormula').textContent = message;
+        }
+
+        // 初始化实验画布
+        function initExperimentCanvas() {
+            const canvas = document.getElementById('experimentCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            // 绘制欢迎界面
+            ctx.fillStyle = '#f3f4f6';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#4f46e5';
+            ctx.font = '24px Source Han Serif SC';
+            ctx.textAlign = 'center';
+            ctx.fillText('数列极限互动实验', canvas.width / 2, canvas.height / 2 - 20);
+            
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '16px Source Han Serif SC';
+            ctx.fillText('选择一个实验按钮开始探索', canvas.width / 2, canvas.height / 2 + 20);
+        }
+
+        // 运行实验
+        function runExperiment(type) {
+            const canvas = document.getElementById('experimentCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            switch (type) {
+                case 'convergence':
+                    runConvergenceExperiment(ctx, canvas.width, canvas.height);
+                    break;
+                case 'oscillation':
+                    runOscillationExperiment(ctx, canvas.width, canvas.height);
+                    break;
+                case 'divergence':
+                    runDivergenceExperiment(ctx, canvas.width, canvas.height);
+                    break;
+                case 'comparison':
+                    runComparisonExperiment(ctx, canvas.width, canvas.height);
+                    break;
+            }
+        }
+
+        // 收敛实验
+        function runConvergenceExperiment(ctx, width, height) {
+            const padding = 50;
+
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+
+            // 绘制 1/n 数列
+            ctx.strokeStyle = '#4f46e5';
+            ctx.fillStyle = '#4f46e5';
+            ctx.lineWidth = 2;
+            
+            for (let n = 1; n <= 50; n++) {
+                const x = padding + ((n - 1) / 49) * (width - 2 * padding);
+                const y = height - padding - (1/n) * (height - 2 * padding) * 0.8;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // 绘制极限线 y = 0
+            ctx.strokeStyle = '#ef4444';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            document.getElementById('experimentInfo').innerHTML = 
+                '收敛实验：观察数列 $a_n = \\frac{1}{n}$ 如何收敛到 0';
+            
+            setTimeout(() => {
+                renderMath([document.getElementById('experimentInfo')]);
+            }, 50);
+        }
+
+        // 振荡实验
+        function runOscillationExperiment(ctx, width, height) {
+            const padding = 50;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.moveTo(padding, height / 2);
+            ctx.lineTo(width - padding, height / 2);
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+            
+            // 绘制 (-1)^n/n 数列
+            ctx.fillStyle = '#7c3aed';
+            
+            for (let n = 1; n <= 50; n++) {
+                const x = padding + ((n - 1) / 49) * (width - 2 * padding);
+                const value = Math.pow(-1, n) / n;
+                const y = height / 2 - value * (height - 2 * padding) * 0.3;
+                
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                    ctx.fill();
+            }
+            
+            // 绘制极限线 y = 0
+            ctx.strokeStyle = '#ef4444';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(padding, height / 2);
+            ctx.lineTo(width - padding, height / 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            document.getElementById('experimentInfo').innerHTML = 
+                '振荡实验：观察数列 $a_n = \\frac{(-1)^n}{n}$ 的振荡收敛';
+            
+            setTimeout(() => {
+                renderMath([document.getElementById('experimentInfo')]);
+            }, 50);
+        }
+
+        // 发散实验
+        function runDivergenceExperiment(ctx, width, height) {
+            const padding = 50;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+            
+            // 绘制 n 数列（发散）
+            ctx.strokeStyle = '#ef4444';
+            ctx.fillStyle = '#ef4444';
+            ctx.lineWidth = 2;
+            
+            for (let n = 1; n <= 20; n++) {
+                const x = padding + ((n - 1) / 19) * (width - 2 * padding);
+                const y = height - padding - (n / 20) * (height - 2 * padding) * 0.8;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            document.getElementById('experimentInfo').innerHTML = 
+                '发散实验：观察数列 $a_n = n$ 如何发散到无穷大';
+            
+            setTimeout(() => {
+                renderMath([document.getElementById('experimentInfo')]);
+            }, 50);
+        }
+
+        // 对比实验
+        function runComparisonExperiment(ctx, width, height) {
+            const padding = 50;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+            
+            // 绘制 1/n 数列
+            ctx.fillStyle = '#4f46e5';
+            for (let n = 1; n <= 30; n++) {
+                const x = padding + ((n - 1) / 29) * (width - 2 * padding);
+                const y = height - padding - (1/n) * (height - 2 * padding) * 0.8;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // 绘制 1/n^2 数列
+            ctx.fillStyle = '#10b981';
+            for (let n = 1; n <= 30; n++) {
+                const x = padding + ((n - 1) / 29) * (width - 2 * padding);
+                const y = height - padding - (1/(n*n)) * (height - 2 * padding) * 0.8;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // 绘制极限线 y = 0
+            ctx.strokeStyle = '#ef4444';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            document.getElementById('experimentInfo').innerHTML = 
+                '对比实验：比较 $a_n = \\frac{1}{n}$ 和 $b_n = \\frac{1}{n^2}$ 的收敛速度';
+            
+            setTimeout(() => {
+                renderMath([document.getElementById('experimentInfo')]);
+            }, 50);
+        }
+
+        // 开始挑战
+        function startChallenge(type) {
+            alert(`即将开始 ${type} 挑战模式！\n这个功能正在开发中，敬请期待。`);
+        }
+
+        // 改进的MathJax渲染函数
+        let renderingInProgress = false;
+        function renderMath(elements = null) {
+            if (renderingInProgress) {
+                return Promise.resolve();
+            }
+            
+            const targets = elements || [document.body];
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                renderingInProgress = true;
+                return window.MathJax.typesetPromise(targets).then(() => {
+                    renderingInProgress = false;
+                }).catch(err => {
+                    renderingInProgress = false;
+                    console.warn('MathJax渲染错误:', err);
+                });
+            }
+            
+            return Promise.resolve();
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            console.log('开始初始化页面...');
+
+            setTimeout(() => {
+                initExperimentCanvas();
+                
+                // 渲染所有静态公式
+                const staticFormulaElements = document.querySelectorAll('.formula, .formula-display, .result-display, .challenge-card .formula');
+                renderMath(Array.from(staticFormulaElements)).then(() => {
+                    console.log('MathJax初始化完成');
+                });
+            }, 1000);
+        });
+
+        // 窗口大小改变时重新绘制
+        window.addEventListener('resize', function() {
+            setTimeout(initExperimentCanvas, 100);
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,2163 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定积分与曲边梯形面积 - 高等应用数学虚拟实验室</title>
+    
+    <!-- 本地化MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: {'[+]': ['ams', 'base', 'newcommand']},
+                macros: {
+                    lim: "\\mathop{\\mathrm{lim}}\\limits",
+                    limsup: "\\mathop{\\mathrm{lim\\,sup}}\\limits",
+                    liminf: "\\mathop{\\mathrm{lim\\,inf}}\\limits"
+                }
+            },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false,
+                displayAlign: 'left',
+                displayIndent: '0'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax加载完成');
+                }
+            }
+        };
+    </script>
+    <script async src="../common-assets/js/tex-svg.js"></script>
+    
+    <!-- 加载数学计算库和可视化库 -->
+    <script src="../common-assets/js/math.min.js"></script>
+    <script src="../common-assets/js/d3.v7.min.js"></script>
+    
+    <!-- 思源宋体字体 -->
+    <link rel="stylesheet" href="../common-assets/fonts/source-han-serif.css">
+
+<style>
+        /* 字体标准化规范 */
+        :root {
+            --h1-size: 20px;
+            --h2-size: 16px;
+            --h3-size: 14px;
+            --btn-size: 13px;
+            --formula-size: 14px;
+            --text-size: 13px;
+
+            /* 现代化配色方案 */
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Serif CN', 'Noto Serif CJK SC', '思源宋体', serif;
+            font-size: var(--text-size);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            background: var(--light);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: var(--h3-size);
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            margin-left: 16px;
+            display: inline;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            height: calc(100vh - 60px);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--gray-50);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            overflow-y: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .nav-tab {
+            padding: 10px 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: var(--btn-size);
+            font-weight: 500;
+            color: var(--gray-600);
+            text-align: left;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            min-height: 40px;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .nav-tab:hover::before {
+            height: 24px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::before {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .content-area {
+            display: flex;
+            overflow: auto;
+            background: var(--light);
+        }
+
+        .panel {
+            display: none;
+            padding: 8px;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--gray-200);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: var(--font-h2)px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 6px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .concept-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            text-align: center;
+            border-left: 4px solid #667eea;
+            font-size: 0.95em;
+        }
+
+        .description {
+            color: #666;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .interactive-demo {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+        }
+
+        .demo-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 110px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.8em;
+        }
+
+        .control-group input, .control-group select {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: var(--text-size);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--gray-50);
+            color: var(--gray-800);
+            font-family: inherit;
+            min-height: 44px;
+            box-sizing: border-box;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #212529 !important;
+            border: 1px solid var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: none;
+            margin: 1px;
+            min-height: 28px;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #ffffff !important;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:active {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #212529 !important;
+            border: 2px solid var(--success);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: #ffffff !important;
+        }
+
+        /* 优化布局 - 可视化优先 */
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 12px;
+            height: 100%;
+        }
+
+        .control-panel {
+            background: var(--light);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: none;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .control-panel:hover {
+            border-color: var(--primary);
+        }
+
+        .result-container {
+            background: var(--light);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: none;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .result-container:hover {
+            border-color: var(--primary);
+        }
+
+        /* 增强可视化区域 - 突出位置 */
+        .visualization-area {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 8px;
+            margin: 8px 0;
+            flex: 1;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+            position: relative;
+        }
+
+        .visualization-area::before {
+            content: '🎯 交互式可视化';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 5;
+        }
+
+        .canvas-container {
+            width: 100%;
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 450px;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 4px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+            font-size: 13px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light);
+            min-height: 28px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        /* 增强可视化区域 - 突出位置 */
+        .visualization-area {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 8px;
+            margin: 8px 0;
+            flex: 1;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+            position: relative;
+        }
+
+        .visualization-area::before {
+            content: '🎯 交互式可视化';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 5;
+        }
+
+        .canvas-container {
+            width: 100%;
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 450px;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 紧凑布局样式 */
+        .compact-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .compact-row .input-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .compact-row .btn {
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .compact-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .compact-controls .control-group {
+            margin-bottom: 0;
+            min-width: 80px;
+        }
+
+        .compact-controls .btn {
+            margin: 0;
+        }
+
+        /* 概念区域样式 */
+        .concept-section {
+            margin-top: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+        }
+
+        .concept-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .concept-cards .concept-card {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .concept-cards .concept-card:hover {
+            background: #e9ecef;
+            border-color: var(--primary);
+        }
+
+        .result-display {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+            border-radius: 6px;
+            padding: 12px;
+            margin: 12px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .result-display h4 {
+            color: #155724;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .calculation-steps {
+            background: white;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 6px 0;
+        }
+
+        .step {
+            margin: 6px 0;
+            padding: 6px;
+            background: #f8f9fa;
+            border-radius: 3px;
+            border-left: 3px solid #667eea;
+            font-size: 0.85em;
+        }
+
+        .formula-display {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            font-size: 1em;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px;
+            border-radius: 3px;
+            font-size: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* MathJax样式 */
+        .MathJax, .MathJax_Display, mjx-container, mjx-math {
+            font-size: 16px !important;
+            font-weight: normal !important;
+        }
+        
+        .MathJax_Display {
+            font-size: 18px !important;
+        }
+        
+        .formula-inline {
+            display: inline;
+        }
+        
+        .formula-inline .MathJax {
+            font-size: 16px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .layout-container {
+                grid-template-areas: 
+                    "header header"
+                    "main main";
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header h1 {
+                font-size: var(--h2-size);
+            }
+            
+            .header-subtitle {
+                font-size: 14px;
+            }
+
+            .panel {
+                padding: 16px;
+                min-height: calc(100vh - 80px);
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .demo-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .control-group {
+                min-width: auto;
+            }
+
+            .interactive-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .visualization-area {
+                min-height: 300px;
+                padding: 16px;
+            }
+
+            .canvas-container {
+                height: 250px;
+            }
+
+            .interactive-demo {
+                padding: 16px;
+            }
+
+            .section h2 {
+                font-size: var(--h3-size);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 2px;
+                font-size: 18px /* 标准正文字号 */;
+            }
+
+            .container {
+                border-radius: 4px;
+                min-height: calc(100vh - 4px);
+            }
+
+            .header {
+                padding: 10px 6px;
+            }
+
+            .header h1 {
+                font-size: var(--font-h1);
+            }
+
+            .panel {
+                padding: 10px 6px;
+            }
+
+            .tab {
+                padding: 6px 4px;
+                font-size: 12px;
+            }
+
+            .btn {
+                padding: 10px 18px /* 增大按钮 */;
+                font-size: var(--font-button)px;
+            }
+
+            .visualization-area {
+                min-height: 220px;
+                padding: 6px;
+            }
+
+            .canvas-container {
+                height: 200px;
+            overflow: auto;}
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+    
+        /* 美化滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--gray-100);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-300) var(--gray-100);
+        }</style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>定积分与曲边梯形面积</h1>
+                <p class="header-subtitle">理解定积分的几何意义和数值计算方法</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-panel="concept">
+                        <span class="nav-icon">📐</span>
+                        <span>基本概念</span>
+                    </button>
+                    <button class="nav-tab" data-panel="calculation">
+                        <span class="nav-icon">🔢</span>
+                        <span>数值计算</span>
+                    </button>
+                    <button class="nav-tab" data-panel="application">
+                        <span class="nav-icon">⚡</span>
+                        <span>应用实例</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="content-area">
+
+                <!-- 基本概念面板 -->
+                <div class="panel active" id="concept">
+                    <div class="interactive-layout">
+                        <!-- 可视化区域 - 放在最突出位置 -->
+                        <div class="result-container">
+                            <div class="visualization-area">
+                                <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 16px; padding: 4px; text-align: center; font-weight: 700;">📊 曲边梯形面积可视化</h3>
+                                <div class="canvas-container">
+                                    <canvas id="conceptCanvas" width="600" height="450"></canvas>
+                                    <div class="coordinate-info" id="conceptCoordInfo">
+                                        坐标: (0, 0)
+                                    </div>
+                                    <!-- 添加可视化控制面板 -->
+                                    <div style="position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.95); padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                                        <div style="display: flex; gap: 8px; align-items: center; font-size: 11px;">
+                                            <label><input type="checkbox" id="showGrid" checked onchange="updateConceptDemo()"> 网格</label>
+                                            <label><input type="checkbox" id="showAxes" checked onchange="updateConceptDemo()"> 坐标轴</label>
+                                            <label><input type="checkbox" id="showArea" checked onchange="updateConceptDemo()"> 面积</label>
+                                            <button class="btn" style="padding: 2px 6px; font-size: 10px; min-height: 20px;" onclick="resetView()">重置视图</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 计算结果区域 -->
+                            <div class="formula-display" id="conceptResults">
+                                <div class="step">选择函数和积分区间进行面积计算</div>
+                            </div>
+                        </div>
+
+                        <div class="control-panel">
+                            <h3 style="font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 700;">🎛️ 控制面板</h3>
+
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="conceptFunction">选择函数:</label>
+                                    <select id="conceptFunction" onchange="updateConceptDemo()">
+                                        <option value="quadratic">f(x) = x²</option>
+                                        <option value="cubic">f(x) = x³</option>
+                                        <option value="sine">f(x) = sin(x)</option>
+                                        <option value="exponential">f(x) = eˣ</option>
+                                        <option value="parabola">f(x) = 4 - x²</option>
+                                    </select>
+                                </div>
+                                <button class="btn" onclick="calculateExactArea()">计算</button>
+                            </div>
+
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="customConceptFunction">自定义函数:</label>
+                                    <input type="text" id="customConceptFunction" placeholder="例如: x^3 - 2*x^2 + x" onchange="parseCustomConceptFunction()">
+                                </div>
+                                <button class="btn btn-secondary" onclick="parseCustomConceptFunction()">解析</button>
+                            </div>
+
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="lowerBound">下限 a:</label>
+                                    <input type="number" id="lowerBound" value="0" step="0.1" onchange="updateConceptDemo()">
+                                </div>
+                                <div class="input-group">
+                                    <label for="upperBound">上限 b:</label>
+                                    <input type="number" id="upperBound" value="2" step="0.1" onchange="updateConceptDemo()">
+                                </div>
+                                <button class="btn" onclick="animateArea()">动画</button>
+                            </div>
+
+                            <div class="compact-controls">
+                                <div class="control-group">
+                                    <label for="showPositive">显示正面积:</label>
+                                    <input type="checkbox" id="showPositive" checked onchange="updateConceptDemo()">
+                                </div>
+                                <div class="control-group">
+                                    <label for="showNegative">显示负面积:</label>
+                                    <input type="checkbox" id="showNegative" checked onchange="updateConceptDemo()">
+                                </div>
+                                <button class="btn" onclick="findZeros()">找零点</button>
+                            </div>
+
+                            <!-- 概念说明区域 -->
+                            <div class="concept-section">
+                                <h4 style="font-size: 12px; color: var(--primary); margin: 8px 0 4px 0; font-weight: 600;">基本概念</h4>
+                                <div class="formula-display" style="margin: 4px 0; padding: 6px; font-size: 12px;">
+                                    定积分就是计算曲线与x轴围成的面积
+                                </div>
+                                
+                                <div class="concept-cards">
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">曲边梯形</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">面积 = $\int_a^b f(x) dx$</div>
+                                        <div class="description" style="font-size: 10px;">由连续曲线与坐标轴围成的图形面积</div>
+                                    </div>
+
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">黎曼和</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">$S_n = \sum_{i=1}^n f(\xi_i) \Delta x_i$</div>
+                                        <div class="description" style="font-size: 10px;">将区间分割，用矩形面积之和逼近曲边梯形面积</div>
+                                    </div>
+
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">定积分定义</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">$\int_a^b f(x) dx = \lim\limits_{n \to \infty} \sum_{i=1}^n f(\xi_i) \Delta x$</div>
+                                        <div class="description" style="font-size: 10px;">当分割无限细化时，黎曼和的极限值</div>
+                                    </div>
+
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">几何性质</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">$f(x) \geq 0$ 时面积为正</div>
+                                        <div class="description" style="font-size: 10px;">函数值为负时对应面积为负值</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数值计算面板 -->
+                <div class="panel" id="calculation">
+                    <div class="interactive-layout">
+                        <!-- 可视化区域 - 突出位置 -->
+                        <div class="result-container">
+                            <div class="visualization-area">
+                                <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 16px; padding: 4px; text-align: center; font-weight: 700;">📈 数值积分可视化</h3>
+                                <div class="canvas-container">
+                                    <canvas id="calculationCanvas" width="600" height="450"></canvas>
+                                    <div class="coordinate-info" id="calcCoordInfo">
+                                        分割数: 20
+                                    </div>
+                                    <!-- 可视化控制 -->
+                                    <div style="position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.95); padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                                        <div style="display: flex; gap: 8px; align-items: center; font-size: 11px;">
+                                            <label><input type="checkbox" id="showMethod" checked onchange="updateCalculation()"> 显示方法</label>
+                                            <label><input type="checkbox" id="showExact" checked onchange="updateCalculation()"> 精确曲线</label>
+                                            <button class="btn" style="padding: 2px 6px; font-size: 10px; min-height: 20px;" onclick="animateNumerical()">动画</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 分析结果 -->
+                            <div class="formula-display" id="calculationResults">
+                                <div class="step">选择函数和计算方法进行数值积分</div>
+                            </div>
+                        </div>
+
+                        <div class="control-panel">
+                            <h3 style="font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 700;">⚙️ 计算设置</h3>
+                            
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="calcFunction">计算函数:</label>
+                                    <select id="calcFunction" onchange="updateCalculation()">
+                                        <option value="quadratic">f(x) = x²</option>
+                                        <option value="cubic">f(x) = x³</option>
+                                        <option value="sine">f(x) = sin(x)</option>
+                                        <option value="exponential">f(x) = eˣ</option>
+                                        <option value="parabola">f(x) = 4 - x²</option>
+                                    </select>
+                                </div>
+                                <button class="btn" onclick="calculateNumerical()">计算</button>
+                            </div>
+
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="calcLower">下限:</label>
+                                    <input type="number" id="calcLower" value="0" step="0.1" onchange="updateCalculation()">
+                                </div>
+                                <div class="input-group">
+                                    <label for="calcUpper">上限:</label>
+                                    <input type="number" id="calcUpper" value="1" step="0.1" onchange="updateCalculation()">
+                                </div>
+                                <button class="btn btn-secondary" onclick="compareExact()">对比精确值</button>
+                            </div>
+
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="subdivisions">分割数 n:</label>
+                                    <input type="range" id="subdivisions" min="4" max="100" step="4" value="20" onchange="updateCalculation()">
+                                    <span id="subdivisionsValue">20</span>
+                                </div>
+                            </div>
+
+                            <div class="compact-row">
+                                <div class="input-group">
+                                    <label for="method">计算方法:</label>
+                                    <select id="method" onchange="updateCalculation()">
+                                        <option value="rectangle">矩形法</option>
+                                        <option value="trapezoid">梯形法</option>
+                                        <option value="simpson">辛普森法</option>
+                                    </select>
+                                </div>
+                                <button class="btn" onclick="animateNumerical()">动画演示</button>
+                            </div>
+
+                            <!-- 概念说明区域 -->
+                            <div class="concept-section">
+                                <h4 style="font-size: 12px; color: var(--primary); margin: 8px 0 4px 0; font-weight: 600;">数值方法</h4>
+                                <div class="formula-display" style="margin: 4px 0; padding: 6px; font-size: 12px;">
+                                    用近似方法计算定积分的数值
+                                </div>
+                                
+                                <div class="concept-cards">
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">矩形法</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">$S \approx \sum_{i=1}^n f(x_i) \Delta x$</div>
+                                        <div class="description" style="font-size: 10px;">用矩形面积近似曲边梯形面积</div>
+                                    </div>
+
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">梯形法</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">$S \approx \frac{\Delta x}{2} \sum_{i=1}^n [f(x_{i-1}) + f(x_i)]$</div>
+                                        <div class="description" style="font-size: 10px;">用梯形面积近似曲边梯形面积</div>
+                                    </div>
+
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">辛普森法</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">$S \approx \frac{\Delta x}{3} [f(x_0) + 4f(x_1) + 2f(x_2) + \cdots + f(x_n)]$</div>
+                                        <div class="description" style="font-size: 10px;">用抛物线弧近似曲线段</div>
+                                    </div>
+
+                                    <div class="concept-card" style="margin: 4px 0; padding: 6px;">
+                                        <h5 style="font-size: 11px; color: var(--secondary); margin-bottom: 2px;">误差分析</h5>
+                                        <div class="formula" style="font-size: 11px; padding: 4px; margin: 2px 0;">误差 = |数值结果 - 精确值|</div>
+                                        <div class="description" style="font-size: 10px;">比较不同方法的精度</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 应用实例面板 -->
+                <div class="panel" id="application">
+                    <div class="section">
+                        <div class="interactive-demo">
+                            <h3>物理应用</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="physicsApplication">应用类型:</label>
+                                    <select id="physicsApplication" onchange="showPhysicsApplication()">
+                                        <option value="displacement">位移计算</option>
+                                        <option value="work">功的计算</option>
+                                        <option value="pressure">压力计算</option>
+                                        <option value="center">质心计算</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="showPhysicsApplication()">查看应用</button>
+                                <button class="btn" onclick="solvePhysicsProblem()">求解问题</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>物理应用实例</h4>
+                                <div class="calculation-steps" id="physicsContent">
+                                    <div class="step">选择应用类型查看具体实例</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>几何应用</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="geometryApplication">几何问题:</label>
+                                    <select id="geometryApplication" onchange="showGeometryApplication()">
+                                        <option value="area">平面图形面积</option>
+                                        <option value="volume">旋转体体积</option>
+                                        <option value="length">弧长计算</option>
+                                        <option value="surface">旋转面面积</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="showGeometryApplication()">查看应用</button>
+                                <button class="btn" onclick="calculateGeometry()">几何计算</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>几何应用实例</h4>
+                                <div class="calculation-steps" id="geometryContent">
+                                    <div class="step">选择几何问题查看定积分应用</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>综合练习</h3>
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="exerciseLevel">难度等级:</label>
+                                    <select id="exerciseLevel" onchange="generateExercise()">
+                                        <option value="basic">基础</option>
+                                        <option value="intermediate">中级</option>
+                                        <option value="advanced">高级</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" onclick="generateExercise()">生成练习</button>
+                                <button class="btn" onclick="checkAnswer()">检查答案</button>
+                                <button class="btn" onclick="showHint()">显示提示</button>
+                            </div>
+
+                            <div class="result-display">
+                                <h4>练习题目</h4>
+                                <div class="calculation-steps" id="exerciseContent">
+                                    <div class="step">选择难度等级生成练习题</div>
+                                </div>
+                            </div>
+
+                            <div class="demo-controls">
+                                <div class="control-group">
+                                    <label for="userAnswer">你的答案:</label>
+                                    <input type="text" id="userAnswer" placeholder="输入计算结果">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let conceptCanvas, conceptCtx;
+        let calculationCanvas, calculationCtx;
+        let animationId = null;
+
+        // 函数定义
+        const functions = {
+            quadratic: {
+                name: 'x²',
+                formula: x => x * x,
+                integral: (a, b) => (Math.pow(b, 3) - Math.pow(a, 3)) / 3,
+                latex: 'x^2'
+            },
+            cubic: {
+                name: 'x³',
+                formula: x => x * x * x,
+                integral: (a, b) => (Math.pow(b, 4) - Math.pow(a, 4)) / 4,
+                latex: 'x^3'
+            },
+            sine: {
+                name: 'sin(x)',
+                formula: x => Math.sin(x),
+                integral: (a, b) => Math.cos(a) - Math.cos(b),
+                latex: '\\sin(x)'
+            },
+            exponential: {
+                name: 'eˣ',
+                formula: x => Math.exp(x),
+                integral: (a, b) => Math.exp(b) - Math.exp(a),
+                latex: 'e^x'
+            },
+            parabola: {
+                name: '4 - x²',
+                formula: x => 4 - x * x,
+                integral: (a, b) => 4 * (b - a) - (Math.pow(b, 3) - Math.pow(a, 3)) / 3,
+                latex: '4 - x^2'
+            }
+        };
+
+        // 导航标签页切换
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+                tab.classList.add('active');
+                const panelId = tab.getAttribute('data-panel');
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.classList.add('active');
+                    
+                    // 延迟初始化Canvas，确保面板显示后再初始化
+                    setTimeout(() => {
+                        initCanvases();
+                        
+                        // 根据面板类型执行相应的更新
+                        setTimeout(() => {
+                            if (panelId === 'concept') {
+                                updateConceptDemo();
+                            } else if (panelId === 'calculation') {
+                                updateCalculation();
+                            }
+                        }, 200);
+                    }, 100);
+                }
+
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([panel]).catch(err => console.log('MathJax渲染错误:', err));
+                    }
+                }, 200);
+            });
+        });
+
+        // 初始化画布
+        function initCanvases() {
+            // 概念画布
+            conceptCanvas = document.getElementById('conceptCanvas');
+            if (conceptCanvas) {
+                conceptCtx = conceptCanvas.getContext('2d');
+
+                conceptCanvas.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - this.width/2) / 40;
+                    const y = -(e.clientY - rect.top - this.height/2) / 40;
+                    document.getElementById('conceptCoordInfo').textContent = `坐标: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+                });
+            }
+
+            // 计算画布
+            calculationCanvas = document.getElementById('calculationCanvas');
+            if (calculationCanvas) {
+                calculationCtx = calculationCanvas.getContext('2d');
+
+                calculationCanvas.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - this.width/2) / 40;
+                    const y = -(e.clientY - rect.top - this.height/2) / 40;
+                    const n = document.getElementById('subdivisions').value;
+                    document.getElementById('calcCoordInfo').textContent = `坐标: (${x.toFixed(2)}, ${y.toFixed(2)}) | 分割数: ${n}`;
+                });
+            }
+        }
+
+        // 增强的坐标轴绘制
+        function drawAxes(ctx, canvas) {
+            const showGrid = document.getElementById('showGrid')?.checked !== false;
+            const showAxes = document.getElementById('showAxes')?.checked !== false;
+
+            if (!showAxes && !showGrid) return;
+
+            // 网格线
+            if (showGrid) {
+                ctx.strokeStyle = '#f0f0f0';
+                ctx.lineWidth = 0.5;
+
+                for (let i = -20; i <= 20; i++) {
+                    if (i !== 0) {
+                        // 垂直网格线
+                        ctx.beginPath();
+                        ctx.moveTo(canvas.width/2 + i * 30, 0);
+                        ctx.lineTo(canvas.width/2 + i * 30, canvas.height);
+                        ctx.stroke();
+
+                        // 水平网格线
+                        ctx.beginPath();
+                        ctx.moveTo(0, canvas.height/2 + i * 30);
+                        ctx.lineTo(canvas.width, canvas.height/2 + i * 30);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            if (showAxes) {
+                // 主坐标轴
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+
+                // X轴
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height/2);
+                ctx.lineTo(canvas.width, canvas.height/2);
+                ctx.stroke();
+
+                // Y轴
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2, 0);
+                ctx.lineTo(canvas.width/2, canvas.height);
+                ctx.stroke();
+
+                // 坐标轴标签
+                ctx.fillStyle = '#666';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+
+                // X轴刻度
+                for (let i = -8; i <= 8; i++) {
+                    if (i !== 0) {
+                        const x = canvas.width/2 + i * 30;
+                        ctx.fillText(i.toString(), x, canvas.height/2 + 15);
+                        // 刻度线
+                        ctx.beginPath();
+                        ctx.moveTo(x, canvas.height/2 - 3);
+                        ctx.lineTo(x, canvas.height/2 + 3);
+                        ctx.stroke();
+                    }
+                }
+
+                // Y轴刻度
+                ctx.textAlign = 'right';
+                for (let i = -6; i <= 6; i++) {
+                    if (i !== 0) {
+                        const y = canvas.height/2 - i * 30;
+                        ctx.fillText(i.toString(), canvas.width/2 - 8, y + 4);
+                        // 刻度线
+                        ctx.beginPath();
+                        ctx.moveTo(canvas.width/2 - 3, y);
+                        ctx.lineTo(canvas.width/2 + 3, y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // 增强的函数绘制
+        function drawFunction(ctx, canvas, func, color = '#667eea', lineWidth = 3, label = '') {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+
+            let first = true;
+            let points = [];
+
+            for (let x = -10; x <= 10; x += 0.005) {
+                const y = func.formula(x);
+                if (!isNaN(y) && isFinite(y) && Math.abs(y) < 15) {
+                    const screenX = canvas.width/2 + x * 30;
+                    const screenY = canvas.height/2 - y * 30;
+
+                    points.push({x: screenX, y: screenY, realX: x, realY: y});
+
+                    if (first) {
+                        ctx.moveTo(screenX, screenY);
+                        first = false;
+                    } else {
+                        ctx.lineTo(screenX, screenY);
+                    }
+                }
+            }
+            ctx.stroke();
+
+            // 添加函数标签
+            if (label && points.length > 0) {
+                ctx.fillStyle = color;
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'left';
+                const midPoint = points[Math.floor(points.length * 0.7)];
+                if (midPoint) {
+                    ctx.fillText(label, midPoint.x + 10, midPoint.y - 10);
+                }
+            }
+
+            return points;
+        }
+
+        // 增强的面积绘制
+        function drawArea(ctx, canvas, func, a, b, color = 'rgba(102, 126, 234, 0.4)', positive = true) {
+            const showArea = document.getElementById('showArea')?.checked !== false;
+            if (!showArea) return;
+
+            // 渐变填充
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            if (positive) {
+                gradient.addColorStop(0, 'rgba(102, 126, 234, 0.6)');
+                gradient.addColorStop(1, 'rgba(102, 126, 234, 0.1)');
+            } else {
+                gradient.addColorStop(0, 'rgba(255, 107, 107, 0.6)');
+                gradient.addColorStop(1, 'rgba(255, 107, 107, 0.1)');
+            }
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+
+            // 从下限开始
+            ctx.moveTo(canvas.width/2 + a * 30, canvas.height/2);
+
+            // 沿着曲线
+            for (let x = a; x <= b; x += 0.005) {
+                const y = func.formula(x);
+                if (!isNaN(y) && isFinite(y)) {
+                    ctx.lineTo(canvas.width/2 + x * 30, canvas.height/2 - y * 30);
+                }
+            }
+
+            // 回到x轴
+            ctx.lineTo(canvas.width/2 + b * 30, canvas.height/2);
+            ctx.closePath();
+            ctx.fill();
+
+            // 添加边界线
+            ctx.strokeStyle = positive ? 'rgba(102, 126, 234, 0.8)' : 'rgba(255, 107, 107, 0.8)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 添加积分限标记
+            drawIntegralLimits(ctx, canvas, a, b);
+        }
+
+        // 绘制积分限标记
+        function drawIntegralLimits(ctx, canvas, a, b) {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+
+            // 下限线
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2 + a * 30, 0);
+            ctx.lineTo(canvas.width/2 + a * 30, canvas.height);
+            ctx.stroke();
+
+            // 上限线
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2 + b * 30, 0);
+            ctx.lineTo(canvas.width/2 + b * 30, canvas.height);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            // 标签
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`a=${a}`, canvas.width/2 + a * 30, canvas.height - 10);
+            ctx.fillText(`b=${b}`, canvas.width/2 + b * 30, canvas.height - 10);
+        }
+
+        // 更新概念演示
+        function updateConceptDemo() {
+            const funcName = document.getElementById('conceptFunction').value;
+            const a = parseFloat(document.getElementById('lowerBound').value);
+            const b = parseFloat(document.getElementById('upperBound').value);
+            const showPositive = document.getElementById('showPositive').checked;
+            const showNegative = document.getElementById('showNegative').checked;
+
+            if (!conceptCtx) return;
+
+            conceptCtx.clearRect(0, 0, conceptCanvas.width, conceptCanvas.height);
+            drawAxes(conceptCtx, conceptCanvas);
+
+            const func = functions[funcName];
+
+            // 绘制函数曲线
+            drawFunction(conceptCtx, conceptCanvas, func, '#667eea', 3, `f(x) = ${func.name}`);
+
+            // 绘制面积
+            if (a < b) {
+                // 检查函数在区间内的正负性
+                const samples = 20;
+                const dx = (b - a) / samples;
+
+                for (let i = 0; i < samples; i++) {
+                    const x1 = a + i * dx;
+                    const x2 = a + (i + 1) * dx;
+                    const y1 = func.formula(x1);
+                    const y2 = func.formula(x2);
+
+                    if ((y1 >= 0 && y2 >= 0 && showPositive) || (y1 <= 0 && y2 <= 0 && showNegative)) {
+                        drawArea(conceptCtx, conceptCanvas, func, x1, x2, undefined, y1 >= 0);
+                    }
+                }
+            }
+
+            updateConceptResults(funcName, a, b);
+        }
+
+        // 更新概念结果
+        function updateConceptResults(funcName, a, b) {
+            const func = functions[funcName];
+            const resultsDiv = document.getElementById('conceptResults');
+
+            if (a >= b) {
+                resultsDiv.innerHTML = '<div class="step">请设置正确的积分区间（a < b）</div>';
+                return;
+            }
+
+            const integralValue = func.integral(a, b);
+            const areaValue = Math.abs(integralValue);
+
+            resultsDiv.innerHTML = `
+                <div class="step">函数: f(x) = ${func.name}</div>
+                <div class="step">积分区间: [${a}, ${b}]</div>
+                <div class="step">定积分值: $\\int_{${a}}^{${b}} f(x)dx = ${integralValue.toFixed(4)}$</div>
+                <div class="step">面积值: $|\\int_{${a}}^{${b}} f(x)dx| = ${areaValue.toFixed(4)}$</div>
+                <div class="step">几何意义: ${integralValue >= 0 ? '函数图像在x轴上方' : '函数图像在x轴下方'}</div>
+            `;
+            
+            // 延迟渲染MathJax确保DOM更新完成
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([resultsDiv]).catch(err => console.warn('MathJax渲染错误:', err));
+                }
+            }, 50);
+        }
+
+        // 重置视图
+        function resetView() {
+            if (conceptCanvas && conceptCtx) {
+                updateConceptDemo();
+            }
+            if (calculationCanvas && calculationCtx) {
+                updateCalculation();
+            }
+        }
+
+        // 解析自定义概念函数
+        function parseCustomConceptFunction() {
+            try {
+                const expression = document.getElementById('customConceptFunction').value;
+                if (!expression) return;
+
+                // 使用math.js解析函数
+                const func = math.compile(expression);
+                
+                // 创建自定义函数对象
+                const customFunc = {
+                    name: expression,
+                    formula: (x) => {
+                        try {
+                            return func.evaluate({x: x});
+                        } catch (e) {
+                            return NaN;
+                        }
+                    },
+                    integral: (a, b) => {
+                        try {
+                            // 使用数值积分方法
+                            const n = 1000;
+                            const dx = (b - a) / n;
+                            let sum = 0;
+                            for (let i = 0; i < n; i++) {
+                                const x = a + i * dx;
+                                const y = func.evaluate({x: x});
+                                if (!isNaN(y) && isFinite(y)) {
+                                    sum += y * dx;
+                                }
+                            }
+                            return sum;
+                        } catch (e) {
+                            return NaN;
+                        }
+                    }
+                };
+
+                // 添加到函数列表
+                functions.customConcept = customFunc;
+                
+                // 更新选择框
+                const select = document.getElementById('conceptFunction');
+                const customOption = select.querySelector('option[value="customConcept"]');
+                if (customOption) {
+                    customOption.textContent = `f(x) = ${expression}`;
+                } else {
+                    const option = document.createElement('option');
+                    option.value = 'customConcept';
+                    option.textContent = `f(x) = ${expression}`;
+                    select.appendChild(option);
+                }
+                
+                // 选择自定义函数
+                select.value = 'customConcept';
+                
+                // 更新演示
+                updateConceptDemo();
+                
+                console.log('自定义概念函数解析成功:', customFunc.name);
+            } catch (error) {
+                console.error('自定义概念函数解析错误:', error);
+                alert('函数表达式有误，请检查语法');
+            }
+        }
+
+        // 计算精确面积
+        function calculateExactArea() {
+            updateConceptDemo();
+        }
+
+        // 找零点
+        function findZeros() {
+            const funcName = document.getElementById('conceptFunction').value;
+            const func = functions[funcName];
+            
+            const zeros = [];
+            for (let x = -10; x <= 10; x += 0.01) {
+                const y = func.formula(x);
+                if (Math.abs(y) < 0.01) {
+                    zeros.push(x.toFixed(2));
+                }
+            }
+            
+            if (zeros.length > 0) {
+                alert(`函数 f(x) = ${func.name} 的零点: ${zeros.join(', ')}`);
+            } else {
+                alert(`在区间 [-10, 10] 内未找到函数 f(x) = ${func.name} 的零点`);
+            }
+        }
+
+        // 更新数值计算
+        function updateCalculation() {
+            const funcName = document.getElementById('calcFunction').value;
+            const a = parseFloat(document.getElementById('calcLower').value);
+            const b = parseFloat(document.getElementById('calcUpper').value);
+            const n = parseInt(document.getElementById('subdivisions').value);
+            const method = document.getElementById('method').value;
+
+            document.getElementById('subdivisionsValue').textContent = n;
+
+            if (!calculationCtx) return;
+
+            calculationCtx.clearRect(0, 0, calculationCanvas.width, calculationCanvas.height);
+            drawAxes(calculationCtx, calculationCanvas);
+
+            const func = functions[funcName];
+
+            // 绘制函数曲线
+            drawFunction(calculationCtx, calculationCanvas, func, '#667eea', 3, `f(x) = ${func.name}`);
+
+            // 绘制数值积分方法
+            if (a < b) {
+                drawNumericalMethod(calculationCtx, calculationCanvas, func, a, b, n, method);
+            }
+        }
+
+        // 绘制数值积分方法
+        function drawNumericalMethod(ctx, canvas, func, a, b, n, method) {
+            const showMethod = document.getElementById('showMethod')?.checked !== false;
+            if (!showMethod) return;
+
+            const dx = (b - a) / n;
+
+            ctx.fillStyle = 'rgba(255, 107, 107, 0.3)';
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < n; i++) {
+                const x1 = a + i * dx;
+                const x2 = a + (i + 1) * dx;
+
+                if (method === 'rectangle') {
+                    // 矩形法（左端点）
+                    const y = func.formula(x1);
+                    const rectHeight = y * 30;
+
+                    ctx.fillRect(
+                        canvas.width/2 + x1 * 30,
+                        canvas.height/2 - rectHeight,
+                        dx * 30,
+                        rectHeight
+                    );
+
+                    ctx.strokeRect(
+                        canvas.width/2 + x1 * 30,
+                        canvas.height/2 - rectHeight,
+                        dx * 30,
+                        rectHeight
+                    );
+                } else if (method === 'trapezoid') {
+                    // 梯形法
+                    const y1 = func.formula(x1);
+                    const y2 = func.formula(x2);
+
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width/2 + x1 * 30, canvas.height/2);
+                    ctx.lineTo(canvas.width/2 + x1 * 30, canvas.height/2 - y1 * 30);
+                    ctx.lineTo(canvas.width/2 + x2 * 30, canvas.height/2 - y2 * 30);
+                    ctx.lineTo(canvas.width/2 + x2 * 30, canvas.height/2);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                } else if (method === 'simpson') {
+                    // 辛普森法 - 用抛物线近似
+                    const xMid = (x1 + x2) / 2;
+                    const y1 = func.formula(x1);
+                    const yMid = func.formula(xMid);
+                    const y2 = func.formula(x2);
+
+                    // 绘制抛物线弧
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width/2 + x1 * 30, canvas.height/2 - y1 * 30);
+                    ctx.quadraticCurveTo(
+                        canvas.width/2 + xMid * 30, canvas.height/2 - yMid * 30,
+                        canvas.width/2 + x2 * 30, canvas.height/2 - y2 * 30
+                    );
+                    ctx.lineTo(canvas.width/2 + x2 * 30, canvas.height/2);
+                    ctx.lineTo(canvas.width/2 + x1 * 30, canvas.height/2);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // 数值计算
+        function calculateNumerical() {
+            const funcName = document.getElementById('calcFunction').value;
+            const a = parseFloat(document.getElementById('calcLower').value);
+            const b = parseFloat(document.getElementById('calcUpper').value);
+            const n = parseInt(document.getElementById('subdivisions').value);
+            const method = document.getElementById('method').value;
+
+            if (a >= b) {
+                alert('请设置正确的积分区间');
+                return;
+            }
+
+            const func = functions[funcName];
+            const dx = (b - a) / n;
+            let numericalValue = 0;
+
+            // 计算数值积分
+            if (method === 'rectangle') {
+                for (let i = 0; i < n; i++) {
+                    const x = a + i * dx;
+                    numericalValue += func.formula(x) * dx;
+                }
+            } else if (method === 'trapezoid') {
+                numericalValue = (func.formula(a) + func.formula(b)) / 2;
+                for (let i = 1; i < n; i++) {
+                    const x = a + i * dx;
+                    numericalValue += func.formula(x);
+                }
+                numericalValue *= dx;
+            } else if (method === 'simpson') {
+                // 辛普森法需要偶数个区间
+                let actualN = n;
+                if (n % 2 !== 0) actualN = n + 1;
+                const h = (b - a) / actualN;
+                numericalValue = func.formula(a) + func.formula(b);
+
+                for (let i = 1; i < actualN; i++) {
+                    const x = a + i * h;
+                    numericalValue += (i % 2 === 0 ? 2 : 4) * func.formula(x);
+                }
+                numericalValue *= h / 3;
+            }
+
+            const exactValue = func.integral(a, b);
+            const error = Math.abs(numericalValue - exactValue);
+            const relativeError = (error / Math.abs(exactValue)) * 100;
+
+            const resultsDiv = document.getElementById('calculationResults');
+            resultsDiv.innerHTML = `
+                <div class="step">函数: f(x) = ${func.name}</div>
+                <div class="step">积分区间: [${a}, ${b}]</div>
+                <div class="step">分割数: n = ${n}</div>
+                <div class="step">计算方法: ${getMethodName(method)}</div>
+                <div class="step">数值结果: ${numericalValue.toFixed(6)}</div>
+                <div class="step">精确值: ${exactValue.toFixed(6)}</div>
+                <div class="step">绝对误差: ${error.toFixed(6)}</div>
+                <div class="step">相对误差: ${relativeError.toFixed(4)}%</div>
+            `;
+        }
+
+        // 获取方法名称
+        function getMethodName(method) {
+            const names = {
+                rectangle: '矩形法',
+                trapezoid: '梯形法',
+                simpson: '辛普森法'
+            };
+            return names[method] || method;
+        }
+
+        // 对比精确值
+        function compareExact() {
+            calculateNumerical();
+        }
+
+        // 面积动画演示
+        function animateArea() {
+            console.log('开始面积动画演示...');
+
+            if (!conceptCtx) {
+                console.error('概念画布未初始化');
+                return;
+            }
+
+            const funcName = document.getElementById('conceptFunction').value;
+            const func = functions[funcName];
+            const a = parseFloat(document.getElementById('lowerBound').value);
+            const b = parseFloat(document.getElementById('upperBound').value);
+
+            let animationStep = 0;
+            const maxSteps = 20;
+            const dx = (b - a) / maxSteps;
+
+            function animate() {
+                if (animationStep >= maxSteps) {
+                    console.log('面积动画演示完成');
+                    return;
+                }
+
+                conceptCtx.clearRect(0, 0, conceptCanvas.width, conceptCanvas.height);
+                drawAxes(conceptCtx, conceptCanvas);
+                drawFunction(conceptCtx, conceptCanvas, func, '#667eea', 3, `f(x) = ${func.name}`);
+
+                // 逐步显示面积
+                const currentX = a + animationStep * dx;
+                if (currentX < b) {
+                    drawArea(conceptCtx, conceptCanvas, func, a, currentX, 'rgba(102, 126, 234, 0.5)', true);
+                }
+
+                animationStep++;
+                setTimeout(animate, 200);
+            }
+
+            animate();
+        }
+
+        // 数值积分动画演示
+        function animateNumerical() {
+            console.log('开始数值积分动画演示...');
+
+            if (!calculationCtx) {
+                console.error('计算画布未初始化');
+                return;
+            }
+
+            const funcName = document.getElementById('calcFunction').value;
+            const func = functions[funcName];
+            const a = parseFloat(document.getElementById('calcLower').value);
+            const b = parseFloat(document.getElementById('calcUpper').value);
+            const n = parseInt(document.getElementById('subdivisions').value);
+            const method = document.getElementById('method').value;
+
+            let animationStep = 0;
+            const maxSteps = n;
+
+            function animate() {
+                if (animationStep >= maxSteps) {
+                    console.log('数值积分动画演示完成');
+                    return;
+                }
+
+                calculationCtx.clearRect(0, 0, calculationCanvas.width, calculationCanvas.height);
+                drawAxes(calculationCtx, calculationCanvas);
+                drawFunction(calculationCtx, calculationCanvas, func, '#667eea', 3, `f(x) = ${func.name}`);
+
+                // 逐步显示数值积分方法
+                const partialN = animationStep + 1;
+                drawNumericalMethod(calculationCtx, calculationCanvas, func, a, b, partialN, method);
+
+                animationStep++;
+                setTimeout(animate, 300);
+            }
+
+            animate();
+        }
+
+        // 显示物理应用
+        function showPhysicsApplication() {
+            const app = document.getElementById('physicsApplication').value;
+            const contentDiv = document.getElementById('physicsContent');
+
+            const applications = {
+                displacement: `
+                    <div class="step">位移计算：已知速度函数v(t)，求位移</div>
+                    <div class="step">位移 s = ∫v(t)dt，表示速度-时间图像下的面积</div>
+                    <div class="step">例：v(t) = 2t，在[0,3]内的位移 = ∫₀³ 2t dt = 9</div>
+                `,
+                work: `
+                    <div class="step">功的计算：变力做功W = ∫F(x)dx</div>
+                    <div class="step">力-位移图像下的面积表示所做的功</div>
+                    <div class="step">例：弹簧力F(x) = kx，压缩距离a的功 = ∫₀ᵃ kx dx = ka²/2</div>
+                `,
+                pressure: `
+                    <div class="step">压力计算：液体对容器壁的压力</div>
+                    <div class="step">压力 = ∫ρgh·dA，其中ρ是密度，g是重力加速度</div>
+                    <div class="step">积分表示不同深度处压强与面积的乘积之和</div>
+                `,
+                center: `
+                    <div class="step">质心计算：连续分布物体的质心坐标</div>
+                    <div class="step">质心 x̄ = ∫xρ(x)dx / ∫ρ(x)dx</div>
+                    <div class="step">积分表示各点质量矩的总和</div>
+                `
+            };
+
+            contentDiv.innerHTML = applications[app] || '<div class="step">选择应用类型</div>';
+        }
+
+        // 显示几何应用
+        function showGeometryApplication() {
+            const app = document.getElementById('geometryApplication').value;
+            const contentDiv = document.getElementById('geometryContent');
+
+            const applications = {
+                area: `
+                    <div class="step">平面图形面积：两曲线间的面积</div>
+                    <div class="step">面积 = ∫[f(x) - g(x)]dx，其中f(x) ≥ g(x)</div>
+                    <div class="step">定积分的几何意义直接应用</div>
+                `,
+                volume: `
+                    <div class="step">旋转体体积：曲线绕轴旋转形成的立体</div>
+                    <div class="step">绕x轴：V = π∫[f(x)]²dx</div>
+                    <div class="step">绕y轴：V = π∫[g(y)]²dy</div>
+                `,
+                length: `
+                    <div class="step">弧长计算：曲线的长度</div>
+                    <div class="step">弧长 L = ∫√(1 + [f'(x)]²)dx</div>
+                    <div class="step">利用微分弧长元素积分</div>
+                `,
+                surface: `
+                    <div class="step">旋转面面积：曲线旋转形成的曲面面积</div>
+                    <div class="step">绕x轴：S = 2π∫f(x)√(1 + [f'(x)]²)dx</div>
+                    <div class="step">结合弧长和旋转半径</div>
+                `
+            };
+
+            contentDiv.innerHTML = applications[app] || '<div class="step">选择几何问题</div>';
+        }
+
+        // 面积动画演示
+        function animateArea() {
+            console.log('开始面积动画演示...');
+
+            if (!conceptCtx) {
+                console.error('概念画布未初始化');
+                return;
+            }
+
+            const funcName = document.getElementById('conceptFunction').value;
+            const func = functions[funcName];
+            const a = parseFloat(document.getElementById('lowerBound').value);
+            const b = parseFloat(document.getElementById('upperBound').value);
+
+            let animationStep = 0;
+            const maxSteps = 20;
+            const dx = (b - a) / maxSteps;
+
+            function animate() {
+                if (animationStep >= maxSteps) {
+                    console.log('面积动画演示完成');
+                    return;
+                }
+
+                conceptCtx.clearRect(0, 0, conceptCanvas.width, conceptCanvas.height);
+                drawAxes(conceptCtx, conceptCanvas);
+                drawFunction(conceptCtx, conceptCanvas, func);
+
+                // 逐步显示面积
+                const currentX = a + animationStep * dx;
+                if (currentX < b) {
+                    drawArea(conceptCtx, conceptCanvas, func, a, currentX, 'rgba(102, 126, 234, 0.5)');
+                }
+
+                animationStep++;
+                setTimeout(animate, 200);
+            }
+
+            animate();
+        }
+
+        // 数值积分动画演示
+        function animateNumerical() {
+            console.log('开始数值积分动画演示...');
+
+            if (!calculationCtx) {
+                console.error('计算画布未初始化');
+                return;
+            }
+
+            const funcName = document.getElementById('calcFunction').value;
+            const func = functions[funcName];
+            const a = parseFloat(document.getElementById('calcLower').value);
+            const b = parseFloat(document.getElementById('calcUpper').value);
+            const n = parseInt(document.getElementById('subdivisions').value);
+            const method = document.getElementById('method').value;
+
+            let animationStep = 0;
+            const maxSteps = n;
+
+            function animate() {
+                if (animationStep >= maxSteps) {
+                    console.log('数值积分动画演示完成');
+                    return;
+                }
+
+                calculationCtx.clearRect(0, 0, calculationCanvas.width, calculationCanvas.height);
+                drawAxes(calculationCtx, calculationCanvas);
+                drawFunction(calculationCtx, calculationCanvas, func);
+
+                // 逐步显示数值积分方法
+                const partialN = animationStep + 1;
+                drawNumericalMethod(calculationCtx, calculationCanvas, func, a, b, partialN, method);
+
+                animationStep++;
+                setTimeout(animate, 300);
+            }
+
+            animate();
+        }
+
+        // 生成练习
+        function generateExercise() {
+            const level = document.getElementById('exerciseLevel').value;
+            const contentDiv = document.getElementById('exerciseContent');
+
+            const exercises = {
+                basic: `
+                    <div class="step">基础题：计算 ∫₀² x² dx</div>
+                    <div class="step">提示：使用基本积分公式</div>
+                `,
+                intermediate: `
+                    <div class="step">中级题：用梯形法计算 ∫₀¹ eˣ dx（n=4）</div>
+                    <div class="step">要求：给出数值结果和误差分析</div>
+                `,
+                advanced: `
+                    <div class="step">高级题：求曲线y=x²与y=2x围成图形的面积</div>
+                    <div class="step">要求：确定积分区间和被积函数</div>
+                `
+            };
+
+            contentDiv.innerHTML = exercises[level] || '<div class="step">选择难度等级</div>';
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM加载完成，开始初始化页面...');
+
+            setTimeout(() => {
+                initCanvases();
+                updateConceptDemo();
+                updateCalculation();
+
+                // 初始化MathJax渲染
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise().catch(err => console.warn('MathJax渲染错误:', err));
+                    }
+                }, 500);
+
+                // 延迟渲染确保所有元素都已加载
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise().catch(err => console.warn('MathJax全局渲染错误:', err));
+                    }
+                }, 1000);
+
+                console.log('定积分与曲边梯形面积虚拟实验室加载完成');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
