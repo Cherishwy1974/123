@@ -7,12 +7,10 @@
     
     <!-- 本地资源 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- D3.js -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="./assets/noto-serif-sc.css">
+
+    <!-- D3.js 本地化 -->
+    <script src="./d3.v7.min.js"></script>
     
     <!-- MathJax配置 -->
     <script>
@@ -748,7 +746,7 @@
                         isTeaching = true;
                         updateStatus('已连接', 'connected');
                         startBtn.textContent = '💖 虚拟人已就绪';
-                        
+
                         setTimeout(() => {
                             speakContent(currentSlide + 1);
                         }, 1000);
@@ -767,6 +765,26 @@
                         startBtn.textContent = '❌ 连接失败';
                         startBtn.disabled = false;
                         isTeaching = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        // 虚拟人讲完一帧（一段话），触发自动翻页
+                        if (isAutoPlaying && currentSlide < totalSlides - 1) {
+                            console.log('🎬 自动播放: 准备翻页到下一页');
+                            setTimeout(() => {
+                                if (isAutoPlaying) {
+                                    currentSlide++;
+                                    showSlide(currentSlide);
+                                    updateSlideInfo();
+                                    setTimeout(() => {
+                                        speakContent(currentSlide + 1);
+                                    }, 800);
+                                }
+                            }, 1500); // 翻页前短暂停顿
+                        }
+                    })
+                    .on('tts_duration', (data) => {
+                        console.log('📊 TTS时长信息:', data);
                     });
 
                 avatarPlatform.setApiInfo({
@@ -968,52 +986,26 @@
                 updateStatus('🎬 自动播放开始！', 'recording');
                 document.body.classList.add('recording-mode');
 
+                // 确保虚拟人已连接
                 if (!isConnected) {
-                    console.log('🎬 后台尝试连接虚拟人...');
-                    startTeaching().catch(error => {
-                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
-                    });
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    // 等待连接完成
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                 }
 
-                for (let slide = 1; slide <= totalSlides; slide++) {
-                    try {
-                        if (!isAutoPlaying) {
-                            console.log('🛑 自动播放被停止');
-                            break;
-                        }
+                // 从第一页开始
+                currentSlide = 0;
+                showSlide(0);
+                updateSlideInfo();
 
-                        console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);
-                        switchToSlideSilent(slide);
-                        updateStatus(`📖 第${slide}页/${totalSlides}页 - ${getSlideTitle(slide)}`, 'recording');
-
-                        await new Promise(resolve => setTimeout(resolve, 800));
-
-                        if (isConnected && isTeaching && avatarPlatform) {
-                            try {
-                                await speakContent(slide);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            } catch (error) {
-                                console.error(`❌ 第${slide}页语音播放失败:`, error);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            }
-                        } else {
-                            const slideTime = getSlideDuration(slide);
-                            await new Promise(resolve => setTimeout(resolve, slideTime));
-                        }
-
-                        const waitTime = slide === totalSlides ? 2000 : 1000;
-                        await new Promise(resolve => setTimeout(resolve, waitTime));
-
-                    } catch (error) {
-                        console.error(`❌ 第${slide}页播放过程出错:`, error);
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                    }
-                }
-
-                if (isAutoPlaying) {
-                    await new Promise(resolve => setTimeout(resolve, 3000));
+                // 开始第一页讲解，后续自动翻页由 frame_stop 事件驱动
+                await new Promise(resolve => setTimeout(resolve, 800));
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
                     stopAutoPlay();
                 }
 
