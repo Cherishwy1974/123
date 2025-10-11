@@ -148,6 +148,32 @@
             border-left: 3px solid transparent;
             font-size: 12px;
             color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-name {
+            flex: 1;
+        }
+
+        .open-btn {
+            opacity: 0;
+            padding: 2px 8px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+        }
+
+        .lesson-item:hover .open-btn {
+            opacity: 1;
+        }
+
+        .open-btn:hover {
+            background: rgba(102, 126, 234, 0.6);
+            transform: scale(1.05);
         }
 
         .lesson-item:hover {
@@ -412,16 +438,30 @@
                 lessons[chapter].forEach((lesson, index) => {
                     const lessonItem = document.createElement('div');
                     lessonItem.className = 'lesson-item';
-                    
+
                     const lessonName = lesson.replace('.html', '').replace(/^\d+_\d+\.\d+_/, '');
-                    lessonItem.textContent = `${index + 1}. ${lessonName}`;
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'lesson-name';
+                    nameSpan.textContent = `${index + 1}. ${lessonName}`;
+
+                    const openBtn = document.createElement('span');
+                    openBtn.className = 'open-btn';
+                    openBtn.textContent = '↗ 打开';
+                    openBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        window.open(lesson, '_blank');
+                    });
+
+                    lessonItem.appendChild(nameSpan);
+                    lessonItem.appendChild(openBtn);
                     lessonItem.dataset.file = lesson;
                     lessonItem.dataset.chapter = chapter;
-                    
+
                     lessonItem.addEventListener('click', function() {
                         loadLesson(this);
                     });
-                    
+
                     lessonList.appendChild(lessonItem);
                 });
                 
