@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第09章 二重积分计算（直角坐标）</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .blackboard {
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a2e;
+            position: relative;
+            display: flex;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            padding: 30px;
+            display: flex;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .left-panel {
+            width: 35%;
+            height: 100%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .right-panel {
+            width: 65%;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .chalk-text {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #e1bee7;
+        }
+
+        .emphasis {
+            color: #FF6B6B;
+            font-size: 18px;
+        }
+
+        .formula-box {
+            background: rgba(255,224,102,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed rgba(255,224,102,0.4);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .chalk-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .chalk-list li {
+            position: relative;
+            padding-left: 20px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .chalk-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #FFE066;
+        }
+
+        .svg-animation {
+            width: 100%;
+            height: auto;
+            max-width: none;
+            max-height: none;
+            transform: translateX(-70px) scale(2);
+            transform-origin: left center;
+        }
+
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #FFE066;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        .small-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .mjx-chtml {
+            color: #ffffff !important;
+            font-size: 16px !important;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+            display: none !important;
+        }
+
+        .avatar-container {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px;
+            height: 850px;
+            overflow: hidden;
+            z-index: 50;
+            pointer-events: none;
+            background: transparent;
+        }
+        
+        .wrapper { 
+            width: 100%; 
+            height: 100%; 
+            background: transparent; 
+            pointer-events: auto; 
+        }
+
+        .subtitle-area {
+            position: absolute;
+            bottom: 8px;
+            left: 20px;
+            right: 20px;
+            min-height: 36px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            padding: 0 16px;
+            z-index: 110;
+            text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7);
+            pointer-events: none;
+        }
+
+        .control-bar {
+            position: fixed;
+            left: -240px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 200;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .control-bar:hover { 
+            left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
+        }
+        
+        .control-bar::before {
+            content: '▶️';
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
+            writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
+        }
+        
+        .btn {
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .btn:hover { 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .btn.primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
+        }
+
+        .recording-mode .control-bar {
+            left: -300px;
+            transition: left 0.5s ease;
+        }
+    </style>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\(', '\)']],
+                displayMath: [['$$', '$$'], ['\[', '\]']],
+                packages: ['base', 'ams']
+            },
+            startup: {
+                pageReady: () => {
+                    console.log('MathJax is ready.');
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container">
+            <div class="wrapper" id="avatarWrapper"></div>
+        </div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+        
+        <!-- 第1页：累次积分法 -->
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">累次积分法</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">基本思想</p>
+                    <p class="chalk-text">将二重积分化为两次一重积分</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\iint_D f(x,y)dxdy = \int_a^b \left[\int_{y_1(x)}^{y_2(x)} f(x,y)dy\right]dx$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">计算步骤</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">画出积分区域D</li>
+                        <li class="chalk-text">确定积分次序（先y后x或先x后y）</li>
+                        <li class="chalk-text">确定积分上下限</li>
+                        <li class="chalk-text">先算内层积分，再算外层积分</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 滤镜定义 -->
+                        <defs>
+                            <filter id="glow09_2_1">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- 坐标系 - 添加发光效果 -->
+                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow09_2_1)"/>
+                        <line x1="150" y1="500" x2="150" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow09_2_1)"/>
+                        <text x="620" y="455" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow09_2_1)">x</text>
+                        <text x="145" y="85" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow09_2_1)">y</text>
+
+                        <!-- 积分区域D - 添加发光效果 -->
+                        <path d="M 200 450 L 200 300 Q 300 250, 400 300 L 400 450 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_2_1)">
+                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
+                        </path>
+
+                        <!-- 上下边界 - 添加发光效果 -->
+                        <path d="M 200 300 Q 300 250, 400 300" stroke="#FF6B6B" stroke-width="4" filter="url(#glow09_2_1)"/>
+                        <text x="300" y="240" fill="#FF6B6B" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow09_2_1)">y=y₂(x)</text>
+
+                        <line x1="200" y1="450" x2="400" y2="450" stroke="#FF6B6B" stroke-width="4" filter="url(#glow09_2_1)"/>
+                        <text x="300" y="470" fill="#FF6B6B" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow09_2_1)">y=y₁(x)</text>
+
+                        <!-- 左右边界 - 添加发光效果 -->
+                        <line x1="200" y1="450" x2="200" y2="300" stroke="#FFE066" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow09_2_1)"/>
+                        <text x="190" y="480" fill="#FFE066" font-size="16" font-weight="bold" text-anchor="end" filter="url(#glow09_2_1)">x=a</text>
+
+                        <line x1="400" y1="450" x2="400" y2="300" stroke="#FFE066" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow09_2_1)"/>
+                        <text x="410" y="480" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow09_2_1)">x=b</text>
+
+                        <!-- 竖直切片 - 添加发光效果 -->
+                        <line x1="300" y1="450" x2="300" y2="270" stroke="#9370DB" stroke-width="4" filter="url(#glow09_2_1)">
+                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <text x="310" y="360" fill="#9370DB" font-size="14" font-weight="bold" filter="url(#glow09_2_1)">先对y积分</text>
+
+                        <!-- 标注 - 添加粗体和发光 -->
+                        <text x="350" y="50" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_2_1)">先y后x的积分次序</text>
+                        <text x="350" y="520" fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow09_2_1)">
+                            竖直切片法
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页：例题1 -->
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">例题：矩形区域</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">题目</p>
+                    <p class="chalk-text">计算 $\iint_D xydxdy$，其中D由 $x=0, x=1, y=0, y=2$ 围成。</p>
+                    <p class="chalk-text emphasis">解答</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\iint_D xydxdy = \int_0^1 \left[\int_0^2 xydy\right]dx$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">先对y积分：$\int_0^2 xydy = x\left[\frac{y^2}{2}\right]_0^2 = 2x$</li>
+                        <li class="chalk-text">再对x积分：$\int_0^1 2xdx = \left[x^2\right]_0^1 = 1$</li>
+                    </ul>
+                    <p class="chalk-text emphasis">答案：1</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow2">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+                        <line x1="150" y1="500" x2="150" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+
+                        <!-- 矩形区域 -->
+                        <rect x="150" y="250" width="200" height="200" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4" filter="url(#glow2)">
+                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
+                        </rect>
+
+                        <!-- 标注 -->
+                        <text x="140" y="260" fill="#FFE066" font-size="16" text-anchor="end" font-weight="bold" filter="url(#glow2)">y=2</text>
+                        <text x="140" y="460" fill="#FFE066" font-size="16" text-anchor="end" font-weight="bold" filter="url(#glow2)">y=0</text>
+                        <text x="150" y="470" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow2)">x=0</text>
+                        <text x="350" y="470" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow2)">x=1</text>
+
+                        <!-- 积分过程动画 -->
+                        <line x1="250" y1="450" x2="250" y2="250" stroke="#FF6B6B" stroke-width="5" filter="url(#glow2)">
+                            <animate attributeName="x1" values="150;350;150" dur="4s" repeatCount="indefinite"/>
+                            <animate attributeName="x2" values="150;350;150" dur="4s" repeatCount="indefinite"/>
+                        </line>
+
+                        <!-- 结果 -->
+                        <text x="250" y="350" fill="#FF6B6B" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow2)">∬xydy dx = 1</text>
+
+                        <!-- 标注 -->
+                        <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow2)">矩形区域上的二重积分</text>
+                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow2)">
+                            先y后x，结果为1
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3-6页省略，直接添加JavaScript -->
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">例题：三角形区域</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">题目</p>
+                    <p class="chalk-text">计算 $\iint_D (x+y)dxdy$，D由 $x=0, y=0, x+y=1$ 围成。</p>
+                    <p class="chalk-text emphasis">解答</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\int_0^1 \left[\int_0^{1-x} (x+y)dy\right]dx$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">先对y积分：$\int_0^{1-x} (x+y)dy = \frac{1-x}{2}$</li>
+                        <li class="chalk-text">再对x积分：$\int_0^1 \frac{1-x}{2}dx = \frac{1}{6}$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow3">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow3)"/>
+                        <line x1="150" y1="500" x2="150" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow3)"/>
+                        <path d="M 150 450 L 150 250 L 350 450 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4" filter="url(#glow3)">
+                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">三角形区域</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">交换积分次序</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">为什么要交换次序？</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">简化计算</li>
+                        <li class="chalk-text">某个次序无法积分</li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\int_a^b \left[\int_{y_1(x)}^{y_2(x)} f(x,y)dy\right]dx$$</p>
+                        <p class="chalk-text">$$= \int_c^d \left[\int_{x_1(y)}^{x_2(y)} f(x,y)dx\right]dy$$</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow4">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <text x="350" y="300" fill="#ffffff" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow4)">交换积分次序</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">对称性的利用</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">奇偶对称性</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">若D关于y轴对称，f(x,y)关于x为奇函数，则积分为0</li>
+                        <li class="chalk-text">若D关于x轴对称，f(x,y)关于y为奇函数，则积分为0</li>
+                    </ul>
+                    <p class="chalk-text small-text">利用对称性可以大大简化计算</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow5">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="350" cy="300" r="120" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow5)"/>
+                        <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow5)">对称性</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">计算步骤</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">画出积分区域</li>
+                        <li class="chalk-text">选择积分次序</li>
+                        <li class="chalk-text">确定积分限</li>
+                        <li class="chalk-text">先内后外计算</li>
+                    </ul>
+                    <p class="chalk-text emphasis">技巧</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">交换积分次序</li>
+                        <li class="chalk-text">利用对称性</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow6">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow6)">
+                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="350" y="255" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow6)">二重积分</text>
+                        <text x="350" y="520" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow6)">计算方法总结</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 6;
+
+        const pageContents = [
+            "累次积分法是计算二重积分的基本方法，将二重积分化为两次一重积分。计算步骤是：画出积分区域，确定积分次序，确定积分上下限，先算内层再算外层。",
+            "例题：计算矩形区域上xy的二重积分。先对y从0到2积分得到2x，再对x从0到1积分得到1。矩形区域的积分最简单。",
+            "三角形区域的积分需要注意上下限的确定。对于x加y等于1围成的三角形，y的上限是1减x。",
+            "有时需要交换积分次序来简化计算。先y后x和先x后y的积分次序可以互换，但要重新确定积分限。",
+            "利用对称性可以简化计算。如果区域关于坐标轴对称，且被积函数是奇函数，则积分为0。",
+            "总结：二重积分的计算关键是画图、选择合适的积分次序、正确确定积分限。掌握交换次序和对称性等技巧可以大大简化计算。"
+        ];
+
+        const autoPlayDurations = {
+            1: 12000, 2: 12000, 3: 12000, 4: 12000, 5: 12000, 6: 10000
+        };
+
+        function switchToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNum) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+            currentPage = pageNum;
+            document.getElementById('currentPage').textContent = pageNum;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) switchToPage(currentPage + 1);
+        }
+
+        function previousPage() {
+            if (currentPage > 1) switchToPage(currentPage - 1);
+        }
+
+        async function startTeaching() {
+            console.log('开始讲解');
+        }
+
+        async function startAutoPlay() {
+            console.log('自动播放');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousPage();
+            }
+        });
+
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextPage();
+                } else if (e.deltaY < 0) {
+                    previousPage();
+                }
+            }, 50);
+        }, { passive: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchToPage(1);
+        });
+    </script>
+</body>
+</html>
+

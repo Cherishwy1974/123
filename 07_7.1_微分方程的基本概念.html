@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第07章 微分方程的基本概念</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .blackboard {
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a2e;
+            position: relative;
+            display: flex;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            padding: 30px;
+            display: flex;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .left-panel {
+            width: 35%;
+            height: 100%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .right-panel {
+            width: 65%;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .chalk-text {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #e1bee7;
+        }
+
+        .emphasis {
+            color: #FF6B6B;
+            font-size: 18px;
+        }
+
+        .formula-box {
+            background: rgba(255,224,102,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed rgba(255,224,102,0.4);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .chalk-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .chalk-list li {
+            position: relative;
+            padding-left: 20px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .chalk-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #FFE066;
+        }
+
+        .svg-animation {
+            width: 100%;
+            height: auto;
+            max-width: none;
+            max-height: none;
+            transform: translateX(-70px) scale(2);
+            transform-origin: left center;
+        }
+        /* 统一视觉：取消发光，文字加粗，圆角矩形 */
+        svg.svg-animation * { filter: none !important; }
+        svg.svg-animation text { font-weight: bold; }
+        svg.svg-animation rect { rx: 10px; }
+
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #FFE066;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        .small-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .mjx-chtml {
+            color: #ffffff !important;
+            font-size: 16px !important;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+            display: none !important;
+        }
+
+        .avatar-container {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px;
+            height: 850px;
+            overflow: hidden;
+            z-index: 50;
+            pointer-events: none;
+            background: transparent;
+        }
+        
+        .wrapper { 
+            width: 100%; 
+            height: 100%; 
+            background: transparent; 
+            pointer-events: auto; 
+        }
+
+        .subtitle-area {
+            position: absolute;
+            bottom: 8px;
+            left: 20px;
+            right: 20px;
+            min-height: 36px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            padding: 0 16px;
+            z-index: 110;
+            text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7);
+            pointer-events: none;
+        }
+
+        .control-bar {
+            position: fixed;
+            left: -240px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 200;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .control-bar:hover { 
+            left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
+        }
+        
+        .control-bar::before {
+            content: '▶️';
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
+            writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
+        }
+        
+        .btn {
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .btn:hover { 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .btn.primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
+        }
+
+        .recording-mode .control-bar {
+            left: -300px;
+            transition: left 0.5s ease;
+        }
+    </style>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\(', '\)']],
+                displayMath: [['$$', '$$'], ['\[', '\]']],
+                packages: ['base', 'ams'],
+                processEscapes: true,
+                processEnvironments: true,
+                macros: {
+                    frac: ['\frac{#1}{#2}', 2],
+                    dfrac: ['\displaystyle\frac{#1}{#2}', 2]
+                }
+            },
+            startup: {
+                pageReady: () => {
+                    console.log('MathJax is ready.');
+                    return MathJax.startup.defaultPageReady();
+                }
+            },
+            options: {
+                processHtmlClass: 'tex2jax_process',
+                ignoreHtmlClass: 'tex2jax_ignore'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container">
+            <div class="wrapper" id="avatarWrapper"></div>
+        </div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 4 页</div>
+        
+        <!-- 第1页：什么是微分方程 -->
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">什么是微分方程？</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">含有未知函数及其导数的方程</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\frac{dy}{dx} = f(x, y)$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong>未知函数：</strong>y(x)</li>
+                        <li class="chalk-text"><strong>导数：</strong>y', y'', ...</li>
+                        <li class="chalk-text"><strong>目标：</strong>找到满足方程的函数</li>
+                    </ul>
+                    <p class="chalk-text small-text">微分方程描述了变化率与函数之间的关系</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow1">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
+                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
+                        <text x="620" y="455" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow1)">x</text>
+                        <text x="95" y="85" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow1)">y</text>
+
+                        <!-- 方程框 -->
+                        <rect x="200" y="50" width="300" height="80" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow1)">
+                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                        </rect>
+                        <text x="350" y="95" fill="#FF6B6B" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow1)">dy/dx = f(x, y)</text>
+
+                        <!-- 问号动画 -->
+                        <text x="350" y="200" fill="#FFE066" font-size="60" text-anchor="middle" font-weight="bold" opacity="0" filter="url(#glow1)">
+                            ?
+                            <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
+                        </text>
+
+                        <!-- 解曲线族 -->
+                        <path d="M 100 400 Q 250 300, 400 350 T 600 250" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
+                            <animate attributeName="stroke-opacity" values="0.4;0.6;0.4" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M 100 380 Q 250 280, 400 330 T 600 230" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
+                            <animate attributeName="stroke-opacity" values="0.4;0.6;0.4" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M 100 360 Q 250 260, 400 310 T 600 210" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
+                            <animate attributeName="stroke-width" values="3;5;3" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M 100 340 Q 250 240, 400 290 T 600 190" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
+                            <animate attributeName="stroke-opacity" values="0.4;0.6;0.4" dur="2s" begin="1s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M 100 320 Q 250 220, 400 270 T 600 170" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
+                            <animate attributeName="stroke-opacity" values="0.4;0.6;0.4" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+                        </path>
+
+                        <!-- 标注 -->
+                        <text x="350" y="500" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">
+                            解曲线族
+                            <animate attributeName="fill-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页：通解与特解 -->
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">通解与特解</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">通解：包含任意常数C的解</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$y = Ce^x$$</p>
+                        <p class="chalk-text small-text">（C是任意常数）</p>
+                    </div>
+                    <p class="chalk-text emphasis">特解：满足初始条件的解</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$y(0) = 2 \Rightarrow y = 2e^x$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">通解是无穷多条曲线</li>
+                        <li class="chalk-text">特解是其中的一条</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow2">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+
+                        <!-- 通解族（多条曲线） -->
+                        <path d="M 100 440 Q 250 380, 400 300 T 600 150" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow2)"/>
+                        <path d="M 100 430 Q 250 360, 400 280 T 600 130" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow2)"/>
+                        <path d="M 100 420 Q 250 340, 400 260 T 600 110" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow2)"/>
+                        <path d="M 100 410 Q 250 320, 400 240 T 600 90" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow2)"/>
+                        <path d="M 100 400 Q 250 300, 400 220 T 600 70" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow2)"/>
+
+                        <!-- 特解（高亮的一条） -->
+                        <path d="M 100 420 Q 250 340, 400 260 T 600 110" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow2)">
+                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+                        </path>
+
+                        <!-- 初始条件标记 -->
+                        <circle cx="100" cy="420" r="8" fill="#FF6B6B" filter="url(#glow2)">
+                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="120" y="425" fill="#FF6B6B" font-size="18" font-weight="bold" filter="url(#glow2)">y(0) = 2</text>
+
+                        <!-- 标注 -->
+                        <text x="350" y="50" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow2)">通解族（蓝色）</text>
+                        <text x="350" y="500" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow2)">
+                            特解（红色）
+                            <animate attributeName="fill-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3页：阶与次数 -->
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">阶与次数</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">阶：最高导数的阶数</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">一阶：$y' = f(x, y)$</li>
+                        <li class="chalk-text">二阶：$y'' = f(x, y, y')$</li>
+                        <li class="chalk-text">n阶：$y^{(n)} = f(x, y, ..., y^{(n-1)})$</li>
+                    </ul>
+                    <p class="chalk-text emphasis">次数：最高阶导数的指数</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$(y'')^2 + y = 0$$</p>
+                        <p class="chalk-text small-text">二阶二次方程</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow3">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                            <marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
+                            </marker>
+                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
+                            </marker>
+                            <marker id="arrow3" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#FF6B6B"/>
+                            </marker>
+                        </defs>
+                        <!-- 三个方框表示不同阶 -->
+                        <g id="order1">
+                            <rect x="100" y="100" width="150" height="100" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow3)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                            </rect>
+                            <text x="175" y="140" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">一阶</text>
+                            <text x="175" y="170" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow3)">y' = f(x)</text>
+                        </g>
+
+                        <g id="order2">
+                            <rect x="275" y="100" width="150" height="100" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow3)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+                            </rect>
+                            <text x="350" y="140" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">二阶</text>
+                            <text x="350" y="170" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow3)">y'' = f(x)</text>
+                        </g>
+
+                        <g id="ordern">
+                            <rect x="450" y="100" width="150" height="100" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow3)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
+                            </rect>
+                            <text x="525" y="140" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">n阶</text>
+                            <text x="525" y="170" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow3)">y⁽ⁿ⁾ = f(x)</text>
+                        </g>
+
+                        <!-- 箭头指向复杂度 -->
+                        <path d="M 175 220 L 175 280" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow1)" filter="url(#glow3)"/>
+                        <path d="M 350 220 L 350 300" stroke="#FFE066" stroke-width="3" marker-end="url(#arrow2)" filter="url(#glow3)"/>
+                        <path d="M 525 220 L 525 320" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrow3)" filter="url(#glow3)"/>
+
+                        <!-- 复杂度标尺 -->
+                        <line x1="100" y1="400" x2="600" y2="400" stroke="#ffffff" stroke-width="2" filter="url(#glow3)"/>
+                        <text x="100" y="430" fill="#ffffff" font-size="18" font-weight="bold" filter="url(#glow3)">简单</text>
+                        <text x="550" y="430" fill="#ffffff" font-size="18" font-weight="bold" filter="url(#glow3)">复杂</text>
+
+                        <!-- 标注 -->
+                        <text x="350" y="480" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">
+                            阶数越高，求解越复杂
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4页：总结 -->
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">微分方程的三要素</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong>定义：</strong>含导数的方程</li>
+                        <li class="chalk-text"><strong>解：</strong>通解与特解</li>
+                        <li class="chalk-text"><strong>分类：</strong>阶与次数</li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\frac{dy}{dx} = f(x, y)$$</p>
+                        <p class="chalk-text small-text">一阶微分方程</p>
+                    </div>
+                    <p class="chalk-text small-text">下一步：学习如何求解微分方程</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow4">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 中心圆 -->
+                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="4" filter="url(#glow4)">
+                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="350" y="260" fill="#FFE066" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow4)">微分方程</text>
+
+                        <!-- 三个分支 -->
+                        <g id="branch1">
+                            <line x1="280" y1="200" x2="180" y2="120" stroke="#4ECDC4" stroke-width="3" filter="url(#glow4)"/>
+                            <circle cx="180" cy="120" r="50" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow4)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="180" y="115" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow4)">含导数</text>
+                            <text x="180" y="135" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow4)">的方程</text>
+                        </g>
+
+                        <g id="branch2">
+                            <line x1="420" y1="200" x2="520" y2="120" stroke="#FFE066" stroke-width="3" filter="url(#glow4)"/>
+                            <circle cx="520" cy="120" r="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow4)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="520" y="115" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow4)">通解与</text>
+                            <text x="520" y="135" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow4)">特解</text>
+                        </g>
+
+                        <g id="branch3">
+                            <line x1="350" y1="330" x2="350" y2="420" stroke="#FF6B6B" stroke-width="3" filter="url(#glow4)"/>
+                            <circle cx="350" cy="420" r="50" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow4)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="350" y="415" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow4)">阶与</text>
+                            <text x="350" y="435" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow4)">次数</text>
+                        </g>
+
+                        <!-- 标注 -->
+                        <text x="350" y="520" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow4)">
+                            基本概念框架
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 控制栏 -->
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+
+    <!-- 字幕区域 -->
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 4;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isAutoPlaying = false;
+
+        const pageContents = [
+            "微分方程是含有未知函数及其导数的方程，它描述了变化率与函数之间的关系。",
+            "通解是包含任意常数C的解，代表无穷多条曲线。特解是满足初始条件的具体解。",
+            "微分方程的阶是最高导数的阶数，次数是最高阶导数的指数。阶数越高，求解越复杂。",
+            "微分方程的三要素是：定义、解的形式、以及分类方法。掌握这些基本概念是求解的基础。"
+        ];
+
+        const autoPlayDurations = {
+            1: 10000,
+            2: 12000,
+            3: 12000,
+            4: 10000
+        };
+
+        function switchToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNum) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+
+            currentPage = pageNum;
+            document.getElementById('currentPage').textContent = pageNum;
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                switchToPage(currentPage + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                switchToPage(currentPage - 1);
+            }
+        }
+
+        async function startTeaching() {
+            console.log('开始讲解');
+        }
+
+        async function startAutoPlay() {
+            console.log('自动播放');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousPage();
+            }
+        });
+
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextPage();
+                } else if (e.deltaY < 0) {
+                    previousPage();
+                }
+            }, 50);
+        }, { passive: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchToPage(1);
+        });
+    </script>
+</body>
+</html>

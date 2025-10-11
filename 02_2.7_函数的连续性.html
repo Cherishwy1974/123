@@ -1,0 +1,1057 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_2.12_函数的连续性与间断点</title>
+    <!-- 本地资源 -->
+    <script src="./tailwind.min.js"></script>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <script>
+        // MathJax配置
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                ready: () => {
+                    console.log('✅ MathJax已加载并配置完成');
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .blackboard {
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a2e;
+            position: relative;
+            border: 10px solid #795548;
+            margin: 0;
+        }
+
+        /* 虚拟人显示区域 */
+        .avatar-container {
+            position: fixed;
+            top: 60%; 
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px; 
+            height: 850px;
+            overflow: hidden; 
+            z-index: 50;
+            pointer-events: none; 
+            background: transparent;
+        }
+        
+        .wrapper {
+            width: 100%; 
+            height: 100%;
+            background: transparent; 
+            pointer-events: auto;
+        }
+
+        .slide-container { 
+            width: 100%; 
+            height: 100%; 
+            position: relative; 
+        }
+        
+        .slide { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.6s ease-in-out; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 2rem; 
+            background-color: transparent; 
+        }
+        
+        .slide.active { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+        
+        .slide-content { 
+            display: flex; 
+            flex-direction: row; 
+            gap: 2rem; 
+            width: 100%; 
+            max-width: 1400px; 
+            height: 95%; 
+        }
+        
+        .blackboard-text {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN', 'Songti SC', 'SimSun', '宋体', serif;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        
+        .blackboard-text h1 { 
+            color: #f1c40f; 
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); 
+        }
+        
+        .blackboard-text h2 { 
+            color: #f1c40f; 
+            border-bottom: 2px solid #f39c12; 
+        }
+        
+        .blackboard-text h3 { 
+            color: #1abc9c; 
+        }
+        
+        .blackboard-text strong { 
+            color: #e74c3c; 
+        }
+        
+        .blackboard-text .math-formula { 
+            background-color: rgba(0,0,0,0.2); 
+            padding: 1rem; 
+            border-radius: 0.5rem; 
+            border-left: 4px solid #f39c12; 
+            font-size: 20px; 
+        }
+        
+        .animation-pane {
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        /* 左侧控制栏 */
+        .control-bar {
+            position: fixed; 
+            left: -220px; 
+            top: 50%;
+            transform: translateY(-50%); 
+            width: 250px;
+            background: rgba(30,30,30,0.95);
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            gap: 10px; 
+            z-index: 200;
+            border-radius: 0 15px 15px 0;
+            padding: 20px 15px; 
+            transition: left 0.3s ease;
+        }
+        
+        .control-bar:hover { 
+            left: 0; 
+        }
+        
+        .control-bar::before {
+            content: '▶️'; 
+            position: absolute;
+            top: 50%; 
+            right: -25px;
+            transform: translateY(-50%);
+            background: rgba(30,30,30,0.95);
+            padding: 10px 5px; 
+            border-radius: 0 10px 10px 0;
+            font-size: 16px;
+            writing-mode: vertical-lr;
+        }
+        
+        .btn {
+            padding: 12px 20px; 
+            background: linear-gradient(135deg, #4a4a4a, #666);
+            color: white; 
+            border: none; 
+            border-radius: 8px;
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease; 
+            width: 100%; 
+            text-align: center;
+        }
+        
+        .btn:hover { 
+            background: linear-gradient(135deg, #555, #777); 
+            transform: translateY(-2px); 
+        }
+        
+        .btn.primary { 
+            background: linear-gradient(135deg, #FF69B4, #FF1493); 
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 字幕区域 */
+        .subtitle-area {
+            position: absolute;
+            bottom: 20px; 
+            left: 50px; 
+            right: 50px;
+            height: 50px; 
+            background: rgba(0,0,0,0.8);
+            border-radius: 8px; 
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            z-index: 60; 
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px; 
+            line-height: 1.4;
+        }
+
+        /* 状态指示器 */
+        .status-indicator {
+            position: absolute;
+            top: 10px; 
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white; 
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 100;
+            transition: opacity 0.3s ease;
+            display: none;
+        }
+        
+        .status-indicator.connected { 
+            background: rgba(76, 175, 80, 0.8); 
+            display: block;
+        }
+        
+        .status-indicator.recording {
+            background: rgba(244, 67, 54, 0.8);
+            animation: pulse 1.5s infinite;
+            display: block;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .status-indicator.error { 
+            background: rgba(244, 67, 54, 0.8); 
+            display: block;
+        }
+        
+        .status-indicator.connecting { 
+            background: rgba(255, 152, 0, 0.8); 
+            display: block;
+        }
+
+        /* 录制模式下隐藏UI元素 */
+        .recording-mode .status-indicator {
+            opacity: 0; 
+            pointer-events: none;
+        }
+        
+        .recording-mode .control-bar {
+            left: -300px; 
+            transition: left 0.5s ease;
+        }
+
+        /* 导航按钮 */
+        .nav-btn { 
+            background-color: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            transition: all 0.3s ease; 
+        }
+        
+        .nav-btn:hover { 
+            background-color: rgba(255,255,255,0.2); 
+            transform: translateY(-2px); 
+        }
+        
+        .nav-btn:disabled { 
+            opacity: 0.4; 
+            cursor: not-allowed; 
+        }
+    </style>
+</head>
+<body class="blackboard">
+
+    <div id="statusIndicator" class="status-indicator">等待连接</div>
+    
+    <!-- 虚拟人显示区域 -->
+    <div class="avatar-container">
+        <div class="wrapper" id="avatarWrapper"></div>
+    </div>
+
+    <div id="slide-container" class="slide-container flex-grow">
+        
+        <div class="slide active"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+            <div style="flex: 1; text-align: center; padding: 2rem;">
+                <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                    函数的连续性
+                </h1>
+                <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                    第2章 视频 2.7
+                </p>
+                <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 连续性的定义</p>
+                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 间断点的分类</p>
+                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 连续函数的性质</p>
+                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 闭区间连续函数定理</p>
+                </div>
+            </div>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+                    <defs>
+                        <linearGradient id="grad7" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3498db;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="300" y="120" font-size="48" fill="url(#grad7)" text-anchor="middle" font-family="serif">
+                        f(x)
+                        <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                    </text>
+                    <path d="M 100 350 Q 200 200, 300 250 T 500 300" stroke="#2ecc71" stroke-width="4" fill="none">
+                        <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                    <circle cx="300" cy="250" r="8" fill="#e74c3c"/>
+                    <text x="300" y="380" font-size="24" fill="#ecf0f1" text-anchor="middle">连续性</text>
+                </svg>
+            </div>
+        </div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">直观理解：什么是连续？</h2><p class="mt-4 leading-relaxed">在图像上，一个函数是<strong>连续</strong>的，就意味着它的图线是<strong>没有断开</strong>的，我们可用一支笔<strong>一笔画</strong>出来。</p><p class="mt-8 leading-relaxed">如果画图时，笔被迫抬起，那么抬笔的那个点就是<strong>间断点</strong>。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">从增量开始</h2><p class="mt-4 leading-relaxed">在讨论连续之前，我们先理解<strong>增量</strong>的概念，即变化量。</p><p class="mt-6 leading-relaxed">当自变量 $x$ 从 $x₀$ 变化了 $Δx$ 时，函数值 $y$ 也会跟着变化 $Δy$。这个 $Δy$ 就是函数的增量。</p><div class="text-center mt-10 math-formula">$Δy = f(x₀ + Δx) - f(x₀)$</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">连续的严格定义</h2><p class="mt-4 leading-relaxed">直观的一笔画需要用严格的数学语言来定义。函数 $f(x)$ 在点 $x_0$ 处连续，必须<strong>同时满足</strong>三个条件。</p><p class="mt-8 leading-relaxed">接下来，我们将逐一剖析这三个条件。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">条件一：点有定义</h2><p class="mt-4 leading-relaxed">函数在 $x_0$ 这一点必须有意义，不能是一个无底洞。</p><p class="mt-8 leading-relaxed">也就是说，当我们把 $x_0$ 代入函数时，必须能得到一个确定的函数值 $f(x_0)$。</p><div class="text-center mt-10 math-formula">$f(x_0)$ 必须存在</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">条件二：极限存在</h2><p class="mt-4 leading-relaxed">当 $x$ 从 $x_0$ 的<strong>左边</strong>和<strong>右边</strong>无限靠近时，函数值都必须趋近于<strong>同一个确定值</strong>。</p><p class="mt-8 leading-relaxed">这意味着函数图像在 $x_0$ 点的两侧是对得齐的，没有发生断裂。</p><div class="text-center mt-10 math-formula">$\lim\limits_{x \to x_0^-} f(x) = \lim\limits_{x \to x_0^+} f(x)$</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">条件三：极限值 = 函数值</h2><p class="mt-4 leading-relaxed">这是最关键的一步：函数图像两侧对齐的那个点，必须<strong>正好</strong>就是 $x_0$ 点本身所在的那个点。</p><p class="mt-8 leading-relaxed">这确保了图像不仅对齐了，而且没有留下一个小坑。</p><div class="text-center mt-10 math-formula">$\lim\limits_{x \to x_0} f(x) = f(x_0)$</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">什么是间断？</h2><p class="mt-4 leading-relaxed">很简单，任何<strong>违反了上述三大条件中任意一条</strong>的情况，都会导致函数图像在该点断开，形成一个<strong>间断点</strong>。</p><p class="mt-8 leading-relaxed">根据图像断开方式的不同，我们可以将间断点进行分类。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">间断点的分类</h2><p class="mt-4 leading-relaxed">根据间断点左右极限的存在情况，主要分为两大类：</p><ul class="list-decimal list-inside mt-6 space-y-4"><li><strong>第一类间断点：</strong> 左右极限<strong>都存在</strong>。这类问题通常比较温和。</li><li><strong>第二类间断点：</strong> 至少有一个单侧极限<strong>不存在</strong>。这类问题通常比较剧烈。</li></ul></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">第一类：可去间断点</h2><p class="mt-4 leading-relaxed"><strong>特征：</strong> 左右极限存在且相等，但<strong>不等于</strong>函数值（或者函数在该点无定义）。</p><p class="mt-8 leading-relaxed">图像上看，就像一条连续的线上挖掉了一个点。因为只要我们把这个点补回去，函数就连续了，所以称之为<strong>可去</strong>间断点。</p><p class="mt-4 text-gray-400">例: $f(x) = \frac{x^2-1}{x-1}$ 在 $x=1$ 处</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">第一类：跳跃间断点</h2><p class="mt-4 leading-relaxed"><strong>特征：</strong> 左右极限都存在，但<strong>不相等</strong>。</p><p class="mt-8 leading-relaxed">图像上看，函数在这一点发生了断层或跳跃，从一个值直接跳到了另一个值。</p><p class="mt-4 text-gray-400">例: 符号函数 $f(x) = \text{sgn}(x)$ 在 $x=0$ 处</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">第二类：无穷间断点</h2><p class="mt-4 leading-relaxed"><strong>特征：</strong> 至少有一个单侧极限为 $\infty$ 或 $-\infty$。</p><p class="mt-8 leading-relaxed">图像上看，函数在这一点附近会无限地趋近于一条垂直的渐近线，永不相交。</p><p class="mt-4 text-gray-400">例: $f(x) = \frac{1}{x}$ 在 $x=0$ 处</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">第二类：震荡间断点</h2><p class="mt-4 leading-relaxed"><strong>特征：</strong> 当 $x$ 趋近于某点时，函数值在某个范围内无限次地来回摆动，不趋于任何确定值。</p><p class="mt-8 leading-relaxed">图像上看，函数在该点附近变得越来越拥挤，发生了剧烈的震荡。</p><p class="mt-4 text-gray-400">例: $f(x) = \sin(\frac{1}{x})$ 在 $x=0$ 处</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">判断间断点的流程</h2><p class="mt-4 leading-relaxed">拿到一个函数和一个点，如何判断它的连续性？</p><ol class="list-decimal list-inside mt-6 space-y-4"><li><strong>第一步：</strong> 检查 $f(x_0)$ 是否存在？</li><li><strong>第二步：</strong> 计算 $\lim\limits_{x \to x_0^-} f(x)$ 和 $\lim\limits_{x \to x_0^+} f(x)$。</li><li><strong>第三步：</strong> 根据极限情况，结合 $f(x_0)$ 的值，对照定义，得出结论。</li></ol></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-center"><h2 class="text-5xl font-bold mb-10 pb-2">总结回顾</h2><ul class="text-2xl space-y-6 text-left"><li><strong>连续:</strong> 点存在、极限存在、点等于极限。</li><li><strong>间断:</strong> 违反上述任一条件。</li><li><strong>第一类间断:</strong> 左右极限都存在 (可去/跳跃)。</li><li><strong>第二类间断:</strong> 至少一侧极限不存在 (无穷/震荡)。</li></ul></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+
+    </div>
+
+    <!-- 字幕区域 -->
+    <div class="subtitle-area" id="subtitleArea">
+        欢迎学习函数的连续性与间断点！点击开始讲课启动虚拟人讲师。
+    </div>
+
+    <!-- 左侧控制栏 -->
+    <div class="control-bar">
+        <div style="color: white; margin-bottom: 1rem; text-align: center; font-size: 16px; font-weight: bold;">
+            第 <span id="currentSlide">1</span> 页 / 共 <span id="totalSlides">15</span> 页
+        </div>
+        <button class="btn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="startTeaching()" id="startBtn">🎀 开始讲课</button>
+        <button class="btn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" onclick="startAutoPlay()" id="autoPlayBtn" style="background: linear-gradient(135deg, #2196f3, #1976d2);">🎬 自动播放</button>
+        <div style="color: #ffab40; margin-top: 0.5rem; text-align: center; font-size: 16px; font-weight: bold; line-height: 1.2;">
+            💡 录制提示：<br>
+            点击自动播放后立即开始录屏<br>
+            系统会自动完成全部演示
+        </div>
+        <div style="color: #ccc; margin-top: 1rem; text-align: center; font-size: 16px; font-weight: bold;">
+            💡 快捷键：空格/→下一页 ←上一页 Enter播放
+        </div>
+    </div>
+
+    <!-- Navigation (保留原有导航，隐藏) -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center" style="display: none;">
+        <button id="prevBtn" class="nav-btn text-white font-bold py-2 px-6 rounded-lg">上一页</button>
+        <div id="slide-counter" class="text-lg text-gray-300">1 / 15</div>
+        <button id="nextBtn" class="nav-btn text-white font-bold py-2 px-6 rounded-lg">下一页</button>
+    </div>
+
+    <!-- 讯飞官方SDK -->
+    <script type="module">
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+
+            console.log('✅ 讯飞官方SDK模块已加载');
+            console.log('SDK版本:', AvatarPlatform.getVersion());
+            
+        } catch (error) {
+            console.error('❌ SDK模块加载失败:', error);
+        }
+
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+
+    <script>
+        // --- 全局变量 ---
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        const totalSlides = 15;
+
+        // 每页的讲稿内容 - 使用模板字符串避免引号冲突
+        const subtitleScript = {
+            1: `大家好，今天我们来深入探讨一个微积分中的核心概念——函数的连续性与间断点。这个概念不仅是后续学习微分和积分的基础，更能帮助我们理解函数图像背后细微而深刻的变化规律。`,
+            2: `在正式开始之前，我们先来建立一个直观的印象。什么是连续？最简单的理解，就是一笔画。请看右边的动画，第一条曲线是连续的，我们可以用一支笔从头到尾画出来，中间不需要抬笔。而第二条曲线，在中间发生了断裂，我们必须抬起笔才能画完，那个我们抬笔的地方，就是间断点。`,
+            3: `要理解函数在某一点的连续性这种细微的变化，我们必须先掌握一个基本工具——增量。增量，顾名思义，就是增加的量，或者说变化量。请看动画，当我们的自变量x从x0这个位置，移动了Δx的距离后，函数图像的高度，也就是函数值y，也相应地发生了变化，这个竖直方向的变化量，就是函数的增量Δy。`,
+            4: `一笔画虽然直观，但在数学上不够严谨。为了精确地描述不断开这个状态，数学家们提出了三个必须同时满足的条件。右边的动画展示了这三个条件的名字。在接下来的几页中，我们将像剥洋葱一样，一层一层地把这三个条件彻底讲清楚。`,
+            5: `第一个条件，也是最基础的条件：函数在我们要讨论的那个点x0必须是有意义的。看右边的动画，我们要在x0这个位置上讨论函数的性质，那么首先，函数图像在这里必须有一个实实在在的点，我们把x0代入函数，必须能算出一个具体的数值f(x0)。`,
+            6: `第二个条件，是关于靠近。当x从x0的左边和右边无限靠近时，函数图像必须也要无限靠近同一个高度。大家看动画，左边的路和右边的路正在慢慢地对齐。只有当它们完全对齐在同一个水平线上时，我们才说函数在这一点的极限存在。`,
+            7: `这是最关键的临门一脚。我们不仅要求图像两侧对齐了，还要求它们对齐的那个点，必须和函数在x0处实际的那个点完全重合。请看动画，只有当两侧的道路和中间的桥面完美连接，形成一个平滑的整体时，这个条件才算满足。`,
+            8: `理解了连续，那么理解间断就非常简单了。只要刚才那三个条件——点存在、极限存在、点等于极限——有任何一个不满足，函数图像就会像右边动画里那样出现裂痕，就是间断的。`,
+            9: `间断也分不同情况。我们可以根据左右极限的存在情况，把它们分为两大类。右边的动画是一个分类机。第一类间断点，对应的是左右极限都存在的情况，问题相对温和。而第二类间断点，是至少一侧极限不存在的，问题比较剧烈。`,
+            10: `我们先来看第一类间断点中比较简单的一种：可去间断点。它的特点是，函数的左右极限是相等的，只是不等于函数值，或者在这一点干脆没定义。图像上看，就像右边动画里那样，一条光滑的曲线上有一个小小的空洞。之所以叫可去，是因为这个问题是可以修复的。`,
+            11: `第一类的另一种情况是跳跃间断点。它的特点是，左右极限都存在，但是它们不相等。大家看右边的动画，函数图像从左边过来，到达某一点后，突然跳到了另一个高度，然后继续延伸。这个左右两侧的高度差，就是它的跳跃距离。`,
+            12: `现在我们来看看问题比较严重的第二类间断点。首先是无穷间断点。它的特征是，当x靠近某一点时，函数图像的一侧或两侧会无限地冲向正无穷或负无穷，就像右边动画里的小球一样，沿着一条看不见的垂直线飞走了。`,
+            13: `第二类中还有一种非常特殊的情况，叫震荡间断点。它的特征是，当x靠近某一点时，函数图像会在一个范围内无限次地、越来越快地上下摆动，就像右边动画里展示的那样。因为它永远不会稳定在任何一个值上，所以它的极限不存在。`,
+            14: `好了，学习了这么多概念，我们来梳理一下，拿到一个具体的函数，要如何判断它在某一点的连续性。右边的动画就为我们展示了一个清晰的流程图：首先，检查点是否有定义。然后，检查极限是否存在。最后，如果前两步都满足，再检查极限值是否等于函数值。`,
+            15: `最后，我们来总结一下今天学习的核心知识点。连续，意味着函数图像是一笔画的，它必须同时满足点存在、极限存在、点等于极限这三个条件。间断，则是违反了上述三个条件中的任何一个。根据左右极限的存在情况，间断点可以分为第一类和第二类。希望通过今天的学习，大家都能对函数的连续性有一个透彻的理解。`
+        };
+
+        // --- Main Slide Control ---
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slide-counter');
+        let animationControllers = [];
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            slideCounter.textContent = `${index + 1} / ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+
+            animationControllers.forEach((controller, i) => {
+                if (i === index) controller.start();
+                else controller.stop();
+            });
+            
+            // 使用MathJax渲染数学公式
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch((err) => console.log(err.message));
+            }
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => { if (currentSlide > 0) showSlide(currentSlide - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { if (currentSlide < slides.length - 1) showSlide(currentSlide + 1); });
+
+        // --- Base Animation Class ---
+        class BaseAnimation {
+            constructor(canvas) { 
+                this.canvas = canvas; 
+                this.ctx = canvas.getContext('2d'); 
+                this.animationFrameId = null; 
+                this.isActive = false; 
+                this.resizeCanvas(); 
+                window.addEventListener('resize', () => this.resizeCanvas()); 
+            }
+            resizeCanvas() { 
+                const container = this.canvas.parentElement; 
+                if (!container) return; 
+                this.canvas.width = container.clientWidth; 
+                this.canvas.height = container.clientHeight; 
+            }
+            start() { 
+                this.isActive = true; 
+                this.animate(); 
+            }
+            stop() { 
+                this.isActive = false; 
+                cancelAnimationFrame(this.animationFrameId); 
+            }
+            animate() { 
+                if (this.isActive) this.animationFrameId = requestAnimationFrame(() => this.animate()); 
+            }
+        }
+
+        // --- ANIMATIONS (保留原有的15个动画类) ---
+        class TitleAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.path = []; this.drawing = true; this.breakPoint = 0.6; this.t = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); if (this.drawing) { this.t += 0.01; if (this.t > 1) { this.t = 0; this.path = []; } const x = this.t * this.canvas.width; const y = this.canvas.height/2 + Math.sin(this.t * Math.PI * 2) * 50; this.path.push({x,y}); } this.ctx.strokeStyle = '#f1c40f'; this.ctx.lineWidth = 4; this.ctx.beginPath(); for (let i = 0; i < this.path.length; i++) { const p = this.path[i]; if (i / this.path.length > this.breakPoint && i / this.path.length < this.breakPoint + 0.05) { this.ctx.moveTo(p.x, p.y); } else { this.ctx.lineTo(p.x, p.y); } } this.ctx.stroke(); super.animate(); }
+        }
+        class DrawingAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.t = 0; this.phase = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.t += 0.01; if (this.t > 1) { this.t = 0; this.phase = (this.phase + 1) % 2; } const w = this.canvas.width, h = this.canvas.height; this.ctx.lineWidth = 4; this.ctx.strokeStyle = '#fff'; this.ctx.beginPath(); if (this.phase === 0) { for (let i = 0; i < this.t; i+=0.01) this.ctx.lineTo(i*w, h/2 + Math.sin(i*Math.PI*2)*50); this.ctx.stroke(); } else { for (let i = 0; i < this.t; i+=0.01) { if (i < 0.5) this.ctx.lineTo(i*w, h/2 + 50); else this.ctx.moveTo(i*w, h/2 - 50); } this.ctx.stroke(); } super.animate(); }
+        }
+        class IncrementAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.x0 = -0.5; this.dx = 0; this.time = 0; }
+            func(x) { return x * x; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); const centerX = this.canvas.width / 2, centerY = this.canvas.height * 0.8, scaleX = 200, scaleY = -200; this.time += 0.02; this.dx = Math.sin(this.time) * 1.2; const x0_px = centerX + this.x0 * scaleX, y0_px = centerY + this.func(this.x0) * scaleY; const x1_px = centerX + (this.x0 + this.dx) * scaleX, y1_px = centerY + this.func(this.x0 + this.dx) * scaleY; this.ctx.strokeStyle = 'rgba(255,255,255,0.3)'; this.ctx.beginPath(); this.ctx.moveTo(0, centerY); this.ctx.lineTo(this.canvas.width, centerY); this.ctx.moveTo(centerX, 0); this.ctx.lineTo(centerX, this.canvas.height); this.ctx.stroke(); this.ctx.strokeStyle = '#3498db'; this.ctx.lineWidth = 3; this.ctx.beginPath(); for (let x = -2; x <= 2; x += 0.05) this.ctx.lineTo(centerX + x * scaleX, centerY + this.func(x) * scaleY); this.ctx.stroke(); this.ctx.fillStyle = '#f1c40f'; this.ctx.beginPath(); this.ctx.arc(x0_px, y0_px, 6, 0, Math.PI*2); this.ctx.fill(); this.ctx.fillStyle = '#e74c3c'; this.ctx.beginPath(); this.ctx.arc(x1_px, y1_px, 6, 0, Math.PI*2); this.ctx.fill(); this.ctx.strokeStyle = '#f1c40f'; this.ctx.lineWidth = 2; this.ctx.beginPath(); this.ctx.moveTo(x0_px, y0_px); this.ctx.lineTo(x1_px, y0_px); this.ctx.stroke(); this.ctx.strokeStyle = '#e74c3c'; this.ctx.beginPath(); this.ctx.moveTo(x1_px, y0_px); this.ctx.lineTo(x1_px, y1_px); this.ctx.stroke(); this.ctx.fillStyle = '#fff'; this.ctx.font = 'bold 20px "Noto Serif SC", serif'; this.ctx.textAlign = 'center'; this.ctx.fillText('x₀', x0_px, centerY + 20); this.ctx.fillText('Δx', (x0_px + x1_px) / 2, y0_px - 10); this.ctx.textAlign = 'left'; this.ctx.fillText('Δy', x1_px + 10, (y0_px + y1_px) / 2); super.animate(); }
+        }
+        class ConditionsAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.progress = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.progress += 0.005; if (this.progress > 1) this.progress = 0; const p = this.progress; this.ctx.fillStyle = '#fff'; this.ctx.font = 'bold 20px "Noto Serif SC", serif'; this.ctx.textAlign = 'center'; this.ctx.globalAlpha = Math.max(0, (p-0.1)*5); this.ctx.fillText('1. 点存在', this.canvas.width/2, this.canvas.height*0.3); this.ctx.globalAlpha = Math.max(0, (p-0.4)*5); this.ctx.fillText('2. 极限存在', this.canvas.width/2, this.canvas.height*0.5); this.ctx.globalAlpha = Math.max(0, (p-0.7)*5); this.ctx.fillText('3. 点等于极限', this.canvas.width/2, this.canvas.height*0.7); this.ctx.globalAlpha = 1; super.animate(); }
+        }
+        class PierAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.height = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.height += (1 - this.height) * 0.05; const w = this.canvas.width, h = this.canvas.height; const pierX = w/2 - 20, pierY = h*0.8; this.ctx.fillStyle = '#f1c40f'; this.ctx.fillRect(pierX, pierY, 40, -(h*0.4*this.height)); this.ctx.strokeStyle = 'rgba(255,255,255,0.3)'; this.ctx.beginPath(); this.ctx.moveTo(0, pierY); this.ctx.lineTo(w, pierY); this.ctx.stroke(); this.ctx.fillStyle = '#fff'; this.ctx.font = 'bold 20px "Noto Serif SC", serif'; this.ctx.textAlign = 'center'; this.ctx.fillText('f(x₀)', pierX+20, pierY-h*0.4*this.height-20); super.animate(); }
+        }
+        class AlignAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.leftPos = -100; this.rightPos = 100; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.leftPos += (0 - this.leftPos) * 0.05; this.rightPos += (0 - this.rightPos) * 0.05; const w = this.canvas.width, h = this.canvas.height; const roadY = h/2; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 10; this.ctx.beginPath(); this.ctx.moveTo(0, roadY + this.leftPos); this.ctx.lineTo(w/2, roadY + this.leftPos); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(w/2, roadY + this.rightPos); this.ctx.lineTo(w, roadY + this.rightPos); this.ctx.stroke(); super.animate(); }
+        }
+        class ConnectAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.bridgeY = -100; this.flash = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.bridgeY += (0 - this.bridgeY) * 0.05; if (Math.abs(this.bridgeY) < 1 && this.flash <= 0) this.flash = 1; const w = this.canvas.width, h = this.canvas.height; const roadY = h/2; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 10; this.ctx.beginPath(); this.ctx.moveTo(0, roadY); this.ctx.lineTo(w, roadY); this.ctx.stroke(); this.ctx.fillStyle = '#f1c40f'; this.ctx.fillRect(w/2-50, roadY + this.bridgeY, 100, 10); if(this.flash > 0) { this.ctx.fillStyle = `rgba(46, 204, 113, ${this.flash})`; this.ctx.fillRect(w/2-60, roadY-10, 120, 30); this.flash -= 0.02; } super.animate(); }
+        }
+        class CrackAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.crackPos = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); const roadY = this.canvas.height/2; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 10; this.ctx.beginPath(); this.ctx.moveTo(0, roadY); this.ctx.lineTo(this.canvas.width, roadY); this.ctx.stroke(); if(this.crackPos < 100) this.crackPos++; this.ctx.strokeStyle = '#e74c3c'; this.ctx.lineWidth = 3; this.ctx.beginPath(); this.ctx.moveTo(this.canvas.width/2, roadY-5); for(let i=0; i<this.crackPos; i+=10) { this.ctx.lineTo(this.canvas.width/2 + (Math.random()-0.5)*20, roadY-5+i); } this.ctx.stroke(); super.animate(); }
+        }
+        class SorterAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.pieces = []; this.spawnCounter = 0; }
+            spawnPiece() { const types = ['jump', 'removable', 'infinite', 'oscillating']; const type = types[Math.floor(Math.random() * types.length)]; this.pieces.push({ type: type, x: this.canvas.width / 2, y: 50, speedY: 2.5 + Math.random() * 1.5 }); }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); const binY = this.canvas.height * 0.8, binWidth = this.canvas.width * 0.4, bin1X = this.canvas.width * 0.05, bin2X = this.canvas.width * 0.55; this.spawnCounter++; if (this.spawnCounter > 80) { this.spawnCounter = 0; this.spawnPiece(); } this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 2; this.ctx.strokeRect(bin1X, binY, binWidth, 100); this.ctx.strokeRect(bin2X, binY, binWidth, 100); this.ctx.fillStyle = '#fff'; this.ctx.font = 'bold 20px "Noto Serif SC", serif'; this.ctx.textAlign = 'center'; this.ctx.fillText('第一类', bin1X + binWidth/2, binY - 15); this.ctx.fillText('第二类', bin2X + binWidth/2, binY - 15); this.pieces.forEach((p, i) => { p.y += p.speedY; if (p.y > binY - 20) { if (p.type === 'jump' || p.type === 'removable') p.x += (bin1X + binWidth/2 - p.x) * 0.15; else p.x += (bin2X + binWidth/2 - p.x) * 0.15; } if (p.y > this.canvas.height) this.pieces.splice(i, 1); this.ctx.save(); this.ctx.translate(p.x, p.y); this.ctx.scale(0.3, 0.3); this.drawPiece(p.type); this.ctx.restore(); }); super.animate(); }
+            drawPiece(type) { this.ctx.lineWidth = 5; if (type === 'jump') { this.ctx.strokeStyle = '#3498db'; this.ctx.beginPath(); this.ctx.moveTo(-100, 25); this.ctx.lineTo(0, 25); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(0, -25); this.ctx.lineTo(100, -25); this.ctx.stroke(); } else if (type === 'removable') { this.ctx.strokeStyle = '#2ecc71'; this.ctx.beginPath(); this.ctx.arc(0, 0, 80, Math.PI * 1.1, Math.PI * 1.9); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.arc(0, 0, 80, Math.PI * 0.1, Math.PI * 0.9); this.ctx.stroke(); } else if (type === 'infinite') { this.ctx.strokeStyle = '#e74c3c'; this.ctx.beginPath(); this.ctx.moveTo(-10, -100); this.ctx.quadraticCurveTo(-20, 0, -100, 50); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(10, -100); this.ctx.quadraticCurveTo(20, 0, 100, 50); this.ctx.stroke(); } else { this.ctx.strokeStyle = '#9b59b6'; this.ctx.beginPath(); for(let x = 0; x < 100; x++) this.ctx.lineTo(x, Math.sin(x*0.5)* (100-x)); this.ctx.stroke(); } }
+        }
+        class RemovableAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.fill = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); if (this.fill < 1) this.fill += 0.01; else this.fill = 0; const centerX = this.canvas.width/2, centerY = this.canvas.height/2; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 4; this.ctx.beginPath(); this.ctx.arc(centerX, centerY, 100, Math.PI*1.1, Math.PI*1.9); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.arc(centerX, centerY, 100, Math.PI*0.1, Math.PI*0.9); this.ctx.stroke(); this.ctx.fillStyle = `rgba(46, 204, 113, ${this.fill})`; this.ctx.beginPath(); this.ctx.arc(centerX, centerY, 8, 0, Math.PI*2); this.ctx.fill(); super.animate(); }
+        }
+        class JumpAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.carX = 0; this.carY = 0; this.jumping = false; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); const w = this.canvas.width, h = this.canvas.height; const roadY1 = h*0.6, roadY2 = h*0.7; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth=10; this.ctx.beginPath(); this.ctx.moveTo(0, roadY1); this.ctx.lineTo(w/2-20, roadY1); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(w/2+20, roadY2); this.ctx.lineTo(w, roadY2); this.ctx.stroke(); if(!this.jumping) this.carX+=2; if(this.carX > w/2-70) this.jumping=true; if(this.jumping) this.carY+=5; if(this.carY > 100) { this.carX=0; this.carY=0; this.jumping=false; } this.ctx.fillStyle = '#e74c3c'; this.ctx.fillRect(this.carX, roadY1-30+this.carY, 50, 20); super.animate(); }
+        }
+        class InfiniteAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.y = 0; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.y += 2; if(this.y > this.canvas.height) this.y = -20; const centerX = this.canvas.width/2, centerY = this.canvas.height/2; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth=4; this.ctx.beginPath(); this.ctx.moveTo(centerX-20, this.canvas.height); this.ctx.quadraticCurveTo(centerX-50, centerY, centerX+50, 0); this.ctx.stroke(); this.ctx.fillStyle = '#e74c3c'; this.ctx.beginPath(); this.ctx.arc(centerX-20, this.y, 10, 0, Math.PI*2); this.ctx.fill(); super.animate(); }
+        }
+        class OscillatingAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.t = 0.01; }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.t += 0.001; if(this.t > 1) this.t = 0.01; const centerX = this.canvas.width/2, centerY = this.canvas.height/2; this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth=3; this.ctx.beginPath(); for(let x=this.t; x<1; x+=0.01) { this.ctx.lineTo(centerX + x*200, centerY + Math.sin(1/x)*100); } this.ctx.stroke(); super.animate(); }
+        }
+        class FlowchartAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.nodes = [ { id: 1, text: '有定义?', x: 0.5, y: 0.2, next: [2] }, { id: 2, text: '极限存在?', x: 0.5, y: 0.5, next: [3, 4] }, { id: 3, text: '极限=函数值?', x: 0.25, y: 0.8, next: [5, 6] }, { id: 4, text: '不连续', x: 0.75, y: 0.8, terminal: true, color: '#e74c3c' }, { id: 5, text: '连续', x: 0.1, y: 0.95, terminal: true, color: '#2ecc71' }, { id: 6, text: '不连续', x: 0.4, y: 0.95, terminal: true, color: '#e74c3c' } ]; this.progress = 0; }
+            start() { this.progress = 0; super.start(); }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); if (this.progress < this.nodes.length * 100) this.progress += 1; else this.progress = 0; const activeNodeIndex = Math.floor(this.progress / 100); this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 2; this.ctx.font = 'bold 20px "Noto Serif SC", serif'; this.nodes.forEach((node, i) => { const x = node.x * this.canvas.width, y = node.y * this.canvas.height, width = 150, height = 50; if (i <= activeNodeIndex) { this.ctx.fillStyle = node.terminal ? node.color : 'rgba(255,255,255,0.1)'; this.ctx.fillRect(x - width/2, y - height/2, width, height); this.ctx.strokeRect(x - width/2, y - height/2, width, height); this.ctx.fillStyle = '#fff'; this.ctx.textAlign = 'center'; this.ctx.textBaseline = 'middle'; this.ctx.fillText(node.text, x, y); } }); this.nodes.forEach((node, i) => { if (i < activeNodeIndex && node.next) { const startX = node.x * this.canvas.width, startY = node.y * this.canvas.height + 25; node.next.forEach(nextId => { const endNode = this.nodes.find(n => n.id === nextId); const endX = endNode.x * this.canvas.width, endY = endNode.y * this.canvas.height - 25; this.ctx.beginPath(); this.ctx.moveTo(startX, startY); this.ctx.lineTo(endX, endY); this.ctx.stroke(); }); } }); super.animate(); }
+        }
+        class SummaryAnimation extends BaseAnimation {
+            constructor(canvas) { super(canvas); this.items = [ {t:'连续', c:'#2ecc71'}, {t:'可去', c:'#3498db'}, {t:'跳跃', c:'#9b59b6'}, {t:'无穷', c:'#e74c3c'} ]; this.pieces = []; this.angle = 0; }
+            start() { this.pieces = []; for(let i=0; i<4; i++) { this.pieces.push({ targetX: (i%2)*120+this.canvas.width/2-60, targetY: Math.floor(i/2)*120+this.canvas.height/2-60, x: Math.random()*this.canvas.width, y: Math.random()*this.canvas.height, ...this.items[i] }); } super.start(); }
+            animate() { if (!this.isActive) return; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.pieces.forEach(p => { p.x += (p.targetX - p.x) * 0.05; p.y += (p.targetY - p.y) * 0.05; this.ctx.fillStyle = p.c; this.ctx.fillRect(p.x-50, p.y-50, 100, 100); this.ctx.fillStyle = '#fff'; this.ctx.font = 'bold 20px "Noto Serif SC", serif'; this.ctx.textAlign='center'; this.ctx.fillText(p.t, p.x, p.y); }); super.animate(); }
+        }
+
+        // 虚拟人相关函数
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') {
+                    indicator.classList.add('connected');
+                } else if (type === 'error') {
+                    indicator.classList.add('error');
+                } else if (type === 'connecting') {
+                    indicator.classList.add('connecting');
+                } else if (type === 'recording') {
+                    indicator.classList.add('recording');
+                }
+            }
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                }, 10000);
+                
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
+
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+                
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
+                
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({
+                    useInlinePlayer: true
+                });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+                        startBtn.textContent = '💖 虚拟人已就绪';
+                        
+                        setTimeout(() => {
+                            speakContent(currentSlide + 1);
+                        }, 1000);
+                    })
+                    .on('disconnected', (err) => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                        if (err) {
+                            console.error('❌ 连接异常断开:', err);
+                        }
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 虚拟人错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        startBtn.textContent = '❌ 连接失败';
+                        startBtn.disabled = false;
+                        isTeaching = false;
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',                                    
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',             
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',       
+                    sceneId: '233767656807862272',                       
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',    
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',         
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                await avatarPlatform.start({
+                    wrapper: document.getElementById('avatarWrapper')
+                });
+
+                console.log('🎓 虚拟人教学系统启动完成');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                startBtn.textContent = '🔄 重试';
+                startBtn.disabled = false;
+                alert(`启动失败：${error.message}\n\n请检查控制台获取详细错误信息。`);
+            }
+        }
+
+        function getActionsForPage(slideNum) {
+            const actionMap = {
+                1: [{ type: 'action', value: 'A_RLH_welcome_O', wb: 2, we: 8 }],
+                2: [{ type: 'action', value: 'A_RLH_emphasize_O', wb: 2, we: 8 }],
+                3: [{ type: 'action', value: 'A_LH_please_O', wb: 2, we: 6 }],
+                4: [{ type: 'action', value: 'A_LH_introduced_O', wb: 2, we: 8 }],
+                5: [{ type: 'action', value: 'A_LH_please_O', wb: 2, we: 8 }],
+                6: [{ type: 'action', value: 'A_RLH_emphasize_O', wb: 2, we: 8 }],
+                7: [{ type: 'action', value: 'A_LH_please_O', wb: 2, we: 8 }],
+                8: [{ type: 'action', value: 'A_U_No_pointing_O', wb: 2, we: 5 }],
+                9: [{ type: 'action', value: 'A_RLH_welcome_O', wb: 2, we: 8 }],
+                10: [{ type: 'action', value: 'A_LH_introduced_O', wb: 2, we: 8 }],
+                11: [{ type: 'action', value: 'A_RLH_emphasize_O', wb: 2, we: 8 }],
+                12: [{ type: 'action', value: 'A_LH_please_O', wb: 2, we: 8 }],
+                13: [{ type: 'action', value: 'A_RLH_emphasize_O', wb: 2, we: 8 }],
+                14: [{ type: 'action', value: 'A_LH_introduced_O', wb: 2, we: 8 }],
+                15: [{ type: 'action', value: 'A_U_No_pointing_O', wb: 2, we: 5 }]
+            };
+            return actionMap[slideNum] || [{ type: 'action', value: 'A_U_No_pointing_O', wb: 2, we: 5 }];
+        }
+
+        async function performVirtualAction(actionId) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接，跳过动作执行');
+                return;
+            }
+
+            try {
+                await avatarPlatform.writeCmd("action", actionId);
+                console.log(`✅ 执行动作: ${actionId}`);
+            } catch (error) {
+                console.error(`❌ 动作执行失败 (${actionId}):`, error);
+            }
+        }
+
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                return;
+            }
+
+            const content = subtitleScript[slideNum];
+            if (!content) return;
+
+            try {
+                const actions = getActionsForPage(slideNum);
+                if (actions && actions[0]) {
+                    await performVirtualAction(actions[0].value);
+                }
+
+                await avatarPlatform.writeText(content, {
+                    nlp: false
+                });
+                
+                console.log(`✅ 沐沐讲解第${slideNum}页`);
+
+                if (isAutoPlaying) {
+                    updateAutoPlaySubtitle(slideNum, content);
+                } else {
+                    updateSubtitle(content);
+                }
+            } catch (error) {
+                console.error('❌ 虚拟人讲解失败:', error);
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function updateAutoPlaySubtitle(slideNum, text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea && isAutoPlaying) {
+                const prefix = `【第${slideNum}页/${totalSlides}页】`;
+                subtitleArea.textContent = prefix + text;
+            } else if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function updateSlideInfo() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('totalSlides').textContent = totalSlides;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+                updateSlideInfo();
+                if (!isAutoPlaying) {
+                    speakContent(currentSlide + 1);
+                }
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+                updateSlideInfo();
+                if (!isAutoPlaying) {
+                    speakContent(currentSlide + 1);
+                }
+            }
+        }
+
+        function restart() {
+            currentSlide = 0;
+            showSlide(0);
+            updateSlideInfo();
+            if (!isAutoPlaying) {
+                speakContent(1);
+            }
+        }
+
+        function getSlideTitle(slideNum) {
+            const titles = {
+                1: "函数的连续性与间断点",
+                2: "直观理解：什么是连续？",
+                3: "从增量开始",
+                4: "连续的严格定义",
+                5: "条件一：点有定义",
+                6: "条件二：极限存在",
+                7: "条件三：极限值 = 函数值",
+                8: "什么是间断？",
+                9: "间断点的分类",
+                10: "第一类：可去间断点",
+                11: "第一类：跳跃间断点",
+                12: "第二类：无穷间断点",
+                13: "第二类：震荡间断点",
+                14: "判断间断点的流程",
+                15: "总结回顾"
+            };
+            return titles[slideNum] || `第${slideNum}页`;
+        }
+
+        function getSlideDuration(slideNum) {
+            const durations = {
+                1: 18000,  
+                2: 24000,  
+                3: 24000,  
+                4: 19000,  
+                5: 20000,  
+                6: 20000,  
+                7: 18000,  
+                8: 14000,  
+                9: 18000,  
+                10: 20000, 
+                11: 18000, 
+                12: 16000, 
+                13: 18000, 
+                14: 20000, 
+                15: 22000  
+            };
+            return durations[slideNum] || 18000;
+        }
+
+        function switchToSlideSilent(slideNum) {
+            if (slideNum < 1 || slideNum > totalSlides) {
+                console.log(`❌ 页面切换失败：页码${slideNum}超出范围(1-${totalSlides})`);
+                return;
+            }
+            showSlide(slideNum - 1);
+            console.log(`✅ 成功切换到第${slideNum}页`);
+        }
+
+        async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus(`🎬 自动播放将在 1 秒后开始，请准备录屏！`, 'recording');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+
+                if (!isConnected) {
+                    console.log('🎬 后台尝试连接虚拟人...');
+                    startTeaching().catch(error => {
+                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
+                    });
+                }
+
+                for (let slide = 1; slide <= totalSlides; slide++) {
+                    try {
+                        if (!isAutoPlaying) {
+                            console.log('🛑 自动播放被停止');
+                            break;
+                        }
+
+                        console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);
+                        switchToSlideSilent(slide);
+                        updateStatus(`📖 第${slide}页/${totalSlides}页 - ${getSlideTitle(slide)}`, 'recording');
+
+                        await new Promise(resolve => setTimeout(resolve, 800));
+
+                        if (isConnected && isTeaching && avatarPlatform) {
+                            try {
+                                await speakContent(slide);
+                                const slideTime = getSlideDuration(slide);
+                                await new Promise(resolve => setTimeout(resolve, slideTime));
+                            } catch (error) {
+                                console.error(`❌ 第${slide}页语音播放失败:`, error);
+                                const slideTime = getSlideDuration(slide);
+                                await new Promise(resolve => setTimeout(resolve, slideTime));
+                            }
+                        } else {
+                            const slideTime = getSlideDuration(slide);
+                            await new Promise(resolve => setTimeout(resolve, slideTime));
+                        }
+
+                        const waitTime = slide === totalSlides ? 2000 : 1000;
+                        await new Promise(resolve => setTimeout(resolve, waitTime));
+
+                    } catch (error) {
+                        console.error(`❌ 第${slide}页播放过程出错:`, error);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
+                }
+
+                if (isAutoPlaying) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                updateStatus('自动播放失败: ' + error.message, 'error');
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.body.classList.remove('recording-mode');
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
+
+                console.log('⏹️ 自动播放已停止');
+                updateStatus('自动播放已停止', 'normal');
+            }
+        }
+
+        // 键盘控制
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    previousSlide();
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    handleEnterKey();
+                    break;
+            }
+        });
+
+        function handleEnterKey() {
+            if (!isTeaching) {
+                startTeaching();
+            } else if (isConnected) {
+                speakContent(currentSlide + 1);
+                console.log('🎵 Enter键触发：重新播放当前页内容');
+            } else {
+                console.log('⚠️ 虚拟人未连接，无法播放');
+            }
+        }
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            }
+            
+            if (avatarPlatform && isConnected) {
+                avatarPlatform.stop();
+            }
+        });
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const renderMath = () => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise().catch((err) => console.log(err.message));
+                } else {
+                    setTimeout(renderMath, 50);
+                }
+            };
+            renderMath();
+            
+            const canvases = document.querySelectorAll('.animationCanvas');
+            animationControllers = [
+                new TitleAnimation(canvases[0]),
+                new DrawingAnimation(canvases[1]),
+                new IncrementAnimation(canvases[2]),
+                new ConditionsAnimation(canvases[3]),
+                new PierAnimation(canvases[4]),
+                new AlignAnimation(canvases[5]),
+                new ConnectAnimation(canvases[6]),
+                new CrackAnimation(canvases[7]),
+                new SorterAnimation(canvases[8]),
+                new RemovableAnimation(canvases[9]),
+                new JumpAnimation(canvases[10]),
+                new InfiniteAnimation(canvases[11]),
+                new OscillatingAnimation(canvases[12]),
+                new FlowchartAnimation(canvases[13]),
+                new SummaryAnimation(canvases[14])
+            ];
+            showSlide(0);
+            updateSlideInfo();
+            console.log('✨ 函数连续性与间断点教学系统初始化完成');
+        });
+    </script>
+</body>
+</html>

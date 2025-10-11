@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第12章 向量概念与点积叉积</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+        
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">向量的概念</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">定义</p>
+                    <p class="chalk-text">向量是既有大小又有方向的量</p>
+                    <p class="chalk-text emphasis">表示方法</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">几何表示：有向线段</li>
+                        <li class="chalk-text">坐标表示：$\vec{a} = (a_1, a_2, a_3)$</li>
+                    </ul>
+                    <p class="chalk-text emphasis">模</p>
+                    <div class="formula-box"><p class="chalk-text">$$|\vec{a}| = \sqrt{a_1^2 + a_2^2 + a_3^2}$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="g1"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowhead1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                </defs>
+                <!-- 3D坐标系 -->
+                <line x1="200" y1="400" x2="500" y2="400" stroke="#FFE066" stroke-width="2" filter="url(#g1)"/>
+                <line x1="200" y1="400" x2="200" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#g1)"/>
+                <line x1="200" y1="400" x2="100" y2="480" stroke="#FFE066" stroke-width="2" filter="url(#g1)"/>
+                <text x="520" y="405" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#g1)">x</text>
+                <text x="195" y="135" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#g1)">y</text>
+                <text x="80" y="495" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#g1)">z</text>
+                
+                <!-- 向量a = (3,4,2) -->
+                <line x1="200" y1="400" x2="380" y2="240" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowhead1)" filter="url(#g1)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="390" y="230" fill="#FF6B6B" font-size="20" font-weight="bold" filter="url(#g1)">a⃗</text>
+                
+                <!-- 投影线（虚线） -->
+                <line x1="380" y1="240" x2="380" y2="400" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5" opacity="0.6" filter="url(#g1)"/>
+                <line x1="380" y1="400" x2="200" y2="400" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5" opacity="0.6" filter="url(#g1)"/>
+                
+                <!-- 坐标标注 -->
+                <text x="290" y="430" fill="#4ECDC4" font-size="14" font-weight="bold" filter="url(#g1)">3</text>
+                <text x="385" y="320" fill="#4ECDC4" font-size="14" font-weight="bold" filter="url(#g1)">4</text>
+                
+                <!-- 模长标注 -->
+                <rect x="220" y="50" width="260" height="50" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#g1)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="80" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g1)">|a⃗| = √(3²+4²+2²) = √29</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">向量的运算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">加法</p>
+                    <div class="formula-box"><p class="chalk-text">$$\vec{a} + \vec{b} = (a_1+b_1, a_2+b_2, a_3+b_3)$$</p></div>
+                    <p class="chalk-text emphasis">数乘</p>
+                    <div class="formula-box"><p class="chalk-text">$$k\vec{a} = (ka_1, ka_2, ka_3)$$</p></div>
+                    <p class="chalk-text emphasis">几何意义</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">加法：平行四边形法则</li>
+                        <li class="chalk-text">数乘：伸缩和反向</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="g2"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                    <marker id="arrowhead3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                    <marker id="arrowhead4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FFE066"/></marker>
+                </defs>
+                
+                <!-- 平行四边形法则 -->
+                <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#g2)">平行四边形法则：a⃗ + b⃗</text>
+                
+                <!-- 向量a -->
+                <line x1="150" y1="350" x2="350" y2="280" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowhead2)" filter="url(#g2)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="240" y="300" fill="#FF6B6B" font-size="20" font-weight="bold" filter="url(#g2)">a⃗</text>
+                
+                <!-- 向量b（从原点） -->
+                <line x1="150" y1="350" x2="280" y2="450" stroke="#4ECDC4" stroke-width="5" marker-end="url(#arrowhead3)" filter="url(#g2)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                </line>
+                <text x="200" y="420" fill="#4ECDC4" font-size="20" font-weight="bold" filter="url(#g2)">b⃗</text>
+                
+                <!-- 平行四边形辅助线 -->
+                <line x1="350" y1="280" x2="480" y2="380" stroke="#9370DB" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" filter="url(#g2)"/>
+                <line x1="280" y1="450" x2="480" y2="380" stroke="#9370DB" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" filter="url(#g2)"/>
+                
+                <!-- 结果向量a+b -->
+                <line x1="150" y1="350" x2="480" y2="380" stroke="#FFE066" stroke-width="6" marker-end="url(#arrowhead4)" filter="url(#g2)">
+                    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite"/>
+                </line>
+                <text x="320" y="340" fill="#FFE066" font-size="24" font-weight="bold" filter="url(#g2)">a⃗+b⃗</text>
+                
+                <!-- 起点标注 -->
+                <circle cx="150" cy="350" r="6" fill="#ffffff" filter="url(#g2)"/>
+                <text x="130" y="345" fill="#ffffff" font-size="14" font-weight="bold" filter="url(#g2)">O</text>
+                
+                <!-- 说明框 -->
+                <rect x="100" y="480" width="500" height="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="10" filter="url(#g2)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="515" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#g2)">对角线OC = a⃗ + b⃗</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">点积（数量积）</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">定义</p>
+                    <div class="formula-box"><p class="chalk-text">$$\vec{a} \cdot \vec{b} = |\vec{a}||\vec{b}|\cos\theta$$</p></div>
+                    <p class="chalk-text emphasis">坐标表示</p>
+                    <div class="formula-box"><p class="chalk-text">$$\vec{a} \cdot \vec{b} = a_1b_1 + a_2b_2 + a_3b_3$$</p></div>
+                    <p class="chalk-text emphasis">性质</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">$\vec{a} \perp \vec{b} \Leftrightarrow \vec{a} \cdot \vec{b} = 0$</li>
+                        <li class="chalk-text">$\vec{a} \cdot \vec{a} = |\vec{a}|^2$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="g3"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowhead5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                    <marker id="arrowhead6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                </defs>
+                
+                <!-- 标题 -->
+                <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#g3)">点积几何意义：a⃗·b⃗ = |a⃗||b⃗|cosθ</text>
+                
+                <!-- 向量a -->
+                <line x1="150" y1="350" x2="450" y2="250" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowhead5)" filter="url(#g3)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="460" y="245" fill="#FF6B6B" font-size="22" font-weight="bold" filter="url(#g3)">a⃗</text>
+                
+                <!-- 向量b -->
+                <line x1="150" y1="350" x2="500" y2="400" stroke="#4ECDC4" stroke-width="5" marker-end="url(#arrowhead6)" filter="url(#g3)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                </line>
+                <text x="510" y="410" fill="#4ECDC4" font-size="22" font-weight="bold" filter="url(#g3)">b⃗</text>
+                
+                <!-- 夹角θ弧线 -->
+                <path d="M 200 350 Q 220 340, 230 360" stroke="#FFE066" stroke-width="3" fill="none" filter="url(#g3)">
+                    <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                </path>
+                <text x="240" y="355" fill="#FFE066" font-size="20" font-weight="bold" filter="url(#g3)">θ</text>
+                
+                <!-- 投影（虚线） -->
+                <line x1="500" y1="400" x2="350" y2="287" stroke="#9370DB" stroke-width="2" stroke-dasharray="5,5" opacity="0.7" filter="url(#g3)"/>
+                
+                <!-- 投影向量 -->
+                <line x1="150" y1="350" x2="350" y2="287" stroke="#FFE066" stroke-width="4" filter="url(#g3)">
+                    <animate attributeName="stroke-opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/>
+                </line>
+                <text x="230" y="305" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#g3)">|b⃗|cosθ</text>
+                
+                <!-- 起点 -->
+                <circle cx="150" cy="350" r="6" fill="#ffffff" filter="url(#g3)"/>
+                <text x="130" y="345" fill="#ffffff" font-size="14" font-weight="bold" filter="url(#g3)">O</text>
+                
+                <!-- 公式框 -->
+                <rect x="120" y="460" width="460" height="60" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#g3)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="495" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g3)">a⃗·b⃗ = |a⃗| × (b⃗在a⃗上的投影)</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">叉积（向量积）</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">定义</p>
+                    <div class="formula-box"><p class="chalk-text">$$|\vec{a} \times \vec{b}| = |\vec{a}||\vec{b}|\sin\theta$$</p></div>
+                    <p class="chalk-text emphasis">坐标表示</p>
+                    <div class="formula-box"><p class="chalk-text">$$\vec{a} \times \vec{b} = \begin{vmatrix} \vec{i} & \vec{j} & \vec{k} \\ a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \end{vmatrix}$$</p></div>
+                    <p class="chalk-text emphasis">方向</p>
+                    <p class="chalk-text">右手法则：四指从$\vec{a}$转向$\vec{b}$，拇指指向$\vec{a} \times \vec{b}$</p>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="g4"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowhead7" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                    <marker id="arrowhead8" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                    <marker id="arrowhead9" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FFE066"/></marker>
+                </defs>
+                
+                <!-- 标题 -->
+                <text x="350" y="40" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#g4)">右手法则：a⃗×b⃗</text>
+                
+                <!-- 3D坐标系轴 -->
+                <line x1="250" y1="400" x2="500" y2="400" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#g4)"/>
+                <line x1="250" y1="400" x2="250" y2="180" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#g4)"/>
+                
+                <!-- 向量a（在xOy平面） -->
+                <line x1="250" y1="400" x2="470" y2="350" stroke="#FF6B6B" stroke-width="6" marker-end="url(#arrowhead7)" filter="url(#g4)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="480" y="345" fill="#FF6B6B" font-size="24" font-weight="bold" filter="url(#g4)">a⃗</text>
+                
+                <!-- 向量b（在xOy平面） -->
+                <line x1="250" y1="400" x2="380" y2="270" stroke="#4ECDC4" stroke-width="6" marker-end="url(#arrowhead8)" filter="url(#g4)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                </line>
+                <text x="390" y="255" fill="#4ECDC4" font-size="24" font-weight="bold" filter="url(#g4)">b⃗</text>
+                
+                <!-- 向量a×b（垂直向上） -->
+                <line x1="250" y1="400" x2="250" y2="200" stroke="#FFE066" stroke-width="7" marker-end="url(#arrowhead9)" filter="url(#g4)">
+                    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite"/>
+                </line>
+                <text x="260" y="295" fill="#FFE066" font-size="26" font-weight="bold" filter="url(#g4)">a⃗×b⃗</text>
+                
+                <!-- 平面区域（阴影） -->
+                <path d="M 250 400 L 470 350 L 380 270 Z" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="2" filter="url(#g4)">
+                    <animate attributeName="fill-opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
+                </path>
+                
+                <!-- 右手示意 -->
+                <g transform="translate(100, 100)">
+                    <ellipse cx="0" cy="0" rx="60" ry="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#g4)"/>
+                    <text x="0" y="5" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#g4)">右手</text>
+                    <line x1="0" y1="20" x2="40" y2="40" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrowhead7)" filter="url(#g4)"/>
+                    <text x="45" y="45" fill="#FF6B6B" font-size="12" font-weight="bold" filter="url(#g4)">四指</text>
+                    <line x1="0" y1="-30" x2="0" y2="-60" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead9)" filter="url(#g4)"/>
+                    <text x="5" y="-65" fill="#FFE066" font-size="12" font-weight="bold" filter="url(#g4)">拇指</text>
+                </g>
+                
+                <!-- 说明框 -->
+                <rect x="100" y="480" width="500" height="70" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#g4)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="510" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#g4)">四指从a⃗转向b⃗</text>
+                <text x="350" y="535" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#g4)">拇指指向a⃗×b⃗方向（垂直平面）</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">应用：力矩</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">力矩的定义</p>
+                    <div class="formula-box"><p class="chalk-text">$$\vec{M} = \vec{r} \times \vec{F}$$</p></div>
+                    <p class="chalk-text">$\vec{r}$ 是位置向量，$\vec{F}$ 是力向量</p>
+                    <p class="chalk-text emphasis">物理意义</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">力矩大小：$|\vec{M}| = |\vec{r}||\vec{F}|\sin\theta$</li>
+                        <li class="chalk-text">力矩方向：垂直于$\vec{r}$和$\vec{F}$所在平面</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="g5"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowhead10" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                    <marker id="arrowhead11" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                    <marker id="arrowhead12" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FFE066"/></marker>
+                </defs>
+                
+                <!-- 标题 -->
+                <text x="350" y="40" fill="#ffffff" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#g5)">力矩：M⃗ = r⃗ × F⃗</text>
+                
+                <!-- 扳手（简化） -->
+                <rect x="180" y="285" width="280" height="30" fill="rgba(147,112,219,0.4)" stroke="#9370DB" stroke-width="3" rx="5" filter="url(#g5)"/>
+                <circle cx="200" cy="300" r="25" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4" filter="url(#g5)">
+                    <animate attributeName="r" values="25;28;25" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <text x="200" y="305" fill="#4ECDC4" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g5)">O</text>
+                
+                <!-- 位置向量r（从O到力作用点） -->
+                <line x1="200" y1="300" x2="440" y2="300" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowhead10)" filter="url(#g5)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="320" y="285" fill="#FF6B6B" font-size="20" font-weight="bold" filter="url(#g5)">r⃗</text>
+                
+                <!-- 力向量F（垂直向下） -->
+                <line x1="440" y1="300" x2="440" y2="450" stroke="#4ECDC4" stroke-width="6" marker-end="url(#arrowhead11)" filter="url(#g5)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                </line>
+                <text x="460" y="380" fill="#4ECDC4" font-size="22" font-weight="bold" filter="url(#g5)">F⃗</text>
+                
+                <!-- 力矩M（垂直纸面向外，用圆圈⊙表示） -->
+                <circle cx="200" cy="120" r="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#g5)">
+                    <animate attributeName="r" values="50;55;50" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="200" cy="120" r="8" fill="#FFE066" filter="url(#g5)"/>
+                <text x="200" y="90" fill="#FFE066" font-size="24" font-weight="bold" text-anchor="middle" filter="url(#g5)">M⃗=r⃗×F⃗</text>
+                <text x="200" y="165" fill="#FFE066" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g5)">⊙ 向外</text>
+                
+                <!-- 夹角θ标注 -->
+                <path d="M 240 300 Q 260 280, 260 300" stroke="#9370DB" stroke-width="2" fill="none" filter="url(#g5)"/>
+                <text x="270" y="295" fill="#9370DB" font-size="16" font-weight="bold" filter="url(#g5)">θ=90°</text>
+                
+                <!-- 转动方向箭头 -->
+                <path d="M 250 250 A 50 50 0 0 1 280 220" stroke="#FFE066" stroke-width="3" fill="none" marker-end="url(#arrowhead12)" filter="url(#g5)">
+                    <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                </path>
+                <text x="240" y="230" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#g5)">逆时针</text>
+                
+                <!-- 说明框 -->
+                <rect x="80" y="490" width="540" height="70" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#g5)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="520" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#g5)">|M⃗| = |r⃗||F⃗|sinθ = r×F (θ=90°)</text>
+                <text x="350" y="545" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#g5)">M⃗方向：垂直r⃗-F⃗平面，用右手法则确定</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">核心内容</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">向量：有大小有方向的量</li>
+                        <li class="chalk-text">点积：结果是数量，用于求夹角</li>
+                        <li class="chalk-text">叉积：结果是向量，用于求面积和力矩</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="g6"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                
+                <!-- 中心节点：向量 -->
+                <circle cx="350" cy="100" r="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#g6)">
+                    <animate attributeName="r" values="60;65;60" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <text x="350" y="105" fill="#FFE066" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#g6)">向量</text>
+                
+                <!-- 分支1：概念 -->
+                <line x1="320" y1="140" x2="200" y2="230" stroke="#FF6B6B" stroke-width="3" filter="url(#g6)"/>
+                <rect x="100" y="230" width="200" height="80" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#g6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="200" y="260" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g6)">概念</text>
+                <text x="200" y="285" fill="#FF6B6B" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">大小+方向</text>
+                <text x="200" y="305" fill="#FF6B6B" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">|a⃗|=√(x²+y²+z²)</text>
+                
+                <!-- 分支2：运算 -->
+                <line x1="350" y1="160" x2="350" y2="230" stroke="#4ECDC4" stroke-width="3" filter="url(#g6)"/>
+                <rect x="250" y="230" width="200" height="80" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#g6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="260" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g6)">运算</text>
+                <text x="350" y="285" fill="#4ECDC4" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">加法·数乘</text>
+                <text x="350" y="305" fill="#4ECDC4" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">平行四边形法则</text>
+                
+                <!-- 分支3：点积 -->
+                <line x1="380" y1="140" x2="500" y2="230" stroke="#9370DB" stroke-width="3" filter="url(#g6)"/>
+                <rect x="400" y="230" width="200" height="80" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="3" rx="10" filter="url(#g6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
+                </rect>
+                <text x="500" y="260" fill="#9370DB" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g6)">点积·数量积</text>
+                <text x="500" y="285" fill="#9370DB" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">a⃗·b⃗=|a||b|cosθ</text>
+                <text x="500" y="305" fill="#9370DB" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">求夹角·投影</text>
+                
+                <!-- 分支4：叉积 -->
+                <line x1="320" y1="140" x2="200" y2="360" stroke="#FF1744" stroke-width="3" filter="url(#g6)"/>
+                <rect x="100" y="360" width="200" height="90" fill="rgba(255,23,68,0.2)" stroke="#FF1744" stroke-width="3" rx="10" filter="url(#g6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+                </rect>
+                <text x="200" y="390" fill="#FF1744" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g6)">叉积·向量积</text>
+                <text x="200" y="415" fill="#FF1744" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">a⃗×b⃗=|a||b|sinθ</text>
+                <text x="200" y="435" fill="#FF1744" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">右手法则·垂直</text>
+                
+                <!-- 分支5：应用 -->
+                <line x1="380" y1="140" x2="500" y2="360" stroke="#00E676" stroke-width="3" filter="url(#g6)"/>
+                <rect x="400" y="360" width="200" height="90" fill="rgba(0,230,118,0.2)" stroke="#00E676" stroke-width="3" rx="10" filter="url(#g6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="2s" repeatCount="indefinite"/>
+                </rect>
+                <text x="500" y="390" fill="#00E676" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#g6)">应用</text>
+                <text x="500" y="415" fill="#00E676" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">力矩 M⃗=r⃗×F⃗</text>
+                <text x="500" y="435" fill="#00E676" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#g6)">面积·力学</text>
+                
+                <!-- 底部完成标记 -->
+                <circle cx="350" cy="520" r="40" fill="rgba(76,175,80,0.3)" stroke="#4CAF50" stroke-width="4" filter="url(#g6)">
+                    <animate attributeName="r" values="40;45;40" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <text x="350" y="530" fill="#4CAF50" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#g6)">✓</text>
+            </svg></div></div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1; const totalPages = 6;
+        const pageContents = ["向量是既有大小又有方向的量。几何上用有向线段表示，坐标上用三个分量表示。向量的模是根号下三个分量的平方和。","向量的加法用平行四边形法则，坐标表示是对应分量相加。数乘是每个分量乘以常数，几何意义是伸缩和反向。","点积也叫数量积，结果是一个数。定义是两个向量的模乘以夹角的余弦。坐标表示是对应分量相乘再相加。两向量垂直当且仅当点积为0。","叉积也叫向量积，结果是一个向量。大小是两个向量的模乘以夹角的正弦。方向用右手法则确定，垂直于两个向量所在平面。","应用：力矩。力矩等于位置向量叉乘力向量。力矩大小是r乘以F乘以sin theta，方向垂直于r和F所在平面。","总结：向量是有大小有方向的量。点积结果是数量，用于求夹角。叉积结果是向量，用于求面积和力矩。"];
+        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
+        function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
+        async function startTeaching() { console.log('开始讲解'); }
+        async function startAutoPlay() { console.log('自动播放'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
+        let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
+        document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
+    </script>
+</body>
+</html>
+

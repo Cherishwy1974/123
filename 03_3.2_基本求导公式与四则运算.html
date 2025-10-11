@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03_3.2_基本求导公式与四则运算</title>
+    <!-- CDN资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'], ignoreHtmlClass: 'tex2jax_ignore', processHtmlClass: 'tex2jax_process' },
+            startup: { ready: () => { console.log('✅ MathJax已加载并配置完成'); MathJax.startup.defaultReady(); } }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; max-width: 1400px; height: 95%; }
+        .blackboard-text { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN', 'Songti SC', 'SimSun', '宋体', serif; color: #e0e0e0; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
+        .blackboard-text h1 { color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
+        .blackboard-text h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; }
+        .blackboard-text h3 { color: #1abc9c; }
+        .blackboard-text strong { color: #e74c3c; }
+        .blackboard-text .math-formula { background-color: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f39c12; font-size: 20px; }
+        .animation-pane { position: relative; overflow: hidden; background: transparent; }
+        .control-bar { position: fixed; left: -220px; top: 50%; transform: translateY(-50%); width: 250px; background: rgba(30,30,30,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 200; border-radius: 0 15px 15px 0; padding: 20px 15px; transition: left 0.3s ease; }
+        .control-bar:hover { left: 0; }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -25px; transform: translateY(-50%); background: rgba(30,30,30,0.95); padding: 10px 5px; border-radius: 0 10px 10px 0; font-size: 16px; writing-mode: vertical-lr; }
+        .btn { padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s ease; width: 100%; text-align: center; }
+        .btn:hover { background: linear-gradient(135deg, #555, #777); transform: translateY(-2px); }
+        .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 18px; text-align: center; padding: 0 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; transition: opacity 0.3s ease; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.recording { background: rgba(244, 67, 54, 0.8); animation: pulse 1.5s infinite; display: block; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+        .recording-mode .status-indicator { opacity: 0; pointer-events: none; }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+        .nav-btn { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
+        .nav-btn:hover { background-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    </style>
+</head>
+<body class="blackboard">
+    <div id="statusIndicator" class="status-indicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div id="slide-container" class="slide-container flex-grow">
+        <div class="slide active"><div class="slide-content"><div class="blackboard-text w-1/2 text-center"><h1 class="text-6xl font-bold">基本求导公式与四则运算法则</h1><p class="text-2xl mt-4 text-gray-300">第3章 视频 3.2</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><text x="300" y="200" font-size="60" fill="#f39c12" text-anchor="middle" font-family="serif">d/dx<animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/></text><g transform="translate(300,300)"><circle cx="-100" cy="0" r="50" fill="none" stroke="#3498db" stroke-width="3"><animate attributeName="r" values="50;60;50" dur="3s" repeatCount="indefinite"/></circle><text x="-100" y="5" font-size="20" fill="#ecf0f1" text-anchor="middle">x^n</text><circle cx="100" cy="0" r="50" fill="none" stroke="#e74c3c" stroke-width="3"><animate attributeName="r" values="50;60;50" dur="3s" begin="1s" repeatCount="indefinite"/></circle><text x="100" y="5" font-size="18" fill="#ecf0f1" text-anchor="middle">e^x</text></g></svg></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">基本公式</h2><p class="mt-4 leading-relaxed"><strong>常见导数公式：</strong></p><ul class="list-disc list-inside mt-6 space-y-3"><li>常数 $c$ → $0$</li><li>$x^n$ → $nx^{n-1}$</li><li>$e^x$ → $e^x$</li><li>$a^x$ → $a^x \ln a$</li><li>$\sin x$ → $\cos x$，$\cos x$ → $-\sin x$</li><li>$\ln x$ → $\frac{1}{x}$</li></ul><p class="mt-8 text-gray-400">这些导数公式是工具箱的基础，建议熟读并理解它们的来源。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><rect x="50" y="50" width="500" height="400" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2"/><text x="300" y="100" font-size="24" fill="#f39c12" text-anchor="middle">导数公式表</text><g opacity="0"><text x="100" y="150" font-size="18" fill="#ecf0f1">x^2 →</text><text x="250" y="150" font-size="18" fill="#2ecc71">2x</text><animate attributeName="opacity" values="0;1;1;1;1;1" dur="7s" repeatCount="indefinite"/></g><g opacity="0"><text x="100" y="200" font-size="18" fill="#ecf0f1">e^x →</text><text x="250" y="200" font-size="18" fill="#2ecc71">e^x</text><animate attributeName="opacity" values="0;0;1;1;1;1" dur="7s" repeatCount="indefinite"/></g><g opacity="0"><text x="100" y="250" font-size="18" fill="#ecf0f1">sin x →</text><text x="250" y="250" font-size="18" fill="#2ecc71">cos x</text><animate attributeName="opacity" values="0;0;0;1;1;1" dur="7s" repeatCount="indefinite"/></g><g opacity="0"><text x="100" y="300" font-size="18" fill="#ecf0f1">ln x →</text><text x="250" y="300" font-size="18" fill="#2ecc71">1/x</text><animate attributeName="opacity" values="0;0;0;0;1;1" dur="7s" repeatCount="indefinite"/></g><circle cx="480" cy="400" r="30" fill="none" stroke="#f39c12" stroke-width="2"><animate attributeName="r" values="30;40;30" dur="2s" repeatCount="indefinite"/></circle><text x="480" y="410" font-size="16" fill="#f39c12" text-anchor="middle">背诵</text></svg></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">四则求导法则</h2><p class="mt-4 leading-relaxed">四则法则帮助我们处理复杂函数，只要遵循公式就不会出错。</p><ul class="list-disc list-inside mt-6 space-y-4"><li><strong>线性性：</strong>$(af+bg)'=af'+bg'$</li><li><strong>乘法：</strong>$(fg)'=f'g+fg'$</li><li><strong>除法：</strong>$\left(\frac{f}{g}\right)'=\frac{f'g-fg'}{g^2}$</li><li><strong>例：</strong>求 $y=(x^2+1)(e^x)$</li></ul></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><rect x="80" y="80" width="200" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="10"/><text x="180" y="125" font-size="20" fill="#ecf0f1" text-anchor="middle">f</text><rect x="320" y="80" width="200" height="80" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" rx="10"/><text x="420" y="125" font-size="20" fill="#ecf0f1" text-anchor="middle">g</text><line x1="180" y1="160" x2="180" y2="220" stroke="#f39c12" stroke-width="3" marker-end="url(#arrowGold)"/><line x1="420" y1="160" x2="420" y2="220" stroke="#f39c12" stroke-width="3" marker-end="url(#arrowGold)"/><text x="210" y="195" font-size="18" fill="#2ecc71">f'</text><text x="450" y="195" font-size="18" fill="#2ecc71">g'</text><rect x="200" y="250" width="200" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="10"/><text x="300" y="295" font-size="18" fill="#ecf0f1" text-anchor="middle">f'g + fg'</text><text x="300" y="380" font-size="20" fill="#f39c12" text-anchor="middle">(fg)' 乘法法则</text><defs><marker id="arrowGold" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/></marker></defs></svg></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">典型练习</h2><p class="mt-4 leading-relaxed">做题时要留意符号与分母，尤其是除法法则中的 $g^2$。</p><div class="mt-6 space-y-4"><p><strong>练习 1：</strong>$y=\frac{\ln x}{x}$</p><p class="text-gray-400">答案：$y'=\frac{1-\ln x}{x^2}$</p><p class="mt-4"><strong>练习 2：</strong>$y=\sin x \cdot \cos x$</p><p class="text-gray-400">答案：$y'=\cos^2 x - \sin^2 x$</p></div></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><text x="300" y="100" font-size="24" fill="#f39c12" text-anchor="middle">练习1演算过程</text><g opacity="0"><text x="120" y="160" font-size="18" fill="#ecf0f1">y = ln x / x</text><animate attributeName="opacity" values="0;1;1;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><text x="120" y="210" font-size="18" fill="#3498db">分子: (ln x)' = 1/x</text><animate attributeName="opacity" values="0;0;1;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><text x="120" y="260" font-size="18" fill="#e74c3c">分母: x' = 1</text><animate attributeName="opacity" values="0;0;0;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><line x1="100" y1="290" x2="500" y2="290" stroke="#f39c12" stroke-width="2"/><text x="120" y="330" font-size="20" fill="#2ecc71">y' = (1/x·x - ln x·1) / x²</text><animate attributeName="opacity" values="0;0;0;0;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><text x="300" y="390" font-size="22" fill="#f39c12" text-anchor="middle">= (1 - ln x) / x²</text><animate attributeName="opacity" values="0;0;0;0;1" dur="8s" repeatCount="indefinite"/></g></svg></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">链式法则预备</h2><p class="mt-4 leading-relaxed">记住：链式法则等于"先外后内"，这是连接本节与下一节的桥梁。</p><div class="text-center mt-10 math-formula">$\frac{d}{dx}f(g(x))=f'(g(x))\cdot g'(x)$</div><p class="mt-8 leading-relaxed"><strong>结构图：</strong>$x \to g(x) \to f(g(x))$</p><p class="mt-4 text-gray-400">例：$y=(3x^2+1)^4$</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><circle cx="150" cy="250" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/><text x="150" y="255" font-size="18" fill="#ecf0f1" text-anchor="middle">x</text><line x1="210" y1="250" x2="290" y2="250" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow2)"/><text x="250" y="230" font-size="16" fill="#f39c12" text-anchor="middle">g</text><circle cx="350" cy="250" r="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/><text x="350" y="255" font-size="18" fill="#ecf0f1" text-anchor="middle">g(x)</text><line x1="350" y1="310" x2="350" y2="370" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow2)"/><text x="380" y="340" font-size="16" fill="#f39c12">f</text><circle cx="350" cy="430" r="70" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/><text x="350" y="435" font-size="18" fill="#ecf0f1" text-anchor="middle">f(g(x))</text><text x="100" y="100" font-size="20" fill="#2ecc71">先外层f'，再内层g'</text><defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/></marker></defs></svg></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">易错点与自检</h2><p class="mt-4 leading-relaxed"><strong>易错提醒：</strong></p><ul class="list-disc list-inside mt-6 space-y-4"><li>漏乘内层导数</li><li>把 $a^x$ 写成 $x^a$</li><li>对数求导忘记乘以 $x$ 的导数</li></ul><p class="mt-8 leading-relaxed"><strong>自检：</strong>代入 $x=0$、$x=1$，判断导数符号是否与图像一致</p><p class="mt-4 text-gray-400">算完导数后，用特定值验证一下结果，不合理就回到步骤检查。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><text x="300" y="80" font-size="28" fill="#e74c3c" text-anchor="middle">❌ 常见错误</text><rect x="100" y="120" width="400" height="280" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="10"/><g opacity="0"><text x="120" y="160" font-size="18" fill="#ecf0f1">错误: (x²+1)² → 2(x²+1)</text><line x1="120" y1="170" x2="400" y2="170" stroke="#e74c3c" stroke-width="2"/><animate attributeName="opacity" values="0;1;1;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><text x="120" y="220" font-size="18" fill="#2ecc71">正确: (x²+1)² → 2(x²+1)·2x</text><text x="200" y="250" font-size="16" fill="#f39c12">↑ 内层导数</text><animate attributeName="opacity" values="0;0;1;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><circle cx="300" cy="320" r="50" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"/><text x="300" y="330" font-size="20" fill="#ecf0f1" text-anchor="middle">记得</text><text x="300" y="355" font-size="20" fill="#ecf0f1" text-anchor="middle">检查</text><animate attributeName="opacity" values="0;0;0;1;1" dur="8s" repeatCount="indefinite"/></g></svg></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">小结与作业</h2><p class="mt-4 leading-relaxed"><strong>今日 checklist：</strong></p><ul class="list-disc list-inside mt-6 space-y-4"><li>熟记公式</li><li>完成 3 道综合题</li></ul><p class="mt-8 leading-relaxed"><strong>下节预告：</strong>链式法则实战 + 习题讲解</p><p class="mt-4 text-gray-400">把公式表随身带，下节课我们直接把它们用到更复杂的复合函数中。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><text x="300" y="100" font-size="32" fill="#f39c12" text-anchor="middle">✓ 今日任务</text><g opacity="0"><rect x="150" y="140" width="300" height="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="10"/><text x="300" y="180" font-size="20" fill="#ecf0f1" text-anchor="middle">背诵基本公式</text><animate attributeName="opacity" values="0;1;1;1;1" dur="6s" repeatCount="indefinite"/></g><g opacity="0"><rect x="150" y="220" width="300" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="10"/><text x="300" y="260" font-size="20" fill="#ecf0f1" text-anchor="middle">练习四则法则</text><animate attributeName="opacity" values="0;0;1;1;1" dur="6s" repeatCount="indefinite"/></g><g opacity="0"><rect x="150" y="300" width="300" height="60" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="2" rx="10"/><text x="300" y="340" font-size="20" fill="#ecf0f1" text-anchor="middle">预习链式法则</text><animate attributeName="opacity" values="0;0;0;1;1" dur="6s" repeatCount="indefinite"/></g><text x="300" y="420" font-size="24" fill="#f39c12" text-anchor="middle" opacity="0">→ 下节课见！<animate attributeName="opacity" values="0;0;0;0;1" dur="6s" repeatCount="indefinite"/></text></svg></div></div></div>
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习基本求导公式与四则运算法则！点击开始讲课启动虚拟人讲师。</div>
+    <div class="control-bar">
+        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">7</span> 页</div>
+        <button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="startTeaching()" id="startBtn">🎀 开始讲课</button>
+        <button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" onclick="startAutoPlay()" id="autoPlayBtn">🎬 自动播放</button>
+    </div>
+    <script type="module">
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+            console.log('✅ 讯飞官方SDK模块已加载'); console.log('SDK版本:', AvatarPlatform.getVersion());
+        } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const lessonTitle = "基本求导公式与四则运算法则";
+        const subtitleScript = { "1": "欢迎学习基本求导公式与四则运算法则！", "2": "这些导数公式是工具箱的基础，建议熟读并理解它们的来源。", "3": "四则法则帮助我们处理复杂函数，只要遵循公式就不会出错。", "4": "做题时要留意符号与分母，尤其是除法法则中的 g²。", "5": "记住：链式法则等于'先外后内'，这是连接本节与下一节的桥梁。", "6": "算完导数后，用特定值验证一下结果，不合理就回到步骤检查。", "7": "把公式表随身带，下节课我们直接把它们用到更复杂的复合函数中。" };
+        const actionMap = { "1": "A_RLH_welcome_O", "2": "A_RLH_welcome_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O", "5": "A_RH_point_O", "6": "A_LH_introduced_O", "7": "A_RLH_welcome_O" };
+        let currentSlide = 1;
+        const totalSlides = 7;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+        const slides = document.querySelectorAll('.slide');
+        function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); currentSlide = index; document.getElementById('currentSlide').textContent = index + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err)); } document.getElementById('prevBtn').disabled = index === 0; document.getElementById('nextBtn').disabled = index === totalSlides - 1; updateSubtitle(index + 1); }
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function restart() {
+            showSlide(0);
+            if (avatarPlatform) {
+                avatarPlatform.stop();
+            }
+            isConnected = false;
+            isTeaching = false;
+            isAutoPlaying = false;
+        }
+        function updateSubtitle(slideNum) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            subtitleArea.textContent = subtitleScript[slideNum] || '';
+        }
+
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                return;
+            }
+
+            const content = subtitleScript[slideNum];
+            if (!content) return;
+
+            try {
+                const action = actionMap[slideNum];
+                if (action) {
+                    await avatarPlatform.writeCmd("action", action);
+                    console.log(`✅ 执行动作: ${action}`);
+                }
+
+                await avatarPlatform.writeText(content, {
+                    nlp: false
+                });
+                
+                console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);
+                updateSubtitle(slideNum);
+            } catch (error) {
+                console.error('❌ 虚拟人讲解失败:', error);
+            }
+        }
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') {
+                    indicator.classList.add('connected');
+                } else if (type === 'error') {
+                    indicator.classList.add('error');
+                } else if (type === 'connecting') {
+                    indicator.classList.add('connecting');
+                }
+            }
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                }, 10000);
+                
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+                
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
+                
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({
+                    useInlinePlayer: true
+                });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+                        startBtn.textContent = '💖 虚拟人已就绪';
+                        
+                        setTimeout(() => {
+                            speakContent(currentSlide + 1);
+                        }, 1000);
+                    })
+                    .on('disconnected', (err) => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                        if (err) {
+                            console.error('❌ 连接异常断开:', err);
+                        }
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 虚拟人错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        startBtn.textContent = '❌ 连接失败';
+                        startBtn.disabled = false;
+                        isTeaching = false;
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                await avatarPlatform.start({
+                    wrapper: document.getElementById('avatarWrapper')
+                });
+
+                console.log('🎓 虚拟人教学系统启动完成');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败: ' + error.message, 'error');
+                startBtn.textContent = '🎀 开始讲课';
+                startBtn.disabled = false;
+            }
+        }
+        async function startAutoPlay() {
+            if (!avatarPlatform || !isConnected) {
+                await startTeaching();
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
+
+            for (let i = currentSlide; i < totalSlides; i++) {
+                showSlide(i);
+                speakContent(i + 1);
+
+                const duration = (subtitleScript[i + 1].length / 5) * 1000 + 2000;
+                await new Promise(resolve => setTimeout(resolve, duration));
+            }
+
+            isAutoPlaying = false;
+            document.getElementById('autoPlayBtn').disabled = false;
+        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); } else if (e.key === 'Enter') { e.preventDefault(); speakContent(currentSlide + 1); } });
+        document.getElementById('totalSlides').textContent = totalSlides; showSlide(0);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06_6.3_定积分的应用_求平面图形面积</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+
+        <!-- 第1页：为什么要用定积分求面积 -->
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">为什么要用定积分求面积？</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">规则图形 vs 不规则图形</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">矩形：长×宽</li>
+                        <li class="chalk-text">三角形：底×高÷2</li>
+                        <li class="chalk-text">圆形：πr²</li>
+                    </ul>
+                    <p class="chalk-text emphasis">但是曲边图形呢？</p>
+                    <div class="formula-box">
+                        <p class="chalk-text small-text">定积分就是专门用来求曲边图形面积的工具！</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 规则图形 - 矩形 -->
+                        <g transform="translate(100, 100)">
+                            <rect x="0" y="0" width="120" height="80" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="5"/>
+                            <text x="60" y="100" text-anchor="middle" fill="#4ECDC4" font-size="18" font-weight="bold">矩形</text>
+                            <text x="60" y="120" text-anchor="middle" fill="#ffffff" font-size="14">S = a×b</text>
+                        </g>
+
+                        <!-- 规则图形 - 三角形 -->
+                        <g transform="translate(280, 100)">
+                            <polygon points="60,0 0,80 120,80" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3"/>
+                            <text x="60" y="100" text-anchor="middle" fill="#FF6B6B" font-size="18" font-weight="bold">三角形</text>
+                            <text x="60" y="120" text-anchor="middle" fill="#ffffff" font-size="14">S = ah/2</text>
+                        </g>
+
+                        <!-- 不规则图形 - 曲边 -->
+                        <g transform="translate(100, 280)">
+                            <defs>
+                                <linearGradient id="curveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFE066;stop-opacity:0.6"/>
+                                    <stop offset="100%" style="stop-color:#FFE066;stop-opacity:0.2"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M 0 100 L 0 30 Q 60 10, 120 40 Q 180 70, 240 30 L 240 100 Z" fill="url(#curveGrad)" stroke="#FFE066" stroke-width="3" filter="url(#glow)">
+                                <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+                            </path>
+                            <text x="120" y="130" text-anchor="middle" fill="#FFE066" font-size="18" font-weight="bold">曲边图形</text>
+                            <text x="120" y="150" text-anchor="middle" fill="#ffffff" font-size="16">S = ?</text>
+                            <text x="120" y="170" text-anchor="middle" fill="#f39c12" font-size="20" font-weight="bold">需要定积分！</text>
+                        </g>
+
+                        <!-- 问号动画 -->
+                        <text x="220" y="420" text-anchor="middle" fill="#e74c3c" font-size="50" opacity="0" font-weight="bold" filter="url(#glow)">
+                            ?
+                            <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="font-size" values="48;54;48" dur="3s" repeatCount="indefinite"/>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页：X型区域 - 上下函数法 -->
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">X型区域 - 上下函数法</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">当区域可以表示为</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$a \leq x \leq b$$</p>
+                        <p class="chalk-text">$$g(x) \leq y \leq f(x)$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">面积公式</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \int_a^b [f(x) - g(x)] \, dx$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">上函数：f(x)</li>
+                        <li class="chalk-text">下函数：g(x)</li>
+                        <li class="chalk-text">积分：上减下</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                            <linearGradient id="areaFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.6"/>
+                                <stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.2"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- 坐标轴 -->
+                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2"/>
+                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
+                        <polygon points="600,450 590,445 590,455" fill="#FFE066"/>
+                        <polygon points="100,100 95,110 105,110" fill="#FFE066"/>
+                        
+                        <!-- 上函数 f(x) -->
+                        <path d="M 150 250 Q 250 180, 350 200 Q 450 220, 500 180" 
+                              stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="510" y="185" fill="#FF6B6B" font-size="20" font-weight="bold">f(x)</text>
+                        
+                        <!-- 下函数 g(x) -->
+                        <path d="M 150 380 Q 250 350, 350 360 Q 450 370, 500 340" 
+                              stroke="#4ECDC4" stroke-width="4" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="510" y="345" fill="#4ECDC4" font-size="20" font-weight="bold">g(x)</text>
+                        
+                        <!-- 阴影区域 -->
+                        <path d="M 150 250 Q 250 180, 350 200 Q 450 220, 500 180 
+                                 L 500 340 Q 450 370, 350 360 Q 250 350, 150 380 Z" 
+                              fill="url(#areaFill)">
+                            <animate attributeName="fill-opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/>
+                        </path>
+                        
+                        <!-- 垂直线 a 和 b -->
+                        <line x1="150" y1="250" x2="150" y2="450" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+                        <line x1="500" y1="180" x2="500" y2="450" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="150" y="470" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">a</text>
+                        <text x="500" y="470" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">b</text>
+                        
+                        <!-- 双箭头标注 -->
+                        <g opacity="0">
+                            <line x1="320" y1="200" x2="320" y2="360" stroke="#9370DB" stroke-width="3" marker-start="url(#arrowUp)" marker-end="url(#arrowDown)"/>
+                            <text x="335" y="285" fill="#9370DB" font-size="18" font-weight="bold">f(x)-g(x)</text>
+                            <animate attributeName="opacity" values="0;1;1;0" dur="6s" repeatCount="indefinite"/>
+                        </g>
+                        
+                        <defs>
+                            <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="5,0 10,10 0,10" fill="#9370DB"/>
+                            </marker>
+                            <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="5,10 10,0 0,0" fill="#9370DB"/>
+                            </marker>
+                        </defs>
+                        
+                        <!-- 标签 -->
+                        <text x="610" y="455" fill="#FFE066" font-size="16">x</text>
+                        <text x="95" y="90" fill="#FFE066" font-size="16">y</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3页：例题 - 两条抛物线围成的面积 -->
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">例题：两条抛物线</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">求面积</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$y = x^2 \text{ 与 } y = 2x - x^2$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">解题步骤</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong>1. 求交点：</strong>$x^2 = 2x - x^2 \Rightarrow x = 0, 1$</li>
+                        <li class="chalk-text"><strong>2. 判断上下：</strong>$2x - x^2 \geq x^2$</li>
+                        <li class="chalk-text"><strong>3. 计算积分：</strong></li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \int_0^1 [(2x-x^2) - x^2] \, dx$$</p>
+                        <p class="chalk-text">$$= \int_0^1 (2x - 2x^2) \, dx$$</p>
+                        <p class="chalk-text">$$= [x^2 - \frac{2x^3}{3}]_0^1 = \frac{1}{3}$$</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 坐标轴 -->
+                        <line x1="50" y1="500" x2="650" y2="500" stroke="#FFE066" stroke-width="2"/>
+                        <line x1="100" y1="550" x2="100" y2="50" stroke="#FFE066" stroke-width="2"/>
+                        <polygon points="650,500 640,495 640,505" fill="#FFE066"/>
+                        <polygon points="100,50 95,60 105,60" fill="#FFE066"/>
+                        
+                        <!-- 下抛物线 y = x^2 -->
+                        <path d="M 100 500 Q 350 100, 600 500" 
+                              stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="600" y="520" fill="#FF6B6B" font-size="18" font-weight="bold">y = x²</text>
+                        
+                        <!-- 上抛物线 y = 2x - x^2 -->
+                        <path d="M 100 500 Q 350 200, 600 500" 
+                              stroke="#4ECDC4" stroke-width="4" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="350" y="170" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">y = 2x - x²</text>
+                        
+                        <!-- 封闭区域填充 -->
+                        <path d="M 100 500 Q 225 350, 350 300 Q 475 350, 600 500 
+                                 Q 475 100, 350 100 Q 225 100, 100 500 Z" 
+                              fill="rgba(255,224,102,0.4)">
+                            <animate attributeName="fill-opacity" values="0.2;0.6;0.2" dur="4s" repeatCount="indefinite"/>
+                        </path>
+                        
+                        <!-- 交点标注 -->
+                        <circle cx="100" cy="500" r="6" fill="#FFE066" filter="url(#glow)">
+                            <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="100" y="530" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold">(0, 0)</text>
+                        
+                        <circle cx="600" cy="500" r="6" fill="#FFE066" filter="url(#glow)">
+                            <animate attributeName="r" values="6;10;6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="600" y="530" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold">(1, 1)</text>
+                        
+                        <!-- 答案 -->
+                        <g transform="translate(300, 400)">
+                            <rect x="-80" y="-30" width="160" height="50" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3" rx="8">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite"/>
+                            </rect>
+                            <text x="0" y="0" fill="#9370DB" font-size="24" text-anchor="middle" font-weight="bold">S = 1/3</text>
+                        </g>
+                        
+                        <!-- 坐标轴标签 -->
+                        <text x="660" y="505" fill="#FFE066" font-size="16">x</text>
+                        <text x="95" y="40" fill="#FFE066" font-size="16">y</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4页：Y型区域 - 左右函数法 -->
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">Y型区域 - 左右函数法</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">当区域可以表示为</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$c \leq y \leq d$$</p>
+                        <p class="chalk-text">$$h(y) \leq x \leq \varphi(y)$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">面积公式</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \int_c^d [\varphi(y) - h(y)] \, dy$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">右函数：φ(y)</li>
+                        <li class="chalk-text">左函数：h(y)</li>
+                        <li class="chalk-text">积分：右减左</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 坐标轴 -->
+                        <line x1="100" y1="500" x2="600" y2="500" stroke="#FFE066" stroke-width="2"/>
+                        <line x1="100" y1="500" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
+                        <polygon points="600,500 590,495 590,505" fill="#FFE066"/>
+                        <polygon points="100,100 95,110 105,110" fill="#FFE066"/>
+                        
+                        <!-- 左函数 h(y) -->
+                        <path d="M 200 450 Q 180 350, 220 250 Q 240 150, 280 120" 
+                              stroke="#4ECDC4" stroke-width="4" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="190" y="470" fill="#4ECDC4" font-size="20" font-weight="bold">h(y)</text>
+                        
+                        <!-- 右函数 φ(y) -->
+                        <path d="M 450 450 Q 480 350, 460 250 Q 440 150, 400 120" 
+                              stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                        </path>
+                        <text x="470" y="470" fill="#FF6B6B" font-size="20" font-weight="bold">φ(y)</text>
+                        
+                        <!-- 阴影区域 -->
+                        <path d="M 200 450 Q 180 350, 220 250 Q 240 150, 280 120 
+                                 L 400 120 Q 440 150, 460 250 Q 480 350, 450 450 Z" 
+                              fill="url(#areaFill)">
+                            <animate attributeName="fill-opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/>
+                        </path>
+                        
+                        <!-- 水平线 c 和 d -->
+                        <line x1="100" y1="450" x2="450" y2="450" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+                        <line x1="100" y1="120" x2="400" y2="120" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="80" y="455" fill="#FFE066" font-size="18" text-anchor="end" font-weight="bold">c</text>
+                        <text x="80" y="125" fill="#FFE066" font-size="18" text-anchor="end" font-weight="bold">d</text>
+                        
+                        <!-- 双箭头标注 -->
+                        <g opacity="0">
+                            <line x1="235" y1="285" x2="445" y2="285" stroke="#9370DB" stroke-width="3" marker-start="url(#arrowLeft)" marker-end="url(#arrowRight)"/>
+                            <text x="340" y="275" fill="#9370DB" font-size="18" text-anchor="middle" font-weight="bold">φ(y)-h(y)</text>
+                            <animate attributeName="opacity" values="0;1;1;0" dur="6s" repeatCount="indefinite"/>
+                        </g>
+                        
+                        <defs>
+                            <marker id="arrowLeft" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+                                <polygon points="10,0 10,10 0,5" fill="#9370DB"/>
+                            </marker>
+                            <marker id="arrowRight" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0,0 0,10 10,5" fill="#9370DB"/>
+                            </marker>
+                        </defs>
+                        
+                        <!-- 标签 -->
+                        <text x="610" y="505" fill="#FFE066" font-size="16">x</text>
+                        <text x="95" y="90" fill="#FFE066" font-size="16">y</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5页：极坐标系下的面积 -->
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">极坐标系下的面积</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">极坐标方程</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$r = r(\theta)$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">扇形面积公式</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \frac{1}{2} \int_\alpha^\beta r^2(\theta) \, d\theta$$</p>
+                    </div>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">r：极径（半径）</li>
+                        <li class="chalk-text">θ：极角</li>
+                        <li class="chalk-text">例：心形线 $r = 1 + \cos\theta$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 极坐标网格 -->
+                        <g transform="translate(350, 300)">
+                            <!-- 圆圈 -->
+                            <circle cx="0" cy="0" r="60" fill="none" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <circle cx="0" cy="0" r="120" fill="none" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <circle cx="0" cy="0" r="180" fill="none" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            
+                            <!-- 射线 -->
+                            <line x1="0" y1="0" x2="200" y2="0" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="141" y2="-141" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="0" y2="-200" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="-141" y2="-141" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="-200" y2="0" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="-141" y2="141" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="0" y2="200" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            <line x1="0" y1="0" x2="141" y2="141" stroke="rgba(255,224,102,0.2)" stroke-width="1"/>
+                            
+                            <!-- 心形线 r = 1 + cos(θ) -->
+                            <path d="M 180 0 
+                                     C 180 -30, 170 -60, 155 -85
+                                     C 140 -110, 120 -130, 95 -145
+                                     C 70 -160, 40 -170, 0 -170
+                                     C -40 -170, -70 -160, -95 -145
+                                     C -120 -130, -140 -110, -155 -85
+                                     C -170 -60, -180 -30, -180 0
+                                     C -180 30, -170 60, -155 85
+                                     C -140 110, -120 130, -95 145
+                                     C -70 160, -40 170, 0 170
+                                     C 40 170, 70 160, 95 145
+                                     C 120 130, 140 110, 155 85
+                                     C 170 60, 180 30, 180 0 Z" 
+                                  fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="4" filter="url(#glow)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="4s" repeatCount="indefinite"/>
+                                <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                            </path>
+                            
+                            <!-- 扇形示意 -->
+                            <g opacity="0">
+                                <path d="M 0 0 L 120 -120 A 170 170 0 0 1 170 0 Z" 
+                                      fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="2"/>
+                                <animate attributeName="opacity" values="0;0;1;1;0" dur="8s" repeatCount="indefinite"/>
+                            </g>
+                            
+                            <!-- 角度标注 -->
+                            <path d="M 40 0 A 40 40 0 0 0 28 -28" stroke="#FFE066" stroke-width="2" fill="none"/>
+                            <text x="50" y="-15" fill="#FFE066" font-size="16" font-weight="bold">θ</text>
+                            
+                            <!-- 半径标注 -->
+                            <line x1="0" y1="0" x2="127" y2="-127" stroke="#4ECDC4" stroke-width="3">
+                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                            </line>
+                            <text x="70" y="-50" fill="#4ECDC4" font-size="18" font-weight="bold">r(θ)</text>
+                            
+                            <!-- 原点 -->
+                            <circle cx="0" cy="0" r="5" fill="#FFE066" filter="url(#glow)"/>
+                            <text x="-20" y="25" fill="#FFE066" font-size="16" font-weight="bold">O</text>
+                        </g>
+                        
+                        <!-- 说明 -->
+                        <text x="350" y="550" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold">心形线：r = 1 + cos θ</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第6页：总结 - 三种方法对比 -->
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结：三种方法</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">1. X型区域（上下函数）</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \int_a^b [f(x) - g(x)] \, dx$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">2. Y型区域（左右函数）</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \int_c^d [\varphi(y) - h(y)] \, dy$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">3. 极坐标</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$S = \frac{1}{2} \int_\alpha^\beta r^2(\theta) \, d\theta$$</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- X型区域 -->
+                        <g transform="translate(120, 80)">
+                            <text x="80" y="0" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">X型</text>
+                            <rect x="0" y="20" width="160" height="120" fill="none" stroke="rgba(255,224,102,0.3)" stroke-width="2" rx="5"/>
+                            <path d="M 20 120 Q 80 40, 140 100" stroke="#FF6B6B" stroke-width="3" fill="none"/>
+                            <path d="M 20 120 Q 80 100, 140 120" stroke="#4ECDC4" stroke-width="3" fill="none"/>
+                            <path d="M 20 120 Q 80 40, 140 100 L 140 120 Q 80 100, 20 120 Z" fill="rgba(78,205,196,0.3)">
+                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
+                            </path>
+                            <text x="80" y="165" fill="#ffffff" font-size="14" text-anchor="middle">上减下</text>
+                        </g>
+                        
+                        <!-- Y型区域 -->
+                        <g transform="translate(360, 80)">
+                            <text x="80" y="0" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">Y型</text>
+                            <rect x="0" y="20" width="160" height="120" fill="none" stroke="rgba(255,224,102,0.3)" stroke-width="2" rx="5"/>
+                            <path d="M 40 30 Q 50 70, 60 120" stroke="#4ECDC4" stroke-width="3" fill="none"/>
+                            <path d="M 120 30 Q 110 70, 100 120" stroke="#FF6B6B" stroke-width="3" fill="none"/>
+                            <path d="M 40 30 Q 50 70, 60 120 L 100 120 Q 110 70, 120 30 Z" fill="rgba(255,107,107,0.3)">
+                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                            </path>
+                            <text x="80" y="165" fill="#ffffff" font-size="14" text-anchor="middle">右减左</text>
+                        </g>
+                        
+                        <!-- 极坐标 -->
+                        <g transform="translate(240, 280)">
+                            <text x="80" y="0" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">极坐标</text>
+                            <rect x="0" y="20" width="160" height="120" fill="none" stroke="rgba(255,224,102,0.3)" stroke-width="2" rx="5"/>
+                            <circle cx="80" cy="80" r="3" fill="#FFE066"/>
+                            <path d="M 80 80 L 140 50 A 60 60 0 0 1 140 110 Z" fill="rgba(147,112,219,0.4)" stroke="#9370DB" stroke-width="3">
+                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
+                            </path>
+                            <text x="80" y="165" fill="#ffffff" font-size="14" text-anchor="middle">扇形</text>
+                        </g>
+                        
+                        <!-- 核心思想 -->
+                        <g transform="translate(240, 480)">
+                            <rect x="-100" y="-30" width="200" height="60" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="3" rx="10">
+                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite"/>
+                            </rect>
+                            <text x="0" y="-5" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold">核心思想</text>
+                            <text x="0" y="20" fill="#ffffff" font-size="16" text-anchor="middle">积分 = 切片求和</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="control-bar">
+        <div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+            第 <span id="currentPageControl">1</span> 页 / 共 6 页
+        </div>
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习定积分的应用 - 求平面图形面积！</div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 6;
+
+        function switchToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNum) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+            currentPage = pageNum;
+            document.getElementById('currentPage').textContent = pageNum;
+            document.getElementById('currentPageControl').textContent = pageNum;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) switchToPage(currentPage + 1);
+        }
+
+        function previousPage() {
+            if (currentPage > 1) switchToPage(currentPage - 1);
+        }
+
+        function startTeaching() {
+            console.log('开始讲解');
+        }
+
+        function startAutoPlay() {
+            console.log('自动播放');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousPage();
+            }
+        });
+
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextPage();
+                } else if (e.deltaY < 0) {
+                    previousPage();
+                }
+            }, 50);
+        }, { passive: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchToPage(1);
+        });
+    </script>
+</body>
+</html>

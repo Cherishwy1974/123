@@ -1,0 +1,27 @@
+{
+  "name": "course-auto-recorder",
+  "version": "2.0.0",
+  "description": "自动录制64个HTML课程视频 - 增强版（包含同步性检测）",
+  "main": "auto-record-enhanced.js",
+  "scripts": {
+    "install-browser": "npx playwright install chromium",
+    "record": "node auto-record.js",
+    "record-enhanced": "node auto-record-enhanced.js",
+    "check-sync": "node sync-checker.js",
+    "start": "node auto-record-enhanced.js",
+    "help": "echo '可用命令:\n  npm run install-browser - 安装浏览器驱动\n  npm run record - 基础自动录制\n  npm run record-enhanced - 增强版录制（推荐）\n  npm run check-sync <文件名> - 检测单个文件同步性\n  npm start - 启动增强版录制'"
+  },
+  "keywords": [
+    "automation",
+    "video",
+    "recording",
+    "sync-detection",
+    "quality-check"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "obs-websocket-js": "^5.0.6",
+    "playwright": "^1.40.0"
+  }
+}

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第10章 线性方程组的解法</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        /* SVG优化标准调整：全面移除发光，保留加粗与圆角 */
+        svg.svg-animation * { filter: none !important; }
+        svg.svg-animation text { font-weight: bold; }
+        svg.svg-animation rect { rx: 10px; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ </head>
+ <body>
+    <!-- 全局SVG滤镜定义：glow -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur2" />
+                <feMerge>
+                    <feMergeNode in="blur2" />
+                    <feMergeNode in="blur1" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+        
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">线性方程组的矩阵表示</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">方程组</p>
+                    <div class="formula-box"><p class="chalk-text">$$\begin{cases} a_{11}x_1 + a_{12}x_2 = b_1 \\ a_{21}x_1 + a_{22}x_2 = b_2 \end{cases}$$</p></div>
+                    <p class="chalk-text emphasis">矩阵形式</p>
+                    <div class="formula-box"><p class="chalk-text">$$AX = B$$</p></div>
+                    <p class="chalk-text">其中 $A$ 是系数矩阵，$X$ 是未知数向量，$B$ 是常数向量</p>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <!-- A 矩阵 (3x3 网格) -->
+                    <g transform="translate(80,120)">
+                        <text x="-20" y="-20" fill="#e1bee7" font-size="18" text-anchor="start">A</text>
+                        <!-- 网格背景 -->
+                        <rect x="0" y="0" width="210" height="210" fill="rgba(225,190,231,0.08)" stroke="#e1bee7" stroke-width="2"/>
+                        <!-- 3x3 单元格 -->
+                        <g fill="#ffffff" font-size="14" text-anchor="middle">
+                            <!-- 行1 -->
+                            <rect x="0" y="0" width="70" height="70" fill="rgba(225,190,231,0.15)" stroke="#e1bee7"/>
+                            <rect x="70" y="0" width="70" height="70" fill="rgba(225,190,231,0.10)" stroke="#e1bee7"/>
+                            <rect x="140" y="0" width="70" height="70" fill="rgba(225,190,231,0.15)" stroke="#e1bee7"/>
+                            <text x="35" y="42">a₁₁</text>
+                            <text x="105" y="42">a₁₂</text>
+                            <text x="175" y="42">a₁₃</text>
+                            <!-- 行2 -->
+                            <rect x="0" y="70" width="70" height="70" fill="rgba(225,190,231,0.10)" stroke="#e1bee7"/>
+                            <rect x="70" y="70" width="70" height="70" fill="rgba(225,190,231,0.15)" stroke="#e1bee7"/>
+                            <rect x="140" y="70" width="70" height="70" fill="rgba(225,190,231,0.10)" stroke="#e1bee7"/>
+                            <text x="35" y="112">a₂₁</text>
+                            <text x="105" y="112">a₂₂</text>
+                            <text x="175" y="112">a₂₃</text>
+                            <!-- 行3 -->
+                            <rect x="0" y="140" width="70" height="70" fill="rgba(225,190,231,0.15)" stroke="#e1bee7"/>
+                            <rect x="70" y="140" width="70" height="70" fill="rgba(225,190,231,0.10)" stroke="#e1bee7"/>
+                            <rect x="140" y="140" width="70" height="70" fill="rgba(225,190,231,0.15)" stroke="#e1bee7"/>
+                            <text x="35" y="182">a₃₁</text>
+                            <text x="105" y="182">a₃₂</text>
+                            <text x="175" y="182">a₃₃</text>
+                        </g>
+                    </g>
+
+                    <!-- 乘以 X 列向量 -->
+                    <g transform="translate(330,120)">
+                        <text x="-20" y="-20" fill="#4ECDC4" font-size="18" text-anchor="start">X</text>
+                        <rect x="0" y="0" width="80" height="210" fill="rgba(78,205,196,0.08)" stroke="#4ECDC4" stroke-width="2"/>
+                        <g fill="#ffffff" font-size="14" text-anchor="middle">
+                            <rect x="0" y="0" width="80" height="70" fill="rgba(78,205,196,0.15)" stroke="#4ECDC4"/>
+                            <rect x="0" y="70" width="80" height="70" fill="rgba(78,205,196,0.10)" stroke="#4ECDC4"/>
+                            <rect x="0" y="140" width="80" height="70" fill="rgba(78,205,196,0.15)" stroke="#4ECDC4"/>
+                            <text x="40" y="42">x₁</text>
+                            <text x="40" y="112">x₂</text>
+                            <text x="40" y="182">x₃</text>
+                        </g>
+                    </g>
+
+                    <!-- 等号与 B 列向量 -->
+                    <text x="430" y="225" fill="#ffffff" font-size="28" text-anchor="middle">=</text>
+                    <g transform="translate(470,120)">
+                        <text x="-20" y="-20" fill="#FF6B6B" font-size="18" text-anchor="start">B</text>
+                        <rect x="0" y="0" width="80" height="210" fill="rgba(255,107,107,0.08)" stroke="#FF6B6B" stroke-width="2"/>
+                        <g fill="#ffffff" font-size="14" text-anchor="middle">
+                            <rect x="0" y="0" width="80" height="70" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B"/>
+                            <rect x="0" y="70" width="80" height="70" fill="rgba(255,107,107,0.10)" stroke="#FF6B6B"/>
+                            <rect x="0" y="140" width="80" height="70" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B"/>
+                            <text x="40" y="42">b₁</text>
+                            <text x="40" y="112">b₂</text>
+                            <text x="40" y="182">b₃</text>
+                        </g>
+                    </g>
+
+                    <!-- 乘法过程演示：高亮 A 的第一行与 X，输出 b1 -->
+                    <g>
+                        <rect x="80" y="120" width="210" height="70" fill="rgba(255,224,102,0.18)" stroke="#FFE066" stroke-width="2">
+                            <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+                        </rect>
+                        <rect x="330" y="120" width="80" height="210" fill="none" stroke="#FFE066" stroke-width="2">
+                            <animate attributeName="stroke-opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                        </rect>
+                        <rect x="470" y="120" width="80" height="70" fill="none" stroke="#FFE066" stroke-width="2"/>
+                        <text x="510" y="105" fill="#FFE066" font-size="14" text-anchor="middle">b₁ = 行·列</text>
+                        <path d="M 290 155 L 320 155" stroke="#FFE066" stroke-width="2" marker-end="url(#arrowMul)"/>
+                    </g>
+
+                    <!-- 竖杠提示增广矩阵 -->
+                    <line x1="450" y1="120" x2="450" y2="330" stroke="#999" stroke-width="3" stroke-dasharray="6,6"/>
+
+                    <defs>
+                        <marker id="arrowMul" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">高斯消元法</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">基本思想</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">将增广矩阵化为阶梯形</li>
+                        <li class="chalk-text">回代求解</li>
+                    </ul>
+                    <p class="chalk-text emphasis">初等行变换</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">交换两行</li>
+                        <li class="chalk-text">某行乘非零常数</li>
+                        <li class="chalk-text">某行加上另一行的倍数</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <!-- 增广矩阵 [A|B] -->
+                    <g transform="translate(110,120)">
+                        <rect x="0" y="0" width="280" height="210" fill="rgba(225,190,231,0.08)" stroke="#e1bee7"/>
+                        <line x1="210" y1="0" x2="210" y2="210" stroke="#888" stroke-width="3"/>
+                        <!-- 行背景高亮（动画） -->
+                        <rect x="0" y="0" width="280" height="70" fill="rgba(255,224,102,0.20)">
+                            <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+                        </rect>
+                        <rect x="0" y="70" width="280" height="70" fill="rgba(78,205,196,0.18)"/>
+                        <rect x="0" y="140" width="280" height="70" fill="rgba(147,112,219,0.18)"/>
+                        <!-- 单元格框线 -->
+                        <g stroke="#e1bee7">
+                            <!-- 列线 -->
+                            <line x1="70" y1="0" x2="70" y2="210"/>
+                            <line x1="140" y1="0" x2="140" y2="210"/>
+                            <line x1="210" y1="0" x2="210" y2="210"/>
+                            <line x1="245" y1="0" x2="245" y2="210"/>
+                        </g>
+                        <g stroke="#e1bee7">
+                            <line x1="0" y1="70" x2="280" y2="70"/>
+                            <line x1="0" y1="140" x2="280" y2="140"/>
+                        </g>
+                        <!-- 符号 -->
+                        <g fill="#fff" font-size="14" text-anchor="middle">
+                            <text x="35" y="42">a₁₁</text><text x="105" y="42">a₁₂</text><text x="175" y="42">a₁₃</text><text x="257" y="42">b₁</text>
+                            <text x="35" y="112">a₂₁</text><text x="105" y="112">a₂₂</text><text x="175" y="112">a₂₃</text><text x="257" y="112">b₂</text>
+                            <text x="35" y="182">a₃₁</text><text x="105" y="182">a₃₂</text><text x="175" y="182">a₃₃</text><text x="257" y="182">b₃</text>
+                        </g>
+                    </g>
+
+                    <!-- 行变换指示 -->
+                    <g>
+                        <text x="120" y="360" fill="#FFE066" font-size="16" text-anchor="start">R₂ ← R₂ - k·R₁</text>
+                        <path d="M 210 260 C 260 260, 260 320, 210 320" stroke="#FFE066" stroke-width="2" fill="none" marker-end="url(#arrowEl)"/>
+                        <text x="330" y="360" fill="#4ECDC4" font-size="16" text-anchor="start">R₃ ↔ R₁</text>
+                        <path d="M 190 170 C 300 140, 300 200, 190 200" stroke="#4ECDC4" stroke-width="2" fill="none" marker-end="url(#arrowEl)"/>
+                    </g>
+
+                    <defs>
+                        <marker id="arrowEl" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                            <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">逆矩阵法</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">解的公式</p>
+                    <div class="formula-box"><p class="chalk-text">$$X = A^{-1}B$$</p></div>
+                    <p class="chalk-text emphasis">适用条件</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">A必须是方阵</li>
+                        <li class="chalk-text">$\det(A) \neq 0$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <!-- [A | I] 通过行变换 → [I | A^{-1}] -->
+                    <g transform="translate(70,130)">
+                        <text x="-20" y="-30" fill="#e1bee7" font-size="18">[A | I]</text>
+                        <rect x="0" y="0" width="280" height="180" fill="rgba(225,190,231,0.08)" stroke="#e1bee7"/>
+                        <line x1="210" y1="0" x2="210" y2="180" stroke="#888" stroke-width="3"/>
+                        <!-- I 高亮 -->
+                        <rect x="210" y="0" width="70" height="180" fill="rgba(78,205,196,0.18)"/>
+                        <!-- A 的对角线提示 -->
+                        <line x1="0" y1="0" x2="210" y2="180" stroke="#e1bee7" stroke-dasharray="6,6"/>
+                        <line x1="0" y1="60" x2="210" y2="60" stroke="#555"/>
+                        <line x1="0" y1="120" x2="210" y2="120" stroke="#555"/>
+                        <line x1="70" y1="0" x2="70" y2="180" stroke="#555"/>
+                        <line x1="140" y1="0" x2="140" y2="180" stroke="#555"/>
+                    </g>
+                    <text x="360" y="220" fill="#ffffff" font-size="28" text-anchor="middle">→</text>
+                    <g transform="translate(400,130)">
+                        <text x="-20" y="-30" fill="#4ECDC4" font-size="18">[I | A⁻¹]</text>
+                        <rect x="0" y="0" width="280" height="180" fill="rgba(78,205,196,0.08)" stroke="#4ECDC4"/>
+                        <line x1="70" y1="0" x2="70" y2="180" stroke="#888" stroke-width="3"/>
+                        <!-- A⁻¹ 高亮 -->
+                        <rect x="70" y="0" width="210" height="180" fill="rgba(255,224,102,0.18)"/>
+                        <!-- I 对角线提示 -->
+                        <line x1="0" y1="0" x2="70" y2="60" stroke="#4ECDC4" stroke-dasharray="6,6"/>
+                        <line x1="0" y1="60" x2="70" y2="120" stroke="#4ECDC4" stroke-dasharray="6,6"/>
+                        <line x1="0" y1="120" x2="70" y2="180" stroke="#4ECDC4" stroke-dasharray="6,6"/>
+                    </g>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">克拉默法则</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">解的公式</p>
+                    <div class="formula-box"><p class="chalk-text">$$x_i = \frac{D_i}{D}$$</p></div>
+                    <p class="chalk-text">$D$ 是系数行列式，$D_i$ 是将第i列替换为常数项的行列式</p>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <!-- D 与 D_i 展示 -->
+                    <g transform="translate(90,150)">
+                        <text x="60" y="-20" fill="#e1bee7" font-size="16" text-anchor="middle">D = det(A)</text>
+                        <rect x="0" y="0" width="180" height="180" fill="rgba(225,190,231,0.08)" stroke="#e1bee7"/>
+                        <!-- 网格 -->
+                        <line x1="60" y1="0" x2="60" y2="180" stroke="#e1bee7"/>
+                        <line x1="120" y1="0" x2="120" y2="180" stroke="#e1bee7"/>
+                        <line x1="0" y1="60" x2="180" y2="60" stroke="#e1bee7"/>
+                        <line x1="0" y1="120" x2="180" y2="120" stroke="#e1bee7"/>
+                        <!-- 矩阵元素占位 -->
+                        <g fill="#fff" font-size="12" text-anchor="middle">
+                            <text x="30" y="38">a₁₁</text><text x="90" y="38">a₁₂</text><text x="150" y="38">a₁₃</text>
+                            <text x="30" y="98">a₂₁</text><text x="90" y="98">a₂₂</text><text x="150" y="98">a₂₃</text>
+                            <text x="30" y="158">a₃₁</text><text x="90" y="158">a₃₂</text><text x="150" y="158">a₃₃</text>
+                        </g>
+                    </g>
+                    <text x="320" y="235" fill="#ffffff" font-size="28" text-anchor="middle">→</text>
+                    <g transform="translate(380,150)">
+                        <text x="90" y="-20" fill="#FF6B6B" font-size="16" text-anchor="middle">D₁ = det(A₁)</text>
+                        <rect x="0" y="0" width="210" height="180" fill="rgba(255,107,107,0.08)" stroke="#FF6B6B"/>
+                        <!-- 网格 -->
+                        <line x1="70" y1="0" x2="70" y2="180" stroke="#FF6B6B"/>
+                        <line x1="140" y1="0" x2="140" y2="180" stroke="#FF6B6B"/>
+                        <line x1="0" y1="60" x2="210" y2="60" stroke="#FF6B6B"/>
+                        <line x1="0" y1="120" x2="210" y2="120" stroke="#FF6B6B"/>
+                        <!-- 替换列高亮（第1列替换为 b） -->
+                        <rect x="0" y="0" width="70" height="180" fill="rgba(255,107,107,0.20)"/>
+                        <g fill="#fff" font-size="12" text-anchor="middle">
+                            <text x="35" y="38">b₁</text><text x="105" y="38">a₁₂</text><text x="175" y="38">a₁₃</text>
+                            <text x="35" y="98">b₂</text><text x="105" y="98">a₂₂</text><text x="175" y="98">a₂₃</text>
+                            <text x="35" y="158">b₃</text><text x="105" y="158">a₃₂</text><text x="175" y="158">a₃₃</text>
+                        </g>
+                    </g>
+                    <!-- 公式提示 -->
+                    <text x="350" y="360" fill="#FFE066" font-size="18" text-anchor="middle">x₁ = D₁ / D</text>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">解的判定</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">三种情况</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">$\det(A) \neq 0$：唯一解</li>
+                        <li class="chalk-text">$\det(A) = 0$ 且方程组相容：无穷多解</li>
+                        <li class="chalk-text">$\det(A) = 0$ 且方程组不相容：无解</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <!-- 解的判定：三种情况 -->
+                    <g transform="translate(90,140)">
+                        <rect x="0" y="0" width="160" height="120" fill="rgba(78,205,196,0.12)" stroke="#4ECDC4"/>
+                        <text x="80" y="40" fill="#4ECDC4" font-size="16" text-anchor="middle">唯一解</text>
+                        <text x="80" y="80" fill="#fff" font-size="14" text-anchor="middle">det(A) ≠ 0</text>
+                    </g>
+                    <g transform="translate(270,140)">
+                        <rect x="0" y="0" width="200" height="120" fill="rgba(255,224,102,0.12)" stroke="#FFE066"/>
+                        <text x="100" y="40" fill="#FFE066" font-size="16" text-anchor="middle">无穷多解</text>
+                        <text x="100" y="80" fill="#fff" font-size="14" text-anchor="middle">det(A) = 0, 相容</text>
+                    </g>
+                    <g transform="translate(500,140)">
+                        <rect x="0" y="0" width="110" height="120" fill="rgba(255,107,107,0.12)" stroke="#FF6B6B"/>
+                        <text x="55" y="40" fill="#FF6B6B" font-size="16" text-anchor="middle">无解</text>
+                        <text x="55" y="80" fill="#fff" font-size="14" text-anchor="middle">det(A)=0, 不相容</text>
+                    </g>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">三种解法</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">高斯消元法：最通用</li>
+                        <li class="chalk-text">逆矩阵法：适合方阵</li>
+                        <li class="chalk-text">克拉默法则：理论重要</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4"><animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/></circle><text x="350" y="255" fill="#FFE066" font-size="18" text-anchor="middle">线性方程组</text></svg></div></div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1; const totalPages = 6;
+        const pageContents = ["线性方程组可以用矩阵形式AX等于B表示，其中A是系数矩阵，X是未知数向量，B是常数向量。","高斯消元法通过初等行变换将增广矩阵化为阶梯形，然后回代求解。这是最通用的方法。","逆矩阵法的解是X等于A的逆乘以B。适用条件是A必须是方阵且行列式不为0。","克拉默法则用行列式求解，xi等于Di除以D。这个方法在理论上很重要。","解的判定：行列式不为0时有唯一解，行列式为0时可能有无穷多解或无解。","总结：三种解法各有特点，高斯消元法最通用，逆矩阵法适合方阵，克拉默法则理论重要。"];
+        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
+        function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
+        async function startTeaching() { console.log('开始讲解'); }
+        async function startAutoPlay() { console.log('自动播放'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
+        let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
+        document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
+    </script>
+</body>
+</html>

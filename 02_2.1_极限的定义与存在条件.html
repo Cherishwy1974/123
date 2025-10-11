@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_2.1_极限的定义与存在条件</title>
+
+    <!-- 本地思源宋体字体文件 -->
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* 使用本地思源宋体，提供优雅的中文显示效果 */
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN',
+                         'Songti SC', 'SimSun', '宋体', serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .blackboard {
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a2e;
+            position: relative;
+            border: 10px solid #795548;
+            margin: 0;
+        }
+
+        /* 虚拟人显示区域 - 稍微下移，避免遮挡内容 */
+        .avatar-container {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px;
+            height: 850px;
+            overflow: hidden;
+            z-index: 50;
+            pointer-events: none;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: auto;
+        }
+
+        /* 教学内容区域 - 避让虚拟人，左右分布 */
+        .content-area {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            right: 50px;
+            bottom: 120px;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .page {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.7s ease-in-out;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 3fr; /* 调整比例，给图更大空间 */
+            gap: 20px;
+            align-items: center;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 第1页（封面）特殊样式 */
+        .page[data-page="1"] {
+            display: flex;
+            grid-template-columns: none;
+        }
+
+        .page[data-page="1"] > div {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .page[data-page="10"] {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 总结页样式 */
+        .intro-box {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: #ffffff;
+        }
+
+        .course-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            color: #f1c40f;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+
+        .content-list {
+            margin: 2rem 0;
+        }
+
+        .content-item {
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            margin: 0.8rem 0;
+            background: rgba(255,255,255,0.1);
+            border-left: 4px solid #4CAF50;
+            border-radius: 5px;
+            color: #e0e0e0;
+        }
+
+        .chalk-text {
+            color: #ffffff;
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN',
+                         'Songti SC', 'SimSun', '宋体', serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e1bee7;
+            margin-bottom: 1.5rem;
+        }
+
+
+        .text-large {
+            font-size: 20px;
+            margin-bottom: 0.8rem;
+            color: #81c784;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .text-medium {
+            font-size: 16px;
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+            color: #f3e5f5;
+            font-weight: 500;
+        }
+
+        .emphasis {
+            color: #FF6B6B;
+            font-size: 18px;
+        }
+
+        .text-medium p {
+            margin-bottom: 1rem;
+        }
+
+        .text-medium strong {
+            color: #81c784;
+            font-weight: 600;
+        }
+
+        .graph-container {
+            background: transparent;
+            border: none;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 连接状态指示器 - 默认隐藏 */
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+            transition: opacity 0.3s ease;
+            display: none; /* 默认隐藏红色提示 */
+        }
+
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); }
+        .status-indicator.recording {
+            background: rgba(244, 67, 54, 0.8);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); }
+
+        /* 录制模式下隐藏状态指示器 */
+        .recording-mode .status-indicator {
+            opacity: 0; pointer-events: none;
+        }
+        /* 录制模式下隐藏控制栏 */
+        .recording-mode .control-bar {
+            left: -300px; transition: left 0.5s ease;
+        }
+
+        /* 控制栏 */
+        .control-bar {
+            position: fixed;
+            left: -220px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 250px;
+            background: rgba(30,30,30,0.7);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 200;
+            border-radius: 0 15px 15px 0;
+            padding: 20px 15px;
+            transition: left 0.3s ease;
+        }
+
+        .control-bar:hover { left: 0; }
+
+        .control-bar::before {
+            content: '▶️';
+            position: absolute;
+            top: 50%;
+            right: -25px;
+            transform: translateY(-50%);
+            background: rgba(30,30,30,0.95);
+            padding: 10px 5px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.8rem;
+            writing-mode: vertical-lr;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4a4a4a, #666);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #555, #777);
+            transform: translateY(-2px);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+        }
+
+        /* 字幕区域 - 全宽显示，虚拟人不影响布局 */
+        .subtitle-area {
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+            right: 50px;
+            height: 50px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            color: white;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0 20px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+
+        <!-- 虚拟人显示区域 -->
+        <div class="avatar-container">
+            <div class="wrapper" id="avatarWrapper"></div>
+        </div>
+
+        <div class="content-area">
+            <!-- 第1页：课时导语 -->
+            <div class="page active" data-page="1">
+                <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+                    <div style="flex: 1; text-align: center; padding: 2rem;">
+                        <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                            极限的定义、性质与存在条件
+                        </h1>
+                        <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                            第2章 视频 2.1
+                        </p>
+                        <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限的直观理解与定义</p>
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 左极限与右极限的概念</p>
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限存在的充要条件</p>
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 无穷极限的判断方法</p>
+                        </div>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                        <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+                            <defs>
+                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#e74c3c;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <text x="300" y="150" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
+                                lim
+                                <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                            </text>
+                            <circle cx="200" cy="300" r="40" fill="none" stroke="#3498db" stroke-width="3">
+                                <animate attributeName="r" values="40;50;40" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="400" cy="300" r="40" fill="none" stroke="#e74c3c" stroke-width="3">
+                                <animate attributeName="r" values="40;50;40" dur="2s" begin="1s" repeatCount="indefinite"/>
+                            </circle>
+                            <line x1="200" y1="340" x2="400" y2="340" stroke="#f39c12" stroke-width="2" stroke-dasharray="5,5">
+                                <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite"/>
+                            </line>
+                            <text x="300" y="380" font-size="24" fill="#ecf0f1" text-anchor="middle">极限存在条件</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 第2-6页：有限点极限内容（来自原文件页面1-5）========== -->
+
+            <!-- 第2页：小球探险故事介绍 -->
+            <div class="page" data-page="2">
+                <div class="chalk-text">
+                    <div class="page-title">🎯 小球探险：函数极限的奥秘</div>
+                    <div class="text-medium">
+                        <p><strong>欢迎来到函数极限的奇妙世界！</strong></p>
+                        <p>今天我们要通过两个勇敢小球的探险故事，来学习一个重要的数学概念：<strong>左极限与右极限</strong></p>
+                        <p>让我们看看当 $x$ 逼近某一点 $x_0$ 时会发生什么奇妙的事情...</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <video
+                        id="mainDemoVideo"
+                        width="100%"
+                        height="100%"
+                        controls
+                        muted
+                        autoplay
+                        loop
+                        style="max-height: 450px;">
+                        <source src="./彩色小球相遇动画生成.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放
+                    </video>
+                </div>
+            </div>
+
+            <!-- 第3页：断桥上的小球冒险 -->
+            <div class="page" data-page="3">
+                <div class="chalk-text">
+                    <div class="page-title">📖 故事一：断桥上的小球冒险</div>
+                    <div class="text-medium">
+                        <p><strong>🔴 红色小球的任务</strong></p>
+                        <p>• 从左边出发，想要到达目标点 $x_0 = 1$<br>
+                        • 沿着函数曲线勇敢前进<br>
+                        • 但是遇到了一座神秘的断桥！</p>
+                        
+                        <p><strong>🟢 绿色小球的任务</strong></p>
+                        <p>• 从右边出发，也想到达目标点 $x_0 = 1$<br>
+                        • 同样沿着函数曲线前进<br>
+                        • 也遇到了同一座断桥！</p>
+                        
+                        <p class="emphasis">🤔 问题：它们能到达相同的高度吗？</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph1" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- 第4页：动态演示 -->
+            <div class="page" data-page="4">
+                <div class="chalk-text">
+                    <div class="page-title">🎬 动态演示：小球的冒险之旅</div>
+                    <div class="text-medium">
+                        <p><strong>🎭 观察要点</strong></p>
+                        <p>• 红色小球从左边逼近 $x_0 = 1$<br>
+                        • 绿色小球从右边逼近 $x_0 = 1$<br>
+                        • 观察它们最终能到达的高度</p>
+                        
+                        <p><strong>🔍 关键概念：</strong></p>
+                        <p>• <strong>左极限</strong>：从左边逼近的极限值<br>
+                        • <strong>右极限</strong>：从右边逼近的极限值<br>
+                        • <strong>极限存在</strong>：左极限 $=$ 右极限</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph2" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- 第5页：彩虹桥的奇迹 -->
+            <div class="page" data-page="5">
+                <div class="chalk-text">
+                    <div class="page-title">🌈 故事二：彩虹桥的奇迹</div>
+                    <div class="text-medium">
+                        <p><strong>🩷 粉色小球的新任务</strong></p>
+                        <p>• 从左边出发，目标点 $x_0 = 0$<br>
+                        • 这次遇到的是一座完整的彩虹桥<br>
+                        • 没有断裂，可以安全通过！</p>
+                        
+                        <p><strong>🔵 蓝色小球的新任务</strong></p>
+                        <p>• 从右边出发，同样目标点 $x_0 = 0$<br>
+                        • 走在同一座美丽的彩虹桥上<br>
+                        • 这次会发生什么奇迹呢？</p>
+                        
+                        <p class="emphasis">✨ 期待：它们会在同一高度相遇吗？</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph3" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- 第6页：奇迹相遇 -->
+            <div class="page" data-page="6">
+                <div class="chalk-text">
+                    <div class="page-title">🎉 奇迹相遇：极限存在的美妙时刻</div>
+                    <div class="text-medium">
+                        <p><strong>🎊 奇迹发生了！</strong></p>
+                        <p>• 粉色小球从左边到达高度 0.5<br>
+                        • 蓝色小球从右边也到达高度 0.5<br>
+                        • 它们在同一个高度相遇了！</p>
+                        
+                        <p><strong>📚 数学结论：</strong></p>
+                        <p>• 当左极限 $=$ 右极限时，极限存在<br>
+                        • 当左极限 $\neq$ 右极限时，极限不存在</p>
+                        
+                        <p class="emphasis">💡 数学的美妙：有时路径不同，终点相同！</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph4" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- ========== 稍后会添加第7-9页：无穷极限内容 ========== -->
+
+            <!-- ========== 第7-9页：无穷极限内容（来自原文件页面1-3）========== -->
+
+            <!-- 第7页：团队合作的开始 -->
+            <div class="page" data-page="7">
+                <div class="chalk-text">
+                    <div class="page-title">👥 无穷极限的团队故事</div>
+                    <div class="text-medium">
+                        <p><strong>公司的发展目标</strong></p>
+                        <p>东部和西部两个团队，不管发展多久，最终都要达到同一个目标！</p>
+                        <p style="font-size: 20px; text-align: center; color: #81c784; margin: 1.5rem 0;">
+                            $\displaystyle\lim_{x \to \infty} f(x) = A$
+                        </p>
+                        <p><strong>📈 观察要点</strong></p>
+                        <p>• 两个团队都朝着目标值 0 努力<br>
+                        • 时间越长，距离目标越近<br>
+                        • 最终都能到达同一个目标</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph7" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- 第8页：两个团队的分歧 -->
+            <div class="page" data-page="8">
+                <div class="chalk-text">
+                    <div class="page-title">⚠️ 两个团队的分歧</div>
+                    <div class="text-medium">
+                        <p><strong>公司的困境</strong></p>
+                        <p>• 东部团队努力向上，目标是天花板<br>
+                        • 西部团队努力向下，目标是地下室<br>
+                        • 老板头疼了：目标完全相反！</p>
+                        <p style="font-size: 18px; text-align: center; color: #FF6B6B; margin: 1.5rem 0;">
+                            $\displaystyle\lim_{x \to +\infty} \arctan(x) = \frac{\pi}{2}$
+                        </p>
+                        <p style="font-size: 18px; text-align: center; color: #4CAF50; margin: 1.5rem 0;">
+                            $\displaystyle\lim_{x \to -\infty} \arctan(x) = -\frac{\pi}{2}$
+                        </p>
+                        <p class="emphasis">极限不存在！</p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph8" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- 第9页：成功的团队合作与总结 -->
+            <div class="page" data-page="9">
+                <div class="chalk-text">
+                    <div class="page-title">🏆 团队成功的法则</div>
+                    <div class="text-medium">
+                        <p><strong>理想的公司案例</strong></p>
+                        <p>• 东西部团队目标一致<br>
+                        • 都朝着总部大厅（0）努力<br>
+                        • 老板笑了：完美合作！</p>
+                        <p style="font-size: 18px; text-align: center; color: #81c784; margin: 1.5rem 0;">
+                            $\displaystyle\lim_{x \to \infty} f(x) = A$ 存在
+                        </p>
+                        <p style="font-size: 16px; text-align: center; color: #f3e5f5; margin: 1rem 0;">
+                            当且仅当 $\displaystyle\lim_{x \to +\infty} f(x) = \displaystyle\lim_{x \to -\infty} f(x) = A$
+                        </p>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div id="graph9" style="width: 100%; height: 450px;"></div>
+                </div>
+            </div>
+
+            <!-- ========== 第7-9页添加完成 ========== -->
+
+            <!-- 第10页：课时总结 -->
+            <div class="page" data-page="10">
+                <div class="intro-box">
+                    <div class="course-title">📝 课时总结</div>
+                    <div class="course-subtitle">极限的定义与存在条件</div>
+
+                    <div class="content-list">
+                        <div style="font-size: 22px; font-weight: bold; margin-bottom: 20px; text-align: center;">
+                            🎓 今天我们学习了
+                        </div>
+                        <div class="content-item">有限点极限：左极限与右极限的概念</div>
+                        <div class="content-item">x → x₀ 时极限存在的充要条件：左极限 = 右极限</div>
+                        <div class="content-item">无穷极限：x → +∞ 和 x → -∞ 的情况</div>
+                        <div class="content-item">x → ∞ 时极限存在的充要条件：lim(x→+∞) = lim(x→-∞)</div>
+                        <div class="content-item">通过小球探险和团队合作故事理解抽象概念</div>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; margin: 30px 0;">
+                        <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                            🔑 核心要点
+                        </div>
+                        <div style="font-size: 18px; margin: 15px 0;">
+                            <strong>1. 有限点极限存在 ⇔ 左极限 = 右极限</strong>
+                        </div>
+                        <div style="font-size: 18px; margin: 15px 0;">
+                            <strong>2. 无穷极限存在 ⇔ lim(x→+∞) = lim(x→-∞)</strong>
+                        </div>
+                        <div style="font-size: 18px; margin: 15px 0;">
+                            <strong>3. 判断极限存在性的关键：检查两个方向的极限值是否相等</strong>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 40px; font-size: 18px;">
+                        📖 <strong>下节课预告</strong>：无穷小与无穷大<br>
+                        <span style="font-size: 16px; opacity: 0.9;">我们将学习无穷小量的定义、性质及其运算法则</span>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; font-size: 20px;">
+                        💖 感谢大家的学习！再见！
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 字幕显示区域 -->
+        <div class="subtitle-area" id="subtitleArea">
+            🎯 欢迎学习极限的定义与存在条件！
+        </div>
+
+        <div class="control-bar">
+            <div style="color: white; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+                第 <span id="currentPage">1</span> 页 / 共 <span id="totalPages">10</span> 页
+            </div>
+            <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+            <button class="btn primary" onclick="startTeaching()" id="startBtn">🎀 开始讲课</button>
+            <button class="btn" onclick="nextPage()">下一页 ➡️</button>
+            <button class="btn" onclick="restart()">🔄 重新开始</button>
+            <button class="btn" onclick="startAutoPlay()" id="autoPlayBtn" style="background: linear-gradient(135deg, #2196f3, #1976d2);">🎬 自动播放</button>
+        </div>
+    </div>
+
+    <!-- SDK加载脚本 -->
+    <script type="module">
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+            console.log('✅ 讯飞官方SDK模块已加载');
+        } catch (error) {
+            console.error('❌ SDK模块加载失败:', error);
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+
+    <!-- MathJax配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            startup: {
+                pageReady: () => {
+                    console.log('✅ MathJax 已完全加载');
+                    window.mathJaxReady = true;
+                    window.dispatchEvent(new CustomEvent('mathjaxReady'));
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
+    </script>
+    <script src="./polyfill.min.js"></script>
+    <script src="./mathjax-tex-mml-chtml.js"></script>
+    <script src="./plotly-2.35.2.min.js"></script>
+    <script src="./d3.v7.min.js"></script>
+
+    <script>
+        // 全局变量
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let currentPage = 1;
+        const totalPages = 10; // 1导语 + 5有限点 + 3无穷 + 1总结
+
+        // 教学内容
+        const pageContent = {
+            1: "同学们好！欢迎来到第二章第一节的学习。今天我们要学习极限的定义、性质与存在条件。这是微积分最核心的基础概念。我们将通过生动的小球探险故事，来理解左极限、右极限、以及极限存在的充要条件。还会学习当x趋向无穷时的极限情况。准备好了吗？让我们开始这趟奇妙的数学之旅！",
+            2: "同学们好！今天我们要通过一个有趣的故事来学习函数极限。想象有两个勇敢的小球，它们想要到达一个神秘的目标点。让我们看看会发生什么奇妙的事情！右边的图展示了我们故事的舞台。",
+            3: "现在开始我们的第一个故事：断桥上的小球冒险。看！这里有一座神奇的断桥。红色小球从左边出发，绿色小球从右边出发，它们都想到达中间的目标点 x等于1。但是桥断了！让我们看看右边的图，观察这座断桥的样子。",
+            4: "现在让我们观察动态演示。红色小球从左边沿着函数曲线前进，绿色小球从右边前进。注意观察：红色小球从左边只能到达高度2，而绿色小球从右边只能到达高度2.5。它们到达了不同的地方！这就是我们说的左极限不等于右极限，所以极限不存在。",
+            5: "现在让我们看第二个故事：彩虹桥的奇迹。这次有一座完整的彩虹桥！粉色小球从左边出发，蓝色小球从右边出发，目标点是 x等于0。这次会发生什么呢？让我们观察右边这座美丽的彩虹桥。",
+            6: "哇！奇迹发生了！两个小球在同一个高度0.5相遇了！粉色小球从左边到达高度0.5，蓝色小球从右边也到达高度0.5。这次左极限等于右极限，所以极限存在。这就是函数极限的奥秘：有时路径不同终点相同，有时路径相同终点不同！",
+            7: "同学们好！今天我们用团队合作的故事，来理解无穷极限的概念。请看屏幕上的动画。想象一家公司，有东部和西部两个团队。老板对他们说：不管发展多久，两个团队最终都要达到同一个目标！这就是无穷极限的核心思想。观察图中的蓝色小人和绿色小人，他们沿着不同的路径前进，但最终都趋向同一个目标点。随着时间推移，团队的努力会越来越接近某个目标值。这个最终目标，就是我们要找的极限值！",
+            8: "现在我们看第二个例子，一个有问题的公司。请注意观察两个小人的移动方向。东部团队的蓝色小人向右移动，他们的目标是天花板，也就是正的二分之派。西部团队的绿色小人向左移动，他们的目标是地下室，也就是负的二分之派。老板很头疼：两个团队的目标完全相反！这就像反正切函数的性质。当x趋向正无穷时，函数值趋向正的二分之派。当x趋向负无穷时，函数值趋向负的二分之派。因为两个方向的极限值不相等，所以无穷极限不存在！",
+            9: "最后我们看一个成功的公司案例。观察动画中的两个小人，他们从中心点出发，分别向左右两个方向移动。东部团队说：我们的目标是总部大厅！西部团队也说：我们的目标也是总部大厅！老板笑了：两个团队目标完全一致！这就是团队合作的黄金法则。在数学上，这个函数是一除以一加x的平方。无论x趋向正无穷还是负无穷，函数值都趋向于零。这就是无穷极限存在的条件：当且仅当左极限等于右极限！记住这个判断方法：看两个方向的最终目标，相同就有统一的极限，不同就极限不存在！",
+            10: "同学们！今天我们学习了极限的定义与存在条件。我们知道了，当x趋向某一点x0时，左极限等于右极限，极限才存在。当x趋向无穷时，正无穷极限等于负无穷极限，极限才存在。这些概念是微积分的基础，希望大家能够深入理解。下节课我们将学习无穷小与无穷大。今天的课就到这里，谢谢大家！"
+        };
+
+        // 页面切换函数
+        function switchToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            currentPage = pageNum;
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.querySelector(`[data-page="${pageNum}"]`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                // 渲染MathJax公式 - 等待MathJax加载完成
+                renderMathJax(targetPage, pageNum);
+                // 绘制图形
+                setTimeout(() => {
+                    drawPageGraph(pageNum);
+                }, 300);
+            }
+            updatePageInfo();
+        }
+
+        // MathJax渲染函数
+        function renderMathJax(targetPage, pageNum) {
+            const tryRender = () => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([targetPage]).then(() => {
+                        console.log(`✅ 第${pageNum}页MathJax渲染完成`);
+                    }).catch((err) => {
+                        console.error('MathJax渲染错误:', err);
+                    });
+                } else if (window.MathJax && window.MathJax.typeset) {
+                    window.MathJax.typeset([targetPage]);
+                    console.log(`✅ 第${pageNum}页MathJax渲染完成`);
+                } else {
+                    console.warn('MathJax未加载，等待中...');
+                }
+            };
+
+            if (window.mathJaxReady) {
+                setTimeout(tryRender, 100);
+            } else {
+                window.addEventListener('mathjaxReady', () => {
+                    setTimeout(tryRender, 100);
+                }, { once: true });
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) switchToPage(currentPage - 1);
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) switchToPage(currentPage + 1);
+        }
+
+        function restart() {
+            switchToPage(1);
+        }
+
+        function updatePageInfo() {
+            document.getElementById('currentPage').textContent = currentPage;
+            document.getElementById('totalPages').textContent = totalPages;
+        }
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type) indicator.classList.add(type);
+            }
+        }
+
+        // 等待SDK
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时'));
+                }, 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
+
+        // 开始教学
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                await waitForSDK();
+                console.log('✅ SDK已加载');
+
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！');
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+                        startBtn.textContent = '💖 虚拟人已就绪';
+                        setTimeout(() => speakContent(1), 1000);
+                    })
+                    .on('disconnected', () => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        startBtn.textContent = '❌ 连接失败';
+                        startBtn.disabled = false;
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 },
+                    avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1 },
+                    tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 },
+                    avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
+                });
+
+                await avatarPlatform.start('#avatarWrapper');
+                console.log('✅ 虚拟人启动成功');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                startBtn.textContent = '❌ 启动失败';
+                startBtn.disabled = false;
+            }
+        }
+
+        // 讲解内容
+        async function speakContent(pageNum) {
+            if (!isConnected || !avatarPlatform) {
+                console.log('未连接虚拟人');
+                return;
+            }
+
+            const content = pageContent[pageNum];
+            if (!content) {
+                console.log(`第${pageNum}页无讲稿`);
+                return;
+            }
+
+            try {
+                console.log(`🎤 讲解第${pageNum}页`);
+                updateStatus(`讲解第${pageNum}页`, 'recording');
+                await avatarPlatform.writeText(content, { nlp: false });
+                console.log(`✅ 第${pageNum}页讲解完成`);
+            } catch (error) {
+                console.error(`讲解失败:`, error);
+            }
+        }
+
+        // 自动播放
+        async function startAutoPlay() {
+            // 实现自动播放逻辑
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePageInfo();
+            console.log('✨ 系统初始化完成');
+            
+            // 渲染第1页的MathJax公式 - 使用改进的渲染函数
+            const firstPage = document.querySelector('[data-page="1"]');
+            if (firstPage) {
+                renderMathJax(firstPage, 1);
+            }
+            
+            // 延迟绘制图形，确保Plotly已加载
+            setTimeout(() => {
+                drawPageGraph(1);
+            }, 1000);
+        });
+
+        // 绘图函数 - 使用Plotly.js
+        function drawPageGraph(pageNum) {
+            console.log(`🎨 绘制第${pageNum}页图形`);
+
+            if (typeof Plotly === 'undefined') {
+                console.error('❌ Plotly未加载');
+                return;
+            }
+
+            switch(pageNum) {
+                case 1: break; // 导语页无图
+                case 2: break; // 第2页有视频，无需绘制
+                case 3: drawBrokenBridgeGraphPlotly(); break;
+                case 4: drawAnimatedBrokenBridgePlotly(); break;
+                case 5: drawRainbowBridgeGraphPlotly(); break;
+                case 6: drawMiracleGraphPlotly(); break;
+                case 7: drawTeamGoalD3(); break;  // D3.js: 团队目标
+                case 8: drawDifferentGoalsD3(); break;  // D3.js: 不同目标
+                case 9: drawUnifiedGoalD3(); break;  // D3.js: 统一目标
+                case 10: break; // 总结页无图
+                default: break;
+            }
+        }
+
+        // ========== D3.js辅助函数（用于第7-9页）==========
+
+        // 创建SVG图标的辅助函数 - 使用内嵌SVG
+        function createPersonIcon(g, x, y, color, direction = 'right') {
+            const iconGroup = g.append('g')
+                .attr('transform', `translate(${x}, ${y})`)
+                .style('opacity', 0);
+
+            // 人物SVG - 可以水平翻转
+            const personSvg = iconGroup.append('svg')
+                .attr('width', 20)
+                .attr('height', 20)
+                .attr('x', -10)
+                .attr('y', -10)
+                .attr('viewBox', '0 0 16 16')
+                .attr('fill', color)
+                .style('transform', direction === 'left' ? 'scaleX(-1)' : 'scaleX(1)');
+
+            // 行走的人的路径
+            personSvg.append('path')
+                .attr('d', 'M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM6.44 3.752A.75.75 0 0 1 7 3.5h1.445c.742 0 1.32.643 1.243 1.38l-.43 4.083a1.8 1.8 0 0 1-.088.395l-.318.906.213.242a.8.8 0 0 1 .114.175l2 4.25a.75.75 0 1 1-1.357.638l-1.956-4.154-1.68-1.921A.75.75 0 0 1 6 8.96l.138-2.613-.435.489-.464 2.786a.75.75 0 1 1-1.48-.246l.5-3a.75.75 0 0 1 .18-.375l2-2.25Z');
+
+            // 方向箭头
+            const arrowSvg = iconGroup.append('svg')
+                .attr('width', 16)
+                .attr('height', 16)
+                .attr('x', direction === 'right' ? 15 : -25)
+                .attr('y', -8)
+                .attr('viewBox', '0 0 16 16')
+                .attr('fill', '#FF9800');
+
+            if (direction === 'right') {
+                arrowSvg.append('path')
+                    .attr('d', 'M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z');
+            } else {
+                arrowSvg.append('path')
+                    .attr('d', 'M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z');
+            }
+
+            return iconGroup;
+        }
+
+        // 创建奖杯图标
+        function createTrophyIcon(g, x, y, color) {
+            const iconGroup = g.append('g')
+                .attr('transform', `translate(${x}, ${y})`)
+                .style('opacity', 0);
+
+            const trophySvg = iconGroup.append('svg')
+                .attr('width', 24)
+                .attr('height', 24)
+                .attr('x', -12)
+                .attr('y', -12)
+                .attr('viewBox', '0 0 16 16')
+                .attr('fill', color);
+
+            trophySvg.append('path')
+                .attr('d', 'M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z');
+
+            return iconGroup;
+        }
+
+        // ========== Plotly.js绘图函数（第3-6页）==========
+
+        // 第3页：断桥函数 - 使用Plotly.js
+        function drawBrokenBridgeGraphPlotly() {
+            const x1 = [], y1 = [];
+            for (let i = -0.5; i < 1; i += 0.05) {
+                x1.push(i);
+                y1.push(0.3 * i + 1.7);
+            }
+
+            const x2 = [], y2 = [];
+            for (let i = 1; i <= 2.8; i += 0.05) {
+                x2.push(i);
+                y2.push(0.3 * i + 2.2);
+            }
+
+            const trace1 = {
+                x: x1, y: y1,
+                type: 'scatter', mode: 'lines',
+                name: '左段：y = 0.3x + 1.7',
+                line: { color: '#FF6B6B', width: 6 }
+            };
+
+            const trace2 = {
+                x: x2, y: y2,
+                type: 'scatter', mode: 'lines',
+                name: '右段：y = 0.3x + 2.2',
+                line: { color: '#4CAF50', width: 6 }
+            };
+
+            const trace3 = {
+                x: [1, 1], y: [2, 2.5],
+                type: 'scatter', mode: 'markers',
+                name: '断点',
+                marker: { color: ['#FF6B6B', '#4CAF50'], size: 12 }
+            };
+
+            const trace4 = {
+                x: [1, 1], y: [0, 3],
+                type: 'scatter', mode: 'lines',
+                name: 'x₀ = 1',
+                line: { color: '#FFC107', width: 3, dash: 'dash' }
+            };
+
+            const layout = {
+                title: { text: '断桥函数：极限不存在', font: { size: 16, color: '#333' }},
+                xaxis: { title: 'x', range: [-1, 3], zeroline: true },
+                yaxis: { title: 'y', range: [0, 3], zeroline: true },
+                showlegend: true,
+                legend: { x: 1, y: 0, xanchor: 'right', yanchor: 'bottom' },
+                margin: { l: 50, r: 50, t: 50, b: 50 },
+                annotations: [
+                    {
+                        x: 0.3, y: 2.1, text: '左极限 = 2',
+                        showarrow: true, arrowhead: 2, arrowcolor: '#FF6B6B',
+                        ax: -30, ay: -20,
+                        font: { color: '#FF6B6B', size: 15, family: 'Arial Black' },
+                        bgcolor: 'rgba(255, 245, 245, 0.95)',
+                        bordercolor: '#FF6B6B', borderwidth: 2, borderpad: 3
+                    },
+                    {
+                        x: 1.7, y: 2.6, text: '右极限 = 2.5',
+                        showarrow: true, arrowhead: 2, arrowcolor: '#4CAF50',
+                        ax: 30, ay: -20,
+                        font: { color: '#4CAF50', size: 15, family: 'Arial Black' },
+                        bgcolor: 'rgba(245, 255, 245, 0.95)',
+                        bordercolor: '#4CAF50', borderwidth: 2, borderpad: 3
+                    },
+                    {
+                        x: 1, y: 0.5, text: '极限不存在',
+                        showarrow: false,
+                        font: { color: '#FF5722', size: 15, family: 'Arial Black' },
+                        bgcolor: 'rgba(255, 248, 248, 0.95)',
+                        bordercolor: '#FF5722', borderwidth: 2, borderpad: 4
+                    }
+                ]
+            };
+
+            const config = { displayModeBar: false, responsive: true };
+            Plotly.newPlot('graph1', [trace1, trace2, trace3, trace4], layout, config);
+        }
+
+        // 第4页：动态断桥演示
+        function drawAnimatedBrokenBridgePlotly() {
+            // 先绘制基础断桥
+            drawBrokenBridgeForPage4();
+            // 添加动画
+            setTimeout(() => startBrokenBridgeAnimation(), 1000);
+        }
+
+        function drawBrokenBridgeForPage4() {
+            const x1 = [], y1 = [];
+            for (let i = -0.5; i < 1; i += 0.05) {
+                x1.push(i);
+                y1.push(0.3 * i + 1.7);
+            }
+
+            const x2 = [], y2 = [];
+            for (let i = 1; i <= 2.8; i += 0.05) {
+                x2.push(i);
+                y2.push(0.3 * i + 2.2);
+            }
+
+            const trace1 = {
+                x: x1, y: y1,
+                type: 'scatter', mode: 'lines',
+                name: '左段',
+                line: { color: '#FF6B6B', width: 6 }
+            };
+
+            const trace2 = {
+                x: x2, y: y2,
+                type: 'scatter', mode: 'lines',
+                name: '右段',
+                line: { color: '#4CAF50', width: 6 }
+            };
+
+            const trace3 = {
+                x: [1, 1], y: [2, 2.5],
+                type: 'scatter', mode: 'markers',
+                name: '断点',
+                marker: { color: ['#FF6B6B', '#4CAF50'], size: 12 }
+            };
+
+            const trace4 = {
+                x: [1, 1], y: [0, 3],
+                type: 'scatter', mode: 'lines',
+                name: 'x₀ = 1',
+                line: { color: '#FFC107', width: 3, dash: 'dash' }
+            };
+
+            const layout = {
+                title: { text: '🎬 动态演示：断桥函数', font: { size: 16, color: '#333' }},
+                xaxis: { title: 'x', range: [-1, 3], zeroline: true },
+                yaxis: { title: 'y', range: [0, 3], zeroline: true },
+                showlegend: true,
+                margin: { l: 50, r: 50, t: 50, b: 50 }
+            };
+
+            const config = { displayModeBar: false, responsive: true };
+            Plotly.newPlot('graph2', [trace1, trace2, trace3, trace4], layout, config);
+        }
+
+        function startBrokenBridgeAnimation() {
+            let frame = 0;
+            const totalFrames = 80;
+
+            function animate() {
+                if (currentPage !== 4) return;
+
+                const progress = frame / totalFrames;
+
+                if (progress < 0.5) {
+                    // 左球移动
+                    const leftProgress = progress / 0.5;
+                    const leftX = -0.5 + leftProgress * 1.4;
+                    const leftY = 0.3 * leftX + 1.7;
+
+                    if (frame === 0) {
+                        const ballTrace = {
+                            x: [leftX], y: [leftY],
+                            type: 'scatter', mode: 'markers+text',
+                            text: ['😊'], textfont: { size: 24 },
+                            marker: { color: '#FF6B6B', size: 35 },
+                            name: '红球', showlegend: false
+                        };
+                        Plotly.addTraces('graph2', [ballTrace]);
+                    } else {
+                        Plotly.restyle('graph2', { x: [[leftX]], y: [[leftY]] }, [4]);
+                    }
+                } else {
+                    // 右球移动
+                    const rightProgress = (progress - 0.5) / 0.5;
+                    const rightX = 2.8 - rightProgress * 1.7;
+                    const rightY = 0.3 * rightX + 2.2;
+
+                    if (progress < 0.51) {
+                        const ballTrace = {
+                            x: [rightX], y: [rightY],
+                            type: 'scatter', mode: 'markers+text',
+                            text: ['😄'], textfont: { size: 24 },
+                            marker: { color: '#4CAF50', size: 35 },
+                            name: '绿球', showlegend: false
+                        };
+                        Plotly.addTraces('graph2', [ballTrace]);
+                    } else {
+                        Plotly.restyle('graph2', { x: [[rightX]], y: [[rightY]] }, [5]);
+                    }
+                }
+
+                frame++;
+                if (frame < totalFrames && currentPage === 4) {
+                    setTimeout(animate, 250);
+                }
+            }
+
+            animate();
+        }
+
+        // 第5页：彩虹桥函数
+        function drawRainbowBridgeGraphPlotly() {
+            const x = [], y = [];
+            for (let i = -2.2; i <= 2.2; i += 0.05) {
+                x.push(i);
+                y.push(i * i / 3 + 0.5);
+            }
+
+            const rainbowColors = [];
+            for (let i = 0; i < x.length; i++) {
+                const hue = (i / x.length) * 360;
+                rainbowColors.push(`hsl(${hue}, 80%, 60%)`);
+            }
+
+            const trace1 = {
+                x: x, y: y,
+                type: 'scatter', mode: 'lines+markers',
+                name: '🌈 彩虹桥',
+                line: { color: '#FF6B6B', width: 8 },
+                marker: { color: rainbowColors, size: 6 }
+            };
+
+            const trace2 = {
+                x: [0], y: [0.5],
+                type: 'scatter', mode: 'markers',
+                name: '会合点 (0, 0.5)',
+                marker: { color: '#FFD700', size: 15, symbol: 'star' }
+            };
+
+            const trace3 = {
+                x: [0, 0], y: [-0.5, 2.5],
+                type: 'scatter', mode: 'lines',
+                name: 'x₀ = 0',
+                line: { color: '#FFC107', width: 3, dash: 'dash' }
+            };
+
+            const layout = {
+                title: { text: '彩虹桥函数：极限存在', font: { size: 16, color: '#333' }},
+                xaxis: { title: 'x', range: [-2.5, 2.5], zeroline: true },
+                yaxis: { title: 'y', range: [-0.5, 2.5], zeroline: true },
+                showlegend: true,
+                margin: { l: 50, r: 50, t: 50, b: 50 },
+                annotations: [
+                    {
+                        x: 0, y: 2.2, text: '左极限 = 右极限 = 0.5',
+                        showarrow: true, arrowhead: 2, arrowcolor: '#4CAF50',
+                        ax: 0, ay: -30,
+                        font: { color: '#4CAF50', size: 15, family: 'Arial Black' },
+                        bgcolor: 'rgba(245, 255, 245, 0.95)',
+                        bordercolor: '#4CAF50', borderwidth: 2, borderpad: 4
+                    }
+                ]
+            };
+
+            const config = { displayModeBar: false, responsive: true };
+            Plotly.newPlot('graph3', [trace1, trace2, trace3], layout, config);
+        }
+
+        // 第6页：奇迹演示
+        function drawMiracleGraphPlotly() {
+            // 先绘制彩虹桥
+            drawRainbowBridgeForPage6();
+            // 添加动画
+            setTimeout(() => startRainbowBridgeAnimation(), 1000);
+        }
+
+        function drawRainbowBridgeForPage6() {
+            const x = [], y = [];
+            for (let i = -2.2; i <= 2.2; i += 0.05) {
+                x.push(i);
+                y.push(i * i / 3 + 0.5);
+            }
+
+            const rainbowColors = [];
+            for (let i = 0; i < x.length; i++) {
+                const hue = (i / x.length) * 360;
+                rainbowColors.push(`hsl(${hue}, 80%, 60%)`);
+            }
+
+            const trace1 = {
+                x: x, y: y,
+                type: 'scatter', mode: 'lines+markers',
+                name: '🌈 彩虹桥',
+                line: { color: '#FF6B6B', width: 8 },
+                marker: { color: rainbowColors, size: 6 }
+            };
+
+            const trace2 = {
+                x: [0], y: [0.5],
+                type: 'scatter', mode: 'markers',
+                name: '会合点',
+                marker: { color: '#FFD700', size: 15, symbol: 'star' }
+            };
+
+            const trace3 = {
+                x: [0, 0], y: [-0.5, 2.5],
+                type: 'scatter', mode: 'lines',
+                name: 'x₀ = 0',
+                line: { color: '#FFC107', width: 3, dash: 'dash' }
+            };
+
+            const layout = {
+                title: { text: '🎉 奇迹演示：彩虹桥函数', font: { size: 16, color: '#333' }},
+                xaxis: { title: 'x', range: [-2.5, 2.5], zeroline: true },
+                yaxis: { title: 'y', range: [-0.5, 2.5], zeroline: true },
+                showlegend: true,
+                margin: { l: 50, r: 50, t: 50, b: 50 }
+            };
+
+            const config = { displayModeBar: false, responsive: true };
+            Plotly.newPlot('graph4', [trace1, trace2, trace3], layout, config);
+        }
+
+        function startRainbowBridgeAnimation() {
+            let frame = 0;
+            const totalFrames = 75;
+
+            function animate() {
+                if (currentPage !== 6) return;
+
+                const progress = frame / totalFrames;
+                const leftX = -2.0 + progress * 1.95;
+                const rightX = 2.0 - progress * 1.95;
+                const leftY = leftX * leftX / 3 + 0.5;
+                const rightY = rightX * rightX / 3 + 0.5;
+
+                if (frame === 0) {
+                    const ball1 = {
+                        x: [leftX], y: [leftY],
+                        type: 'scatter', mode: 'markers+text',
+                        text: ['😍'], textfont: { size: 22 },
+                        marker: { color: '#E91E63', size: 32 },
+                        name: '粉球', showlegend: false
+                    };
+                    const ball2 = {
+                        x: [rightX], y: [rightY],
+                        type: 'scatter', mode: 'markers+text',
+                        text: ['🤩'], textfont: { size: 22 },
+                        marker: { color: '#2196F3', size: 32 },
+                        name: '蓝球', showlegend: false
+                    };
+                    Plotly.addTraces('graph4', [ball1, ball2]);
+                } else {
+                    Plotly.restyle('graph4', {
+                        x: [[leftX], [rightX]],
+                        y: [[leftY], [rightY]]
+                    }, [3, 4]);
+                }
+
+                frame++;
+                if (frame < totalFrames && currentPage === 6) {
+                    setTimeout(animate, 333);
+                }
+            }
+
+            animate();
+        }
+
+        // ========== D3.js绘图函数（第7-9页：无穷极限）==========
+
+        // 第7页：团队目标 - D3.js版本
+        function drawTeamGoalD3() {
+            const container = d3.select('#graph7');
+            container.selectAll('*').remove();
+
+            const margin = {top: 20, right: 20, bottom: 40, left: 50};
+            const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+            const height = container.node().getBoundingClientRect().height - margin.top - margin.bottom;
+
+            const svg = container.append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .style('background', 'transparent');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // 创建比例尺
+            const xScale = d3.scaleLinear().domain([0.1, 10]).range([0, width]);
+            const yScale = d3.scaleLinear().domain([0, 2]).range([height, 0]);
+
+            // 创建线条生成器
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveMonotoneX);
+
+            // 生成数据
+            const data1 = [], data2 = [];
+            for (let x = 0.1; x <= 10; x += 0.1) {
+                data1.push({x: x, y: 1/x});
+                data2.push({x: x, y: 2/(x+1)});
+            }
+
+            // 添加坐标轴 - 美化样式
+            const xAxis = g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(xScale).ticks(8))
+                .style('color', '#333');
+
+            xAxis.append('text')
+                .attr('x', width/2)
+                .attr('y', 35)
+                .attr('fill', '#1e3c72')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('font-weight', '500')
+                .text('时间越来越长 →');
+
+            const yAxis = g.append('g')
+                .call(d3.axisLeft(yScale).ticks(6))
+                .style('color', '#333');
+
+            yAxis.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', -35)
+                .attr('x', -height/2)
+                .attr('fill', '#1e3c72')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('font-weight', '500')
+                .text('距离目标还有多远');
+
+            // 添加网格线
+            g.selectAll('.grid-x')
+                .data(xScale.ticks(8))
+                .enter().append('line')
+                .attr('class', 'grid-x')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', height)
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-width', 0.5);
+
+            g.selectAll('.grid-y')
+                .data(yScale.ticks(6))
+                .enter().append('line')
+                .attr('class', 'grid-y')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-width', 0.5);
+
+            // 添加目标线（y=0）
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#FF9800')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5,5')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .style('opacity', 1);
+
+            // 添加函数曲线 - 带动画
+            const path1 = g.append('path')
+                .datum(data1)
+                .attr('fill', 'none')
+                .attr('stroke', '#2196F3')
+                .attr('stroke-width', 4)
+                .attr('d', line);
+
+            const path2 = g.append('path')
+                .datum(data2)
+                .attr('fill', 'none')
+                .attr('stroke', '#4CAF50')
+                .attr('stroke-width', 4)
+                .attr('d', line);
+
+            // 路径动画
+            const totalLength1 = path1.node().getTotalLength();
+            const totalLength2 = path2.node().getTotalLength();
+
+            path1
+                .attr('stroke-dasharray', totalLength1 + ' ' + totalLength1)
+                .attr('stroke-dashoffset', totalLength1)
+                .transition()
+                .duration(2000)
+                .attr('stroke-dashoffset', 0);
+
+            path2
+                .attr('stroke-dasharray', totalLength2 + ' ' + totalLength2)
+                .attr('stroke-dashoffset', totalLength2)
+                .transition()
+                .duration(2000)
+                .delay(500)
+                .attr('stroke-dashoffset', 0);
+
+            // 添加图例 - 右下角位置
+            const legend = g.append('g')
+                .attr('transform', `translate(${width - 120}, ${height - 60})`)
+                .style('opacity', 0);
+
+            // 透明背景
+            legend.append('rect')
+                .attr('x', -5)
+                .attr('y', -5)
+                .attr('width', 115)
+                .attr('height', 55)
+                .attr('fill', 'rgba(255,255,255,0.9)')
+                .attr('stroke', 'none')
+                .attr('rx', 3);
+
+            legend.append('line')
+                .attr('x1', 0).attr('x2', 15)
+                .attr('y1', 10).attr('y2', 10)
+                .attr('stroke', '#2196F3')
+                .attr('stroke-width', 3);
+
+            legend.append('text')
+                .attr('x', 20).attr('y', 14)
+                .text('东部团队业绩')
+                .style('font-size', '10px')
+                .style('font-weight', '500')
+                .attr('fill', '#333');
+
+            legend.append('line')
+                .attr('x1', 0).attr('x2', 15)
+                .attr('y1', 30).attr('y2', 30)
+                .attr('stroke', '#4CAF50')
+                .attr('stroke-width', 3);
+
+            legend.append('text')
+                .attr('x', 20).attr('y', 34)
+                .text('西部团队业绩')
+                .style('font-size', '10px')
+                .style('font-weight', '500')
+                .attr('fill', '#333');
+
+            // 图例淡入动画
+            legend.transition()
+                .duration(500)
+                .delay(2500)
+                .style('opacity', 1);
+
+            // 添加奖杯图标表示目标
+            const trophy = createTrophyIcon(g, width - 30, yScale(0) - 10, '#FFD700');
+            trophy.transition()
+                .duration(1000)
+                .delay(1000)
+                .style('opacity', 1);
+
+            // 添加动态点表示趋向目标 - 修正轨迹，确保在线上
+            const movingDot1 = g.append('circle')
+                .attr('r', 5)
+                .attr('fill', '#2196F3')
+                .attr('cx', xScale(1))
+                .attr('cy', yScale(1/1))  // 确保在1/x线上
+                .style('opacity', 0);
+
+            const movingDot2 = g.append('circle')
+                .attr('r', 5)
+                .attr('fill', '#4CAF50')
+                .attr('cx', xScale(1))
+                .attr('cy', yScale(2/(1+1)))  // 确保在2/(x+1)线上
+                .style('opacity', 0);
+
+            // 添加人物图标 - 都向右移动
+            const newTeamIcon1 = createPersonIcon(g, xScale(0.5), yScale(1/0.5), '#2196F3', 'right');
+            const newTeamIcon2 = createPersonIcon(g, xScale(0.5), yScale(2/1.5), '#4CAF50', 'right');
+
+            // 动画显示趋向过程 - 修正轨迹
+            setTimeout(() => {
+                // 第一个点沿着1/x曲线移动
+                movingDot1.style('opacity', 1);
+                newTeamIcon1.style('opacity', 1);
+
+                // 创建沿曲线移动的动画
+                let t = 0;
+                const animate1 = () => {
+                    t += 0.02;
+                    const x = 1 + t * 7;  // 从1到8
+                    if (x <= 8) {
+                        movingDot1
+                            .attr('cx', xScale(x))
+                            .attr('cy', yScale(1/x));
+                        newTeamIcon1
+                            .attr('transform', `translate(${xScale(x)}, ${yScale(1/x) - 25})`);
+                        requestAnimationFrame(animate1);
+                    }
+                };
+                animate1();
+
+                // 第二个点沿着2/(x+1)曲线移动
+                movingDot2.style('opacity', 1);
+                newTeamIcon2.style('opacity', 1);
+
+                let t2 = 0;
+                const animate2 = () => {
+                    t2 += 0.02;
+                    const x = 1 + t2 * 7;  // 从1到8
+                    if (x <= 8) {
+                        movingDot2
+                            .attr('cx', xScale(x))
+                            .attr('cy', yScale(2/(x+1)));
+                        newTeamIcon2
+                            .attr('transform', `translate(${xScale(x)}, ${yScale(2/(x+1)) - 25})`);
+                        requestAnimationFrame(animate2);
+                    }
+                };
+                setTimeout(animate2, 500);
+            }, 3000);
+        }
+
+        // 第8页：不同目标 - D3.js版本
+        function drawDifferentGoalsD3() {
+            const container = d3.select('#graph8');
+            container.selectAll('*').remove();
+
+            const margin = {top: 20, right: 20, bottom: 40, left: 60};
+            const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+            const height = container.node().getBoundingClientRect().height - margin.top - margin.bottom;
+
+            const svg = container.append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .style('background', 'transparent');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // 创建比例尺 - 修正范围，确保y轴正确显示
+            const xScale = d3.scaleLinear().domain([-5, 5]).range([0, width]);
+            const yScale = d3.scaleLinear().domain([-2, 2]).range([height, 0]);
+
+            // 创建线条生成器
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveMonotoneX);
+
+            // 生成arctan数据
+            const data = [];
+            for (let x = -5; x <= 5; x += 0.1) {
+                data.push({x: x, y: Math.atan(x)});
+            }
+
+            // 添加网格线
+            g.selectAll('.grid-x')
+                .data(xScale.ticks(8))
+                .enter().append('line')
+                .attr('class', 'grid-x')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', height)
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-width', 0.5);
+
+            g.selectAll('.grid-y')
+                .data(yScale.ticks(6))
+                .enter().append('line')
+                .attr('class', 'grid-y')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-width', 0.5);
+
+            // 添加坐标轴 - 修正x轴位置，应该在y=0处
+            const xAxis = g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(8))
+                .style('color', '#333');
+
+            // x轴标签 - 调整位置，避免与坐标轴重叠
+            xAxis.append('text')
+                .attr('x', width - 50)  // 移到右侧
+                .attr('y', -10)         // 在x轴上方
+                .attr('fill', '#1e3c72')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('font-weight', '500')
+                .text('团队努力方向 →');
+
+            const yAxis = g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)  // y轴应该在x=0处
+                .call(d3.axisLeft(yScale).ticks(6))
+                .style('color', '#333');
+
+            // y轴标签 - 调整位置，放在y轴右侧
+            yAxis.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', 20)          // 在y轴右侧
+                .attr('x', -30)         // 靠近顶部
+                .attr('fill', '#1e3c72')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('font-weight', '500')
+                .text('↑ 团队目标高度');
+
+            // 添加目标线
+            const piHalf = Math.PI/2;
+
+            // 正π/2线
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', yScale(piHalf))
+                .attr('y2', yScale(piHalf))
+                .attr('stroke', '#F44336')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5,5')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .delay(1500)
+                .style('opacity', 1);
+
+            // 负π/2线
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', yScale(-piHalf))
+                .attr('y2', yScale(-piHalf))
+                .attr('stroke', '#2196F3')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5,5')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .delay(2000)
+                .style('opacity', 1);
+
+            // 添加arctan曲线
+            const path = g.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#9C27B0')
+                .attr('stroke-width', 4)
+                .attr('d', line);
+
+            // 路径动画
+            const totalLength = path.node().getTotalLength();
+            path
+                .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+                .attr('stroke-dashoffset', totalLength)
+                .transition()
+                .duration(2500)
+                .attr('stroke-dashoffset', 0);
+
+            // 图例在右下角
+            const legend = g.append('g')
+                .attr('transform', `translate(${width - 140}, ${height - 80})`)
+                .style('opacity', 0);
+
+            legend.append('rect')
+                .attr('x', -5)
+                .attr('y', -5)
+                .attr('width', 135)
+                .attr('height', 75)
+                .attr('fill', 'rgba(255,255,255,0.9)')
+                .attr('stroke', 'none')
+                .attr('rx', 3);
+
+            legend.append('line')
+                .attr('x1', 0).attr('x2', 15)
+                .attr('y1', 10).attr('y2', 10)
+                .attr('stroke', '#F44336')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '3,3');
+
+            legend.append('text')
+                .attr('x', 20).attr('y', 14)
+                .text('东部团队目标')
+                .style('font-size', '10px')
+                .style('font-weight', '500')
+                .attr('fill', '#F44336');
+
+            legend.append('line')
+                .attr('x1', 0).attr('x2', 15)
+                .attr('y1', 30).attr('y2', 30)
+                .attr('stroke', '#2196F3')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '3,3');
+
+            legend.append('text')
+                .attr('x', 20).attr('y', 34)
+                .text('西部团队目标')
+                .style('font-size', '10px')
+                .style('font-weight', '500')
+                .attr('fill', '#2196F3');
+
+            legend.append('line')
+                .attr('x1', 0).attr('x2', 15)
+                .attr('y1', 50).attr('y2', 50)
+                .attr('stroke', '#9C27B0')
+                .attr('stroke-width', 3);
+
+            legend.append('text')
+                .attr('x', 20).attr('y', 54)
+                .text('团队发展轨迹')
+                .style('font-size', '10px')
+                .style('font-weight', '500')
+                .attr('fill', '#9C27B0');
+
+            // 图例淡入动画
+            legend.transition()
+                .duration(500)
+                .delay(3000)
+                .style('opacity', 1);
+
+            // 添加分歧标志
+            const conflictIcon = g.append('text')
+                .attr('x', width/2)
+                .attr('y', 30)
+                .text('⚡')
+                .style('font-size', '24px')
+                .style('text-anchor', 'middle')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .delay(2500)
+                .style('opacity', 1);
+
+            // 添加人物图标 - 注意方向
+            const newEastTeam = createPersonIcon(g, xScale(3), yScale(Math.atan(3)), '#2196F3', 'right');
+            const newWestTeam = createPersonIcon(g, xScale(-3), yScale(Math.atan(-3)), '#4CAF50', 'left');
+
+            // 添加动态点表示趋向 - 确保在arctan曲线上
+            const movingDot1 = g.append('circle')
+                .attr('r', 4)
+                .attr('fill', '#FF6B6B')
+                .attr('cx', xScale(0.5))
+                .attr('cy', yScale(Math.atan(0.5)))  // 确保在arctan曲线上
+                .style('opacity', 0);
+
+            const movingDot2 = g.append('circle')
+                .attr('r', 4)
+                .attr('fill', '#4ECDC4')
+                .attr('cx', xScale(-0.5))
+                .attr('cy', yScale(Math.atan(-0.5)))  // 确保在arctan曲线上
+                .style('opacity', 0);
+
+            // 动画显示动态点 - 沿着arctan曲线移动
+            setTimeout(() => {
+                // 东部团队动画
+                movingDot1.style('opacity', 1);
+                newEastTeam.style('opacity', 1);
+
+                let t1 = 0;
+                const animateEast = () => {
+                    t1 += 0.03;
+                    const x = 0.5 + t1 * 3.5;  // 从0.5到4
+                    if (x <= 4) {
+                        const y = Math.atan(x);
+                        movingDot1
+                            .attr('cx', xScale(x))
+                            .attr('cy', yScale(y));
+                        newEastTeam
+                            .attr('transform', `translate(${xScale(x)}, ${yScale(y) - 25})`);
+                        requestAnimationFrame(animateEast);
+                    }
+                };
+                animateEast();
+
+                // 西部团队动画
+                movingDot2.style('opacity', 1);
+                newWestTeam.style('opacity', 1);
+
+                let t2 = 0;
+                const animateWest = () => {
+                    t2 += 0.03;
+                    const x = -0.5 - t2 * 3.5;  // 从-0.5到-4
+                    if (x >= -4) {
+                        const y = Math.atan(x);
+                        movingDot2
+                            .attr('cx', xScale(x))
+                            .attr('cy', yScale(y));
+                        newWestTeam
+                            .attr('transform', `translate(${xScale(x)}, ${yScale(y) + 5})`);
+                        requestAnimationFrame(animateWest);
+                    }
+                };
+                setTimeout(animateWest, 300);
+            }, 3500);
+        }
+
+        // 第9页：统一目标 - D3.js版本，增加动画元素
+        function drawUnifiedGoalD3() {
+            const container = d3.select('#graph9');
+            container.selectAll('*').remove();
+
+            const margin = {top: 20, right: 20, bottom: 40, left: 50};
+            const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+            const height = container.node().getBoundingClientRect().height - margin.top - margin.bottom;
+
+            const svg = container.append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .style('background', 'transparent');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // 创建比例尺
+            const xScale = d3.scaleLinear().domain([-6, 6]).range([0, width]);
+            const yScale = d3.scaleLinear().domain([-0.1, 1.1]).range([height, 0]);
+
+            // 创建线条生成器
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveMonotoneX);
+
+            // 生成数据
+            const data = [];
+            for (let x = -6; x <= 6; x += 0.1) {
+                data.push({x: x, y: 1/(1 + x*x)});
+            }
+
+            // 添加网格线
+            g.selectAll('.grid-x')
+                .data(xScale.ticks(8))
+                .enter().append('line')
+                .attr('class', 'grid-x')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', height)
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-width', 0.5);
+
+            g.selectAll('.grid-y')
+                .data(yScale.ticks(6))
+                .enter().append('line')
+                .attr('class', 'grid-y')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-width', 0.5);
+
+            // 添加坐标轴 - 修正位置
+            const xAxis = g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)  // x轴应该在y=0处
+                .call(d3.axisBottom(xScale).ticks(8))
+                .style('color', '#333');
+
+            // x轴标签
+            xAxis.append('text')
+                .attr('x', width - 50)
+                .attr('y', -10)
+                .attr('fill', '#1e3c72')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('font-weight', '500')
+                .text('团队努力方向 →');
+
+            const yAxis = g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)  // y轴应该在x=0处
+                .call(d3.axisLeft(yScale).ticks(6))
+                .style('color', '#333');
+
+            // y轴标签
+            yAxis.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', 20)
+                .attr('x', -30)
+                .attr('fill', '#1e3c72')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('font-weight', '500')
+                .text('↑ 团队业绩水平');
+
+            // 添加目标线（y=0）
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#FF9800')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5,5')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .style('opacity', 1);
+
+            // 添加总部大厅图标
+            const headquarters = g.append('text')
+                .attr('x', width/2)
+                .attr('y', yScale(0) - 15)
+                .text('🏢')
+                .style('font-size', '24px')
+                .style('text-anchor', 'middle')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .delay(1500)
+                .style('opacity', 1);
+
+            // 添加函数曲线
+            const path = g.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#4CAF50')
+                .attr('stroke-width', 4)
+                .attr('d', line);
+
+            // 路径动画
+            const totalLength = path.node().getTotalLength();
+            path
+                .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+                .attr('stroke-dashoffset', totalLength)
+                .transition()
+                .duration(2000)
+                .attr('stroke-dashoffset', 0);
+
+            // 添加人物图标 - 从中心开始，跑向无穷远处
+            const newEastTeam = createPersonIcon(g, xScale(0), yScale(1), '#2196F3', 'right');
+            const newWestTeam = createPersonIcon(g, xScale(0), yScale(1), '#4CAF50', 'left');
+
+            const movingDot1 = g.append('circle')
+                .attr('r', 5)
+                .attr('fill', '#FF6B6B')
+                .attr('cx', xScale(0))  // 从x=0开始（中心）
+                .attr('cy', yScale(1))  // 从最高点开始
+                .style('opacity', 0);
+
+            const movingDot2 = g.append('circle')
+                .attr('r', 5)
+                .attr('fill', '#4ECDC4')
+                .attr('cx', xScale(0))   // 从x=0开始（中心）
+                .attr('cy', yScale(1))   // 从最高点开始
+                .style('opacity', 0);
+
+            // 发散动画 - 从中心向无穷远处跑
+            setTimeout(() => {
+                newEastTeam.style('opacity', 1);
+                newWestTeam.style('opacity', 1);
+                movingDot1.style('opacity', 1);
+                movingDot2.style('opacity', 1);
+
+                // 沿曲线从中心向无穷远处发散
+                let t = 0;
+                const divergeAnimation = () => {
+                    t += 0.015;  // 稍微慢一点，更好观察
+
+                    // 西部团队从中心向-∞移动（x从0到-6）
+                    const x1 = 0 - t * 6;
+                    if (x1 >= -6) {
+                        const y1 = 1/(1 + x1*x1);
+                        movingDot1
+                            .attr('cx', xScale(x1))
+                            .attr('cy', yScale(y1));
+                        newWestTeam
+                            .attr('transform', `translate(${xScale(x1)}, ${yScale(y1) - 25})`);
+                    }
+
+                    // 东部团队从中心向+∞移动（x从0到6）
+                    const x2 = 0 + t * 6;
+                    if (x2 <= 6) {
+                        const y2 = 1/(1 + x2*x2);
+                        movingDot2
+                            .attr('cx', xScale(x2))
+                            .attr('cy', yScale(y2));
+                        newEastTeam
+                            .attr('transform', `translate(${xScale(x2)}, ${yScale(y2) - 25})`);
+                    }
+
+                    if (t < 1) {
+                        requestAnimationFrame(divergeAnimation);
+                    } else {
+                        // 添加发散说明的文字提示
+                        g.append('text')
+                            .attr('x', width/2)
+                            .attr('y', yScale(0) - 50)
+                            .text('两个团队都趋向同一个极限值：0')
+                            .style('font-size', '12px')
+                            .style('text-anchor', 'middle')
+                            .style('fill', '#4CAF50')
+                            .style('font-weight', 'bold')
+                            .style('opacity', 0)
+                            .transition()
+                            .duration(500)
+                            .delay(500)
+                            .style('opacity', 1);
+                    }
+                };
+                divergeAnimation();
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第11章 幂级数与泰勒展开</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+        
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">幂级数的概念</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">定义</p>
+                    <div class="formula-box"><p class="chalk-text">$$\sum_{n=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + \cdots$$</p></div>
+                    <p class="chalk-text emphasis">收敛域</p>
+                    <p class="chalk-text">使幂级数收敛的所有x值的集合</p>
+                    <p class="chalk-text emphasis">收敛半径R</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">$|x| < R$：收敛</li>
+                        <li class="chalk-text">$|x| > R$：发散</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <defs>
+                        <filter id="glow1">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 标题 -->
+                    <text x="350" y="40" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow1)">幂级数收敛域</text>
+                    
+                    <!-- 数轴 -->
+                    <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="4" filter="url(#glow1)"/>
+                    <text x="620" y="305" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow1)">x</text>
+                    
+                    <!-- 中心点 -->
+                    <circle cx="350" cy="300" r="8" fill="#FFE066" filter="url(#glow1)">
+                        <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="350" y="335" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow1)">x₀</text>
+                    
+                    <!-- 收敛区间 (-R, R) -->
+                    <line x1="200" y1="300" x2="500" y2="300" stroke="#4ECDC4" stroke-width="8" filter="url(#glow1)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+                    </line>
+                    
+                    <!-- 左边界 -R -->
+                    <circle cx="200" cy="300" r="10" fill="none" stroke="#FF6B6B" stroke-width="3" filter="url(#glow1)">
+                        <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="200" y="270" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">-R</text>
+                    
+                    <!-- 右边界 R -->
+                    <circle cx="500" cy="300" r="10" fill="none" stroke="#FF6B6B" stroke-width="3" filter="url(#glow1)">
+                        <animate attributeName="r" values="10;14;10" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="500" y="270" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">R</text>
+                    
+                    <!-- 收敛区域标注 -->
+                    <rect x="250" y="150" width="200" height="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow1)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="175" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">收敛区间</text>
+                    <text x="350" y="200" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow1)">|x - x₀| < R</text>
+                    
+                    <!-- 发散区域左 -->
+                    <path d="M 100 350 L 180 350" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="5,5" filter="url(#glow1)">
+                        <animate attributeName="stroke-opacity" values="0.4;0.8;0.4" dur="2s" repeatCount="indefinite"/>
+                    </path>
+                    <text x="140" y="380" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow1)">发散</text>
+                    
+                    <!-- 发散区域右 -->
+                    <path d="M 520 350 L 600 350" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="5,5" filter="url(#glow1)">
+                        <animate attributeName="stroke-opacity" values="0.4;0.8;0.4" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                    </path>
+                    <text x="560" y="380" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow1)">发散</text>
+                    
+                    <!-- 幂级数公式 -->
+                    <rect x="150" y="450" width="400" height="60" fill="rgba(159,168,218,0.2)" stroke="#9FA8DA" stroke-width="2" rx="8" filter="url(#glow1)"/>
+                    <text x="350" y="475" fill="#9FA8DA" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow1)">∑aₙ(x-x₀)ⁿ</text>
+                    <text x="350" y="500" fill="#9FA8DA" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow1)">n=0 → ∞</text>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">泰勒级数</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">泰勒公式</p>
+                    <div class="formula-box"><p class="chalk-text">$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$$</p></div>
+                    <p class="chalk-text emphasis">麦克劳林级数（$x_0=0$）</p>
+                    <div class="formula-box"><p class="chalk-text">$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}x^n$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <defs>
+                        <filter id="glow2">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 标题 -->
+                    <text x="350" y="40" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow2)">泰勒级数逼近示意</text>
+                    
+                    <!-- 坐标系 -->
+                    <line x1="100" y1="400" x2="600" y2="400" stroke="#FFE066" stroke-width="3" filter="url(#glow2)"/>
+                    <line x1="350" y1="500" x2="350" y2="100" stroke="#FFE066" stroke-width="3" filter="url(#glow2)"/>
+                    <text x="615" y="405" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow2)">x</text>
+                    <text x="345" y="90" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow2)">y</text>
+                    
+                    <!-- 原函数曲线 -->
+                    <path d="M 150 380 Q 250 200, 350 300 T 550 180" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow2)">
+                        <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                    <text x="570" y="170" fill="#FF6B6B" font-size="18" font-weight="bold" filter="url(#glow2)">f(x)</text>
+                    
+                    <!-- 1阶逼近 -->
+                    <path d="M 200 350 L 500 250" stroke="#4ECDC4" stroke-width="3" stroke-dasharray="5,3" fill="none" opacity="0.6" filter="url(#glow2)"/>
+                    <text x="180" y="360" fill="#4ECDC4" font-size="16" font-weight="bold" filter="url(#glow2)">P₁(x)</text>
+                    
+                    <!-- 2阶逼近 -->
+                    <path d="M 180 370 Q 300 220, 520 200" stroke="#FFE066" stroke-width="3" stroke-dasharray="8,4" fill="none" opacity="0.7" filter="url(#glow2)"/>
+                    <text x="160" y="380" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow2)">P₂(x)</text>
+                    
+                    <!-- 展开点 x0 -->
+                    <circle cx="350" cy="300" r="10" fill="#9FA8DA" filter="url(#glow2)">
+                        <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <line x1="350" y1="300" x2="350" y2="400" stroke="#9FA8DA" stroke-width="2" stroke-dasharray="4,2" filter="url(#glow2)"/>
+                    <text x="355" y="420" fill="#9FA8DA" font-size="18" text-anchor="start" font-weight="bold" filter="url(#glow2)">x₀</text>
+                    
+                    <!-- 说明框 -->
+                    <rect x="140" y="470" width="420" height="80" fill="rgba(159,168,218,0.15)" stroke="#9FA8DA" stroke-width="2" rx="8" filter="url(#glow2)"/>
+                    <text x="350" y="500" fill="#9FA8DA" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">Pₙ(x) = f(x₀) + f'(x₀)(x-x₀) +</text>
+                    <text x="350" y="525" fill="#9FA8DA" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">f''(x₀)(x-x₀)²/2! + ...</text>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">常用函数的展开式</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">指数函数</p>
+                    <div class="formula-box"><p class="chalk-text">$$e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$$</p></div>
+                    <p class="chalk-text emphasis">正弦函数</p>
+                    <div class="formula-box"><p class="chalk-text">$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$$</p></div>
+                    <p class="chalk-text emphasis">余弦函数</p>
+                    <div class="formula-box"><p class="chalk-text">$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <defs>
+                        <filter id="glow3">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 标题 -->
+                    <text x="350" y="40" fill="#e1bee7" font-size="26" text-anchor="middle" font-weight="bold" filter="url(#glow3)">常用函数的泰勒展开</text>
+                    
+                    <!-- eˣ 展开 -->
+                    <rect x="80" y="90" width="540" height="80" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow3)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="120" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">e^x</text>
+                    <text x="350" y="150" fill="#ffffff" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow3)">1 + x + x²/2! + x³/3! + x⁴/4! + ⋯</text>
+                    
+                    <!-- sin x 展开 -->
+                    <rect x="80" y="190" width="540" height="80" fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow3)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="220" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">sin x</text>
+                    <text x="350" y="250" fill="#ffffff" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow3)">x - x³/3! + x⁵/5! - x⁷/7! + ⋯</text>
+                    
+                    <!-- cos x 展开 -->
+                    <rect x="80" y="290" width="540" height="80" fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow3)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="1s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="320" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">cos x</text>
+                    <text x="350" y="350" fill="#333" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow3)">1 - x²/2! + x⁴/4! - x⁶/6! + ⋯</text>
+                    
+                    <!-- ln(1+x) 展开 -->
+                    <rect x="80" y="390" width="540" height="80" fill="rgba(159,168,218,0.15)" stroke="#9FA8DA" stroke-width="3" rx="10" filter="url(#glow3)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="420" fill="#9FA8DA" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">ln(1+x)</text>
+                    <text x="350" y="450" fill="#ffffff" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow3)">x - x²/2 + x³/3 - x⁴/4 + ⋯</text>
+                    
+                    <!-- 图示：波浪装饰 -->
+                    <path d="M 100 510 Q 200 490, 300 510 T 500 510 T 600 510" stroke="#4ECDC4" stroke-width="3" fill="none" opacity="0.6" filter="url(#glow3)">
+                        <animate attributeName="stroke-opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite"/>
+                    </path>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">幂级数的运算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">逐项求导</p>
+                    <div class="formula-box"><p class="chalk-text">$$\left(\sum a_n x^n\right)' = \sum n a_n x^{n-1}$$</p></div>
+                    <p class="chalk-text emphasis">逐项积分</p>
+                    <div class="formula-box"><p class="chalk-text">$$\int \sum a_n x^n dx = \sum \frac{a_n}{n+1} x^{n+1}$$</p></div>
+                    <p class="chalk-text small-text">收敛半径不变</p>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <defs>
+                        <filter id="glow4">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 标题 -->
+                    <text x="350" y="50" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow4)">幂级数运算规则</text>
+                    
+                    <!-- 加减法 -->
+                    <rect x="100" y="100" width="500" height="90" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow4)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="130" fill="#FF6B6B" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow4)">加减法</text>
+                    <text x="350" y="165" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">∑aₙxⁿ ± ∑bₙxⁿ = ∑(aₙ±bₙ)xⁿ</text>
+                    
+                    <!-- 乘法 -->
+                    <rect x="100" y="210" width="500" height="90" fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow4)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2.5s" begin="0.4s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="240" fill="#4ECDC4" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow4)">乘法（柯西乘积）</text>
+                    <text x="350" y="275" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">(∑aₙxⁿ)(∑bₙxⁿ) = ∑cₙxⁿ</text>
+                    
+                    <!-- 逐项求导 -->
+                    <rect x="100" y="320" width="500" height="90" fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow4)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2.5s" begin="0.8s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="350" fill="#FFE066" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow4)">逐项求导</text>
+                    <text x="350" y="385" fill="#333" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">(∑aₙxⁿ)' = ∑naₙxⁿ⁻¹</text>
+                    
+                    <!-- 逐项积分 -->
+                    <rect x="100" y="430" width="500" height="90" fill="rgba(159,168,218,0.15)" stroke="#9FA8DA" stroke-width="3" rx="10" filter="url(#glow4)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2.5s" begin="1.2s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="460" fill="#9FA8DA" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow4)">逐项积分</text>
+                    <text x="350" y="495" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">∫(∑aₙxⁿ)dx = ∑(aₙxⁿ⁺¹)/(n+1)</text>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">应用：近似计算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">例：计算 $e$</p>
+                    <div class="formula-box"><p class="chalk-text">$$e = 1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \cdots \approx 2.718$$</p></div>
+                    <p class="chalk-text emphasis">例：计算 $\sin 0.1$</p>
+                    <div class="formula-box"><p class="chalk-text">$$\sin 0.1 \approx 0.1 - \frac{0.1^3}{6} \approx 0.0998$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <defs>
+                        <filter id="glow5">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 标题 -->
+                    <text x="350" y="40" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow5)">泰勒级数的近似计算应用</text>
+                    
+                    <!-- 示例：计算 e -->
+                    <rect x="100" y="90" width="500" height="110" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow5)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="120" fill="#FF6B6B" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow5)">计算 e ≈ 2.71828...</text>
+                    <text x="350" y="150" fill="#ffffff" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow5)">e¹ = 1 + 1 + 1/2! + 1/3! + 1/4! + ...</text>
+                    <text x="350" y="178" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow5)">≈ 2 + 0.5 + 0.167 + 0.042 + ...</text>
+                    
+                    <!-- 误差分析 -->
+                    <rect x="100" y="220" width="500" height="80" fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow5)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="350" y="250" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow5)">拉格朗日余项</text>
+                    <text x="350" y="280" fill="#ffffff" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow5)">Rₙ(x) = f⁽ⁿ⁺¹⁾(ξ)xⁿ⁺¹/(n+1)!</text>
+                    
+                    <!-- 精度图示 -->
+                    <circle cx="200" cy="380" r="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow5)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="200" y="375" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">P₁</text>
+                    <text x="200" y="395" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow5)">低精度</text>
+                    
+                    <ellipse cx="350" cy="380" rx="70" ry="55" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow5)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+                    </ellipse>
+                    <text x="350" y="375" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">P₃</text>
+                    <text x="350" y="395" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow5)">中精度</text>
+                    
+                    <ellipse cx="500" cy="380" rx="85" ry="65" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow5)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                    </ellipse>
+                    <text x="500" y="375" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">Pₙ</text>
+                    <text x="500" y="395" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow5)">高精度</text>
+                    
+                    <!-- 底部说明 -->
+                    <rect x="150" y="480" width="400" height="50" fill="rgba(159,168,218,0.2)" stroke="#9FA8DA" stroke-width="2" rx="8" filter="url(#glow5)"/>
+                    <text x="350" y="513" fill="#9FA8DA" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">项数越多，精度越高</text>
+                </svg>
+            </div></div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">核心内容</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">幂级数：$\sum a_n x^n$</li>
+                        <li class="chalk-text">泰勒级数：函数的幂级数展开</li>
+                        <li class="chalk-text">常用展开式：$e^x$, $\sin x$, $\cos x$</li>
+                        <li class="chalk-text">应用：近似计算</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container">
+                <svg class="svg-animation" viewBox="0 0 700 600">
+                    <defs>
+                        <filter id="glow6">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 标题 -->
+                    <text x="350" y="40" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow6)">幂级数与泰勒展开知识图谱</text>
+                    
+                    <!-- 中心：幂级数 -->
+                    <circle cx="350" cy="280" r="90" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow6)">
+                        <animate attributeName="r" values="90;100;90" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="350" y="275" fill="#FFE066" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow6)">幂级数</text>
+                    <text x="350" y="300" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow6)">∑aₙxⁿ</text>
+                    
+                    <!-- 分支1：收敛域 -->
+                    <line x1="260" y1="240" x2="160" y2="150" stroke="#FF6B6B" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                    </line>
+                    <ellipse cx="160" cy="150" rx="65" ry="50" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" repeatCount="indefinite"/>
+                    </ellipse>
+                    <text x="160" y="148" fill="#FF6B6B" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow6)">收敛域</text>
+                    <text x="160" y="168" fill="#FF6B6B" font-size="15" text-anchor="middle" font-weight="bold" filter="url(#glow6)">|x|<R</text>
+                    
+                    <!-- 分支2：泰勒级数 -->
+                    <line x1="440" y1="240" x2="540" y2="150" stroke="#4ECDC4" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+                    </line>
+                    <ellipse cx="540" cy="150" rx="65" ry="50" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
+                    </ellipse>
+                    <text x="540" y="148" fill="#4ECDC4" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow6)">泰勒</text>
+                    <text x="540" y="168" fill="#4ECDC4" font-size="15" text-anchor="middle" font-weight="bold" filter="url(#glow6)">展开</text>
+                    
+                    <!-- 分支3：常用展开式 -->
+                    <line x1="260" y1="320" x2="160" y2="410" stroke="#FFE066" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                    </line>
+                    <ellipse cx="160" cy="410" rx="65" ry="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" begin="0.6s" repeatCount="indefinite"/>
+                    </ellipse>
+                    <text x="160" y="405" fill="#FFE066" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow6)">常用</text>
+                    <text x="160" y="425" fill="#333" font-size="15" text-anchor="middle" font-weight="bold" filter="url(#glow6)">展开式</text>
+                    
+                    <!-- 分支4：应用 -->
+                    <line x1="440" y1="320" x2="540" y2="410" stroke="#9FA8DA" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+                    </line>
+                    <ellipse cx="540" cy="410" rx="65" ry="50" fill="rgba(159,168,218,0.3)" stroke="#9FA8DA" stroke-width="3" filter="url(#glow6)">
+                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" begin="0.9s" repeatCount="indefinite"/>
+                    </ellipse>
+                    <text x="540" y="405" fill="#9FA8DA" font-size="17" text-anchor="middle" font-weight="bold" filter="url(#glow6)">应用</text>
+                    <text x="540" y="425" fill="#9FA8DA" font-size="15" text-anchor="middle" font-weight="bold" filter="url(#glow6)">近似计算</text>
+                    
+                    <!-- 底部提示 -->
+                    <rect x="200" y="500" width="300" height="50" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="8" filter="url(#glow6)"/>
+                    <text x="350" y="533" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow6)">掌握幂级数的展开与应用</text>
+                </svg>
+            </div></div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1; const totalPages = 6;
+        const pageContents = ["幂级数是an乘以x的n次方的和。收敛域是使幂级数收敛的所有x值的集合，收敛半径R决定了收敛域。","泰勒级数是函数f(x)在x0处的幂级数展开。麦克劳林级数是x0等于0时的特殊情况。","常用函数的展开式：e的x次方等于1加x加x平方除以2阶乘加x立方除以3阶乘等等。正弦和余弦函数也有类似的展开式。","幂级数可以逐项求导和逐项积分，收敛半径不变。这是幂级数的重要性质。","应用：用幂级数进行近似计算。例如e约等于2.718，sin0.1约等于0.0998。","总结：幂级数是函数的幂次展开，泰勒级数提供了展开方法，常用展开式可以用于近似计算。"];
+        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
+        function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
+        async function startTeaching() { console.log('开始讲解'); }
+        async function startAutoPlay() { console.log('自动播放'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
+        let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
+        document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
+    </script>
+</body>
+</html>
+

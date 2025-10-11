@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06_6.4_本章回顾与习题精讲</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow-y: auto; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+        .left-panel::-webkit-scrollbar { width: 6px; }
+        .left-panel::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 3px; }
+        .left-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
+        .left-panel::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 4 页</div>
+
+        <!-- 第1页：知识清单 -->
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">知识清单</h1>
+                <div class="board-content">
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong style="color: #81c784;">定积分概念：</strong>曲线下的累积面积</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">牛顿-莱布尼茨公式：</strong>$\int_a^b f(x)dx = F(b) - F(a)$</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">换元法与分部积分：</strong>计算技巧</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">面积应用：</strong>实际问题求解</li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text" style="color: #ffab40; font-weight: 600;">定积分让我们能量化'累积'，这是数学与现实之间的重要桥梁。</p>
+                    </div>
+                    </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 400 300">
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="200" cy="150" r="100" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="4" filter="url(#glow)">
+                            <animate attributeName="r" values="100;105;100" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                    
+                    <!-- 概念 -->
+                    <g opacity="0">
+                            <rect x="120" y="80" width="80" height="30" fill="rgba(52,152,219,0.3)" stroke="#3498db" stroke-width="2" rx="4" filter="url(#glow)"/>
+                            <text x="160" y="100" font-size="12" fill="#ecf0f1" text-anchor="middle" font-weight="bold">概念</text>
+                        <animate attributeName="opacity" values="0;1;1;1" dur="6s" repeatCount="indefinite"/>
+                    </g>
+                    
+                    <!-- 计算 -->
+                    <g opacity="0">
+                            <rect x="200" y="80" width="80" height="30" fill="rgba(46,204,113,0.3)" stroke="#2ecc71" stroke-width="2" rx="4" filter="url(#glow)"/>
+                            <text x="240" y="100" font-size="12" fill="#ecf0f1" text-anchor="middle" font-weight="bold">计算</text>
+                        <animate attributeName="opacity" values="0;0;1;1" dur="6s" repeatCount="indefinite"/>
+                    </g>
+                    
+                    <!-- 技巧 -->
+                    <g opacity="0">
+                            <rect x="120" y="190" width="80" height="30" fill="rgba(231,76,60,0.3)" stroke="#e74c3c" stroke-width="2" rx="4" filter="url(#glow)"/>
+                            <text x="160" y="210" font-size="12" fill="#ecf0f1" text-anchor="middle" font-weight="bold">技巧</text>
+                        <animate attributeName="opacity" values="0;0;0;1" dur="6s" repeatCount="indefinite"/>
+                    </g>
+                    
+                    <!-- 应用 -->
+                    <g opacity="0">
+                            <rect x="200" y="190" width="80" height="30" fill="rgba(155,89,182,0.3)" stroke="#9b59b6" stroke-width="2" rx="4" filter="url(#glow)"/>
+                            <text x="240" y="210" font-size="12" fill="#ecf0f1" text-anchor="middle" font-weight="bold">应用</text>
+                        <animate attributeName="opacity" values="0;0;0;0;1" dur="8s" repeatCount="indefinite"/>
+                    </g>
+                    
+                        <text x="200" y="155" font-size="18" fill="#f39c12" text-anchor="middle" font-weight="bold">定积分</text>
+                </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页：例题1 -->
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">例题 1：定积分计算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">换元积分法</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong style="color: #81c784;">题目：</strong>$\int_0^1 \frac{x}{1+x^2} dx$</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">换元：</strong>设 $u=1+x^2$，则 $du=2x dx$</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">计算：</strong>$\frac{1}{2}\int_1^2 \frac{du}{u}$</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$\frac{1}{2}[\ln u]_1^2 = \frac{1}{2}\ln 2$</li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text small-text" style="color: #ffab40; font-weight: 600;">定积分换元法与不定积分类似，但上下限也要跟着变。</p>
+                    </div>
+                    </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 400 300">
+                    <defs>
+                            <filter id="glow2">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        <marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                        </marker>
+                    </defs>
+                        <text x="200" y="50" font-size="16" fill="#f39c12" text-anchor="middle" font-weight="bold" filter="url(#glow2)">∫₀¹ x/(1+x²) dx</text>
+
+                        <rect x="80" y="80" width="240" height="40" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="6" filter="url(#glow2)"/>
+                        <text x="200" y="105" font-size="14" fill="#ecf0f1" text-anchor="middle" font-weight="bold">u=1+x², du=2x dx</text>
+
+                        <line x1="200" y1="120" x2="200" y2="150" stroke="#f39c12" stroke-width="2" marker-end="url(#arrow1)" filter="url(#glow2)">
+                            <animate attributeName="y2" values="120;150" dur="1.5s" repeatCount="indefinite"/>
+                        </line>
+
+                        <rect x="80" y="150" width="240" height="40" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="6" filter="url(#glow2)"/>
+                        <text x="200" y="175" font-size="14" fill="#ecf0f1" text-anchor="middle" font-weight="bold">1/2 ∫₁² du/u</text>
+
+                        <line x1="200" y1="190" x2="200" y2="220" stroke="#f39c12" stroke-width="2" marker-end="url(#arrow1)" filter="url(#glow2)">
+                            <animate attributeName="y2" values="190;220" dur="1.5s" begin="0.5s" repeatCount="indefinite"/>
+                        </line>
+
+                        <text x="200" y="250" font-size="18" fill="#2ecc71" text-anchor="middle" font-weight="bold" filter="url(#glow2)">= 1/2 ln 2</text>
+                </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3页：例题2 -->
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">例题 2：面积计算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">正弦函数的面积</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong style="color: #81c784;">题目：</strong>求 $y=\sin x$ 与 $x$ 轴在 $[0,\pi]$ 间的面积</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">设定：</strong>$S = \int_0^{\pi} \sin x dx$</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">计算：</strong>$[-\cos x]_0^{\pi}$</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$-\cos\pi - (-\cos 0) = 1 + 1 = 2$</li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text small-text" style="color: #ffab40; font-weight: 600;">面积题先画图确认区间，确保积分符号方向正确。</p>
+                    </div>
+                    </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 400 300">
+                        <defs>
+                            <filter id="glow3">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <line x1="50" y1="200" x2="350" y2="200" stroke="#666" stroke-width="2" filter="url(#glow3)"/>
+                        <line x1="50" y1="200" x2="50" y2="50" stroke="#666" stroke-width="2" filter="url(#glow3)"/>
+
+                        <path d="M 80 200 Q 150 100, 200 120 Q 250 140, 320 200" stroke="#3498db" stroke-width="3" fill="none" filter="url(#glow3)">
+                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    
+                    <path d="M 80 200 Q 150 100, 200 120 Q 250 140, 320 200 Z" fill="rgba(52,152,219,0.3)">
+                        <animate attributeName="fill-opacity" values="0;0.4;0.4;0" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                    
+                        <text x="80" y="220" font-size="12" fill="#ecf0f1" text-anchor="middle" font-weight="bold">0</text>
+                        <text x="320" y="220" font-size="12" fill="#ecf0f1" text-anchor="middle" font-weight="bold">π</text>
+                        <text x="200" y="40" font-size="16" fill="#2ecc71" text-anchor="middle" font-weight="bold" filter="url(#glow3)">S = 2</text>
+                        <text x="200" y="270" font-size="14" fill="#f39c12" text-anchor="middle" font-weight="bold">y = sin x</text>
+                </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4页：章末总结 -->
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">章末总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">本章要点回顾</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong style="color: #81c784;">本章要点：</strong>定积分概念、牛顿-莱布尼茨公式、计算技巧、应用问题</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">课后作业：</strong>两道定积分计算题、一道面积应用题</li>
+                        <li class="chalk-text"><strong style="color: #81c784;">下章预告：</strong>常微分方程 - 描述动态变化</li>
+                    </ul>
+                    <div class="formula-box">
+                        <p class="chalk-text" style="color: #ffab40; font-weight: 600;">继续前进，我们将用微分方程描述动态变化的世界。</p>
+                    </div>
+                    </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 400 300">
+                    <defs>
+                            <filter id="glow4">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                        </marker>
+                    </defs>
+                        <rect x="80" y="80" width="120" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10" filter="url(#glow4)"/>
+                        <text x="140" y="115" font-size="16" fill="#ecf0f1" text-anchor="middle" font-weight="bold">第6章</text>
+                        <text x="140" y="135" font-size="12" fill="#3498db" text-anchor="middle" font-weight="bold">定积分</text>
+
+                        <line x1="200" y1="110" x2="240" y2="110" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow2)" filter="url(#glow4)">
+                            <animate attributeName="x2" values="200;240" dur="2s" repeatCount="indefinite"/>
+                        </line>
+
+                        <rect x="200" y="160" width="120" height="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10" filter="url(#glow4)"/>
+                        <text x="260" y="195" font-size="16" fill="#ecf0f1" text-anchor="middle" font-weight="bold">第7章</text>
+                        <text x="260" y="215" font-size="12" fill="#2ecc71" text-anchor="middle" font-weight="bold">微分方程</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="control-bar">
+        <div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+            第 <span id="currentPageControl">1</span> 页 / 共 4 页
+        </div>
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习第六章知识点回顾与习题精讲！</div>
+
+    <!-- 讯飞官方SDK -->
+    <script type="module">
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+            console.log('✅ SDK加载成功');
+        } catch (error) {
+            console.error('❌ SDK加载失败:', error);
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+
+    <script>
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let currentPage = 1;
+        const totalPages = 4;
+        let isAutoPlaying = false;
+
+        const subtitleScript = {
+            1: "定积分让我们能量化'累积'，这是数学与现实之间的重要桥梁。",
+            2: "定积分换元法与不定积分类似，但上下限也要跟着变。",
+            3: "面积题先画图确认区间，确保积分符号方向正确。",
+            4: "继续前进，我们将用微分方程描述动态变化的世界。"
+        };
+
+        const autoPlayDurations = { 1: 9000, 2: 10000, 3: 9000, 4: 8000 };
+
+        function updateSubtitle(text) {
+            const area = document.getElementById('subtitleArea');
+            if (area) area.textContent = text;
+        }
+
+        function switchToPage(pageNum, shouldSpeak = true) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            currentPage = pageNum;
+            
+            document.querySelectorAll('.page').forEach((p, i) => {
+                p.classList.toggle('active', i === pageNum - 1);
+            });
+            
+            document.getElementById('currentPage').textContent = pageNum;
+            document.getElementById('currentPageControl').textContent = pageNum;
+            updateSubtitle(subtitleScript[pageNum] || '');
+            
+            if (window.MathJax && typeof window.MathJax.typeset === 'function') {
+                window.MathJax.typeset();
+            }
+            
+            if (shouldSpeak && !isAutoPlaying) {
+                speakContent(pageNum);
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                switchToPage(currentPage + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                switchToPage(currentPage - 1);
+            }
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时'));
+                }, 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
+
+        async function startTeaching() {
+            const startBtn = document.querySelector('.btn.primary');
+            if (!startBtn) return;
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                await waitForSDK();
+                if (avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+
+                avatarPlatform.on('connected', () => {
+                        isConnected = true;
+                        isTeaching = true;
+                        startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => speakContent(currentPage), 1000);
+                }).on('disconnected', () => {
+                        isConnected = false;
+                        isTeaching = false;
+                    startBtn.textContent = '🎤 开始讲解';
+                        startBtn.disabled = false;
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error);
+                    startBtn.textContent = '❌ 连接失败';
+                        startBtn.disabled = false;
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 },
+                    avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 },
+                    tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 },
+                    avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
+                });
+
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                startBtn.textContent = '🎤 开始讲解';
+                startBtn.disabled = false;
+            }
+        }
+
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+
+            try {
+                const actionMap = {
+                    1: "A_RLH_welcome_O",
+                    2: "A_LH_introduced_O",
+                    3: "A_RH_point_O",
+                    4: "A_RLH_welcome_O"
+                };
+                const action = actionMap[pageNum];
+                if (action) {
+                    await avatarPlatform.writeCmd("action", action);
+                }
+                await avatarPlatform.writeText(content, { nlp: false });
+            } catch (error) {
+                console.error('❌ 讲解失败:', error);
+            }
+        }
+
+        async function startAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.getElementById('autoPlayBtn').textContent = '🎬 自动播放';
+                return;
+            }
+
+            if (!avatarPlatform || !isConnected) {
+                await startTeaching();
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+
+            isAutoPlaying = true;
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
+            autoPlayBtn.textContent = '⏹️ 停止';
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (!isAutoPlaying) break;
+                switchToPage(i, false);
+                await speakContent(i);
+                const duration = autoPlayDurations[i] || 8000;
+                await new Promise(resolve => setTimeout(resolve, duration));
+            }
+
+            isAutoPlaying = false;
+            autoPlayBtn.textContent = '🎬 自动播放';
+        }
+
+        // 键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousPage();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                speakContent(currentPage);
+            }
+        });
+
+        // 鼠标滚轮控制
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextPage();
+                } else if (e.deltaY < 0) {
+                    previousPage();
+                }
+            }, 50);
+        }, { passive: true });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            switchToPage(1, false);
+        });
+    </script>
+</body>
+</html>

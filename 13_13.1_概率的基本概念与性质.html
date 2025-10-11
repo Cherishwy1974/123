@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第13章 概率基本概念与性质</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">0</span> / 7 页</div>
+
+        <!-- 第0页：封面 -->
+        <div class="page active" id="page0">
+            <div class="left-panel" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px;">
+                <div style="text-align: center;">
+                    <p class="chalk-text" style="font-size: 20px; color: #9370DB; margin-bottom: 15px; letter-spacing: 3px;">高等数学·概率与统计</p>
+                    <h1 class="title chalk-text" style="font-size: 42px; margin: 25px 0; color: #FFE066; text-shadow: 0 0 20px rgba(255,224,102,0.3);">第13章</h1>
+                    <h2 class="chalk-text" style="font-size: 32px; margin: 20px 0; color: #4ECDC4;">概率基本概念与性质</h2>
+                    <div style="width: 400px; height: 3px; background: linear-gradient(90deg, transparent, #e1bee7, transparent); margin: 30px auto;"></div>
+                    <p class="chalk-text" style="font-size: 18px; color: rgba(255,255,255,0.8); margin-top: 25px; line-height: 1.8;">
+                        <span style="color: #FF6B6B;">● </span>随机试验与样本空间<br/>
+                        <span style="color: #4ECDC4;">● </span>概率的定义与性质<br/>
+                        <span style="color: #FFE066;">● </span>事件运算与加法公式
+                    </p>
+                    <p class="chalk-text" style="font-size: 16px; color: #9370DB; margin-top: 40px; letter-spacing: 2px;">面向职业院校学生的智能教学系统</p>
+                </div>
+            </div>
+            <div class="right-panel" style="width: 0%; display: none;"></div>
+        </div>
+
+        <!-- 第1页：随机试验与样本空间 -->
+        <div class="page" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">随机试验与样本空间</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">随机试验</p>
+                    <p class="chalk-text">结果不确定，但所有可能结果已知的试验</p>
+                    <p class="chalk-text emphasis">样本空间 Ω</p>
+                    <p class="chalk-text">所有可能结果的集合</p>
+                    <p class="chalk-text emphasis">例：抛硬币</p>
+                    <div class="formula-box"><p class="chalk-text">$$\Omega = \{正面, 反面\}$$</p></div>
+                    <p class="chalk-text emphasis">例：掷骰子</p>
+                    <div class="formula-box"><p class="chalk-text">$$\Omega = \{1, 2, 3, 4, 5, 6\}$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 硬币 -->
+                        <circle cx="200" cy="200" r="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3">
+                            <animate attributeName="cy" values="200;150;200" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="200" y="205" fill="#FFE066" font-size="20" text-anchor="middle">H</text>
+                        <text x="200" y="280" fill="#ffffff" font-size="14" text-anchor="middle">硬币</text>
+                        
+                        <!-- 骰子 -->
+                        <rect x="430" y="170" width="60" height="60" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="5">
+                            <animateTransform attributeName="transform" type="rotate" values="0 460 200; 360 460 200" dur="4s" repeatCount="indefinite"/>
+                        </rect>
+                        <circle cx="445" cy="185" r="4" fill="#4ECDC4"/>
+                        <circle cx="475" cy="185" r="4" fill="#4ECDC4"/>
+                        <circle cx="445" cy="215" r="4" fill="#4ECDC4"/>
+                        <circle cx="475" cy="215" r="4" fill="#4ECDC4"/>
+                        <circle cx="460" cy="200" r="4" fill="#4ECDC4"/>
+                        <text x="460" y="270" fill="#ffffff" font-size="14" text-anchor="middle">骰子</text>
+                        
+                        <!-- 样本空间标注 -->
+                        <text x="350" y="380" fill="#e1bee7" font-size="18" text-anchor="middle">样本空间 Ω</text>
+                        <ellipse cx="350" cy="200" rx="280" ry="150" fill="none" stroke="rgba(225,190,231,0.5)" stroke-width="2" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite"/>
+                        </ellipse>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2-6页继续... -->
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">随机事件</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">事件</p>
+                    <p class="chalk-text">样本空间的子集</p>
+                    <p class="chalk-text emphasis">必然事件</p>
+                    <p class="chalk-text">$\Omega$：一定发生</p>
+                    <p class="chalk-text emphasis">不可能事件</p>
+                    <p class="chalk-text">$\emptyset$：一定不发生</p>
+                    <p class="chalk-text emphasis">例：掷骰子</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">事件A：出现偶数 = {2, 4, 6}</li>
+                        <li class="chalk-text">事件B：出现大于4 = {5, 6}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 样本空间 -->
+                        <rect x="100" y="100" width="500" height="400" fill="rgba(255,255,255,0.05)" stroke="#ffffff" stroke-width="2" rx="10"/>
+                        <text x="350" y="80" fill="#ffffff" font-size="16" text-anchor="middle">样本空间 Ω = {1,2,3,4,5,6}</text>
+                        
+                        <!-- 事件A：偶数 -->
+                        <ellipse cx="250" cy="300" rx="120" ry="100" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                        </ellipse>
+                        <text x="250" y="250" fill="#FF6B6B" font-size="16" text-anchor="middle">事件A</text>
+                        <text x="250" y="280" fill="#FF6B6B" font-size="14" text-anchor="middle">偶数</text>
+                        <text x="250" y="310" fill="#FF6B6B" font-size="18" text-anchor="middle">2</text>
+                        <text x="220" y="340" fill="#FF6B6B" font-size="18" text-anchor="middle">4</text>
+                        <text x="280" y="340" fill="#FF6B6B" font-size="18" text-anchor="middle">6</text>
+                        
+                        <!-- 事件B：大于4 -->
+                        <ellipse cx="450" cy="300" rx="100" ry="90" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
+                        </ellipse>
+                        <text x="450" y="260" fill="#4ECDC4" font-size="16" text-anchor="middle">事件B</text>
+                        <text x="450" y="290" fill="#4ECDC4" font-size="14" text-anchor="middle">大于4</text>
+                        <text x="430" y="330" fill="#4ECDC4" font-size="18" text-anchor="middle">5</text>
+                        <text x="470" y="330" fill="#4ECDC4" font-size="18" text-anchor="middle">6</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">概率的定义</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">古典概型</p>
+                    <div class="formula-box"><p class="chalk-text">$$P(A) = \frac{A包含的基本事件数}{样本空间的基本事件总数}$$</p></div>
+                    <p class="chalk-text emphasis">例：掷骰子出现偶数</p>
+                    <div class="formula-box"><p class="chalk-text">$$P(A) = \frac{3}{6} = \frac{1}{2}$$</p></div>
+                    <p class="chalk-text emphasis">概率的性质</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">$0 \leq P(A) \leq 1$</li>
+                        <li class="chalk-text">$P(\Omega) = 1$</li>
+                        <li class="chalk-text">$P(\emptyset) = 0$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 概率轮盘 -->
+                        <circle cx="350" cy="280" r="150" fill="none" stroke="#FFE066" stroke-width="4"/>
+                        
+                        <!-- 6个扇形区域 -->
+                        <path d="M 350 280 L 350 130 A 150 150 0 0 1 480 205 Z" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2"/>
+                        <text x="400" y="200" fill="#FF6B6B" font-size="20">2</text>
+                        
+                        <path d="M 350 280 L 480 205 A 150 150 0 0 1 480 355 Z" fill="rgba(255,255,255,0.1)" stroke="#ffffff" stroke-width="2"/>
+                        <text x="450" y="280" fill="#ffffff" font-size="20">3</text>
+                        
+                        <path d="M 350 280 L 480 355 A 150 150 0 0 1 350 430 Z" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2"/>
+                        <text x="400" y="370" fill="#FF6B6B" font-size="20">4</text>
+                        
+                        <path d="M 350 280 L 350 430 A 150 150 0 0 1 220 355 Z" fill="rgba(255,255,255,0.1)" stroke="#ffffff" stroke-width="2"/>
+                        <text x="270" y="370" fill="#ffffff" font-size="20">5</text>
+                        
+                        <path d="M 350 280 L 220 355 A 150 150 0 0 1 220 205 Z" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2"/>
+                        <text x="250" y="280" fill="#FF6B6B" font-size="20">6</text>
+                        
+                        <path d="M 350 280 L 220 205 A 150 150 0 0 1 350 130 Z" fill="rgba(255,255,255,0.1)" stroke="#ffffff" stroke-width="2"/>
+                        <text x="270" y="200" fill="#ffffff" font-size="20">1</text>
+                        
+                        <!-- 中心点 -->
+                        <circle cx="350" cy="280" r="8" fill="#FFE066"/>
+                        
+                        <!-- 指针 -->
+                        <line x1="350" y1="280" x2="350" y2="150" stroke="#FFE066" stroke-width="4">
+                            <animateTransform attributeName="transform" type="rotate" values="0 350 280; 360 350 280" dur="4s" repeatCount="indefinite"/>
+                        </line>
+                        
+                        <text x="350" y="480" fill="#FF6B6B" font-size="16" text-anchor="middle">偶数概率 = 3/6 = 1/2</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">事件的运算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">并事件 A∪B</p>
+                    <p class="chalk-text">A或B发生</p>
+                    <p class="chalk-text emphasis">交事件 A∩B</p>
+                    <p class="chalk-text">A和B同时发生</p>
+                    <p class="chalk-text emphasis">对立事件 $\overline{A}$</p>
+                    <p class="chalk-text">A不发生</p>
+                    <p class="chalk-text emphasis">互斥事件</p>
+                    <p class="chalk-text">$A \cap B = \emptyset$：不能同时发生</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 并事件 -->
+                        <g>
+                            <text x="150" y="100" fill="#ffffff" font-size="14" text-anchor="middle">并事件 A∪B</text>
+                            <circle cx="120" cy="160" r="40" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2"/>
+                            <circle cx="180" cy="160" r="40" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2"/>
+                            <text x="100" y="165" fill="#FF6B6B" font-size="12">A</text>
+                            <text x="200" y="165" fill="#4ECDC4" font-size="12">B</text>
+                        </g>
+                        
+                        <!-- 交事件 -->
+                        <g>
+                            <text x="350" y="100" fill="#ffffff" font-size="14" text-anchor="middle">交事件 A∩B</text>
+                            <circle cx="320" cy="160" r="40" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2"/>
+                            <circle cx="380" cy="160" r="40" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2"/>
+                            <ellipse cx="350" cy="160" rx="20" ry="30" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="2">
+                                <animate attributeName="fill-opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite"/>
+                            </ellipse>
+                            <text x="300" y="165" fill="#FF6B6B" font-size="12">A</text>
+                            <text x="400" y="165" fill="#4ECDC4" font-size="12">B</text>
+                        </g>
+                        
+                        <!-- 对立事件 -->
+                        <g>
+                            <text x="550" y="100" fill="#ffffff" font-size="14" text-anchor="middle">对立事件 Ā</text>
+                            <rect x="480" y="120" width="140" height="80" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2"/>
+                            <circle cx="550" cy="160" r="30" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2">
+                                <animate attributeName="r" values="30;35;30" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="550" y="165" fill="#FF6B6B" font-size="12" text-anchor="middle">A</text>
+                            <text x="510" y="145" fill="#FFE066" font-size="10">Ā</text>
+                        </g>
+                        
+                        <!-- 互斥事件 -->
+                        <g>
+                            <text x="350" y="280" fill="#ffffff" font-size="14" text-anchor="middle">互斥事件</text>
+                            <circle cx="280" cy="350" r="50" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2">
+                                <animate attributeName="cx" values="280;270;280" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="420" cy="350" r="50" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2">
+                                <animate attributeName="cx" values="420;430;420" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="280" y="355" fill="#FF6B6B" font-size="14" text-anchor="middle">A</text>
+                            <text x="420" y="355" fill="#4ECDC4" font-size="14" text-anchor="middle">B</text>
+                            <text x="350" y="430" fill="#ffffff" font-size="12" text-anchor="middle">A∩B = ∅</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">概率的加法公式</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">互斥事件</p>
+                    <div class="formula-box"><p class="chalk-text">$$P(A \cup B) = P(A) + P(B)$$</p></div>
+                    <p class="chalk-text emphasis">一般情况</p>
+                    <div class="formula-box"><p class="chalk-text">$$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$</p></div>
+                    <p class="chalk-text emphasis">对立事件</p>
+                    <div class="formula-box"><p class="chalk-text">$$P(\overline{A}) = 1 - P(A)$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 韦恩图 -->
+                        <rect x="100" y="100" width="500" height="350" fill="rgba(255,255,255,0.05)" stroke="#ffffff" stroke-width="2" rx="10"/>
+                        <text x="350" y="80" fill="#ffffff" font-size="14" text-anchor="middle">样本空间 Ω</text>
+                        
+                        <!-- 事件A -->
+                        <circle cx="280" cy="280" r="100" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="220" y="250" fill="#FF6B6B" font-size="18">A</text>
+                        <text x="220" y="280" fill="#FF6B6B" font-size="14">P(A)</text>
+                        
+                        <!-- 事件B -->
+                        <circle cx="420" cy="280" r="100" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="460" y="250" fill="#4ECDC4" font-size="18">B</text>
+                        <text x="460" y="280" fill="#4ECDC4" font-size="14">P(B)</text>
+                        
+                        <!-- 交集 -->
+                        <ellipse cx="350" cy="280" rx="40" ry="80" fill="rgba(147,112,219,0.4)" stroke="#9370DB" stroke-width="2">
+                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite"/>
+                        </ellipse>
+                        <text x="350" y="285" fill="#9370DB" font-size="12" text-anchor="middle">A∩B</text>
+                        
+                        <!-- 公式说明 -->
+                        <text x="350" y="480" fill="#FFE066" font-size="14" text-anchor="middle">P(A∪B) = P(A) + P(B) - P(A∩B)</text>
+                        <line x1="220" y1="380" x2="220" y2="460" stroke="#FF6B6B" stroke-width="2" marker-end="url(#arrow-red)"/>
+                        <line x="480" y1="380" x2="480" y2="460" stroke="#4ECDC4" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+                        <line x1="350" y1="360" x2="350" y2="460" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-purple)"/>
+                        
+                        <defs>
+                            <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#FF6B6B"/>
+                            </marker>
+                            <marker id="arrow-cyan" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
+                            </marker>
+                            <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#9370DB"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">核心内容</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">样本空间与随机事件</li>
+                        <li class="chalk-text">概率的定义：$P(A) = \frac{m}{n}$</li>
+                        <li class="chalk-text">事件的运算：并、交、对立</li>
+                        <li class="chalk-text">加法公式：$P(A \cup B) = P(A) + P(B) - P(A \cap B)$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <!-- 知识树 -->
+                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4">
+                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="350" y="255" fill="#FFE066" font-size="18" text-anchor="middle">概率</text>
+                        
+                        <!-- 分支1 -->
+                        <line x1="300" y1="200" x2="200" y2="120" stroke="#FF6B6B" stroke-width="3"/>
+                        <circle cx="200" cy="120" r="40" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3">
+                            <animate attributeName="r" values="40;45;40" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="200" y="125" fill="#FF6B6B" font-size="12" text-anchor="middle">样本空间</text>
+                        
+                        <!-- 分支2 -->
+                        <line x1="400" y1="200" x2="500" y2="120" stroke="#4ECDC4" stroke-width="3"/>
+                        <circle cx="500" cy="120" r="40" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3">
+                            <animate attributeName="r" values="40;45;40" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="500" y="125" fill="#4ECDC4" font-size="12" text-anchor="middle">事件运算</text>
+                        
+                        <!-- 分支3 -->
+                        <line x1="300" y1="300" x2="200" y2="380" stroke="#9370DB" stroke-width="3"/>
+                        <circle cx="200" cy="380" r="40" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3">
+                            <animate attributeName="r" values="40;45;40" dur="2s" begin="1s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="200" y="385" fill="#9370DB" font-size="12" text-anchor="middle">古典概型</text>
+                        
+                        <!-- 分支4 -->
+                        <line x1="400" y1="300" x2="500" y2="380" stroke="#e1bee7" stroke-width="3"/>
+                        <circle cx="500" cy="380" r="40" fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
+                            <animate attributeName="r" values="40;45;40" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="500" y="385" fill="#e1bee7" font-size="12" text-anchor="middle">加法公式</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 0; const totalPages = 7;
+        const pageContents = ["同学们好，欢迎来到第13章，概率基本概念与性质的学习。本章我们将学习随机试验与样本空间、概率的定义与性质、以及事件运算与加法公式。让我们开始吧！","随机试验是结果不确定但所有可能结果已知的试验。样本空间是所有可能结果的集合。例如抛硬币的样本空间是正面和反面，掷骰子的样本空间是1到6。","随机事件是样本空间的子集。必然事件一定发生，不可能事件一定不发生。例如掷骰子，事件A是出现偶数等于2、4、6，事件B是出现大于4等于5、6。","古典概型中，概率等于事件包含的基本事件数除以样本空间的基本事件总数。例如掷骰子出现偶数的概率是3除以6等于二分之一。概率的性质：0到1之间，必然事件概率为1，不可能事件概率为0。","事件的运算包括并事件、交事件、对立事件和互斥事件。并事件是A或B发生，交事件是A和B同时发生，对立事件是A不发生，互斥事件是不能同时发生。","概率的加法公式：互斥事件时P(A并B)等于P(A)加P(B)，一般情况下P(A并B)等于P(A)加P(B)减P(A交B)。对立事件的概率P(A的对立)等于1减P(A)。","总结：概率的核心内容包括样本空间与随机事件、概率的定义、事件的运算和加法公式。"];
+        const autoPlayDurations = {0: 8000, 1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        function switchToPage(pageNum) { if (pageNum < 0 || pageNum >= totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function nextPage() { if (currentPage < totalPages - 1) switchToPage(currentPage + 1); }
+        function previousPage() { if (currentPage > 0) switchToPage(currentPage - 1); }
+        async function startTeaching() { console.log('开始讲解'); }
+        async function startAutoPlay() { console.log('自动播放'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
+        let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
+        document.addEventListener('DOMContentLoaded', () => { switchToPage(0); });
+    </script>
+</body>
+</html>

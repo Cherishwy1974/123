@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第08章 多元函数与偏导数入门</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .blackboard {
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a2e;
+            position: relative;
+            display: flex;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            padding: 30px;
+            display: flex;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .left-panel {
+            width: 35%;
+            height: 100%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .right-panel {
+            width: 65%;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .chalk-text {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #e1bee7;
+        }
+
+        .emphasis {
+            color: #FF6B6B;
+            font-size: 18px;
+        }
+
+        .formula-box {
+            background: rgba(255,224,102,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed rgba(255,224,102,0.4);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .chalk-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .chalk-list li {
+            position: relative;
+            padding-left: 20px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .chalk-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #FFE066;
+        }
+
+        .svg-animation {
+            width: 100%;
+            height: auto;
+            max-width: none;
+            max-height: none;
+            transform: translateX(-70px) scale(2);
+            transform-origin: left center;
+        }
+
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #FFE066;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        .small-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .mjx-chtml {
+            color: #ffffff !important;
+            font-size: 16px !important;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+            display: none !important;
+        }
+
+        .avatar-container {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px;
+            height: 850px;
+            overflow: hidden;
+            z-index: 50;
+            pointer-events: none;
+            background: transparent;
+        }
+        
+        .wrapper { 
+            width: 100%; 
+            height: 100%; 
+            background: transparent; 
+            pointer-events: auto; 
+        }
+
+        .subtitle-area {
+            position: absolute;
+            bottom: 8px;
+            left: 20px;
+            right: 20px;
+            min-height: 36px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            padding: 0 16px;
+            z-index: 110;
+            text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7);
+            pointer-events: none;
+        }
+
+        .control-bar {
+            position: fixed;
+            left: -240px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 200;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .control-bar:hover { 
+            left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
+        }
+        
+        .control-bar::before {
+            content: '▶️';
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
+            writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
+        }
+        
+        .btn {
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .btn:hover { 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .btn.primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
+        }
+
+        .recording-mode .control-bar {
+            left: -300px;
+            transition: left 0.5s ease;
+        }
+    </style>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\(', '\)']],
+                displayMath: [['$$', '$$'], ['\[', '\]']],
+                packages: ['base', 'ams']
+            },
+            startup: {
+                pageReady: () => {
+                    console.log('MathJax is ready.');
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container">
+            <div class="wrapper" id="avatarWrapper"></div>
+        </div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+        
+        <!-- 第1页：多元函数的概念 -->
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">多元函数的概念</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">从一元到多元</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">一元函数：$y = f(x)$</li>
+                        <li class="chalk-text">二元函数：$z = f(x, y)$</li>
+                        <li class="chalk-text">三元函数：$u = f(x, y, z)$</li>
+                    </ul>
+                    <p class="chalk-text emphasis">例子</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$z = x^2 + y^2$$</p>
+                        <p class="chalk-text small-text">圆锥面</p>
+                    </div>
+                    <p class="chalk-text small-text">多元函数描述多个变量之间的关系</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 3D坐标系 -->
+                        <line x1="350" y1="400" x2="150" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow)"/>
+                        <line x1="350" y1="400" x2="550" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow)"/>
+                        <line x1="350" y1="400" x2="350" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow)"/>
+                        <text x="130" y="510" fill="#FFE066" font-size="18" font-weight="bold">x</text>
+                        <text x="570" y="510" fill="#FFE066" font-size="18" font-weight="bold">y</text>
+                        <text x="360" y="140" fill="#FFE066" font-size="18" font-weight="bold">z</text>
+
+                        <!-- 圆锥面 z = x² + y² -->
+                        <ellipse cx="350" cy="250" rx="120" ry="40" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow)">
+                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                        </ellipse>
+                        <ellipse cx="350" cy="300" rx="90" ry="30" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow)">
+                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                        </ellipse>
+                        <ellipse cx="350" cy="350" rx="60" ry="20" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow)">
+                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+                        </ellipse>
+
+                        <!-- 圆锥侧面 -->
+                        <path d="M 230 250 L 350 400 L 470 250" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="4s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M 260 300 L 350 400 L 440 300" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow)">
+                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="4s" begin="0.5s" repeatCount="indefinite"/>
+                        </path>
+
+                        <!-- 标注 -->
+                        <text x="350" y="50" fill="#4ECDC4" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow)">z = x² + y²</text>
+                        <text x="350" y="520" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold">
+                            圆锥面（二元函数的图像）
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页：偏导数的概念 -->
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">偏导数的概念</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">偏导数的定义</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\frac{\partial z}{\partial x} = \lim_{\Delta x \to 0} \frac{f(x+\Delta x, y) - f(x,y)}{\Delta x}$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">几何意义</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">$\frac{\partial z}{\partial x}$：固定y，沿x方向的变化率</li>
+                        <li class="chalk-text">$\frac{\partial z}{\partial y}$：固定x，沿y方向的变化率</li>
+                    </ul>
+                    <p class="chalk-text small-text">偏导数描述函数在某个方向上的变化快慢</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow2">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 3D坐标系 -->
+                        <line x1="350" y1="400" x2="150" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+                        <line x1="350" y1="400" x2="550" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+                        <line x1="350" y1="400" x2="350" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow2)"/>
+
+                        <!-- 曲面 -->
+                        <ellipse cx="350" cy="280" rx="150" ry="50" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow2)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                        </ellipse>
+
+                        <!-- x方向的切线 -->
+                        <line x1="250" y1="300" x2="450" y2="260" stroke="#FF6B6B" stroke-width="4" filter="url(#glow2)">
+                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <text x="460" y="255" fill="#FF6B6B" font-size="18" font-weight="bold">∂z/∂x</text>
+
+                        <!-- y方向的切线 -->
+                        <line x1="300" y1="320" x2="400" y2="240" stroke="#FFE066" stroke-width="4" filter="url(#glow2)">
+                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" begin="1s" repeatCount="indefinite"/>
+                        </line>
+                        <text x="410" y="235" fill="#FFE066" font-size="18" font-weight="bold">∂z/∂y</text>
+
+                        <!-- 点 -->
+                        <circle cx="350" cy="280" r="8" fill="#ffffff" filter="url(#glow2)">
+                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+
+                        <!-- 标注 -->
+                        <text x="350" y="50" fill="#ffffff" font-size="22" text-anchor="middle" font-weight="bold">偏导数的几何意义</text>
+                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">
+                            两个方向的切线斜率
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3页：偏导数的计算 -->
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">偏导数的计算</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">计算方法</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">对x求偏导：把y看作常数</li>
+                        <li class="chalk-text">对y求偏导：把x看作常数</li>
+                    </ul>
+                    <p class="chalk-text emphasis">例1：$z = x^2 + 3xy + y^2$</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\frac{\partial z}{\partial x} = 2x + 3y$$</p>
+                        <p class="chalk-text">$$\frac{\partial z}{\partial y} = 3x + 2y$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">例2：$z = e^{xy}$</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\frac{\partial z}{\partial x} = ye^{xy}$$</p>
+                        <p class="chalk-text">$$\frac{\partial z}{\partial y} = xe^{xy}$$</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow3">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 计算流程 -->
+                        <rect x="200" y="100" width="300" height="80" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow3)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                        </rect>
+                        <text x="350" y="135" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold">z = x² + 3xy + y²</text>
+
+                        <!-- 分支 -->
+                        <path d="M 280 180 L 200 250" stroke="#4ECDC4" stroke-width="3" filter="url(#glow3)"/>
+                        <path d="M 420 180 L 500 250" stroke="#FF6B6B" stroke-width="3" filter="url(#glow3)"/>
+
+                        <!-- 对x求偏导 -->
+                        <rect x="100" y="250" width="200" height="100" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow3)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
+                        </rect>
+                        <text x="200" y="280" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold">对x求偏导</text>
+                        <text x="200" y="305" fill="#ffffff" font-size="14" text-anchor="middle">（y看作常数）</text>
+                        <text x="200" y="330" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">∂z/∂x = 2x + 3y</text>
+
+                        <!-- 对y求偏导 -->
+                        <rect x="400" y="250" width="200" height="100" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow3)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="2s" repeatCount="indefinite"/>
+                        </rect>
+                        <text x="500" y="280" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold">对y求偏导</text>
+                        <text x="500" y="305" fill="#ffffff" font-size="14" text-anchor="middle">（x看作常数）</text>
+                        <text x="500" y="330" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold">∂z/∂y = 3x + 2y</text>
+
+                        <!-- 标注 -->
+                        <text x="350" y="450" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold">
+                            把另一个变量看作常数
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4页：高阶偏导数 -->
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">高阶偏导数</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">二阶偏导数</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">$\frac{\partial^2 z}{\partial x^2}$：对x求两次偏导</li>
+                        <li class="chalk-text">$\frac{\partial^2 z}{\partial y^2}$：对y求两次偏导</li>
+                        <li class="chalk-text">$\frac{\partial^2 z}{\partial x \partial y}$：先对y再对x</li>
+                        <li class="chalk-text">$\frac{\partial^2 z}{\partial y \partial x}$：先对x再对y</li>
+                    </ul>
+                    <p class="chalk-text emphasis">例：$z = x^3y^2$</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$\frac{\partial^2 z}{\partial x^2} = 6xy^2$$</p>
+                        <p class="chalk-text">$$\frac{\partial^2 z}{\partial x \partial y} = 6x^2y$$</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow4">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 树状图 -->
+                        <circle cx="350" cy="120" r="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow4)">
+                            <animate attributeName="r" values="60;70;60" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="350" y="125" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold">z = x³y²</text>
+
+                        <!-- 一阶偏导 -->
+                        <line x1="300" y1="170" x2="220" y2="240" stroke="#4ECDC4" stroke-width="3" filter="url(#glow4)"/>
+                        <circle cx="220" cy="240" r="50" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow4)">
+                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="220" y="235" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">∂z/∂x</text>
+                        <text x="220" y="255" fill="#ffffff" font-size="12" text-anchor="middle">3x²y²</text>
+
+                        <line x1="400" y1="170" x2="480" y2="240" stroke="#FF6B6B" stroke-width="3" filter="url(#glow4)"/>
+                        <circle cx="480" cy="240" r="50" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow4)">
+                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="480" y="235" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">∂z/∂y</text>
+                        <text x="480" y="255" fill="#ffffff" font-size="12" text-anchor="middle">2x³y</text>
+
+                        <!-- 二阶偏导 -->
+                        <line x1="190" y1="280" x2="150" y2="350" stroke="#4ECDC4" stroke-width="2" filter="url(#glow4)"/>
+                        <circle cx="150" cy="350" r="45" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" filter="url(#glow4)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="150" y="345" fill="#ffffff" font-size="12" text-anchor="middle" font-weight="bold">∂²z/∂x²</text>
+                        <text x="150" y="365" fill="#ffffff" font-size="11" text-anchor="middle">6xy²</text>
+
+                        <line x1="250" y1="280" x2="290" y2="350" stroke="#FFE066" stroke-width="2" filter="url(#glow4)"/>
+                        <circle cx="290" cy="350" r="45" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" filter="url(#glow4)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="2.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="290" y="345" fill="#ffffff" font-size="12" text-anchor="middle" font-weight="bold">∂²z/∂x∂y</text>
+                        <text x="290" y="365" fill="#ffffff" font-size="11" text-anchor="middle">6x²y</text>
+
+                        <!-- 标注 -->
+                        <text x="350" y="480" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold">
+                            高阶偏导数树
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5页：偏导数的应用 -->
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">偏导数的应用</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">1. 切平面方程</p>
+                    <div class="formula-box">
+                        <p class="chalk-text">$$z - z_0 = f_x(x_0,y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0)$$</p>
+                    </div>
+                    <p class="chalk-text emphasis">2. 极值问题</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">必要条件：$f_x = 0$ 且 $f_y = 0$</li>
+                        <li class="chalk-text">驻点：偏导数都为0的点</li>
+                    </ul>
+                    <p class="chalk-text emphasis">3. 实际应用</p>
+                    <p class="chalk-text small-text">最优化问题、经济学边际分析等</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow5">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 3D坐标系 -->
+                        <line x1="350" y1="400" x2="150" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow5)"/>
+                        <line x1="350" y1="400" x2="550" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow5)"/>
+                        <line x1="350" y1="400" x2="350" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow5)"/>
+
+                        <!-- 曲面 -->
+                        <ellipse cx="350" cy="280" rx="150" ry="50" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow5)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                        </ellipse>
+
+                        <!-- 切平面 -->
+                        <path d="M 250 250 L 450 250 L 450 310 L 250 310 Z" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow5)">
+                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+                        </path>
+
+                        <!-- 切点 -->
+                        <circle cx="350" cy="280" r="10" fill="#FFE066" filter="url(#glow5)">
+                            <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="370" y="275" fill="#FFE066" font-size="16" font-weight="bold">(x₀,y₀,z₀)</text>
+
+                        <!-- 标注 -->
+                        <text x="350" y="50" fill="#FF6B6B" font-size="22" text-anchor="middle" font-weight="bold">切平面</text>
+                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">
+                            偏导数确定切平面方程
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第6页：总结 -->
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">多元函数与偏导数</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text"><strong>多元函数：</strong>$z = f(x, y)$</li>
+                        <li class="chalk-text"><strong>偏导数：</strong>固定其他变量，对一个变量求导</li>
+                        <li class="chalk-text"><strong>计算方法：</strong>把其他变量看作常数</li>
+                        <li class="chalk-text"><strong>几何意义：</strong>某个方向的切线斜率</li>
+                        <li class="chalk-text"><strong>应用：</strong>切平面、极值、优化问题</li>
+                    </ul>
+                    <p class="chalk-text small-text">偏导数是研究多元函数的基本工具</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="animation-container">
+                    <svg class="svg-animation" viewBox="0 0 700 600">
+                        <defs>
+                            <filter id="glow6">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 中心圆 -->
+                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow6)">
+                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="350" y="245" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold">偏导数</text>
+                        <text x="350" y="270" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold">∂z/∂x, ∂z/∂y</text>
+
+                        <!-- 四个关键点 -->
+                        <g id="key1">
+                            <circle cx="180" cy="120" r="55" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow6)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="180" y="115" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold">定义</text>
+                            <text x="180" y="135" fill="#ffffff" font-size="14" text-anchor="middle">变化率</text>
+                            <line x1="280" y1="200" x2="210" y2="150" stroke="#4ECDC4" stroke-width="2" filter="url(#glow6)"/>
+                        </g>
+
+                        <g id="key2">
+                            <circle cx="520" cy="120" r="55" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow6)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="520" y="115" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold">计算</text>
+                            <text x="520" y="135" fill="#ffffff" font-size="14" text-anchor="middle">看作常数</text>
+                            <line x1="420" y1="200" x2="490" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow6)"/>
+                        </g>
+
+                        <g id="key3">
+                            <circle cx="180" cy="380" r="55" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow6)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="180" y="375" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold">几何</text>
+                            <text x="180" y="395" fill="#ffffff" font-size="14" text-anchor="middle">切线斜率</text>
+                            <line x1="280" y1="300" x2="210" y2="350" stroke="#FF6B6B" stroke-width="2" filter="url(#glow6)"/>
+                        </g>
+
+                        <g id="key4">
+                            <circle cx="520" cy="380" r="55" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3" filter="url(#glow6)">
+                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="3s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="520" y="375" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold">应用</text>
+                            <text x="520" y="395" fill="#ffffff" font-size="14" text-anchor="middle">切平面极值</text>
+                            <line x1="420" y1="300" x2="490" y2="350" stroke="#9370DB" stroke-width="2" filter="url(#glow6)"/>
+                        </g>
+
+                        <!-- 标注 -->
+                        <text x="350" y="520" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold">
+                            偏导数的四个方面
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 控制栏 -->
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+
+    <!-- 字幕区域 -->
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 6;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isAutoPlaying = false;
+
+        const pageContents = [
+            "多元函数是指有多个自变量的函数，比如二元函数z等于f(x,y)。例如z等于x平方加y平方，它的图像是一个圆锥面。",
+            "偏导数是多元函数对某一个变量的导数，其他变量看作常数。偏导数的几何意义是曲面在某个方向上的切线斜率。",
+            "计算偏导数的方法很简单：对x求偏导时把y看作常数，对y求偏导时把x看作常数。例如z等于x平方加3xy加y平方，对x求偏导得2x加3y。",
+            "高阶偏导数是对偏导数再求偏导。二阶偏导数有四种：对x求两次、对y求两次、先对x再对y、先对y再对x。",
+            "偏导数的应用包括求切平面方程和极值问题。切平面方程由两个偏导数确定，极值点的必要条件是两个偏导数都为0。",
+            "总结：偏导数是研究多元函数的基本工具，包括定义、计算方法、几何意义和应用。掌握偏导数是学习多元微积分的关键。"
+        ];
+
+        const autoPlayDurations = {
+            1: 10000,
+            2: 12000,
+            3: 12000,
+            4: 12000,
+            5: 12000,
+            6: 10000
+        };
+
+        function switchToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNum) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+
+            currentPage = pageNum;
+            document.getElementById('currentPage').textContent = pageNum;
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                switchToPage(currentPage + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                switchToPage(currentPage - 1);
+            }
+        }
+
+        async function startTeaching() {
+            console.log('开始讲解');
+        }
+
+        async function startAutoPlay() {
+            console.log('自动播放');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousPage();
+            }
+        });
+
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextPage();
+                } else if (e.deltaY < 0) {
+                    previousPage();
+                }
+            }, 50);
+        }, { passive: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchToPage(1);
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,228 @@
+<!-- 旧版模板的完整样式和脚本 - 用于转换第06-13章 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Noto Serif SC', serif;
+        background: #1a1a2e;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+    }
+    .blackboard {
+        width: 100vw;
+        height: 100vh;
+        background: #1a1a2e;
+        position: relative;
+        border: 10px solid #795548;
+        margin: 0;
+    }
+    .avatar-container {
+        position: fixed;
+        top: 60%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 750px; height: 850px;
+        overflow: hidden; z-index: 50;
+        pointer-events: none; background: transparent;
+        border: none; box-shadow: none;
+    }
+    .wrapper {
+        width: 100%; height: 100%;
+        background: transparent; pointer-events: auto;
+    }
+    .content-area {
+        position: absolute;
+        top: 20px; left: 50px; right: 50px; bottom: 120px;
+        z-index: 10; overflow: hidden;
+    }
+    .page {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        opacity: 0; visibility: hidden;
+        transition: all 0.7s ease-in-out;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+    .page.active {
+        opacity: 1; visibility: visible;
+    }
+    .chalk-text {
+        color: #ffffff;
+        font-family: 'Noto Serif SC', serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        max-height: calc(100vh - 180px);
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+    .chalk-text::-webkit-scrollbar {
+        width: 6px;
+    }
+    .chalk-text::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+    }
+    .chalk-text::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.3);
+        border-radius: 3px;
+    }
+    .chalk-text::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.5);
+    }
+    .page-title {
+        font-size: 1.8rem; font-weight: bold;
+        color: #e1bee7; margin-bottom: 1rem;
+    }
+    .text-medium {
+        font-size: 14px; margin-bottom: 0.6rem;
+        line-height: 1.4; color: #f3e5f5; font-weight: 500;
+    }
+    .text-medium p {
+        margin-bottom: 0.8rem;
+    }
+    .text-medium strong {
+        color: #81c784;
+        font-weight: 600;
+    }
+    .text-medium .highlight {
+        color: #ffab40;
+        font-weight: 600;
+    }
+    .text-medium ul {
+        margin-left: 1rem;
+        margin-bottom: 0.6rem;
+    }
+    .text-medium li {
+        margin-bottom: 0.3rem;
+        list-style-type: disc;
+        color: #d1d5db;
+        font-size: 14px;
+    }
+    .graph-container {
+        background: transparent;
+        border: none;
+        padding: 0;
+        width: 100%; height: 100%;
+        display: flex; justify-content: center; align-items: center;
+    }
+    .subtitle-area {
+        position: absolute;
+        bottom: 20px; left: 50px; right: 50px;
+        height: 50px; background: rgba(0,0,0,0.8);
+        border-radius: 8px; display: flex;
+        align-items: center; justify-content: center;
+        z-index: 60; color: white;
+        font-size: 0.9rem; text-align: center;
+        padding: 0 20px; line-height: 1.4;
+    }
+    .control-bar {
+        position: fixed; left: -220px; top: 50%;
+        transform: translateY(-50%); width: 250px;
+        background: rgba(30,30,30,0.95);
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 10px; z-index: 200;
+        border-radius: 0 15px 15px 0;
+        padding: 20px 15px; transition: left 0.3s ease;
+    }
+    .control-bar:hover { left: 0; }
+    .control-bar::before {
+        content: '▶️'; position: absolute;
+        top: 50%; right: -25px;
+        transform: translateY(-50%);
+        background: rgba(30,30,30,0.95);
+        padding: 10px 5px; border-radius: 0 10px 10px 0;
+        font-size: 0.8rem; writing-mode: vertical-lr;
+    }
+    .btn {
+        padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666);
+        color: white; border: none; border-radius: 8px;
+        cursor: pointer; font-size: 13px; font-weight: bold;
+        transition: all 0.3s ease; width: 100%; text-align: center;
+    }
+    .btn:hover { background: linear-gradient(135deg, #555, #777); transform: translateY(-2px); }
+    .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+    
+    /* 坐标系样式 - 改为白色 */
+    .viz-panel .axis path,
+    .viz-panel .axis line {
+        stroke: white;
+        stroke-width: 2;
+    }
+    .viz-panel .axis text {
+        fill: white;
+        font-size: 16px;
+    }
+    .viz-panel .label {
+        fill: white;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    /* 连接状态指示器 */
+    .status-indicator {
+        position: absolute;
+        top: 10px; right: 10px;
+        padding: 5px 10px;
+        background: rgba(0,0,0,0.5);
+        color: white; border-radius: 5px;
+        font-size: 12px; z-index: 100;
+        transition: opacity 0.3s ease;
+    }
+    .status-indicator.connected { background: rgba(76, 175, 80, 0.8); }
+    .status-indicator.error { background: rgba(244, 67, 54, 0.8); }
+    .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); }
+
+    /* 录制模式下隐藏状态指示器和控制栏 */
+    .recording-mode .status-indicator {
+        opacity: 0; pointer-events: none;
+    }
+    .recording-mode .control-bar {
+        left: -300px; transition: left 0.5s ease;
+    }
+</style>
+
+<script>
+    window.MathJax = {
+        tex: { 
+            inlineMath: [['$', '$'], ['\\(', '\\)']], 
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            packages: ['base', 'ams']
+        },
+        startup: { 
+            pageReady: () => { 
+                console.log('MathJax is ready.'); 
+                return MathJax.startup.defaultPageReady(); 
+            } 
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform;
+        window.SDKEvents = SDKEvents;
+        window.PlayerEvents = PlayerEvents;
+        window.RecorderEvents = RecorderEvents;
+        window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+        console.log('SDK版本:', AvatarPlatform.getVersion());
+    } catch (error) {
+        console.error('❌ SDK模块加载失败:', error);
+    }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
+

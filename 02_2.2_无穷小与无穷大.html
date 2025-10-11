@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_2.2_无穷小与无穷大</title>
+
+    <!-- 本地思源宋体字体文件 -->
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+
+    <!-- 修复：将D3.js库的引用放在最前面，确保优先加载 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            /* 使用本地思源宋体，提供优雅的中文显示效果 */
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN',
+                         'Songti SC', 'SimSun', '宋体', serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .blackboard {
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a2e;
+            position: relative;
+            border: 10px solid #795548;
+            margin: 0;
+        }
+
+        /* 虚拟人显示区域 - 稍微下移，避免遮挡内容 */
+        .avatar-container {
+            position: fixed;
+            top: 60%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px; height: 850px;
+            overflow: hidden; z-index: 50;
+            pointer-events: none; background: transparent;
+            border: none; box-shadow: none;
+        }
+        .wrapper {
+            width: 100%; height: 100%;
+            background: transparent; pointer-events: auto;
+        }
+
+        /* 教学内容区域 - 避让虚拟人，左右分布 */
+        .content-area {
+            position: absolute;
+            top: 20px; left: 50px; right: 50px; bottom: 120px;
+            z-index: 10; overflow: hidden;
+        }
+        .page {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0; visibility: hidden;
+            transition: all 0.7s ease-in-out;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 3fr; /* 调整比例，给图更大空间 */
+            gap: 20px;
+            align-items: center;
+        }
+        .page.active {
+            opacity: 1; visibility: visible;
+        }
+        .chalk-text {
+            color: #ffffff;
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN',
+                         'Songti SC', 'SimSun', '宋体', serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .page-title {
+            font-size: 24px; font-weight: bold;
+            color: #e1bee7; margin-bottom: 1.5rem;
+        }
+        .text-medium {
+            font-size: 16px; margin-bottom: 0.8rem;
+            line-height: 1.7; color: #f3e5f5; font-weight: 500;
+        }
+        .emphasis {
+            color: #FF6B6B; font-size: 18px;
+        }
+        .text-medium p {
+            margin-bottom: 1rem;
+        }
+        .text-medium strong {
+            color: #81c784;
+            font-weight: 600;
+        }
+        .graph-container {
+            background: transparent;
+            border: none;
+            padding: 0;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* 字幕区域 - 全宽显示，虚拟人不影响布局 */
+        .subtitle-area {
+            position: absolute;
+            bottom: 20px; left: 50px; right: 50px;
+            height: 50px; background: rgba(0,0,0,0.8);
+            border-radius: 8px; display: flex;
+            align-items: center; justify-content: center;
+            z-index: 60; color: white;
+            font-size: 0.9rem; text-align: center;
+            padding: 0 20px; line-height: 1.4;
+        }
+
+        /* 左侧控制栏 */
+        .control-bar {
+            position: fixed; left: -220px; top: 50%;
+            transform: translateY(-50%); width: 250px;
+            background: rgba(30,30,30,0.95);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 10px; z-index: 200;
+            border-radius: 0 15px 15px 0;
+            padding: 20px 15px; transition: left 0.3s ease;
+        }
+        .control-bar:hover { left: 0; }
+        .control-bar::before {
+            content: '▶️'; position: absolute;
+            top: 50%; right: -25px;
+            transform: translateY(-50%);
+            background: rgba(30,30,30,0.95);
+            padding: 10px 5px; border-radius: 0 10px 10px 0;
+            font-size: 0.8rem; writing-mode: vertical-lr;
+        }
+        .btn {
+            padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666);
+            color: white; border: none; border-radius: 8px;
+            cursor: pointer; font-size: 13px; font-weight: bold;
+            transition: all 0.3s ease; width: 100%; text-align: center;
+        }
+        .btn:hover { background: linear-gradient(135deg, #555, #777); transform: translateY(-2px); }
+        .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+
+        /* D3 SVG Styles */
+        .viz-panel .axis path,
+        .viz-panel .axis line {
+            stroke: #ffffff;
+            stroke-width: 1.5;
+        }
+        .viz-panel .axis text {
+            fill: #ffffff;
+            font-size: 18px; /* 增大坐标轴字体 */
+        }
+        .viz-panel .label {
+            fill: #ffffff;
+            font-size: 22px; /* 增大标签字体 */
+            font-weight: 500;
+        }
+
+        /* 统一将图中元素改为白色（仅作用于图形区域） */
+        .graph-container svg .axis path,
+        .graph-container svg .axis line {
+            stroke: #ffffff !important;
+        }
+        .graph-container svg .axis text,
+        .graph-container svg .label,
+        .graph-container svg text {
+            fill: #ffffff !important;
+        }
+        .graph-container svg path,
+        .graph-container svg line {
+            stroke: #ffffff !important;
+        }
+        .graph-container svg circle {
+            stroke: #ffffff !important;
+            stroke-width: 1.5px;
+        }
+        .graph-container svg rect {
+            stroke: #ffffff !important;
+            fill: none !important;
+        }
+
+        /* 连接状态指示器 - 默认隐藏 */
+        .status-indicator {
+            position: absolute;
+            top: 10px; right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white; border-radius: 5px;
+            font-size: 12px; z-index: 100;
+            transition: opacity 0.3s ease;
+            display: none; /* 默认隐藏红色提示 */
+        }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); }
+        .status-indicator.recording {
+            background: rgba(244, 67, 54, 0.8);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); }
+
+        /* 录制模式下隐藏状态指示器 */
+        .recording-mode .status-indicator {
+            opacity: 0; pointer-events: none;
+        }
+        /* 录制模式下隐藏控制栏 */
+        .recording-mode .control-bar {
+            left: -300px; transition: left 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+
+        <!-- 虚拟人显示区域 - 按照官方SDK要求 -->
+        <div class="avatar-container">
+            <div class="wrapper" id="avatarWrapper"></div>
+        </div>
+
+        <div class="content-area" id="contentArea">
+            <!-- Pages will be dynamically generated here -->
+        </div>
+
+        <div class="subtitle-area" id="subtitleArea">
+            欢迎学习"无穷小与无穷大"！点击"开始讲课"启动虚拟人讲师。
+        </div>
+
+        <div class="control-bar">
+            <div style="color: white; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+                第 <span id="currentPage">1</span> 页 / 共 <span id="totalPages">10</span> 页
+                <br>
+                <span style="color: #81c784; font-size: 11px;">⏱️ 本页时长: <span id="currentPageDuration">18</span>秒</span>
+            </div>
+            <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+            <button class="btn primary" onclick="startTeaching()" id="startBtn">🎀 开始讲课</button>
+            <button class="btn" onclick="nextPage()">下一页 ➡️</button>
+            <button class="btn" onclick="restart()">🔄 重新开始</button>
+            <button class="btn" onclick="startAutoPlay()" id="autoPlayBtn" style="background: linear-gradient(135deg, #2196f3, #1976d2);">🎬 自动播放</button>
+            <div style="color: #ffab40; margin-top: 0.5rem; text-align: center; font-size: 10px; line-height: 1.2;">
+                💡 录制提示：<br>
+                点击自动播放后立即开始录屏<br>
+                系统会自动完成全部演示
+            </div>
+            <div style="color: #ccc; margin-top: 1rem; text-align: center; font-size: 11px;">
+                💡 快捷键：Enter播放
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script src="./polyfill.min.js"></script>
+    <script id="MathJax-script" src="./mathjax-tex-mml-chtml.js"></script>
+
+    <!-- JavaScript代码 -->
+    <script type="module">
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+            console.log('✅ 讯飞本地SDK已加载');
+
+            // 触发自定义事件，通知SDK已准备就绪
+            window.dispatchEvent(new CustomEvent('sdkReady'));
+        } catch (error) {
+            console.error('❌ 本地SDK加载失败:', error);
+        }
+    </script>
+
+    <script>
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let currentPage = 1;
+        const totalPages = 11;
+        let animationFrameId; // To control animation loops
+
+        // 合并后的教学内容：无穷小（第1-5页）+ 无穷大（第6-10页）
+        const boardContent = [
+            // === 第一部分：无穷小（原第2-6页） ===
+            { title: "无穷小：过程与结果", text: "<p>设定一个相同的<strong>『过程』</strong>：$x \\to 0$</p><p>函数 $f(x)=x+5$ 的<strong>『结果』</strong>是 $\\to 5$</p><p>函数 $g(x)=x^2$ 的<strong>『结果』</strong>是 $\\to 0$</p><p><strong>过程相同，不同的函数，结果不同。</strong></p>" },
+            { title: "无穷小的\"资格认证\"", text: "<p>只有像 $g(x)=x^2$ 这样，其最终<strong>『结果』为 0</strong> 的函数，才有资格在当前这个<strong>『过程』</strong>中，被称为<strong>『无穷小』</strong>。</p>" },
+            { title: "过程不同，结果也不同", text: "<p>对于同一个函数 $y = 1/x$：</p><p>当<strong>『过程』</strong>是 $x \\to \\infty$ 时，<strong>『结果』</strong>是 0 (是无穷小)。</p><p>当<strong>『过程』</strong>是 $x \\to 0$ 时，<strong>『结果』</strong>是 $\\infty$ (不是无穷小)。</p>" },
+            { title: "一个关键的启示", text: "<p>同一个函数，在不同的过程中，可以产生截然不同的结果，从而拥有不同的身份。</p><p>因此，我们不能笼统地问：\"一个函数是不是无穷小？\"</p><p><strong>这个问题本身问得不完整。</strong></p>" },
+            { title: "无穷小的结论", text: "<p>理解无穷小，就要牢牢抓住<strong>『过程』</strong>和<strong>『结果』</strong>。</p><p>必须先有一个明确的<strong>『过程』</strong>，函数才会有对应的<strong>『结果』</strong>。</p><p>当且仅当这个<strong>『结果』是 0</strong> 时，我们才称该函数在这个过程中是<strong>『无穷小』</strong>。</p>" },
+
+            // === 第二部分：无穷大（原第2-6页） ===
+            { title: "无穷大：与无穷小相对", text: "<p>与无穷小相对，无穷大描述的是函数值<strong>无限增大</strong>的趋势。</p><p>同样，它不是一个具体的数，而是一种由<strong>过程</strong>决定的行为。</p>" },
+            { title: "无穷大与无穷小的关系", text: "<p>在<strong>同一个过程</strong>中，如果一个函数 $f(x)$ 是无穷小（且不为0），那么它的倒数 $\\frac{1}{f(x)}$ 就是无穷大。</p><p>反之亦然。</p><p><strong>它们互为倒数，是同一枚硬币的两面。</strong></p>" },
+            { title: "案例研究 (一): $f(x) = x$", text: "<p>我们来检验这个最简单的函数：</p><p>当过程是 $x \\to 0$ 时，它的结果是 0，是<strong>无穷小</strong>。</p><p>当过程是 $x \\to \\infty$ 时，它的结果是 $\\infty$，是<strong>无穷大</strong>。</p>" },
+            { title: "案例研究 (二): $f(x) = 1/x$", text: "<p>现在来看它的倒数：</p><p>当过程是 $x \\to 0$ 时，它的结果是 $\\infty$，是<strong>无穷大</strong>。</p><p>当过程是 $x \\to \\infty$ 时，它的结果是 0，是<strong>无穷小</strong>。</p><p><strong>完美印证了倒数关系！</strong></p>" },
+            { title: "最终结论", text: "<p>无穷小与无穷大是相对的概念，由<strong>过程</strong>决定。</p><p>在同一个过程中，它们通过<strong>倒数关系</strong>紧密联系。</p><p>理解了这一点，就掌握了函数极限行为的核心。</p>" }
+        ];
+
+        // 合并后的字幕脚本
+        const subtitleScript = {
+            // 无穷小部分（第1-5页）
+            1: "我们设定一个完全相同的『过程』：让 x 无限地靠近 0。在这个过程中，我们观察两个函数截然不同的『结果』：函数 f(x) = x+5 的结果是无限地靠近 5；而函数 g(x) = x² 的结果是无限地靠近 0。这个对比告诉我们一个基本事实：过程虽然相同，但不同的函数，会产生不同的结果。",
+            2: "基于这个事实，数学家们做了一个定义：只有像 g(x) = x² 这样，其最终『结果』为 0 的函数，才有资格在当前这个『过程』中，被称为『无穷小』。所以，是不是无穷小，关键就看它的结果是不是 0。",
+            3: "那么，如果我们改变『过程』，又会怎样呢？我们来看同一个函数 y = 1比x。当『过程』是 x 趋向无穷大时，它的『结果』是 0，因此它获得了无穷小的资格。但是，当我们把『过程』换成 x 趋向 0 时，它的『结果』却变成了无穷大，它就失去了这个资格。",
+            4: "这个例子揭示了最深刻的一点：同一个函数，在不同的过程中，可以产生截然不同的结果，从而拥有不同的身份。这就解释了为什么我们不能笼统地问'一个函数是不是无穷小'，因为这个问题本身问得不完整。",
+            5: "所以，我们的结论非常直接：理解无穷小，就要牢牢抓住『过程』和『结果』这两个词。必须先有一个明确的『过程』，函数才会有对应的『结果』。当且仅当这个『结果』是0时，我们才称该函数在这个过程中是『无穷小』。",
+
+            // 无穷大部分（第6-10页）
+            6: "现在我们来学习无穷小的\"另一半\"——无穷大。顾名思义，它描述的也是一种趋势，但方向相反，是函数值的绝对值无限增大的行为。",
+            7: "那么，无穷大和无穷小之间有什么精确的关系呢？非常简单：在同一个变化过程中，如果一个不为0的函数是无穷小，那么它的倒数就一定是无穷大。反过来也完全成立。它们就像一枚硬币的两面，密不可分。",
+            8: "我们用最简单的函数 f(x) = x 来验证一下。当过程是 x 趋向于0时，它的结果也是0，所以它是一个无穷小。而当过程是 x 趋向于无穷大时，它的结果也趋向无穷大，所以它又是一个无穷大。",
+            9: "现在，我们来看看它的倒数，f(x) = 1比x。奇妙的事情发生了：在 x 趋向于0的过程中，它的结果是无穷大；而在 x 趋向于无穷大的过程中，它的结果是0，是一个无穷小。这完美地印证了我们刚才所说的倒数关系。",
+            10: "所以，我们今天的结论是：无穷小与无穷大是一对相对的概念，它们的身份完全由『过程』决定。而在同一个过程中，它们通过简单的『倒数关系』紧密地联系在一起。理解了这一点，你就掌握了函数极限行为的核心。"
+        };
+
+
+        // 状态更新函数
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') {
+                    indicator.classList.add('connected');
+                } else if (type === 'error') {
+                    indicator.classList.add('error');
+                } else if (type === 'connecting') {
+                    indicator.classList.add('connecting');
+                } else if (type === 'recording') {
+                    indicator.classList.add('recording');
+                } else if (type === 'success') {
+                    indicator.classList.add('connected');
+                }
+            }
+        }
+
+        // 检测SDK加载状态
+        function checkSDKStatus() {
+            if (typeof window.AvatarPlatform !== 'undefined') {
+                console.log('✅ 讯飞官方SDK已加载 - 版本:', window.AvatarPlatform.getVersion ? window.AvatarPlatform.getVersion() : '未知');
+                updateStatus('SDK已加载', 'connected');
+                return true;
+            } else {
+                console.log('⏳ 讯飞SDK模块正在加载中...');
+                updateStatus('SDK加载中...', 'connecting');
+                return false;
+            }
+        }
+
+        // 监听SDK准备就绪事件
+        window.addEventListener('sdkReady', function() {
+            console.log('🎉 SDK模块加载完成，准备就绪！');
+            checkSDKStatus();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentArea = document.getElementById('contentArea');
+            // 先创建封面页
+            const coverPage = document.createElement('div');
+            coverPage.className = 'page active';
+            coverPage.dataset.page = '1';
+            coverPage.innerHTML = `
+                <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+                    <div style="flex: 1; text-align: center; padding: 2rem;">
+                        <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                            无穷小与无穷大
+                        </h1>
+                        <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                            第2章 视频 2.2
+                        </p>
+                        <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 无穷小的定义与性质</p>
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 无穷大的定义与性质</p>
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 无穷小与无穷大的关系</p>
+                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 过程与结果的理解</p>
+                        </div>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                        <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+                            <defs>
+                                <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#2ecc71;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <text x="200" y="140" font-size="50" fill="url(#grad2)" text-anchor="middle" font-family="serif">
+                                α
+                                <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                            </text>
+                            <text x="400" y="140" font-size="50" fill="#e74c3c" text-anchor="middle" font-family="serif">
+                                ∞
+                                <animate attributeName="opacity" values="0.7;1;1;0" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+                            </text>
+                            <circle cx="200" cy="300" r="35" fill="none" stroke="#3498db" stroke-width="3">
+                                <animate attributeName="r" values="35;50;35" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="400" cy="300" r="35" fill="none" stroke="#e74c3c" stroke-width="3">
+                                <animate attributeName="r" values="35;50;35" dur="2s" begin="1s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="300" y="380" font-size="24" fill="#ecf0f1" text-anchor="middle">过程 → 结果</text>
+                        </svg>
+                    </div>
+                </div>
+            `;
+            contentArea.appendChild(coverPage);
+            
+            // 再创建内容页
+            boardContent.forEach((content, i) => {
+                const page = document.createElement('div');
+                page.className = 'page';
+                page.dataset.page = i + 2;
+                page.innerHTML = `
+                    <div class="chalk-text">
+                        <div class="page-title">${content.title}</div>
+                        <div class="text-medium">${content.text}</div>
+                    </div>
+                    <div class="graph-container">
+                        <svg id="viz-${i+2}" width="100%" height="100%"></svg>
+                    </div>
+                `;
+                contentArea.appendChild(page);
+            });
+            switchToPage(1, false);
+            console.log('✨ 无穷小与无穷大教学系统初始化完成');
+            checkSDKStatus();
+        });
+
+        function switchToPage(pageNum, shouldSpeak = true) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            currentPage = pageNum;
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelector(`[data-page="${pageNum}"]`).classList.add('active');
+            updatePageInfo();
+
+            setTimeout(() => {
+                drawPageGraph(pageNum);
+                if(window.MathJax && window.MathJax.typeset) {
+                    window.MathJax.typeset();
+                }
+            }, 50);
+
+            if (shouldSpeak && !isAutoPlaying) {
+                speakContent(pageNum);
+            }
+        }
+
+        // 静默页面切换 - 不播放语音，专用于自动播放
+        function switchToPageSilent(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) {
+                console.log(`❌ 页面切换失败：页码${pageNum}超出范围(1-${totalPages})`);
+                return;
+            }
+
+            console.log(`🔄 开始切换到第${pageNum}页...`);
+
+            // 移除所有页面的active类
+            const allPages = document.querySelectorAll('.page');
+            console.log(`📄 找到${allPages.length}个页面元素`);
+            allPages.forEach((page, index) => {
+                page.classList.remove('active');
+                console.log(`   - 移除第${index + 1}个页面的active类`);
+            });
+
+            // 添加目标页面的active类
+            const targetPage = document.querySelector(`[data-page="${pageNum}"]`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                currentPage = pageNum;
+                updatePageInfo();
+                console.log(`✅ 成功切换到第${pageNum}页`);
+
+                // 强制重绘
+                targetPage.offsetHeight; // 触发重绘
+
+                // 绘制图像
+                setTimeout(() => {
+                    drawPageGraph(pageNum);
+                    console.log(`🎨 第${pageNum}页图像绘制完成`);
+                }, 300);
+            } else {
+                console.log(`❌ 未找到第${pageNum}页的DOM元素`);
+            }
+        }
+
+        function drawPageGraph(pageNum) {
+            const svg = d3.select(`#viz-${pageNum}`);
+            svg.selectAll("*").remove(); // Clear previous content
+
+            const container = svg.node().parentNode;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+            switch(pageNum) {
+                case 1: drawComparisonGraph(svg, width, height); break;
+                case 2: drawQualificationGraph(svg, width, height); break;
+                case 3: drawProcessChangeGraph(svg, width, height); break;
+                case 4: drawRevelationGraph(svg, width, height); break;
+                case 5: drawConclusionGraph(svg, width, height); break;
+                case 6: drawInfinityIntroGraph(svg, width, height); break;
+                case 7: drawReciprocalRelationGraph(svg, width, height); break;
+                case 8: drawCase1Graph(svg, width, height); break;
+                case 9: drawCase2Graph(svg, width, height); break;
+                case 10: drawFinalConclusionGraph(svg, width, height); break;
+            }
+        }
+
+        // --- D3 Graph Drawing Functions (无穷小部分) ---
+        function drawComparisonGraph(svg, width, height) {
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+            const w = width - margin.left - margin.right;
+            const h = height - margin.top - margin.bottom;
+            const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear().domain([-1.5, 3.5]).range([0, w]);
+            const y = d3.scaleLinear().domain([-2, 7]).range([h, 0]);
+
+            g.append("g").attr("transform", `translate(0,${y(0)})`).call(d3.axisBottom(x).ticks(5)).attr("class", "axis");
+            g.append("g").attr("transform", `translate(${x(0)},0)`).call(d3.axisLeft(y).ticks(5)).attr("class", "axis");
+
+            const funcG = d => d * d;
+            const funcF = d => d + 5;
+
+            const lineG = d3.line().x(d => x(d)).y(d => y(funcG(d))).curve(d3.curveCatmullRom);
+            g.append("path").datum(d3.range(-1.5, 2.7, 0.1)).attr("fill", "none").attr("stroke", "#f87171").attr("stroke-width", 3).attr("d", lineG);
+            const lineF = d3.line().x(d => x(d)).y(d => y(funcF(d)));
+            g.append("path").datum(d3.range(-1.5, 2, 0.1)).attr("fill", "none").attr("stroke", "#38bdf8").attr("stroke-width", 3).attr("d", lineF);
+
+            g.append("text").attr("x", x(2.5)).attr("y", y(funcG(2.5) + 0.5)).text("y = x²").attr("class", "label").attr("fill", "#f87171");
+            g.append("text").attr("x", x(1)).attr("y", y(funcF(1) + 0.5)).text("y = x+5").attr("class", "label").attr("fill", "#38bdf8");
+
+            const gDot = g.append("circle").attr("r", 10).attr("fill", "#f87171");
+            const fDot = g.append("circle").attr("r", 10).attr("fill", "#38bdf8");
+
+            function animate() {
+                const duration = 4000;
+                const ease = d3.easeCubicInOut;
+                const startX = 3, endX = 0.01;
+                const xInterpolator = d3.interpolate(startX, endX);
+
+                gDot.transition().duration(duration).ease(ease)
+                    .attrTween("cx", () => t => x(xInterpolator(t)))
+                    .attrTween("cy", () => t => y(funcG(xInterpolator(t))));
+                fDot.transition().duration(duration).ease(ease)
+                    .attrTween("cx", () => t => x(xInterpolator(t)))
+                    .attrTween("cy", () => t => y(funcF(xInterpolator(t))))
+                    .on("end", animate);
+            }
+            animate();
+        }
+
+        function drawQualificationGraph(svg, width, height) {
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            const textOffset = Math.min(width * 0.3, 200);
+            const fontSize = Math.min(width * 0.08, 36);
+
+            const g_result = svg.append("text").text("结果: 0").attr("x", centerX - textOffset).attr("y", centerY).attr("font-size", fontSize + "px").attr("text-anchor", "middle").attr("fill", "#6ee7b7");
+            const f_result = svg.append("text").text("结果: 5").attr("x", centerX + textOffset).attr("y", centerY).attr("font-size", fontSize + "px").attr("text-anchor", "middle").attr("fill", "#f87171");
+
+            const gate = svg.append("rect").attr("x", centerX - 100).attr("y", centerY - 150).attr("width", 200).attr("height", 300).attr("fill", "none").attr("stroke", "#38bdf8").attr("stroke-width", 3).attr("stroke-dasharray", "10,5");
+            svg.append("text").text("资格认证").attr("x", centerX).attr("y", centerY - 170).attr("text-anchor", "middle").attr("class", "label").attr("fill", "#38bdf8");
+            svg.append("text").text("结果 = 0 ?").attr("x", centerX).attr("y", centerY + 180).attr("text-anchor", "middle").attr("class", "label").attr("fill", "#38bdf8");
+
+            const checkmark = svg.append("text").text("✔").attr("x", centerX).attr("y", centerY + 50).attr("font-size", "80px").attr("fill", "#6ee7b7").attr("text-anchor", "middle").attr("opacity", 0);
+            const cross = svg.append("text").text("✖").attr("x", centerX).attr("y", centerY + 50).attr("font-size", "80px").attr("fill", "#f87171").attr("text-anchor", "middle").attr("opacity", 0);
+
+            g_result.transition().duration(1500).ease(d3.easeCubicInOut).attr("x", centerX).on("end", () => checkmark.transition().duration(500).attr("opacity", 1));
+            f_result.transition().duration(1500).ease(d3.easeCubicInOut).attr("x", centerX).on("end", () => {
+                cross.transition().duration(500).attr("opacity", 1);
+                gate.transition().duration(500).attr("stroke", "#f87171");
+            });
+        }
+
+        function drawProcessChangeGraph(svg, width, height) {
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+            const w = width - margin.left - margin.right;
+            const h = height - margin.top - margin.bottom;
+            const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear().domain([-6, 6]).range([0, w]);
+            const y = d3.scaleLinear().domain([-5, 12]).range([h, 0]);
+            const func = d => 1 / d;
+
+            g.append("g").attr("transform", `translate(0,${y(0)})`).call(d3.axisBottom(x)).attr("class", "axis");
+            g.append("g").attr("transform", `translate(${x(0)},0)`).call(d3.axisLeft(y)).attr("class", "axis");
+
+            const line = d3.line().x(d => x(d)).y(d => y(func(d)));
+            g.append("path").datum(d3.range(0.08, 6, 0.05)).attr("fill", "none").attr("stroke", "#a78bfa").attr("stroke-width", 3).attr("d", line);
+            g.append("path").datum(d3.range(-6, -0.2, 0.05)).attr("fill", "none").attr("stroke", "#a78bfa").attr("stroke-width", 3).attr("d", line);
+            g.append("text").attr("x", x(4)).attr("y", y(func(4) + 1)).text("y = 1/x").attr("class", "label").attr("fill", "#a78bfa");
+
+            const dot = g.append("circle").attr("r", 10).attr("fill", "#a78bfa");
+            const textLabel = g.append("text").attr("x", w/2).attr("y", -10).attr("text-anchor", "middle").attr("class", "label").attr("font-size", "28px");
+
+            function animateToInfinity() {
+                textLabel.text("过程: x → ∞  结果: y → 0").attr("opacity", 0).transition().duration(500).attr("opacity", 1);
+                const startX = 0.5, endX = 6;
+                const interpolator = d3.interpolate(startX, endX);
+                dot.transition().duration(4000).ease(d3.easeQuadIn)
+                   .attrTween("cx", () => t => x(interpolator(t)))
+                   .attrTween("cy", () => t => y(func(interpolator(t))))
+                   .on("end", () => textLabel.transition().duration(500).attr("opacity", 0).on("end", animateToZero));
+            }
+            function animateToZero() {
+                textLabel.text("过程: x → 0  结果: y → ∞").attr("opacity", 0).transition().duration(500).attr("opacity", 1);
+                const startX = 2, endX = 0.08;
+                const interpolator = d3.interpolate(startX, endX);
+                dot.transition().duration(4000).ease(d3.easeQuadOut)
+                   .attrTween("cx", () => t => x(interpolator(t)))
+                   .attrTween("cy", () => t => y(func(interpolator(t))))
+                   .on("end", () => textLabel.transition().duration(500).attr("opacity", 0).on("end", animateToInfinity));
+            }
+            animateToInfinity();
+        }
+
+        function drawRevelationGraph(svg, width, height) {
+             const centerX = width / 2;
+             const centerY = height / 2;
+
+             const titleFontSize = Math.min(width * 0.06, 28);
+             const circleOffset = Math.min(width * 0.25, 160);
+             const circleRadius = Math.min(width * 0.15, height * 0.2, 100);
+             const textFontSize = Math.min(width * 0.06, 32);
+
+             svg.append("text").text("y = 1/x").attr("x", centerX).attr("y", centerY - height * 0.35).attr("font-size", titleFontSize + "px").attr("text-anchor", "middle").attr("fill", "#a78bfa");
+
+             const lens1 = svg.append("g").attr("transform", `translate(${centerX - circleOffset}, ${centerY})`);
+             lens1.append("circle").attr("r", circleRadius).attr("fill", "#1e293b").attr("stroke", "#38bdf8").attr("stroke-width", 2);
+             lens1.append("text").text("过程: x → ∞").attr("y", -circleRadius - 20).attr("text-anchor", "middle").attr("class", "label");
+             lens1.append("text").text("结果: 0").attr("y", 10).attr("font-size", textFontSize + "px").attr("text-anchor", "middle").attr("fill", "#6ee7b7");
+
+             const lens2 = svg.append("g").attr("transform", `translate(${centerX + circleOffset}, ${centerY})`);
+             lens2.append("circle").attr("r", circleRadius).attr("fill", "#1e293b").attr("stroke", "#38bdf8").attr("stroke-width", 2);
+             lens2.append("text").text("过程: x → 0").attr("y", -circleRadius - 20).attr("text-anchor", "middle").attr("class", "label");
+             lens2.append("text").text("结果: ∞").attr("y", 10).attr("font-size", textFontSize + "px").attr("text-anchor", "middle").attr("fill", "#f87171");
+
+             const questionMark = svg.append("text").text("?").attr("x", centerX).attr("y", centerY + 220).attr("font-size", "90px").attr("text-anchor", "middle").attr("fill", "white");
+
+             lens1.attr("opacity", 0).transition().duration(1000).delay(500).attr("opacity", 1);
+             lens2.attr("opacity", 0).transition().duration(1000).delay(1000).attr("opacity", 1);
+             questionMark.attr("opacity", 0).transition().duration(1000).delay(1500).attr("opacity", 1);
+        }
+
+        function drawConclusionGraph(svg, width, height) {
+            const textGroup = svg.append("g").attr("transform", `translate(${width/2}, ${height/2})`);
+
+            const mainFontSize = Math.min(width * 0.12, 60);
+            const titleFontSize = Math.min(width * 0.15, 70);
+
+            const processText = textGroup.append("text").text("过程").attr("font-size", mainFontSize + "px").attr("fill", "#38bdf8").attr("text-anchor", "middle");
+            const resultText = textGroup.append("text").text("结果").attr("font-size", mainFontSize + "px").attr("fill", "#6ee7b7").attr("text-anchor", "middle");
+            const finalText = textGroup.append("text").text("无穷小").attr("font-size", titleFontSize + "px").attr("font-weight", "bold").attr("fill", "white").attr("text-anchor", "middle");
+
+            processText.attr("x", -width/2).attr("opacity", 0).transition().duration(1200).ease(d3.easeBounceOut).attr("x", -width/4).attr("opacity", 1);
+            resultText.attr("x", width/2).attr("opacity", 0).transition().duration(1200).ease(d3.easeBounceOut).attr("x", width/4).attr("opacity", 1);
+
+            const arrow = textGroup.append("path").attr("d", "M -120 0 L 120 0").attr("stroke", "white").attr("stroke-width", 4).attr("marker-end", "url(#arrow)").attr("opacity", 0);
+            svg.append("defs").append("marker").attr("id", "arrow").attr("viewBox", "0 -5 10 10").attr("refX", 5).attr("refY", 0).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto").append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", "white");
+
+            setTimeout(() => {
+               processText.transition().duration(1000).attr("x", -180);
+               resultText.transition().duration(1000).attr("x", 180);
+               arrow.transition().delay(500).duration(500).attr("opacity", 1);
+               setTimeout(() => {
+                   processText.transition().duration(800).attr("opacity", 0);
+                   resultText.transition().duration(800).attr("opacity", 0);
+                   arrow.transition().duration(800).attr("opacity", 0);
+                   finalText.attr("opacity", 0).transition().delay(800).duration(1000).attr("opacity", 1).attr("transform", "scale(1.2)").transition().attr("transform", "scale(1)");
+               }, 2000);
+            }, 2000);
+        }
+
+        // --- D3 Graph Drawing Functions (无穷大部分) ---
+        function drawInfinityIntroGraph(svg, width, height) {
+            const fontSize = Math.min(width * 0.15, height * 0.2, 80);
+            const text = svg.append("text").attr("x", width / 2).attr("y", height / 2).attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-size", fontSize + "px").attr("font-weight", "bold").attr("fill", "url(#grad0)");
+            const gradient = svg.append("defs").append("linearGradient").attr("id", "grad0").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%");
+            gradient.append("stop").attr("offset", "0%").style("stop-color", "#e1bee7");
+            gradient.append("stop").attr("offset", "100%").style("stop-color", "#81c784");
+            text.selectAll("tspan").data("无穷大".split("")).enter().append("tspan").text(d => d).attr("opacity", 0).attr("dy", "-30px").transition().duration(500).delay((d, i) => i * 150).attr("opacity", 1).attr("dy", "0px");
+        }
+
+        function drawReciprocalRelationGraph(svg, width, height) {
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const boxWidth = Math.min(width * 0.35, 180);
+            const boxHeight = Math.min(height * 0.25, 100);
+            const gap = Math.min(width * 0.15, 100);
+
+            const box1 = svg.append("g").attr("transform", `translate(${centerX - boxWidth - gap/2}, ${centerY - boxHeight/2})`);
+            box1.append("rect").attr("width", boxWidth).attr("height", boxHeight).attr("fill", "#1e293b").attr("stroke", "#38bdf8").attr("stroke-width", 3).attr("rx", 10);
+            box1.append("text").text("无穷小").attr("x", boxWidth/2).attr("y", boxHeight/2).attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-size", "28px").attr("fill", "#6ee7b7");
+
+            const box2 = svg.append("g").attr("transform", `translate(${centerX + gap/2}, ${centerY - boxHeight/2})`);
+            box2.append("rect").attr("width", boxWidth).attr("height", boxHeight).attr("fill", "#1e293b").attr("stroke", "#f87171").attr("stroke-width", 3).attr("rx", 10);
+            box2.append("text").text("无穷大").attr("x", boxWidth/2).attr("y", boxHeight/2).attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-size", "28px").attr("fill", "#f87171");
+
+            svg.append("defs").append("marker").attr("id", "arrow2").attr("viewBox", "0 -5 10 10").attr("refX", 9).attr("refY", 0).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto").append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", "#f39c12");
+
+            const arrow = svg.append("line")
+                .attr("x1", centerX - gap/2 - 10)
+                .attr("y1", centerY)
+                .attr("x2", centerX + gap/2 + 10)
+                .attr("y2", centerY)
+                .attr("stroke", "#f39c12")
+                .attr("stroke-width", 3)
+                .attr("marker-end", "url(#arrow2)")
+                .attr("opacity", 0);
+
+            svg.append("text")
+                .text("倒数关系")
+                .attr("x", centerX)
+                .attr("y", centerY - boxHeight/2 - 30)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "24px")
+                .attr("fill", "#f39c12")
+                .attr("opacity", 0)
+                .transition()
+                .delay(1000)
+                .duration(800)
+                .attr("opacity", 1);
+
+            arrow.transition().delay(1500).duration(800).attr("opacity", 1);
+        }
+
+        function drawCase1Graph(svg, width, height) {
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+            const w = width - margin.left - margin.right;
+            const h = height - margin.top - margin.bottom;
+            const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear().domain([-2, 6]).range([0, w]);
+            const y = d3.scaleLinear().domain([-1, 8]).range([h, 0]);
+
+            g.append("g").attr("transform", `translate(0,${y(0)})`).call(d3.axisBottom(x)).attr("class", "axis");
+            g.append("g").attr("transform", `translate(${x(0)},0)`).call(d3.axisLeft(y)).attr("class", "axis");
+
+            const line = d3.line().x(d => x(d)).y(d => y(d));
+            g.append("path").datum(d3.range(-2, 6, 0.1)).attr("fill", "none").attr("stroke", "#f87171").attr("stroke-width", 3).attr("d", line);
+            g.append("text").attr("x", x(5)).attr("y", y(5) - 20).text("y = x").attr("class", "label").attr("fill", "#f87171");
+
+            const dot = g.append("circle").attr("r", 10).attr("fill", "#f87171");
+            const label = g.append("text").attr("x", w/2).attr("y", -10).attr("text-anchor", "middle").attr("class", "label");
+
+            function animateToZero() {
+                label.text("x → 0, y → 0 (无穷小)").attr("opacity", 0).transition().duration(500).attr("opacity", 1);
+                const interpolator = d3.interpolate(3, 0.01);
+                dot.transition().duration(3000).ease(d3.easeQuadOut)
+                    .attrTween("cx", () => t => x(interpolator(t)))
+                    .attrTween("cy", () => t => y(interpolator(t)))
+                    .on("end", () => label.transition().duration(500).attr("opacity", 0).on("end", animateToInfinity));
+            }
+
+            function animateToInfinity() {
+                label.text("x → ∞, y → ∞ (无穷大)").attr("opacity", 0).transition().duration(500).attr("opacity", 1);
+                const interpolator = d3.interpolate(0.5, 5.5);
+                dot.transition().duration(3000).ease(d3.easeQuadIn)
+                    .attrTween("cx", () => t => x(interpolator(t)))
+                    .attrTween("cy", () => t => y(interpolator(t)))
+                    .on("end", () => label.transition().duration(500).attr("opacity", 0).on("end", animateToZero));
+            }
+
+            animateToZero();
+        }
+
+        function drawCase2Graph(svg, width, height) {
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+            const w = width - margin.left - margin.right;
+            const h = height - margin.top - margin.bottom;
+            const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear().domain([-6, 6]).range([0, w]);
+            const y = d3.scaleLinear().domain([-8, 12]).range([h, 0]);
+            const func = d => 1 / d;
+
+            g.append("g").attr("transform", `translate(0,${y(0)})`).call(d3.axisBottom(x)).attr("class", "axis");
+            g.append("g").attr("transform", `translate(${x(0)},0)`).call(d3.axisLeft(y)).attr("class", "axis");
+
+            const line = d3.line().x(d => x(d)).y(d => y(func(d)));
+            g.append("path").datum(d3.range(0.08, 6, 0.05)).attr("fill", "none").attr("stroke", "#38bdf8").attr("stroke-width", 3).attr("d", line);
+            g.append("path").datum(d3.range(-6, -0.2, 0.05)).attr("fill", "none").attr("stroke", "#38bdf8").attr("stroke-width", 3).attr("d", line);
+            g.append("text").attr("x", x(4)).attr("y", y(func(4) + 1)).text("y = 1/x").attr("class", "label").attr("fill", "#38bdf8");
+
+            const dot = g.append("circle").attr("r", 10).attr("fill", "#38bdf8");
+            const label = g.append("text").attr("x", w/2).attr("y", -10).attr("text-anchor", "middle").attr("class", "label");
+
+            function animateToZero() {
+                label.text("x → 0, y → ∞ (无穷大)").attr("opacity", 0).transition().duration(500).attr("opacity", 1);
+                const interpolator = d3.interpolate(2, 0.08);
+                dot.transition().duration(3000).ease(d3.easeQuadOut)
+                    .attrTween("cx", () => t => x(interpolator(t)))
+                    .attrTween("cy", () => t => y(func(interpolator(t))))
+                    .on("end", () => label.transition().duration(500).attr("opacity", 0).on("end", animateToInfinity));
+            }
+
+            function animateToInfinity() {
+                label.text("x → ∞, y → 0 (无穷小)").attr("opacity", 0).transition().duration(500).attr("opacity", 1);
+                const interpolator = d3.interpolate(0.5, 6);
+                dot.transition().duration(3000).ease(d3.easeQuadIn)
+                    .attrTween("cx", () => t => x(interpolator(t)))
+                    .attrTween("cy", () => t => y(func(interpolator(t))))
+                    .on("end", () => label.transition().duration(500).attr("opacity", 0).on("end", animateToZero));
+            }
+
+            animateToZero();
+        }
+
+        function drawFinalConclusionGraph(svg, width, height) {
+            const textGroup = svg.append("g").attr("transform", `translate(${width/2}, ${height/2})`);
+
+            const mainFontSize = Math.min(width * 0.1, 50);
+
+            const infinitesimalText = textGroup.append("text").text("无穷小").attr("font-size", mainFontSize + "px").attr("fill", "#6ee7b7").attr("text-anchor", "middle").attr("y", -60);
+            const infinityText = textGroup.append("text").text("无穷大").attr("font-size", mainFontSize + "px").attr("fill", "#f87171").attr("text-anchor", "middle").attr("y", 60);
+
+            svg.append("defs").append("marker").attr("id", "arrow3").attr("viewBox", "0 -5 10 10").attr("refX", 9).attr("refY", 0).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto").append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", "white");
+
+            const line1 = textGroup.append("line").attr("x1", 0).attr("y1", -30).attr("x2", 0).attr("y2", 30).attr("stroke", "white").attr("stroke-width", 3).attr("marker-end", "url(#arrow3)").attr("opacity", 0);
+            const line2 = textGroup.append("line").attr("x1", 0).attr("y1", 30).attr("x2", 0).attr("y2", -30).attr("stroke", "white").attr("stroke-width", 3).attr("marker-end", "url(#arrow3)").attr("opacity", 0);
+
+            infinitesimalText.attr("opacity", 0).transition().duration(1000).attr("opacity", 1);
+            infinityText.attr("opacity", 0).transition().delay(500).duration(1000).attr("opacity", 1);
+            line1.transition().delay(1500).duration(800).attr("opacity", 1);
+            line2.transition().delay(1500).duration(800).attr("opacity", 1);
+
+            textGroup.append("text").text("倒数关系").attr("y", 120).attr("text-anchor", "middle").attr("font-size", "24px").attr("fill", "#f39c12").attr("opacity", 0).transition().delay(2500).duration(800).attr("opacity", 1);
+        }
+
+        // 等待SDK加载完成
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof window.AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                }, 15000);
+
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
+
+        // --- Control & Avatar Functions ---
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
+
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new window.AvatarPlatform({
+                    useInlinePlayer: true
+                });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+                        startBtn.textContent = '💖 虚拟人已就绪';
+
+                        setTimeout(() => {
+                            speakContent(1);
+                        }, 1000);
+                    })
+                    .on('disconnected', (err) => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                        if (err) {
+                            console.error('❌ 连接异常断开:', err);
+                        }
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 虚拟人错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        startBtn.textContent = '❌ 连接失败';
+                        startBtn.disabled = false;
+                        isTeaching = false;
+                    })
+                    .on('frame_start', (frameData) => {
+                        console.log('🎬 [frame_start] 开始播放帧:', frameData);
+                    })
+                    .on('frame_stop', (frameData) => {
+                        console.log('⏹️ [frame_stop] 播放帧结束:', frameData);
+                        console.log('✅ ===== 语音播放完成，可以切换下一页 =====');
+
+                        if (speechCompleteResolve) {
+                            speechCompleteResolve();
+                            speechCompleteResolve = null;
+                        }
+                    });
+
+                console.log('🔧 正在设置虚拟人API配置...');
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+                console.log('✅ API配置设置完成');
+
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                await avatarPlatform.start({
+                    wrapper: document.getElementById('avatarWrapper')
+                });
+
+                console.log('🎓 虚拟人教学系统启动完成');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                startBtn.textContent = '🔄 重试';
+                startBtn.disabled = false;
+            }
+        }
+
+        async function performVirtualAction(actionId) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接，跳过动作执行');
+                return;
+            }
+
+            try {
+                await avatarPlatform.writeCmd("action", actionId);
+                console.log(`✅ 执行动作: ${actionId}`);
+            } catch (error) {
+                console.error(`❌ 动作执行失败 (${actionId}):`, error);
+            }
+        }
+
+        function getActionsForPage(pageNum) {
+            const actionMap = {
+                1: [{ type: 'action', value: 'A_LH_please_O', wb: 2, we: 6 }],
+                2: [{ type: 'action', value: 'A_LH_introduced_O', wb: 2, we: 8 }],
+                3: [{ type: 'action', value: 'A_RLH_emphasize_O', wb: 2, we: 8 }],
+                4: [{ type: 'action', value: 'A_RH_please1_O', wb: 2, we: 6 }],
+                5: [{ type: 'action', value: 'A_U_No_pointing_O', wb: 2, we: 5 }],
+                6: [{ type: 'action', value: 'A_RLH_welcome_O', wb: 2, we: 8 }],
+                7: [{ type: 'action', value: 'A_RLH_emphasize_O', wb: 2, we: 8 }],
+                8: [{ type: 'action', value: 'A_LH_please_O', wb: 2, we: 6 }],
+                9: [{ type: 'action', value: 'A_LH_introduced_O', wb: 2, we: 8 }],
+                10: [{ type: 'action', value: 'A_U_No_pointing_O', wb: 2, we: 5 }]
+            };
+            return actionMap[pageNum] || [{ type: 'action', value: 'A_U_No_pointing_O', wb: 2, we: 5 }];
+        }
+
+        let speechCompleteResolve = null;
+
+        async function speakContent(pageNum) {
+            console.log(`🔍 检查播放条件: isTeaching=${isTeaching}, isConnected=${isConnected}, avatarPlatform=${!!avatarPlatform}`);
+
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                return Promise.resolve();
+            }
+
+            const content = subtitleScript[pageNum];
+            if (!content) return Promise.resolve();
+
+            const speechPromise = new Promise((resolve) => {
+                speechCompleteResolve = resolve;
+            });
+
+            try {
+                const actions = getActionsForPage(pageNum);
+                if (actions && actions[0]) {
+                    await performVirtualAction(actions[0].value);
+                }
+
+                await avatarPlatform.writeText(content, {
+                    nlp: false
+                });
+
+                console.log(`✅ 沐沐讲解第${pageNum}页开始播放，动作: ${actions[0]?.value}`);
+
+                if (isAutoPlaying) {
+                    updateAutoPlaySubtitle(pageNum, content);
+                } else {
+                    updateSubtitle(content);
+                }
+            } catch (error) {
+                console.error('❌ 虚拟人讲解失败:', error);
+                if (speechCompleteResolve) {
+                    speechCompleteResolve();
+                }
+            }
+
+            return speechPromise;
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function updateAutoPlaySubtitle(pageNum, text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea && isAutoPlaying) {
+                const prefix = `【第${pageNum}页/${totalPages}页】`;
+                subtitleArea.textContent = prefix + text;
+            } else if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                switchToPage(currentPage + 1);
+            }
+        }
+        function previousPage() {
+            if (currentPage > 1) {
+                switchToPage(currentPage - 1);
+            }
+        }
+        function restart() { switchToPage(1); }
+        function updatePageInfo() {
+            document.getElementById('currentPage').textContent = currentPage;
+            document.getElementById('totalPages').textContent = totalPages;
+        }
+
+        function getPageTitle(pageNum) {
+            const titles = {
+                1: "无穷小：过程与结果",
+                2: "无穷小的资格认证",
+                3: "过程不同，结果也不同",
+                4: "一个关键的启示",
+                5: "无穷小的结论",
+                6: "无穷大：与无穷小相对",
+                7: "无穷大与无穷小的关系",
+                8: "案例研究(一): f(x)=x",
+                9: "案例研究(二): f(x)=1/x",
+                10: "最终结论"
+            };
+            return titles[pageNum] || `第${pageNum}页`;
+        }
+
+        function getPageDuration(pageNum) {
+            const durations = {
+                1: 27000, 2: 20000, 3: 22000, 4: 17000, 5: 16000,
+                6: 18000, 7: 20000, 8: 18000, 9: 22000, 10: 20000
+            };
+            return durations[pageNum] || 15000;
+        }
+
+        let isAutoPlaying = false;
+        async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus(`🎬 自动播放将在 1 秒后开始，请准备录屏！`, 'recording');
+                console.log(`⏰ 倒计时: 1秒`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                console.log('🚀 自动播放正式开始！');
+
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 后台尝试连接虚拟人...');
+                    startTeaching().catch(error => {
+                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
+                    });
+                }
+
+                console.log(`🚀 开始逐页播放，总共${totalPages}页`);
+                for (let page = 1; page <= totalPages; page++) {
+                    try {
+                        if (!isAutoPlaying) {
+                            console.log('🛑 自动播放被停止');
+                            break;
+                        }
+
+                        console.log(`\n🎬 === 开始播放第${page}页/${totalPages}页 ===`);
+
+                        switchToPageSilent(page);
+                        updateStatus(`📖 第${page}页/${totalPages}页 - ${getPageTitle(page)}`, 'recording');
+                        console.log(`📄 已切换到第${page}页: ${getPageTitle(page)}`);
+
+                        console.log(`⏳ 等待页面渲染 0.8秒...`);
+                        await new Promise(resolve => setTimeout(resolve, 800));
+
+                        if (isConnected && isTeaching && avatarPlatform) {
+                            console.log(`🎵 播放第${page}页语音...`);
+                            try {
+                                await speakContent(page);
+                                console.log(`✅ 第${page}页语音播放完成（通过frame_stop事件确认）`);
+
+                            } catch (error) {
+                                console.error(`❌ 第${page}页语音播放失败:`, error);
+                                const pageTime = getPageDuration(page);
+                                await new Promise(resolve => setTimeout(resolve, pageTime));
+                            }
+                        } else {
+                            console.log(`⚠️ 虚拟人不可用，跳过语音播放`);
+                            const pageTime = getPageDuration(page);
+                            console.log(`⏰ 等待阅读时间 ${pageTime/1000}秒...`);
+                            await new Promise(resolve => setTimeout(resolve, pageTime));
+                        }
+
+                        if (page === totalPages) {
+                            console.log(`⏳ 最后一页，停顿2秒...`);
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                        }
+
+                        console.log(`✅ 第${page}页播放完成\n`);
+
+                    } catch (error) {
+                        console.error(`❌ 第${page}页播放过程出错:`, error);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
+                }
+
+                console.log('🎉 所有页面播放完成！');
+
+                if (isAutoPlaying) {
+                    console.log('⏰ 等待3秒后结束录制...');
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                updateStatus('自动播放失败: ' + error.message, 'error');
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+
+                document.body.classList.remove('recording-mode');
+                console.log('📹 退出录制模式，恢复UI元素');
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
+
+                console.log('⏹️ 自动播放已停止');
+                updateStatus('自动播放已停止', 'normal');
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    nextPage();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    previousPage();
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    handleEnterKey();
+                    break;
+            }
+        });
+
+        function handleEnterKey() {
+            if (!isTeaching) {
+                startTeaching();
+            } else if (isConnected) {
+                speakContent(currentPage);
+                console.log('🎵 Enter键触发：重新播放当前页内容');
+            } else {
+                console.log('⚠️ 虚拟人未连接，无法播放');
+            }
+        }
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            }
+
+            if (avatarPlatform && isConnected) {
+                avatarPlatform.stop();
+            }
+        });
+    </script>
+</body>
+</html>

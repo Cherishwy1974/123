@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第12章 平面与直线方程</title>
+    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
+        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
+        .page.active { opacity: 1; visibility: visible; }
+        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
+        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
+        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
+        .emphasis { color: #FF6B6B; font-size: 18px; }
+        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
+        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
+        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
+        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
+        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
+        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
+        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
+        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 750px; height: 850px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .control-bar { position: fixed; left: -240px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .control-bar:hover { left: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
+            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
+            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="blackboard">
+        <div id="statusIndicator" class="status-indicator">等待连接</div>
+        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+        
+        <div class="page active" id="page1">
+            <div class="left-panel">
+                <h1 class="title chalk-text">平面方程</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">点法式方程</p>
+                    <div class="formula-box"><p class="chalk-text">$$A(x-x_0) + B(y-y_0) + C(z-z_0) = 0$$</p></div>
+                    <p class="chalk-text">$(x_0, y_0, z_0)$ 是平面上一点，$(A, B, C)$ 是法向量</p>
+                    <p class="chalk-text emphasis">一般式</p>
+                    <div class="formula-box"><p class="chalk-text">$$Ax + By + Cz + D = 0$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="gp1"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowp1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                </defs>
+                
+                <!-- 3D坐标系 -->
+                <line x1="250" y1="450" x2="550" y2="450" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#gp1)"/>
+                <line x1="250" y1="450" x2="250" y2="200" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#gp1)"/>
+                <line x1="250" y1="450" x2="150" y2="520" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#gp1)"/>
+                <text x="570" y="455" fill="#9370DB" font-size="14" font-weight="bold" filter="url(#gp1)">x</text>
+                <text x="245" y="185" fill="#9370DB" font-size="14" font-weight="bold" filter="url(#gp1)">y</text>
+                <text x="130" y="535" fill="#9370DB" font-size="14" font-weight="bold" filter="url(#gp1)">z</text>
+                
+                <!-- 平面（用平行四边形表示） -->
+                <path d="M 200 350 L 450 300 L 500 380 L 250 430 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#gp1)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </path>
+                
+                <!-- 平面上的点P0 -->
+                <circle cx="330" cy="370" r="8" fill="#FFE066" filter="url(#gp1)">
+                    <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <text x="340" y="370" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#gp1)">P₀(x₀,y₀,z₀)</text>
+                
+                <!-- 法向量n -->
+                <line x1="330" y1="370" x2="380" y2="250" stroke="#FF6B6B" stroke-width="6" marker-end="url(#arrowp1)" filter="url(#gp1)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="390" y="240" fill="#FF6B6B" font-size="22" font-weight="bold" filter="url(#gp1)">n⃗(A,B,C)</text>
+                
+                <!-- 垂直符号 -->
+                <line x1="330" y1="370" x2="345" y2="360" stroke="#FFE066" stroke-width="2" filter="url(#gp1)"/>
+                <line x1="345" y1="360" x2="340" y2="345" stroke="#FFE066" stroke-width="2" filter="url(#gp1)"/>
+                
+                <!-- 标题和说明 -->
+                <rect x="100" y="50" width="500" height="70" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#gp1)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="80" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp1)">法向量n⃗垂直于平面</text>
+                <text x="350" y="105" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp1)">A(x-x₀)+B(y-y₀)+C(z-z₀)=0</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page2">
+            <div class="left-panel">
+                <h1 class="title chalk-text">直线方程</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">参数式方程</p>
+                    <div class="formula-box"><p class="chalk-text">$$\begin{cases} x = x_0 + mt \\ y = y_0 + nt \\ z = z_0 + pt \end{cases}$$</p></div>
+                    <p class="chalk-text">$(x_0, y_0, z_0)$ 是直线上一点，$(m, n, p)$ 是方向向量</p>
+                    <p class="chalk-text emphasis">对称式方程</p>
+                    <div class="formula-box"><p class="chalk-text">$$\frac{x-x_0}{m} = \frac{y-y_0}{n} = \frac{z-z_0}{p}$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="gp2"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowp2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                </defs>
+                <!-- 3D坐标系 -->
+                <line x1="200" y1="450" x2="500" y2="450" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#gp2)"/>
+                <line x1="200" y1="450" x2="200" y2="200" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#gp2)"/>
+                <line x1="200" y1="450" x2="100" y2="520" stroke="#9370DB" stroke-width="2" opacity="0.5" filter="url(#gp2)"/>
+                <!-- 直线 -->
+                <line x1="150" y1="500" x2="550" y2="250" stroke="#FF6B6B" stroke-width="5" filter="url(#gp2)">
+                    <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+                </line>
+                <!-- 点P0 -->
+                <circle cx="320" cy="400" r="8" fill="#FFE066" filter="url(#gp2)"><animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/></circle>
+                <text x="330" y="395" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#gp2)">P₀</text>
+                <!-- 方向向量s -->
+                <line x1="320" y1="400" x2="450" y2="310" stroke="#4ECDC4" stroke-width="6" marker-end="url(#arrowp2)" filter="url(#gp2)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="460" y="300" fill="#4ECDC4" font-size="20" font-weight="bold" filter="url(#gp2)">s⃗(m,n,p)</text>
+                <!-- 说明 -->
+                <rect x="120" y="50" width="460" height="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="10" filter="url(#gp2)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="85" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp2)">直线方向由方向向量s⃗确定</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page3">
+            <div class="left-panel">
+                <h1 class="title chalk-text">点到平面的距离</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">距离公式</p>
+                    <div class="formula-box"><p class="chalk-text">$$d = \frac{|Ax_0 + By_0 + Cz_0 + D|}{\sqrt{A^2 + B^2 + C^2}}$$</p></div>
+                    <p class="chalk-text">点 $(x_0, y_0, z_0)$ 到平面 $Ax + By + Cz + D = 0$ 的距离</p>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="gp3"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowp3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FFE066"/></marker>
+                </defs>
+                <!-- 平面 -->
+                <path d="M 150 400 L 550 380 L 580 480 L 180 500 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#gp3)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </path>
+                <!-- 点P（平面外） -->
+                <circle cx="350" cy="200" r="10" fill="#FF6B6B" filter="url(#gp3)"><animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/></circle>
+                <text x="365" y="200" fill="#FF6B6B" font-size="18" font-weight="bold" filter="url(#gp3)">P(x₀,y₀,z₀)</text>
+                <!-- 垂足Q -->
+                <circle cx="350" cy="430" r="8" fill="#4ECDC4" filter="url(#gp3)"/>
+                <text x="365" y="435" fill="#4ECDC4" font-size="16" font-weight="bold" filter="url(#gp3)">Q</text>
+                <!-- 距离d（垂线） -->
+                <line x1="350" y1="200" x2="350" y2="430" stroke="#FFE066" stroke-width="5" stroke-dasharray="8,4" marker-end="url(#arrowp3)" filter="url(#gp3)">
+                    <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <text x="360" y="320" fill="#FFE066" font-size="22" font-weight="bold" filter="url(#gp3)">d</text>
+                <!-- 公式框 -->
+                <rect x="80" y="50" width="540" height="70" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" rx="10" filter="url(#gp3)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="90" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gp3)">d = |Ax₀+By₀+Cz₀+D| / √(A²+B²+C²)</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="left-panel">
+                <h1 class="title chalk-text">两平面的位置关系</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">平行</p>
+                    <p class="chalk-text">法向量平行：$\vec{n_1} \parallel \vec{n_2}$</p>
+                    <p class="chalk-text emphasis">垂直</p>
+                    <p class="chalk-text">法向量垂直：$\vec{n_1} \cdot \vec{n_2} = 0$</p>
+                    <p class="chalk-text emphasis">夹角</p>
+                    <div class="formula-box"><p class="chalk-text">$$\cos\theta = \frac{|\vec{n_1} \cdot \vec{n_2}|}{|\vec{n_1}||\vec{n_2}|}$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="gp4"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowp4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                    <marker id="arrowp5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                </defs>
+                <!-- 标题 -->
+                <text x="350" y="40" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gp4)">两平面位置关系</text>
+                <!-- 情况1：平行 -->
+                <g transform="translate(100, 80)">
+                    <rect x="0" y="0" width="180" height="140" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#gp4)"/>
+                    <text x="90" y="25" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp4)">平行</text>
+                    <path d="M 20 60 L 160 55 L 165 90 L 25 95 Z" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" filter="url(#gp4)"/>
+                    <path d="M 20 110 L 160 105 L 165 120 L 25 125 Z" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" filter="url(#gp4)"/>
+                    <line x1="50" y1="75" x2="70" y2="50" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrowp4)" filter="url(#gp4)"/>
+                    <line x1="120" y1="110" x2="140" y2="85" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrowp5)" filter="url(#gp4)"/>
+                    <text x="90" y="70" fill="#9370DB" font-size="12" font-weight="bold" filter="url(#gp4)">n₁∥n₂</text>
+                </g>
+                <!-- 情况2：垂直 -->
+                <g transform="translate(310, 80)">
+                    <rect x="0" y="0" width="180" height="140" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="10" filter="url(#gp4)"/>
+                    <text x="90" y="25" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp4)">垂直</text>
+                    <path d="M 50 50 L 130 60 L 125 120 L 45 110 Z" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" filter="url(#gp4)"/>
+                    <path d="M 50 50 L 140 50 L 140 90 L 50 90 Z" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" filter="url(#gp4)"/>
+                    <line x1="70" y1="70" x2="70" y2="40" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrowp4)" filter="url(#gp4)"/>
+                    <line x1="100" y1="70" x2="130" y2="70" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrowp5)" filter="url(#gp4)"/>
+                    <text x="90" y="110" fill="#9370DB" font-size="12" font-weight="bold" filter="url(#gp4)">n₁·n₂=0</text>
+                </g>
+                <!-- 情况3：相交成角 -->
+                <rect x="150" y="250" width="400" height="150" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="2" rx="10" filter="url(#gp4)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="280" fill="#9370DB" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp4)">相交成角θ</text>
+                <path d="M 200 320 L 400 310 L 410 360 L 210 370 Z" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" filter="url(#gp4)"/>
+                <path d="M 250 320 L 480 340 L 485 380 L 255 360 Z" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" filter="url(#gp4)"/>
+                <line x1="300" y1="330" x2="320" y2="300" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrowp4)" filter="url(#gp4)"/>
+                <line x1="360" y1="340" x2="380" y2="310" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrowp5)" filter="url(#gp4)"/>
+                <path d="M 330 320 Q 340 315, 350 320" stroke="#FFE066" stroke-width="2" fill="none" filter="url(#gp4)"/>
+                <text x="345" y="310" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#gp4)">θ</text>
+                <!-- 公式 -->
+                <rect x="100" y="430" width="500" height="60" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" rx="10" filter="url(#gp4)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="465" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp4)">cosθ = |n₁·n₂| / (|n₁||n₂|)</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="left-panel">
+                <h1 class="title chalk-text">直线与平面的位置关系</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">平行</p>
+                    <p class="chalk-text">方向向量与法向量垂直：$\vec{s} \cdot \vec{n} = 0$</p>
+                    <p class="chalk-text emphasis">垂直</p>
+                    <p class="chalk-text">方向向量与法向量平行：$\vec{s} \parallel \vec{n}$</p>
+                    <p class="chalk-text emphasis">夹角</p>
+                    <div class="formula-box"><p class="chalk-text">$$\sin\theta = \frac{|\vec{s} \cdot \vec{n}|}{|\vec{s}||\vec{n}|}$$</p></div>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="gp5"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <marker id="arrowp6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"/></marker>
+                    <marker id="arrowp7" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker>
+                </defs>
+                <!-- 标题 -->
+                <text x="350" y="35" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp5)">直线与平面位置关系</text>
+                <!-- 情况1：平行 -->
+                <g transform="translate(50, 70)">
+                    <rect x="0" y="0" width="200" height="120" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#gp5)"/>
+                    <text x="100" y="25" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp5)">直线∥平面</text>
+                    <path d="M 30 60 L 170 65 L 175 100 L 35 95 Z" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" filter="url(#gp5)"/>
+                    <line x1="40" y1="50" x2="160" y2="52" stroke="#FF6B6B" stroke-width="3" filter="url(#gp5)"/>
+                    <line x1="100" y1="75" x2="120" y2="45" stroke="#9370DB" stroke-width="3" marker-end="url(#arrowp6)" filter="url(#gp5)"/>
+                    <text x="100" y="110" fill="#9370DB" font-size="12" font-weight="bold" filter="url(#gp5)">s⃗·n⃗=0</text>
+                </g>
+                <!-- 情况2：垂直 -->
+                <g transform="translate(270, 70)">
+                    <rect x="0" y="0" width="200" height="120" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="10" filter="url(#gp5)"/>
+                    <text x="100" y="25" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp5)">直线⊥平面</text>
+                    <path d="M 30 80 L 170 85 L 175 100 L 35 95 Z" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" filter="url(#gp5)"/>
+                    <line x1="100" y1="90" x2="100" y2="40" stroke="#FF6B6B" stroke-width="3" filter="url(#gp5)"/>
+                    <line x1="100" y1="90" x2="120" y2="60" stroke="#9370DB" stroke-width="3" marker-end="url(#arrowp7)" filter="url(#gp5)"/>
+                    <text x="100" y="110" fill="#9370DB" font-size="12" font-weight="bold" filter="url(#gp5)">s⃗∥n⃗</text>
+                </g>
+                <!-- 情况3：相交成角 -->
+                <rect x="100" y="230" width="500" height="180" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="2" rx="10" filter="url(#gp5)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="260" fill="#9370DB" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp5)">直线与平面成角θ</text>
+                <!-- 平面 -->
+                <path d="M 150 320 L 550 330 L 560 370 L 160 360 Z" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" filter="url(#gp5)"/>
+                <!-- 直线 -->
+                <line x1="250" y1="280" x2="450" y2="350" stroke="#FF6B6B" stroke-width="4" filter="url(#gp5)">
+                    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                </line>
+                <!-- 方向向量s -->
+                <line x1="350" y1="315" x2="420" y2="340" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrowp7)" filter="url(#gp5)"/>
+                <text x="430" y="340" fill="#4ECDC4" font-size="14" font-weight="bold" filter="url(#gp5)">s⃗</text>
+                <!-- 法向量n -->
+                <line x1="350" y1="345" x2="380" y2="290" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowp6)" filter="url(#gp5)"/>
+                <text x="385" y="285" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#gp5)">n⃗</text>
+                <!-- 夹角 -->
+                <path d="M 370 340 Q 380 330, 390 335" stroke="#9370DB" stroke-width="2" fill="none" filter="url(#gp5)"/>
+                <text x="395" y="330" fill="#9370DB" font-size="14" font-weight="bold" filter="url(#gp5)">θ</text>
+                <!-- 公式 -->
+                <rect x="120" y="450" width="460" height="60" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#gp5)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="350" y="485" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gp5)">sinθ = |s⃗·n⃗| / (|s⃗||n⃗|)</text>
+            </svg></div></div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="left-panel">
+                <h1 class="title chalk-text">总结</h1>
+                <div class="board-content">
+                    <p class="chalk-text emphasis">核心内容</p>
+                    <ul class="chalk-list">
+                        <li class="chalk-text">平面方程：点法式和一般式</li>
+                        <li class="chalk-text">直线方程：参数式和对称式</li>
+                        <li class="chalk-text">距离公式：点到平面的距离</li>
+                        <li class="chalk-text">位置关系：平行、垂直、夹角</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+                <defs>
+                    <filter id="gp6"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <!-- 中心：空间几何 -->
+                <circle cx="350" cy="100" r="55" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#gp6)">
+                    <animate attributeName="r" values="55;60;55" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <text x="350" y="105" fill="#FFE066" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#gp6)">空间几何</text>
+                <!-- 分支1：平面 -->
+                <line x1="320" y1="135" x2="200" y2="220" stroke="#FF6B6B" stroke-width="3" filter="url(#gp6)"/>
+                <rect x="120" y="220" width="160" height="70" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#gp6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <text x="200" y="250" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp6)">平面方程</text>
+                <text x="200" y="275" fill="#FF6B6B" font-size="12" text-anchor="middle" font-weight="bold" filter="url(#gp6)">法向量n⃗(A,B,C)</text>
+                <!-- 分支2：直线 -->
+                <line x1="380" y1="135" x2="500" y2="220" stroke="#4ECDC4" stroke-width="3" filter="url(#gp6)"/>
+                <rect x="420" y="220" width="160" height="70" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#gp6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                </rect>
+                <text x="500" y="250" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp6)">直线方程</text>
+                <text x="500" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle" font-weight="bold" filter="url(#gp6)">方向向量s⃗(m,n,p)</text>
+                <!-- 分支3：距离 -->
+                <line x1="320" y1="135" x2="200" y2="340" stroke="#9370DB" stroke-width="3" filter="url(#gp6)"/>
+                <rect x="120" y="340" width="160" height="70" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="3" rx="10" filter="url(#gp6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
+                </rect>
+                <text x="200" y="370" fill="#9370DB" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp6)">距离公式</text>
+                <text x="200" y="395" fill="#9370DB" font-size="12" text-anchor="middle" font-weight="bold" filter="url(#gp6)">点到平面d</text>
+                <!-- 分支4：位置关系 -->
+                <line x1="380" y1="135" x2="500" y2="340" stroke="#FFE066" stroke-width="3" filter="url(#gp6)"/>
+                <rect x="420" y="340" width="160" height="70" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#gp6)">
+                    <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+                </rect>
+                <text x="500" y="370" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gp6)">位置关系</text>
+                <text x="500" y="395" fill="#FFE066" font-size="12" text-anchor="middle" font-weight="bold" filter="url(#gp6)">∥·⊥·夹角θ</text>
+                <!-- 完成标记 -->
+                <circle cx="350" cy="500" r="40" fill="rgba(76,175,80,0.3)" stroke="#4CAF50" stroke-width="4" filter="url(#gp6)">
+                    <animate attributeName="r" values="40;45;40" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <text x="350" y="510" fill="#4CAF50" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#gp6)">✓</text>
+            </svg></div></div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <div class="subtitle-area" id="subtitleArea"></div>
+
+    <script>
+        let currentPage = 1; const totalPages = 6;
+        const pageContents = ["平面方程有两种形式：点法式和一般式。点法式用平面上一点和法向量表示，一般式是Ax加By加Cz加D等于0。","直线方程有参数式和对称式。参数式用直线上一点和方向向量表示，对称式是三个坐标差除以方向向量分量相等。","点到平面的距离公式：d等于Ax0加By0加Cz0加D的绝对值除以根号下A平方加B平方加C平方。","两平面的位置关系：平行时法向量平行，垂直时法向量垂直。夹角用法向量的点积除以模的乘积。","直线与平面的位置关系：平行时方向向量与法向量垂直，垂直时方向向量与法向量平行。夹角用正弦表示。","总结：平面方程、直线方程、距离公式和位置关系是空间解析几何的核心内容。"];
+        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
+        function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
+        async function startTeaching() { console.log('开始讲解'); }
+        async function startAutoPlay() { console.log('自动播放'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
+        let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
+        document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
+    </script>
+</body>
+</html>
+
