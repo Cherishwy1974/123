@@ -3,9 +3,11 @@
  *
  * 使用方法：
  * 1. 安装依赖: npm install puppeteer puppeteer-screen-recorder
- * 2. 运行: node auto-record.js <课程文件名>
+ * 2. 运行: node auto-record.js <课程URL或文件名>
  *
- * 例如: node auto-record.js 01_1.1_指数的概念与运算.html
+ * 例如:
+ * node auto-record.js https://cherishwy1974.github.io/123/01_1.1_指数的概念与运算.html
+ * 或者: node auto-record.js 01_1.1_指数的概念与运算.html (本地文件)
  */
 
 const puppeteer = require('puppeteer');
@@ -65,18 +67,28 @@ function sleep(ms) {
 /**
  * 主录制函数
  */
-async function recordLesson(htmlFile) {
+async function recordLesson(urlOrFile) {
   console.log('🎬 开始自动录制课程...');
-  console.log(`📄 课程文件: ${htmlFile}`);
+  console.log(`📄 课程地址: ${urlOrFile}`);
+
+  // 判断是URL还是本地文件
+  const isURL = urlOrFile.startsWith('http://') || urlOrFile.startsWith('https://');
 
   // 创建输出目录
   if (!fs.existsSync(CONFIG.OUTPUT_DIR)) {
     fs.mkdirSync(CONFIG.OUTPUT_DIR, { recursive: true });
   }
 
-  const lessonName = path.basename(htmlFile, '.html');
+  // 从URL或文件名提取课程名称
+  let lessonName;
+  if (isURL) {
+    const urlPath = new URL(urlOrFile).pathname;
+    lessonName = path.basename(urlPath, '.html');
+  } else {
+    lessonName = path.basename(urlOrFile, '.html');
+  }
+
   const outputPath = path.join(CONFIG.OUTPUT_DIR, `${lessonName}.mp4`);
-  const htmlPath = path.resolve(htmlFile);
 
   console.log(`💾 输出文件: ${outputPath}`);
 
@@ -90,7 +102,18 @@ async function recordLesson(htmlFile) {
   try {
     // 加载课程页面
     console.log('📖 加载课程页面...');
-    await page.goto(`file://${htmlPath}`, {
+
+    let targetURL;
+    if (isURL) {
+      targetURL = urlOrFile;
+      console.log(`🌐 从在线URL加载: ${targetURL}`);
+    } else {
+      const htmlPath = path.resolve(urlOrFile);
+      targetURL = `file://${htmlPath}`;
+      console.log(`📁 从本地文件加载: ${htmlPath}`);
+    }
+
+    await page.goto(targetURL, {
       waitUntil: 'networkidle2',
       timeout: 60000,
     });
@@ -173,22 +196,28 @@ async function recordLesson(htmlFile) {
 // 命令行参数
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error('❌ 请提供课程HTML文件名');
-  console.error('用法: node auto-record.js <课程文件名.html>');
-  console.error('例如: node auto-record.js 01_1.1_指数的概念与运算.html');
+  console.error('❌ 请提供课程URL或文件名');
+  console.error('用法: node auto-record.js <课程URL或文件名>');
+  console.error('');
+  console.error('示例:');
+  console.error('  在线URL: node auto-record.js https://cherishwy1974.github.io/123/01_1.1_指数的概念与运算.html');
+  console.error('  本地文件: node auto-record.js 01_1.1_指数的概念与运算.html');
   process.exit(1);
 }
 
-const htmlFile = args[0];
+const urlOrFile = args[0];
 
-// 检查文件是否存在
-if (!fs.existsSync(htmlFile)) {
-  console.error(`❌ 文件不存在: ${htmlFile}`);
+// 判断是URL还是本地文件
+const isURL = urlOrFile.startsWith('http://') || urlOrFile.startsWith('https://');
+
+// 如果是本地文件，检查文件是否存在
+if (!isURL && !fs.existsSync(urlOrFile)) {
+  console.error(`❌ 文件不存在: ${urlOrFile}`);
   process.exit(1);
 }
 
 // 开始录制
-recordLesson(htmlFile).catch(error => {
+recordLesson(urlOrFile).catch(error => {
   console.error('❌ 录制失败:', error);
   process.exit(1);
 });
