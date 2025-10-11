@@ -31,7 +31,7 @@ const CONFIG = {
   // OBS WebSocket配置
   OBS: {
     address: 'ws://127.0.0.1:4455',
-    password: '', // 如果OBS设置了密码，在这里填写
+    password: 'uKH7kKKv74GDFf7Z',
   },
 
   // 录制配置
