@@ -40,7 +40,7 @@
         .animation-pane { position: relative; overflow: hidden; background: transparent; }
         .control-bar {
             position: fixed;
-            left: -240px;
+            left: -9999px;
             top: 50%;
             transform: translateY(-50%);
             width: 270px;
@@ -60,7 +60,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .control-bar:hover { 
-            left: 0; 
+            left: -9999px; 
             box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
         .control-bar::before {
@@ -116,7 +116,7 @@
         .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
         .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
         .recording-mode .status-indicator { opacity: 0; pointer-events: none; }
-        .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+        .recording-mode .control-bar { left: -9999px; transition: left 0.5s ease; }
         .nav-btn { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
         .nav-btn:hover { background-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
         .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }

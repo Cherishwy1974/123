@@ -273,7 +273,7 @@
         /* 左侧控制栏 - 参考无穷大.html的设计 */
         .control-bar {
             position: fixed;
-            left: -240px;
+            left: -9999px;
             top: 50%;
             transform: translateY(-50%);
             width: 270px;
@@ -293,7 +293,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .control-bar:hover { 
-            left: 0; 
+            left: -9999px; 
             box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
         .control-bar::before {
@@ -399,7 +399,7 @@
             pointer-events: none;
         }
         .recording-mode .control-bar {
-            left: -300px; 
+            left: -9999px; 
             transition: left 0.5s ease;
         }
 
@@ -2391,6 +2391,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             presentationController = new PresentationController();
             console.log('✨ 无穷小比较教学系统初始化完成');
+            // 自动启动播放
+            setTimeout(() => {
+                console.log('🎬 自动启动播放...');
+                startAutoPlay();
+            }, 1000);
+
             checkSDKStatus();
 
             // 延迟渲染MathJax，确保所有内容都已加载

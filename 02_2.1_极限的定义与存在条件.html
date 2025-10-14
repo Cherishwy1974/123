@@ -228,13 +228,13 @@
         }
         /* 录制模式下隐藏控制栏 */
         .recording-mode .control-bar {
-            left: -300px; transition: left 0.5s ease;
+            left: -9999px; transition: left 0.5s ease;
         }
 
         /* 控制栏 */
         .control-bar {
             position: fixed;
-            left: -240px;
+            left: -9999px;
             top: 50%;
             transform: translateY(-50%);
             width: 270px;
@@ -255,7 +255,7 @@
         }
 
         .control-bar:hover { 
-            left: 0; 
+            left: -9999px; 
             box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
 
