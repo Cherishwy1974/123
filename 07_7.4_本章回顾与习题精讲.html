@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第07章 知识点回顾与习题精讲</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第07章 知识点回顾与习题精讲</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -281,9 +281,19 @@
             left: -300px;
             transition: left 0.5s ease;
         }
-    </style>
     
-    <script>
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
+    </style>
+<script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\(', '\)']],
@@ -298,439 +308,450 @@
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
- </head>
- <body>
-    <!-- 全局SVG滤镜定义：glow -->
-    <svg width="0" height="0" style="position:absolute">
-        <defs>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1" />
-                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur2" />
-                <feMerge>
-                    <feMergeNode in="blur2" />
-                    <feMergeNode in="blur1" />
-                    <feMergeNode in="SourceGraphic" />
-                </feMerge>
-            </filter>
-        </defs>
-    </svg>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：知识点回顾 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">第7章知识点回顾</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">1. 微分方程基本概念</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">含导数的方程</li>
-                        <li class="chalk-text">通解与特解</li>
-                        <li class="chalk-text">阶与次数</li>
-                    </ul>
-                    <p class="chalk-text emphasis">2. 可分离变量</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\frac{dy}{dx} = g(x)h(y)$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">3. 一阶线性</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$y' + P(x)y = Q(x)$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 知识树 -->
-                        <circle cx="350" cy="150" r="70" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4">
-                            <animate attributeName="r" values="70;80;70" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="145" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">微分方程</text>
-                        <text x="350" y="165" fill="#FFE066" font-size="14" text-anchor="middle">第7章</text>
-
-                        <!-- 三个分支 -->
-                        <line x1="280" y1="200" x2="180" y2="300" stroke="#4ECDC4" stroke-width="3"/>
-                        <circle cx="180" cy="300" r="60" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3">
-                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="180" y="295" fill="#ffffff" font-size="16" text-anchor="middle">基本</text>
-                        <text x="180" y="315" fill="#ffffff" font-size="14" text-anchor="middle">概念</text>
-
-                        <line x1="350" y1="220" x2="350" y2="320" stroke="#FFE066" stroke-width="3"/>
-                        <circle cx="350" cy="320" r="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3">
-                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="315" fill="#ffffff" font-size="16" text-anchor="middle">可分离</text>
-                        <text x="350" y="335" fill="#ffffff" font-size="14" text-anchor="middle">变量</text>
-
-                        <line x1="420" y1="200" x2="520" y2="300" stroke="#FF6B6B" stroke-width="3"/>
-                        <circle cx="520" cy="300" r="60" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3">
-                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="520" y="295" fill="#ffffff" font-size="16" text-anchor="middle">一阶</text>
-                        <text x="520" y="315" fill="#ffffff" font-size="14" text-anchor="middle">线性</text>
-
-                        <!-- 标注 -->
-                        <text x="350" y="450" fill="#ffffff" font-size="20" text-anchor="middle">三大核心知识点</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第2页：习题1 - 可分离变量 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">习题1：可分离变量</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">题目</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\frac{dy}{dx} = \frac{x}{y}$$</p>
-                        <p class="chalk-text small-text">初始条件：$y(0) = 1$</p>
-                    </div>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">分离变量：$y dy = x dx$</li>
-                        <li class="chalk-text">积分：$\frac{y^2}{2} = \frac{x^2}{2} + C$</li>
-                        <li class="chalk-text">通解：$y^2 = x^2 + C_1$</li>
-                        <li class="chalk-text">代入初值：$1 = 0 + C_1$，得 $C_1 = 1$</li>
-                        <li class="chalk-text">特解：$y = \sqrt{x^2 + 1}$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="350" y1="100" x2="350" y2="500" stroke="#FFE066" stroke-width="2"/>
-                        <text x="620" y="305" fill="#FFE066" font-size="18">x</text>
-                        <text x="355" y="85" fill="#FFE066" font-size="18">y</text>
-
-                        <!-- 通解族（双曲线族） -->
-                        <path d="M 200 250 Q 300 200, 400 180 Q 450 170, 500 165" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 250 270 Q 320 240, 400 220 Q 450 210, 500 205" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 280 280 Q 330 260, 400 245 Q 450 235, 500 230" stroke="#FF6B6B" stroke-width="4" fill="none">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 300 290 Q 340 275, 400 265 Q 450 255, 500 250" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-
-                        <!-- 初始点 -->
-                        <circle cx="350" cy="300" r="8" fill="#FFE066">
-                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="360" y="295" fill="#FFE066" font-size="16">(0,1)</text>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="20" text-anchor="middle">y = √(x² + 1)</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle">
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<!-- 全局SVG滤镜定义：glow -->
+<svg height="0" style="position:absolute" width="0">
+<defs>
+<filter height="200%" id="glow" width="200%" x="-50%" y="-50%">
+<fegaussianblur in="SourceGraphic" result="blur1" stddeviation="2"></fegaussianblur>
+<fegaussianblur in="SourceGraphic" result="blur2" stddeviation="4"></fegaussianblur>
+<femerge>
+<femergenode in="blur2"></femergenode>
+<femergenode in="blur1"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+</svg>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper"></div>
+</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：知识点回顾 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        本章回顾与习题精讲
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第7章 视频 7.4
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 核心概念回顾</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 重要公式总结</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 典型题型分析</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 易错点提醒</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad7" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#c0392b;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad7)" font-family="serif" font-size="60" text-anchor="middle" x="300" y="100">
+                            dy/dx
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<path d="M 100 400 Q 200 200 300 300 T 500 200" fill="none" stroke="#e74c3c" stroke-width="3">
+<animate attributename="stroke-dasharray" dur="3s" repeatcount="indefinite" values="0,1000;1000,0"></animate>
+</path>
+<circle cx="300" cy="300" fill="#c0392b" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;15;8"></animate>
+</circle>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">习题1：可分离变量</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dy}{dx} = \frac{x}{y}$$</p>
+<p class="chalk-text small-text">初始条件：$y(0) = 1$</p>
+</div>
+<p class="chalk-text emphasis">解答</p>
+<ul class="chalk-list">
+<li class="chalk-text">分离变量：$y dy = x dx$</li>
+<li class="chalk-text">积分：$\frac{y^2}{2} = \frac{x^2}{2} + C$</li>
+<li class="chalk-text">通解：$y^2 = x^2 + C_1$</li>
+<li class="chalk-text">代入初值：$1 = 0 + C_1$，得 $C_1 = 1$</li>
+<li class="chalk-text">特解：$y = \sqrt{x^2 + 1}$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标系 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="300" y2="300"></line>
+<line stroke="#FFE066" stroke-width="2" x1="350" x2="350" y1="100" y2="500"></line>
+<text fill="#FFE066" font-size="18" x="620" y="305">x</text>
+<text fill="#FFE066" font-size="18" x="355" y="85">y</text>
+<!-- 通解族（双曲线族） -->
+<path d="M 200 250 Q 300 200, 400 180 Q 450 170, 500 165" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 250 270 Q 320 240, 400 220 Q 450 210, 500 205" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 280 280 Q 330 260, 400 245 Q 450 235, 500 230" fill="none" stroke="#FF6B6B" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<path d="M 300 290 Q 340 275, 400 265 Q 450 255, 500 250" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<!-- 初始点 -->
+<circle cx="350" cy="300" fill="#FFE066" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="360" y="295">(0,1)</text>
+<!-- 标注 -->
+<text fill="#FF6B6B" font-size="20" text-anchor="middle" x="350" y="50">y = √(x² + 1)</text>
+<text fill="#4ECDC4" font-size="18" text-anchor="middle" x="350" y="520">
                             双曲线族
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第3页：习题2 - 一阶线性 -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">习题2：一阶线性</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">题目</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$y' + 3y = 6$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$P(x) = 3$，$Q(x) = 6$</li>
-                        <li class="chalk-text">积分因子：$\mu(x) = e^{3x}$</li>
-                        <li class="chalk-text">两边乘以 $e^{3x}$：$(e^{3x}y)' = 6e^{3x}$</li>
-                        <li class="chalk-text">积分：$e^{3x}y = 2e^{3x} + C$</li>
-                        <li class="chalk-text">通解：$y = 2 + Ce^{-3x}$</li>
-                    </ul>
-                    <p class="chalk-text small-text">当 $x \to \infty$ 时，$y \to 2$</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
-                        <text x="620" y="455" fill="#FFE066" font-size="18">x</text>
-                        <text x="95" y="85" fill="#FFE066" font-size="18">y</text>
-
-                        <!-- 渐近线 y=2 -->
-                        <line x1="100" y1="250" x2="600" y2="250" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="10,5"/>
-                        <text x="610" y="255" fill="#FF6B6B" font-size="16">y=2</text>
-
-                        <!-- 解曲线族 -->
-                        <path d="M 100 150 Q 200 180, 300 220 Q 400 240, 500 245" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 100 200 Q 200 215, 300 235 Q 400 245, 500 248" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 100 300 Q 200 270, 300 260 Q 400 253, 500 251" stroke="#4ECDC4" stroke-width="4" fill="none">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 100 350 Q 200 300, 300 270 Q 400 258, 500 253" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 100 400 Q 200 330, 300 280 Q 400 263, 500 255" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#4ECDC4" font-size="20" text-anchor="middle">y = 2 + Ce⁻³ˣ</text>
-                        <text x="350" y="500" fill="#ffffff" font-size="18" text-anchor="middle">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：习题2 - 一阶线性 -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">习题2：一阶线性</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<div class="formula-box">
+<p class="chalk-text">$$y' + 3y = 6$$</p>
+</div>
+<p class="chalk-text emphasis">解答</p>
+<ul class="chalk-list">
+<li class="chalk-text">$P(x) = 3$，$Q(x) = 6$</li>
+<li class="chalk-text">积分因子：$\mu(x) = e^{3x}$</li>
+<li class="chalk-text">两边乘以 $e^{3x}$：$(e^{3x}y)' = 6e^{3x}$</li>
+<li class="chalk-text">积分：$e^{3x}y = 2e^{3x} + C$</li>
+<li class="chalk-text">通解：$y = 2 + Ce^{-3x}$</li>
+</ul>
+<p class="chalk-text small-text">当 $x \to \infty$ 时，$y \to 2$</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标系 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#FFE066" font-size="18" x="620" y="455">x</text>
+<text fill="#FFE066" font-size="18" x="95" y="85">y</text>
+<!-- 渐近线 y=2 -->
+<line stroke="#FF6B6B" stroke-dasharray="10,5" stroke-width="2" x1="100" x2="600" y1="250" y2="250"></line>
+<text fill="#FF6B6B" font-size="16" x="610" y="255">y=2</text>
+<!-- 解曲线族 -->
+<path d="M 100 150 Q 200 180, 300 220 Q 400 240, 500 245" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 200 Q 200 215, 300 235 Q 400 245, 500 248" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 300 Q 200 270, 300 260 Q 400 253, 500 251" fill="none" stroke="#4ECDC4" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<path d="M 100 350 Q 200 300, 300 270 Q 400 258, 500 253" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 400 Q 200 330, 300 280 Q 400 263, 500 255" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<!-- 标注 -->
+<text fill="#4ECDC4" font-size="20" text-anchor="middle" x="350" y="50">y = 2 + Ce⁻³ˣ</text>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="500">
                             所有曲线趋向于 y = 2
                         </text>
-
-                        <!-- 箭头指向渐近线 -->
-                        <path d="M 450 300 L 480 260" stroke="#FF6B6B" stroke-width="2" marker-end="url(#arrowAsymptote)"/>
-                        <text x="490" y="255" fill="#FF6B6B" font-size="14">渐近线</text>
-
-                        <defs>
-                            <marker id="arrowAsymptote" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FF6B6B"/>
-                            </marker>
-                        </defs>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第4页：习题3 - 综合题 -->
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">习题3：综合应用</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">题目</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$xy' = y + x^2$$</p>
-                        <p class="chalk-text small-text">初始条件：$y(1) = 2$</p>
-                    </div>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">化为标准形式：$y' - \frac{y}{x} = x$</li>
-                        <li class="chalk-text">$P(x) = -\frac{1}{x}$，$Q(x) = x$</li>
-                        <li class="chalk-text">积分因子：$\mu(x) = e^{-\ln x} = \frac{1}{x}$</li>
-                        <li class="chalk-text">$(\frac{y}{x})' = 1$</li>
-                        <li class="chalk-text">通解：$y = x^2 + Cx$</li>
-                        <li class="chalk-text">代入初值：$2 = 1 + C$，得 $C = 1$</li>
-                        <li class="chalk-text">特解：$y = x^2 + x$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
-                        <text x="620" y="455" fill="#FFE066" font-size="18">x</text>
-                        <text x="95" y="85" fill="#FFE066" font-size="18">y</text>
-
-                        <!-- 通解族 y = x² + Cx -->
-                        <path d="M 100 440 Q 200 380, 300 280 Q 400 160, 500 80" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 100 435 Q 200 370, 300 260 Q 400 140, 500 60" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-                        <path d="M 100 430 Q 200 360, 300 240 Q 400 120, 500 40" stroke="#FF6B6B" stroke-width="4" fill="none">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 100 425 Q 200 350, 300 220 Q 400 100, 500 20" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3"/>
-
-                        <!-- 初始点 (1,2) -->
-                        <circle cx="180" cy="360" r="8" fill="#FFE066">
-                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="190" y="355" fill="#FFE066" font-size="16">(1,2)</text>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="20" text-anchor="middle">y = x² + x</text>
-                        <text x="350" y="500" fill="#4ECDC4" font-size="18" text-anchor="middle">
+<!-- 箭头指向渐近线 -->
+<path d="M 450 300 L 480 260" marker-end="url(#arrowAsymptote)" stroke="#FF6B6B" stroke-width="2"></path>
+<text fill="#FF6B6B" font-size="14" x="490" y="255">渐近线</text>
+<defs>
+<marker id="arrowAsymptote" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FF6B6B" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第4页：习题3 - 综合题 -->
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">习题3：综合应用</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<div class="formula-box">
+<p class="chalk-text">$$xy' = y + x^2$$</p>
+<p class="chalk-text small-text">初始条件：$y(1) = 2$</p>
+</div>
+<p class="chalk-text emphasis">解答</p>
+<ul class="chalk-list">
+<li class="chalk-text">化为标准形式：$y' - \frac{y}{x} = x$</li>
+<li class="chalk-text">$P(x) = -\frac{1}{x}$，$Q(x) = x$</li>
+<li class="chalk-text">积分因子：$\mu(x) = e^{-\ln x} = \frac{1}{x}$</li>
+<li class="chalk-text">$(\frac{y}{x})' = 1$</li>
+<li class="chalk-text">通解：$y = x^2 + Cx$</li>
+<li class="chalk-text">代入初值：$2 = 1 + C$，得 $C = 1$</li>
+<li class="chalk-text">特解：$y = x^2 + x$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标系 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#FFE066" font-size="18" x="620" y="455">x</text>
+<text fill="#FFE066" font-size="18" x="95" y="85">y</text>
+<!-- 通解族 y = x² + Cx -->
+<path d="M 100 440 Q 200 380, 300 280 Q 400 160, 500 80" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 435 Q 200 370, 300 260 Q 400 140, 500 60" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 430 Q 200 360, 300 240 Q 400 120, 500 40" fill="none" stroke="#FF6B6B" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<path d="M 100 425 Q 200 350, 300 220 Q 400 100, 500 20" fill="none" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<!-- 初始点 (1,2) -->
+<circle cx="180" cy="360" fill="#FFE066" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="190" y="355">(1,2)</text>
+<!-- 标注 -->
+<text fill="#FF6B6B" font-size="20" text-anchor="middle" x="350" y="50">y = x² + x</text>
+<text fill="#4ECDC4" font-size="18" text-anchor="middle" x="350" y="500">
                             抛物线族
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第5页：习题4 - 实际应用 -->
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">习题4：冷却问题</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">题目</p>
-                    <p class="chalk-text">物体温度为100℃，放入20℃的环境中，5分钟后温度降到60℃。求温度随时间的变化规律。</p>
-                    <p class="chalk-text emphasis">牛顿冷却定律</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\frac{dT}{dt} = -k(T - T_0)$$</p>
-                        <p class="chalk-text small-text">$T_0 = 20$℃（环境温度）</p>
-                    </div>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">分离变量：$\frac{dT}{T-20} = -k dt$</li>
-                        <li class="chalk-text">积分：$\ln(T-20) = -kt + C$</li>
-                        <li class="chalk-text">通解：$T = 20 + Ce^{-kt}$</li>
-                        <li class="chalk-text">$t=0$时$T=100$：$C = 80$</li>
-                        <li class="chalk-text">$t=5$时$T=60$：$k = \frac{1}{5}\ln 2$</li>
-                        <li class="chalk-text">特解：$T = 20 + 80e^{-\frac{t\ln 2}{5}}$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
-                        <text x="620" y="455" fill="#FFE066" font-size="18">t(分钟)</text>
-                        <text x="95" y="85" fill="#FFE066" font-size="18">T(℃)</text>
-
-                        <!-- 冷却曲线 -->
-                        <path d="M 100 150 Q 200 250, 300 320 Q 400 360, 500 380" stroke="#4ECDC4" stroke-width="4" fill="none">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-
-                        <!-- 环境温度线 -->
-                        <line x1="100" y1="400" x2="600" y2="400" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="10,5"/>
-                        <text x="610" y="405" fill="#FF6B6B" font-size="16">20℃</text>
-
-                        <!-- 关键点 -->
-                        <circle cx="100" cy="150" r="8" fill="#FFE066">
-                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="110" y="145" fill="#FFE066" font-size="16">100℃</text>
-
-                        <circle cx="200" cy="250" r="8" fill="#FFE066">
-                            <animate attributeName="r" values="8;12;8" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="210" y="245" fill="#FFE066" font-size="16">60℃</text>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#4ECDC4" font-size="20" text-anchor="middle">T = 20 + 80e⁻⁰·¹⁴ᵗ</text>
-                        <text x="350" y="500" fill="#ffffff" font-size="18" text-anchor="middle">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：习题4 - 实际应用 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">习题4：冷却问题</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">物体温度为100℃，放入20℃的环境中，5分钟后温度降到60℃。求温度随时间的变化规律。</p>
+<p class="chalk-text emphasis">牛顿冷却定律</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dT}{dt} = -k(T - T_0)$$</p>
+<p class="chalk-text small-text">$T_0 = 20$℃（环境温度）</p>
+</div>
+<p class="chalk-text emphasis">解答</p>
+<ul class="chalk-list">
+<li class="chalk-text">分离变量：$\frac{dT}{T-20} = -k dt$</li>
+<li class="chalk-text">积分：$\ln(T-20) = -kt + C$</li>
+<li class="chalk-text">通解：$T = 20 + Ce^{-kt}$</li>
+<li class="chalk-text">$t=0$时$T=100$：$C = 80$</li>
+<li class="chalk-text">$t=5$时$T=60$：$k = \frac{1}{5}\ln 2$</li>
+<li class="chalk-text">特解：$T = 20 + 80e^{-\frac{t\ln 2}{5}}$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标系 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#FFE066" font-size="18" x="620" y="455">t(分钟)</text>
+<text fill="#FFE066" font-size="18" x="95" y="85">T(℃)</text>
+<!-- 冷却曲线 -->
+<path d="M 100 150 Q 200 250, 300 320 Q 400 360, 500 380" fill="none" stroke="#4ECDC4" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<!-- 环境温度线 -->
+<line stroke="#FF6B6B" stroke-dasharray="10,5" stroke-width="2" x1="100" x2="600" y1="400" y2="400"></line>
+<text fill="#FF6B6B" font-size="16" x="610" y="405">20℃</text>
+<!-- 关键点 -->
+<circle cx="100" cy="150" fill="#FFE066" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="110" y="145">100℃</text>
+<circle cx="200" cy="250" fill="#FFE066" r="8">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="8;12;8"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="210" y="245">60℃</text>
+<!-- 标注 -->
+<text fill="#4ECDC4" font-size="20" text-anchor="middle" x="350" y="50">T = 20 + 80e⁻⁰·¹⁴ᵗ</text>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="500">
                             温度逐渐趋向环境温度
                         </text>
-
-                        <!-- 动画点 -->
-                        <circle r="10" fill="#FF6B6B">
-                            <animateMotion dur="5s" repeatCount="indefinite">
-                                <mpath href="#coolingPath"/>
-                            </animateMotion>
-                        </circle>
-                        <path id="coolingPath" d="M 100 150 Q 200 250, 300 320 Q 400 360, 500 380" fill="none"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第6页：总结与提升 -->
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结与提升</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">解题步骤总结</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text"><strong>识别类型：</strong>可分离变量还是一阶线性</li>
-                        <li class="chalk-text"><strong>选择方法：</strong>分离变量法或积分因子法</li>
-                        <li class="chalk-text"><strong>求通解：</strong>按步骤计算</li>
-                        <li class="chalk-text"><strong>代入初值：</strong>求特解</li>
-                    </ul>
-                    <p class="chalk-text emphasis">常见错误</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">分离变量时漏掉常数C</li>
-                        <li class="chalk-text">积分因子计算错误</li>
-                        <li class="chalk-text">忘记代入初始条件</li>
-                    </ul>
-                    <p class="chalk-text emphasis">应用领域</p>
-                    <p class="chalk-text small-text">电路、力学、热学、化学、经济学等</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 流程图 -->
-                        <rect x="250" y="80" width="200" height="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="115" fill="#ffffff" font-size="18" text-anchor="middle">识别方程类型</text>
-
-                        <path d="M 350 140 L 350 170" stroke="#FFE066" stroke-width="3" marker-end="url(#arrow1)"/>
-
-                        <rect x="250" y="170" width="200" height="60" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="10">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="205" fill="#ffffff" font-size="18" text-anchor="middle">选择解法</text>
-
-                        <path d="M 350 230 L 350 260" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow2)"/>
-
-                        <rect x="250" y="260" width="200" height="60" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" rx="10">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="295" fill="#ffffff" font-size="18" text-anchor="middle">求通解</text>
-
-                        <path d="M 350 320 L 350 350" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrow3)"/>
-
-                        <rect x="250" y="350" width="200" height="60" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3" rx="10">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="3s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="385" fill="#ffffff" font-size="18" text-anchor="middle">代入初值求特解</text>
-
-                        <defs>
-                            <marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
-                            </marker>
-                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
-                            </marker>
-                            <marker id="arrow3" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FF6B6B"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 标注 -->
-                        <text x="350" y="480" fill="#ffffff" font-size="20" text-anchor="middle">
+<!-- 动画点 -->
+<circle fill="#FF6B6B" r="10">
+<animatemotion dur="5s" repeatcount="indefinite">
+<mpath href="#coolingPath"></mpath>
+</animatemotion>
+</circle>
+<path d="M 100 150 Q 200 250, 300 320 Q 400 360, 500 380" fill="none" id="coolingPath"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：总结与提升 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结与提升</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">解题步骤总结</p>
+<ul class="chalk-list">
+<li class="chalk-text"><strong>识别类型：</strong>可分离变量还是一阶线性</li>
+<li class="chalk-text"><strong>选择方法：</strong>分离变量法或积分因子法</li>
+<li class="chalk-text"><strong>求通解：</strong>按步骤计算</li>
+<li class="chalk-text"><strong>代入初值：</strong>求特解</li>
+</ul>
+<p class="chalk-text emphasis">常见错误</p>
+<ul class="chalk-list">
+<li class="chalk-text">分离变量时漏掉常数C</li>
+<li class="chalk-text">积分因子计算错误</li>
+<li class="chalk-text">忘记代入初始条件</li>
+</ul>
+<p class="chalk-text emphasis">应用领域</p>
+<p class="chalk-text small-text">电路、力学、热学、化学、经济学等</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 流程图 -->
+<rect fill="rgba(255,224,102,0.3)" height="60" rx="10" stroke="#FFE066" stroke-width="3" width="200" x="250" y="80">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</rect>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="115">识别方程类型</text>
+<path d="M 350 140 L 350 170" marker-end="url(#arrow1)" stroke="#FFE066" stroke-width="3"></path>
+<rect fill="rgba(78,205,196,0.3)" height="60" rx="10" stroke="#4ECDC4" stroke-width="3" width="200" x="250" y="170">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</rect>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="205">选择解法</text>
+<path d="M 350 230 L 350 260" marker-end="url(#arrow2)" stroke="#4ECDC4" stroke-width="3"></path>
+<rect fill="rgba(255,107,107,0.3)" height="60" rx="10" stroke="#FF6B6B" stroke-width="3" width="200" x="250" y="260">
+<animate attributename="fill-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</rect>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="295">求通解</text>
+<path d="M 350 320 L 350 350" marker-end="url(#arrow3)" stroke="#FF6B6B" stroke-width="3"></path>
+<rect fill="rgba(147,112,219,0.3)" height="60" rx="10" stroke="#9370DB" stroke-width="3" width="200" x="250" y="350">
+<animate attributename="fill-opacity" begin="3s" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</rect>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="385">代入初值求特解</text>
+<defs>
+<marker id="arrow1" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FFE066" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow2" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow3" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FF6B6B" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<!-- 标注 -->
+<text fill="#ffffff" font-size="20" text-anchor="middle" x="350" y="480">
                             解题四步骤
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- 控制栏 -->
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<!-- 字幕区域 -->
+<div class="subtitle-area" id="subtitleArea"></div>
 
-    <!-- 控制栏 -->
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
 
-    <!-- 字幕区域 -->
-    <div class="subtitle-area" id="subtitleArea"></div>
+        window.AvatarPlatform = AvatarPlatform;
+        window.SDKEvents = SDKEvents;
+        window.PlayerEvents = PlayerEvents;
+        window.RecorderEvents = RecorderEvents;
+        window.UserMedia = UserMedia;
 
-    <script>
+        console.log('✅ 讯飞官方SDK模块已加载');
+        console.log('SDK版本:', AvatarPlatform.getVersion());
+
+    } catch (error) {
+        console.error('❌ SDK模块加载失败:', error);
+    }
+
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
+
+<script>
         let currentPage = 1;
         const totalPages = 6;
         let avatarPlatform = null;
         let isConnected = false;
+        let isTeaching = false;
         let isAutoPlaying = false;
 
-        const pageContents = [
-            "第7章的核心内容包括三大知识点：微分方程的基本概念、可分离变量的微分方程、以及一阶线性微分方程。",
-            "习题1是可分离变量类型，dy/dx等于x/y，分离变量后积分得到y的平方等于x的平方加1，这是一组双曲线族。",
-            "习题2是一阶线性方程，y'加3y等于6，使用积分因子法求解，得到通解y等于2加C乘以e的负3x次方，所有曲线都趋向于y等于2。",
-            "习题3是综合题，xy'等于y加x的平方，化为标准形式后使用积分因子法，最终得到特解y等于x的平方加x。",
-            "习题4是实际应用题，物体冷却问题。根据牛顿冷却定律建立微分方程，求解得到温度随时间的变化规律，温度逐渐趋向环境温度。",
-            "解题的四个步骤是：识别方程类型、选择解法、求通解、代入初值求特解。常见错误包括漏掉常数C、积分因子计算错误、忘记代入初始条件等。"
-        ];
+        // === 字幕脚本设置 ===
+        const subtitleScript = {
+            1: `欢迎来到第7章的回顾与习题精讲。本章的核心内容包括三大知识点：第一，微分方程的基本概念，包括通解和特解；第二，可分离变量的微分方程及其求解方法；第三，一阶线性微分方程和积分因子法。这三个知识点环环相扣，构成了微分方程的基础。`,
+            2: `习题1：求解dy除以dx等于x除以y。这是典型的可分离变量类型。首先分离变量，得到ydy等于xdx。然后两边积分，左边得到y平方除以2，右边得到x平方除以2。整理后得到y平方等于x平方加C。当C等于1时，这是一组双曲线族。`,
+            3: `习题2：求解y'加3y等于6。这是一阶线性方程。P(x)等于3，Q(x)等于6。积分因子是e的3x次方。使用积分因子法求解，得到通解y等于2加C乘以e的负3x次方。注意，无论C取什么值，所有曲线都趋向于水平渐近线y等于2。`,
+            4: `习题3：求解xy'等于y加x平方，满足初始条件y(1)等于2。首先化为标准形式：y'减y除以x等于x。这是一阶线性方程，P(x)等于负1除以x，积分因子是1除以x。求出通解后，代入初始条件y(1)等于2，得到C等于1，最终特解是y等于x平方加x。`,
+            5: `习题4：物体冷却问题。一个温度为100度的物体放在20度的环境中，根据牛顿冷却定律，温度变化率与温度差成正比。建立微分方程dT除以dt等于负k乘以括号T减20。这是可分离变量方程，求解得到T等于20加80乘以e的负kt次方。温度从100度开始，逐渐趋向环境温度20度。`,
+            6: `总结一下解题的四个步骤：第一步，识别方程类型，判断是可分离变量还是一阶线性；第二步，选择相应的解法；第三步，求出通解；第四步，如果有初始条件，代入求特解。常见错误包括：分离变量时漏掉常数C、积分因子计算错误、忘记代入初始条件等。微分方程广泛应用于电路、力学、热学、化学、经济学等领域。`
+        };
 
         const autoPlayDurations = {
-            1: 10000,
-            2: 12000,
-            3: 12000,
-            4: 12000,
-            5: 12000,
-            6: 12000
+            1: 18000,
+            2: 20000,
+            3: 22000,
+            4: 24000,
+            5: 22000,
+            6: 24000
         };
+
+        // 虚拟人相关函数
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') {
+                    indicator.classList.add('connected');
+                } else if (type === 'error') {
+                    indicator.classList.add('error');
+                } else if (type === 'connecting') {
+                    indicator.classList.add('connecting');
+                } else if (type === 'recording') {
+                    indicator.classList.add('recording');
+                }
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                }, 10000);
+
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -765,11 +786,190 @@
         }
 
         async function startTeaching() {
-            console.log('开始讲解');
+            try {
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
+
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({
+                    useInlinePlayer: true
+                });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+
+                        setTimeout(() => {
+                            speakContent(currentPage);
+                        }, 1000);
+                    })
+                    .on('disconnected', (err) => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                        if (err) {
+                            console.error('❌ 连接异常断开:', err);
+                        }
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 虚拟人错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        isTeaching = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    })
+                    .on('tts_duration', (data) => {
+                        console.log('📊 TTS时长信息:', data);
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                await avatarPlatform.start({
+                    wrapper: document.getElementById('avatarWrapper')
+                });
+
+                console.log('🎓 虚拟人教学系统启动完成');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                alert(`启动失败：${error.message}\n\n请检查控制台获取详细错误信息。`);
+            }
         }
 
-        async function startAutoPlay() {
-            console.log('自动播放');
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                return;
+            }
+
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+
+            try {
+                await avatarPlatform.writeText(content, {
+                    nlp: false
+                });
+
+                console.log(`✅ 虚拟人讲解第${pageNum}页`);
+                updateSubtitle(content);
+            } catch (error) {
+                console.error('❌ 虚拟人讲解失败:', error);
+            }
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.body.classList.remove('recording-mode');
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = '';
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -796,6 +996,16 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            }
+
+            if (avatarPlatform && isConnected) {
+                avatarPlatform.stop();
+            }
         });
     </script>
 </body>

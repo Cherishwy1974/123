@@ -1,2 +1,551 @@
-﻿<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>04_4.4_函数图像的描绘</title><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet"><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script><style>*{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:750px;height:850px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;max-width:1400px;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-220px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left:0;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:18px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-300px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}</style></head><body class="blackboard"><div id="statusIndicator" class="status-indicator">等待连接</div><div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div><div id="slide-container" class="slide-container flex-grow"><div class="slide active"><div class="slide-content"><div class="blackboard-text w-1/2 text-center"><h1 class="text-6xl font-bold">函数图像的描绘</h1><p class="text-2xl mt-4 text-gray-300">第4章 视频 4.4</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><line x1="100" y1="350" x2="500" y2="350" stroke="#ecf0f1" stroke-width="2"/><line x1="100" y1="350" x2="100" y2="100" stroke="#ecf0f1" stroke-width="2"/><path d="M 150 320 Q 250 180, 350 220 Q 450 260, 480 200" stroke="#3498db" stroke-width="4" fill="none"><animate attributeName="stroke-dasharray" values="0,1000;1000,0;0,1000" dur="4s" repeatCount="indefinite"/></path><circle cx="250" cy="200" r="6" fill="#2ecc71"><animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/></circle><circle cx="450" cy="240" r="6" fill="#e74c3c"><animate attributeName="opacity" values="0;1;0" dur="3s" begin="1s" repeatCount="indefinite"/></circle><text x="300" y="80" font-size="28" fill="#f39c12" text-anchor="middle">函数图像</text></svg></div></div></div><div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">描图步骤</h2><p class="mt-4 leading-relaxed">描绘函数图像就是把所有性质整合在一张纸上，按照步骤不会遗漏。</p><ul class="list-disc list-inside mt-6 space-y-4"><li>定义域、值域</li><li>奇偶性、周期性</li><li>间断点、渐近线</li><li>单调性、极值</li><li>凹凸性、拐点</li></ul></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><text x="300" y="60" font-size="28" fill="#f39c12" text-anchor="middle">描图5步骤</text><g opacity="0"><rect x="180" y="100" width="240" height="50" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="8"/><text x="300" y="130" font-size="18" fill="#ecf0f1" text-anchor="middle">① 定义域、值域</text><animate attributeName="opacity" values="0;1;1;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><rect x="180" y="170" width="240" height="50" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="8"/><text x="300" y="200" font-size="18" fill="#ecf0f1" text-anchor="middle">② 奇偶性、周期性</text><animate attributeName="opacity" values="0;0;1;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><rect x="180" y="240" width="240" height="50" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" rx="8"/><text x="300" y="270" font-size="18" fill="#ecf0f1" text-anchor="middle">③ 间断点、渐近线</text><animate attributeName="opacity" values="0;0;0;1;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><rect x="180" y="310" width="240" height="50" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="2" rx="8"/><text x="300" y="340" font-size="18" fill="#ecf0f1" text-anchor="middle">④ 单调性、极值</text><animate attributeName="opacity" values="0;0;0;0;1" dur="8s" repeatCount="indefinite"/></g><g opacity="0"><rect x="180" y="380" width="240" height="50" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="2" rx="8"/><text x="300" y="410" font-size="18" fill="#ecf0f1" text-anchor="middle">⑤ 凹凸性、拐点</text><animate attributeName="opacity" values="0;0;0;0;0;1" dur="10s" repeatCount="indefinite"/></g></svg></div></div></div><div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">性质表格</h2><p class="mt-4 leading-relaxed">把每一项性质都写在表格里，再动笔描图，就不会手忙脚乱。</p><div class="mt-6 space-y-4"><p><strong>示例：</strong>$y=\frac{x}{x^2-1}$</p><p class="text-gray-400">间断点：$x=\pm 1$</p><p class="text-gray-400">渐近线：$x=\pm 1$（垂直），$y=0$（水平）</p></div></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><line x1="50" y1="350" x2="550" y2="350" stroke="#ecf0f1" stroke-width="2"/><line x1="50" y1="350" x2="50" y2="100" stroke="#ecf0f1" stroke-width="2"/><line x1="200" y1="100" x2="200" y2="400" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/><line x1="400" y1="100" x2="400" y2="400" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/><text x="200" y="90" font-size="16" fill="#e74c3c" text-anchor="middle">x=-1</text><text x="400" y="90" font-size="16" fill="#e74c3c" text-anchor="middle">x=1</text><line x1="50" y1="350" x2="550" y2="350" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,5"/><text x="520" y="340" font-size="16" fill="#2ecc71">y=0</text><path d="M 100 250 Q 180 150, 200 120" stroke="#3498db" stroke-width="4" fill="none"/><path d="M 220 580 Q 260 400, 380 360" stroke="#3498db" stroke-width="4" fill="none"/><path d="M 420 340 Q 480 320, 500 300" stroke="#3498db" stroke-width="4" fill="none"/><text x="300" y="460" font-size="20" fill="#f39c12" text-anchor="middle">渐近线示意</text></svg></div></div></div><div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">描图要点</h2><p class="mt-4 leading-relaxed">图像的重点是结构：哪里上升、哪里下降、在哪里改变弯曲方向。</p><ul class="list-disc list-inside mt-6 space-y-4"><li>标出关键点（极值点、拐点）</li><li>画出渐近线</li><li>注意曲线的走向</li></ul></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><line x1="50" y1="350" x2="550" y2="350" stroke="#ecf0f1" stroke-width="2"/><line x1="50" y1="350" x2="50" y2="100" stroke="#ecf0f1" stroke-width="2"/><path d="M 100 300 Q 200 150, 300 200 Q 400 250, 500 180" stroke="#3498db" stroke-width="4" fill="none"/><circle cx="200" cy="160" r="8" fill="#2ecc71"/><text x="200" y="140" font-size="16" fill="#2ecc71" text-anchor="middle">极大</text><circle cx="400" cy="260" r="8" fill="#e74c3c"/><text x="400" y="285" font-size="16" fill="#e74c3c" text-anchor="middle">极小</text><circle cx="300" cy="205" r="8" fill="#f39c12"/><text x="300" y="190" font-size="16" fill="#f39c12" text-anchor="middle">拐点</text><g opacity="0"><line x1="150" y1="280" x2="180" y2="260" stroke="#2ecc71" stroke-width="2" marker-end="url(#arrow15)"/><text x="140" y="295" font-size="14" fill="#2ecc71">↗</text><line x1="350" y1="230" x2="380" y2="250" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow15)"/><text x="390" y="240" font-size="14" fill="#e74c3c">↘</text><animate attributeName="opacity" values="0;1;1;1" dur="6s" repeatCount="indefinite"/></g><defs><marker id="arrow15" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/></marker></defs></svg></div></div></div><div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">小结</h2><p class="mt-4 leading-relaxed"><strong>描图流程：</strong></p><ul class="list-disc list-inside mt-6 space-y-4"><li>分析性质 → 列表整理</li><li>标注关键点 → 绘制曲线</li><li>检查合理性</li></ul><p class="mt-8 text-gray-400">描图能力是综合判断的体现，练习越多越熟练。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><text x="300" y="80" font-size="32" fill="#f39c12" text-anchor="middle">🎨 描图流程</text><rect x="100" y="120" width="180" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/><text x="190" y="155" font-size="20" fill="#ecf0f1" text-anchor="middle">分析性质</text><line x1="280" y1="150" x2="320" y2="150" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow16)"/><rect x="320" y="120" width="180" height="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/><text x="410" y="155" font-size="20" fill="#ecf0f1" text-anchor="middle">列表整理</text><line x1="300" y1="180" x2="300" y2="220" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow16)"/><rect x="150" y="220" width="300" height="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3" rx="10"/><text x="300" y="255" font-size="20" fill="#ecf0f1" text-anchor="middle">标注关键点</text><line x1="300" y1="280" x2="300" y2="320" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow16)"/><rect x="200" y="320" width="200" height="60" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3" rx="10"/><text x="300" y="355" font-size="20" fill="#ecf0f1" text-anchor="middle">绘制曲线</text><text x="300" y="430" font-size="24" fill="#2ecc71" text-anchor="middle">综合应用</text><defs><marker id="arrow16" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/></marker></defs></svg></div></div></div></div><div class="subtitle-area" id="subtitleArea">欢迎学习函数图像的描绘！点击开始讲课启动虚拟人讲师。</div><div class="control-bar"><div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">5</span> 页</div><button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button><button class="btn primary" onclick="startTeaching()" id="startBtn">🎀 开始讲课</button><button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button><button class="btn" onclick="restart()">🔄 重新开始</button><button class="btn" onclick="startAutoPlay()" id="autoPlayBtn">🎬 自动播放</button></div><script type="module">try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));</script><script>const lessonTitle="函数图像的描绘";const subtitleScript={"1":"欢迎学习函数图像的描绘！","2":"描绘函数图像就是把所有性质整合在一张纸上，按照步骤不会遗漏。","3":"把每一项性质都写在表格里，再动笔描图，就不会手忙脚乱。","4":"图像的重点是结构：哪里上升、哪里下降、在哪里改变弯曲方向。","5":"描图能力是综合判断的体现，练习越多越熟练。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;});avatarPlatform.setApiInfo({appId:'f34b6995',apiKey:'11bce7d2c44157a6875476f368ceb2a0',apiSecret:'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',sceneId:'233767656807862272',serverUrl:'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}async function startAutoPlay(){if(!avatarPlatform||!isConnected){await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}isAutoPlaying=true;document.getElementById('autoPlayBtn').disabled=true;for(let i=currentSlide;i<totalSlides;i++){showSlide(i);speakContent(i+1);const duration=(subtitleScript[i+1].length/5)*1000+2000;await new Promise(resolve=>setTimeout(resolve,duration));}isAutoPlaying=false;document.getElementById('autoPlayBtn').disabled=false;}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);</script></body></html>
-
+﻿
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   04_4.4_函数图像的描绘
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+  <script>
+   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
+  </script>
+  <script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:750px;height:850px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;max-width:1400px;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-220px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left:0;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:18px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-300px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
+  </style>
+ </head>
+ <body class="blackboard">
+  <div class="status-indicator" id="statusIndicator">
+   等待连接
+  </div>
+  <div class="avatar-container">
+   <div class="wrapper" id="avatarWrapper">
+   </div>
+  </div>
+  <div class="slide-container flex-grow" id="slide-container">
+   <div class="slide active">
+    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+     <div style="flex: 1; text-align: center; padding: 2rem;">
+      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+       函数图像的描绘
+      </h1>
+      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+       第4章 视频 4.4
+      </p>
+      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 渐近线的求法
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 函数图像的关键点
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 图像描绘的步骤
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 综合分析与作图
+       </p>
+      </div>
+     </div>
+     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+       <defs>
+        <lineargradient id="grad4" x1="0%" x2="0%" y1="0%" y2="100%">
+         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
+         </stop>
+         <stop offset="100%" style="stop-color:#3498db;stop-opacity:1">
+         </stop>
+        </lineargradient>
+       </defs>
+       <path d="M 50 350 Q 150 100 300 250 T 550 300" fill="none" stroke="url(#grad4)" stroke-width="4">
+        <animate attributename="stroke-dasharray" dur="4s" repeatcount="indefinite" values="0,2000;2000,0">
+        </animate>
+       </path>
+       <circle cx="180" cy="150" fill="#e74c3c" r="12">
+        <animate attributename="cy" dur="2s" repeatcount="indefinite" values="150;170;150">
+        </animate>
+       </circle>
+       <circle cx="420" cy="280" fill="#2ecc71" r="12">
+        <animate attributename="cy" dur="2s" repeatcount="indefinite" values="280;260;280">
+        </animate>
+       </circle>
+       <text fill="#9b59b6" font-size="36" text-anchor="middle" x="300" y="450">
+        极值与拐点
+       </text>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+     <div style="flex: 1; text-align: center; padding: 2rem;">
+      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+       函数图像的描绘
+      </h1>
+      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+       第04章 视频 4.4
+      </p>
+      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 函数性态分析
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 渐近线的求法
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 图像绘制步骤
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 综合作图技巧
+       </p>
+      </div>
+     </div>
+     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+       <defs>
+        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
+         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
+         </stop>
+         <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1">
+         </stop>
+        </lineargradient>
+       </defs>
+       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
+        ~
+        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
+        </animate>
+       </text>
+       <circle cx="150" cy="280" fill="none" r="30" stroke="#9b59b6" stroke-width="3">
+        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
+        </animate>
+       </circle>
+       <circle cx="300" cy="280" fill="none" r="30" stroke="#8e44ad" stroke-width="3">
+        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
+        </animate>
+       </circle>
+       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
+        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
+        </animate>
+       </circle>
+       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
+        图像
+       </text>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+     <div style="flex: 1; text-align: center; padding: 2rem;">
+      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+       函数图像的描绘
+      </h1>
+      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+       第04章 视频 4.4
+      </p>
+      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 函数性态分析
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 渐近线的求法
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 图像绘制步骤
+       </p>
+       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 综合作图技巧
+       </p>
+      </div>
+     </div>
+     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+       <defs>
+        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
+         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
+         </stop>
+         <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1">
+         </stop>
+        </lineargradient>
+       </defs>
+       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
+        ~
+        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
+        </animate>
+       </text>
+       <circle cx="150" cy="280" fill="none" r="30" stroke="#9b59b6" stroke-width="3">
+        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
+        </animate>
+       </circle>
+       <circle cx="300" cy="280" fill="none" r="30" stroke="#8e44ad" stroke-width="3">
+        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
+        </animate>
+       </circle>
+       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
+        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
+        </animate>
+       </circle>
+       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
+        图像
+       </text>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div class="slide-content">
+     <div class="blackboard-text w-1/2 text-center">
+      <h1 class="text-6xl font-bold">
+       函数图像的描绘
+      </h1>
+      <p class="text-2xl mt-4 text-gray-300">
+       第4章 视频 4.4
+      </p>
+     </div>
+     <div class="animation-pane w-1/2">
+      <svg class="w-full h-full" viewbox="0 0 600 500">
+       <line stroke="#ecf0f1" stroke-width="2" x1="100" x2="500" y1="350" y2="350">
+       </line>
+       <line stroke="#ecf0f1" stroke-width="2" x1="100" x2="100" y1="350" y2="100">
+       </line>
+       <path d="M 150 320 Q 250 180, 350 220 Q 450 260, 480 200" fill="none" stroke="#3498db" stroke-width="4">
+        <animate attributename="stroke-dasharray" dur="4s" repeatcount="indefinite" values="0,1000;1000,0;0,1000">
+        </animate>
+       </path>
+       <circle cx="250" cy="200" fill="#2ecc71" r="6">
+        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;0">
+        </animate>
+       </circle>
+       <circle cx="450" cy="240" fill="#e74c3c" r="6">
+        <animate attributename="opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0;1;0">
+        </animate>
+       </circle>
+       <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">
+        函数图像
+       </text>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div class="slide-content">
+     <div class="blackboard-text w-1/2 text-xl p-8">
+      <h2 class="text-4xl font-bold mb-8 pb-2">
+       描图步骤
+      </h2>
+      <p class="mt-4 leading-relaxed">
+       描绘函数图像就是把所有性质整合在一张纸上，按照步骤不会遗漏。
+      </p>
+      <ul class="list-disc list-inside mt-6 space-y-4">
+       <li>
+        定义域、值域
+       </li>
+       <li>
+        奇偶性、周期性
+       </li>
+       <li>
+        间断点、渐近线
+       </li>
+       <li>
+        单调性、极值
+       </li>
+       <li>
+        凹凸性、拐点
+       </li>
+      </ul>
+     </div>
+     <div class="animation-pane w-1/2">
+      <svg class="w-full h-full" viewbox="0 0 600 500">
+       <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">
+        描图5步骤
+       </text>
+       <g opacity="0">
+        <rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="2" width="240" x="180" y="100">
+        </rect>
+        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">
+         ① 定义域、值域
+        </text>
+        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
+        </animate>
+       </g>
+       <g opacity="0">
+        <rect fill="rgba(46,204,113,0.2)" height="50" rx="8" stroke="#2ecc71" stroke-width="2" width="240" x="180" y="170">
+        </rect>
+        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="200">
+         ② 奇偶性、周期性
+        </text>
+        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
+        </animate>
+       </g>
+       <g opacity="0">
+        <rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="2" width="240" x="180" y="240">
+        </rect>
+        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="270">
+         ③ 间断点、渐近线
+        </text>
+        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
+        </animate>
+       </g>
+       <g opacity="0">
+        <rect fill="rgba(155,89,182,0.2)" height="50" rx="8" stroke="#9b59b6" stroke-width="2" width="240" x="180" y="310">
+        </rect>
+        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="340">
+         ④ 单调性、极值
+        </text>
+        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
+        </animate>
+       </g>
+       <g opacity="0">
+        <rect fill="rgba(241,196,15,0.2)" height="50" rx="8" stroke="#f39c12" stroke-width="2" width="240" x="180" y="380">
+        </rect>
+        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="410">
+         ⑤ 凹凸性、拐点
+        </text>
+        <animate attributename="opacity" dur="10s" repeatcount="indefinite" values="0;0;0;0;0;1">
+        </animate>
+       </g>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div class="slide-content">
+     <div class="blackboard-text w-1/2 text-xl p-8">
+      <h2 class="text-4xl font-bold mb-8 pb-2">
+       性质表格
+      </h2>
+      <p class="mt-4 leading-relaxed">
+       把每一项性质都写在表格里，再动笔描图，就不会手忙脚乱。
+      </p>
+      <div class="mt-6 space-y-4">
+       <p>
+        <strong>
+         示例：
+        </strong>
+        $y=\frac{x}{x^2-1}$
+       </p>
+       <p class="text-gray-400">
+        间断点：$x=\pm 1$
+       </p>
+       <p class="text-gray-400">
+        渐近线：$x=\pm 1$（垂直），$y=0$（水平）
+       </p>
+      </div>
+     </div>
+     <div class="animation-pane w-1/2">
+      <svg class="w-full h-full" viewbox="0 0 600 500">
+       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="350" y2="350">
+       </line>
+       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="350" y2="100">
+       </line>
+       <line stroke="#e74c3c" stroke-dasharray="5,5" stroke-width="3" x1="200" x2="200" y1="100" y2="400">
+       </line>
+       <line stroke="#e74c3c" stroke-dasharray="5,5" stroke-width="3" x1="400" x2="400" y1="100" y2="400">
+       </line>
+       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="200" y="90">
+        x=-1
+       </text>
+       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="400" y="90">
+        x=1
+       </text>
+       <line stroke="#2ecc71" stroke-dasharray="5,5" stroke-width="3" x1="50" x2="550" y1="350" y2="350">
+       </line>
+       <text fill="#2ecc71" font-size="16" x="520" y="340">
+        y=0
+       </text>
+       <path d="M 100 250 Q 180 150, 200 120" fill="none" stroke="#3498db" stroke-width="4">
+       </path>
+       <path d="M 220 580 Q 260 400, 380 360" fill="none" stroke="#3498db" stroke-width="4">
+       </path>
+       <path d="M 420 340 Q 480 320, 500 300" fill="none" stroke="#3498db" stroke-width="4">
+       </path>
+       <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="460">
+        渐近线示意
+       </text>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div class="slide-content">
+     <div class="blackboard-text w-1/2 text-xl p-8">
+      <h2 class="text-4xl font-bold mb-8 pb-2">
+       描图要点
+      </h2>
+      <p class="mt-4 leading-relaxed">
+       图像的重点是结构：哪里上升、哪里下降、在哪里改变弯曲方向。
+      </p>
+      <ul class="list-disc list-inside mt-6 space-y-4">
+       <li>
+        标出关键点（极值点、拐点）
+       </li>
+       <li>
+        画出渐近线
+       </li>
+       <li>
+        注意曲线的走向
+       </li>
+      </ul>
+     </div>
+     <div class="animation-pane w-1/2">
+      <svg class="w-full h-full" viewbox="0 0 600 500">
+       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="350" y2="350">
+       </line>
+       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="350" y2="100">
+       </line>
+       <path d="M 100 300 Q 200 150, 300 200 Q 400 250, 500 180" fill="none" stroke="#3498db" stroke-width="4">
+       </path>
+       <circle cx="200" cy="160" fill="#2ecc71" r="8">
+       </circle>
+       <text fill="#2ecc71" font-size="16" text-anchor="middle" x="200" y="140">
+        极大
+       </text>
+       <circle cx="400" cy="260" fill="#e74c3c" r="8">
+       </circle>
+       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="400" y="285">
+        极小
+       </text>
+       <circle cx="300" cy="205" fill="#f39c12" r="8">
+       </circle>
+       <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="190">
+        拐点
+       </text>
+       <g opacity="0">
+        <line marker-end="url(#arrow15)" stroke="#2ecc71" stroke-width="2" x1="150" x2="180" y1="280" y2="260">
+        </line>
+        <text fill="#2ecc71" font-size="14" x="140" y="295">
+         ↗
+        </text>
+        <line marker-end="url(#arrow15)" stroke="#e74c3c" stroke-width="2" x1="350" x2="380" y1="230" y2="250">
+        </line>
+        <text fill="#e74c3c" font-size="14" x="390" y="240">
+         ↘
+        </text>
+        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
+        </animate>
+       </g>
+       <defs>
+        <marker id="arrow15" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
+         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
+         </path>
+        </marker>
+       </defs>
+      </svg>
+     </div>
+    </div>
+   </div>
+   <div class="slide">
+    <div class="slide-content">
+     <div class="blackboard-text w-1/2 text-xl p-8">
+      <h2 class="text-4xl font-bold mb-8 pb-2">
+       小结
+      </h2>
+      <p class="mt-4 leading-relaxed">
+       <strong>
+        描图流程：
+       </strong>
+      </p>
+      <ul class="list-disc list-inside mt-6 space-y-4">
+       <li>
+        分析性质 → 列表整理
+       </li>
+       <li>
+        标注关键点 → 绘制曲线
+       </li>
+       <li>
+        检查合理性
+       </li>
+      </ul>
+      <p class="mt-8 text-gray-400">
+       描图能力是综合判断的体现，练习越多越熟练。
+      </p>
+     </div>
+     <div class="animation-pane w-1/2">
+      <svg class="w-full h-full" viewbox="0 0 600 500">
+       <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">
+        🎨 描图流程
+       </text>
+       <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="180" x="100" y="120">
+       </rect>
+       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="190" y="155">
+        分析性质
+       </text>
+       <line marker-end="url(#arrow16)" stroke="#f39c12" stroke-width="3" x1="280" x2="320" y1="150" y2="150">
+       </line>
+       <rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="180" x="320" y="120">
+       </rect>
+       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="410" y="155">
+        列表整理
+       </text>
+       <line marker-end="url(#arrow16)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="180" y2="220">
+       </line>
+       <rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="220">
+       </rect>
+       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="255">
+        标注关键点
+       </text>
+       <line marker-end="url(#arrow16)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="280" y2="320">
+       </line>
+       <rect fill="rgba(155,89,182,0.2)" height="60" rx="10" stroke="#9b59b6" stroke-width="3" width="200" x="200" y="320">
+       </rect>
+       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="355">
+        绘制曲线
+       </text>
+       <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="430">
+        综合应用
+       </text>
+       <defs>
+        <marker id="arrow16" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
+         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
+         </path>
+        </marker>
+       </defs>
+      </svg>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="subtitle-area" id="subtitleArea">
+   欢迎学习函数图像的描绘！点击开始讲课启动虚拟人讲师。
+  </div>
+  <div class="control-bar">
+   <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
+    第
+    <span id="currentSlide">
+     1
+    </span>
+    /
+    <span id="totalSlides">
+     5
+    </span>
+    页
+   </div>
+   <button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
+    ⬅️ 上一页
+   </button>
+   <button class="btn primary" id="startBtn" onclick="startTeaching()">
+    🎀 开始讲课
+   </button>
+   <button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
+    下一页 ➡️
+   </button>
+   <button class="btn" onclick="restart()">
+    🔄 重新开始
+   </button>
+   <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
+    🎬 自动播放
+   </button>
+  </div>
+  <script type="module">
+   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
+  </script>
+  <script>
+   const lessonTitle="函数图像的描绘";const subtitleScript={"1":"欢迎学习函数图像的描绘！","2":"描绘函数图像就是把所有性质整合在一张纸上，按照步骤不会遗漏。","3":"把每一项性质都写在表格里，再动笔描图，就不会手忙脚乱。","4":"图像的重点是结构：哪里上升、哪里下降、在哪里改变弯曲方向。","5":"描图能力是综合判断的体现，练习越多越熟练。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;});avatarPlatform.setApiInfo({appId:'f34b6995',apiKey:'11bce7d2c44157a6875476f368ceb2a0',apiSecret:'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',sceneId:'233767656807862272',serverUrl:'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}async function startAutoPlay(){if(!avatarPlatform||!isConnected){await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}isAutoPlaying=true;document.getElementById('autoPlayBtn').disabled=true;for(let i=currentSlide;i<totalSlides;i++){showSlide(i);speakContent(i+1);const duration=(subtitleScript[i+1].length/5)*1000+2000;await new Promise(resolve=>setTimeout(resolve,duration));}isAutoPlaying=false;document.getElementById('autoPlayBtn').disabled=false;}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
+  </script>
+ </body>
+</html>

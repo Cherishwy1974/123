@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第09章 重积分应用与总结</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第09章 重积分应用与总结</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
@@ -109,9 +109,19 @@
             box-shadow: 0 8px 25px rgba(102,126,234,0.4);
         }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
-    </style>
     
-    <script>
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
+    </style>
+<script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\(', '\)']],
@@ -126,238 +136,261 @@
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：计算平面图形面积 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用1：计算平面图形面积</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">基本公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$S = \iint_D dxdy$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">例题</p>
-                    <p class="chalk-text">求椭圆 $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ 的面积。</p>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">利用对称性，只算第一象限再乘4</li>
-                        <li class="chalk-text">$S = 4\int_0^a \int_0^{b\sqrt{1-x^2/a^2}} dydx$</li>
-                        <li class="chalk-text">结果：$S = \pi ab$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow1">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
-                        <line x1="350" y1="100" x2="350" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
-                        <ellipse cx="350" cy="300" rx="150" ry="100" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4" filter="url(#glow1)">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
-                        </ellipse>
-                        <text x="350" y="305" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">S=πab</text>
-                        <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">椭圆面积</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper"></div>
+</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：计算平面图形面积 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        重积分应用与总结
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第9章 视频 9.3
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的概念</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的性质</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分计算方法</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的应用</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad9" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#16a085;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#1abc9c;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad9)" font-family="serif" font-size="60" text-anchor="middle" x="300" y="80">
+                            ∬
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<rect fill="url(#grad9)" height="150" opacity="0.3" width="300" x="150" y="200">
+<animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</rect>
+<path d="M 150 200 L 450 200 L 450 350 L 150 350 Z" fill="none" stroke="#16a085" stroke-width="3"></path>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">应用2：计算体积</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">基本公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$V = \iint_D f(x,y)dxdy$$</p>
+</div>
+<p class="chalk-text">f(x,y)是曲面的高度函数</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow2">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<text fill="#ffffff" filter="url(#glow2)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="300">曲顶柱体体积</text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">应用3：计算质量</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">基本公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$M = \iint_D \rho(x,y)dxdy$$</p>
+</div>
+<p class="chalk-text">$\rho(x,y)$是面密度函数</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow3">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<text fill="#ffffff" filter="url(#glow3)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="300">薄板质量</text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">应用4：质心坐标</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">质心公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$\bar{x} = \frac{\iint_D x\rho(x,y)dxdy}{\iint_D \rho(x,y)dxdy}$$</p>
+<p class="chalk-text">$$\bar{y} = \frac{\iint_D y\rho(x,y)dxdy}{\iint_D \rho(x,y)dxdy}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow4">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<text fill="#ffffff" filter="url(#glow4)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="300">质心计算</text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">应用5：转动惯量</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">转动惯量公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$I_x = \iint_D y^2\rho(x,y)dxdy$$</p>
+<p class="chalk-text">$$I_y = \iint_D x^2\rho(x,y)dxdy$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow5">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<text fill="#ffffff" filter="url(#glow5)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="300">转动惯量</text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">第9章总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心内容</p>
+<ul class="chalk-list">
+<li class="chalk-text">二重积分的概念与几何意义</li>
+<li class="chalk-text">累次积分法计算</li>
+<li class="chalk-text">五大应用：面积、体积、质量、质心、转动惯量</li>
+</ul>
+<p class="chalk-text emphasis">下一步</p>
+<p class="chalk-text">学习线性代数（第10章）</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow6">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" filter="url(#glow6)" r="80" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
+</circle>
+<text fill="#FFE066" filter="url(#glow6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="255">第9章完成</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="520">二重积分</text>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<div class="subtitle-area" id="subtitleArea"></div>
 
-        <!-- 第2-6页简化版 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用2：计算体积</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">基本公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$V = \iint_D f(x,y)dxdy$$</p>
-                    </div>
-                    <p class="chalk-text">f(x,y)是曲面的高度函数</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow2">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <text x="350" y="300" fill="#ffffff" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow2)">曲顶柱体体积</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用3：计算质量</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">基本公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$M = \iint_D \rho(x,y)dxdy$$</p>
-                    </div>
-                    <p class="chalk-text">$\rho(x,y)$是面密度函数</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow3">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <text x="350" y="300" fill="#ffffff" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow3)">薄板质量</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用4：质心坐标</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">质心公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\bar{x} = \frac{\iint_D x\rho(x,y)dxdy}{\iint_D \rho(x,y)dxdy}$$</p>
-                        <p class="chalk-text">$$\bar{y} = \frac{\iint_D y\rho(x,y)dxdy}{\iint_D \rho(x,y)dxdy}$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow4">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <text x="350" y="300" fill="#ffffff" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow4)">质心计算</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用5：转动惯量</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">转动惯量公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$I_x = \iint_D y^2\rho(x,y)dxdy$$</p>
-                        <p class="chalk-text">$$I_y = \iint_D x^2\rho(x,y)dxdy$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow5">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <text x="350" y="300" fill="#ffffff" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow5)">转动惯量</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">第9章总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心内容</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">二重积分的概念与几何意义</li>
-                        <li class="chalk-text">累次积分法计算</li>
-                        <li class="chalk-text">五大应用：面积、体积、质量、质心、转动惯量</li>
-                    </ul>
-                    <p class="chalk-text emphasis">下一步</p>
-                    <p class="chalk-text">学习线性代数（第10章）</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow6">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow6)">
-                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="255" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow6)">第9章完成</text>
-                        <text x="350" y="520" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow6)">二重积分</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-
-    <div class="subtitle-area" id="subtitleArea"></div>
-
-    <script>
+<script>
         let currentPage = 1;
         const totalPages = 6;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
 
-        const pageContents = [
-            "二重积分的第一个应用是计算平面图形的面积。面积等于对区域D积分1。例如椭圆的面积是πab。",
-            "第二个应用是计算曲顶柱体的体积。体积等于对区域D积分高度函数f(x,y)。",
-            "第三个应用是计算薄板的质量。质量等于对区域D积分面密度函数ρ(x,y)。",
-            "第四个应用是计算质心坐标。质心的x坐标等于x乘以密度的积分除以质量，y坐标类似。",
-            "第五个应用是计算转动惯量。对x轴的转动惯量等于y平方乘以密度的积分。",
-            "第9章总结：我们学习了二重积分的概念、计算方法和五大应用。下一章将学习线性代数。"
-        ];
+        const subtitleScript = {
+            1: `欢迎学习二重积分的应用与总结。二重积分的第一个应用是计算平面图形的面积。面积等于对区域D积分1，即两个1的二重积分。例如椭圆x平方除以a平方加y平方除以b平方等于1的面积是πab。`,
+            2: `第二个应用是计算曲顶柱体的体积。体积等于对区域D积分高度函数f(x,y)。这是二重积分最直观的几何意义，曲顶柱体的体积就是函数在区域上的二重积分。`,
+            3: `第三个应用是计算薄板的质量。质量等于对区域D积分面密度函数ρ(x,y)。如果密度是均匀的，质量就等于密度乘以面积。如果密度不均匀，就需要用二重积分来计算。`,
+            4: `第四个应用是计算质心坐标。质心的x坐标等于x乘以密度的积分除以总质量，y坐标的计算类似。质心是物体质量分布的平衡点，在工程设计中非常重要。`,
+            5: `第五个应用是计算转动惯量。对x轴的转动惯量等于y平方乘以密度的二重积分，对y轴的转动惯量等于x平方乘以密度的积分。转动惯量描述物体旋转时的惯性大小。`,
+            6: `第9章总结：我们学习了二重积分的概念、几何意义、累次积分计算方法，以及五大应用：面积、体积、质量、质心、转动惯量。下一章将学习线性代数，包括行列式、矩阵和线性方程组。`
+        };
 
         const autoPlayDurations = {
-            1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000
+            1: 16000, 2: 16000, 3: 18000, 4: 18000, 5: 18000, 6: 20000
         };
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message; indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -385,11 +418,93 @@
         }
 
         async function startTeaching() {
-            console.log('开始讲解');
+            try {
+                await waitForSDK(); updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
-        async function startAutoPlay() {
-            console.log('自动播放');
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放'; btn.style.background = '';
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -417,7 +532,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
         });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
     </script>
 </body>
 </html>
-

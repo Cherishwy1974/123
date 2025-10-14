@@ -399,61 +399,79 @@
 
         /* 左侧控制栏 */
         .control-bar {
-            position: fixed; 
-            left: -220px; 
+            position: fixed;
+            left: -240px;
             top: 50%;
-            transform: translateY(-50%); 
-            width: 250px;
-            background: rgba(30,30,30,0.95);
-            display: flex; 
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
             justify-content: center;
-            gap: 10px; 
+            gap: 12px;
             z-index: 200;
-            border-radius: 0 15px 15px 0;
-            padding: 20px 15px; 
-            transition: left 0.3s ease;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .control-bar:hover { 
             left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
         
         .control-bar::before {
-            content: '▶'; 
+            content: '▶️';
             position: absolute;
-            top: 50%; 
-            right: -25px;
+            top: 50%;
+            right: -30px;
             transform: translateY(-50%);
-            background: rgba(30,30,30,0.95);
-            padding: 10px 5px; 
-            border-radius: 0 10px 10px 0;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
             writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
         }
         
         .btn {
-            padding: 12px 20px; 
-            background: linear-gradient(135deg, #4a4a4a, #666);
-            color: white; 
-            border: none; 
-            border-radius: 8px;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease; 
-            width: 100%; 
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
             text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
         
         .btn:hover { 
-            background: linear-gradient(135deg, #555, #777); 
-            transform: translateY(-2px); 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
         }
         
         .btn.primary { 
-            background: linear-gradient(135deg, #FF69B4, #FF1493); 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
         }
         
         .btn:disabled {

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第10章 行列式及其几何意义</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第10章 行列式及其几何意义</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
@@ -112,9 +112,19 @@
             box-shadow: 0 8px 25px rgba(102,126,234,0.4);
         }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
-    </style>
     
-    <script>
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
+    </style>
+<script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\(', '\)']],
@@ -139,282 +149,304 @@
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：二阶行列式 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">二阶行列式</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">几何意义</p>
-                    <p class="chalk-text">二阶行列式表示由两个向量构成的平行四边形的面积</p>
-                    <p class="chalk-text emphasis">例题</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\begin{vmatrix} 2 & 3 \\ 1 & 4 \end{vmatrix} = 2 \times 4 - 3 \times 1 = 5$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <line x1="100" y1="400" x2="600" y2="400" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="150" y1="450" x2="150" y2="100" stroke="#FFE066" stroke-width="2"/>
-                        <path d="M 150 400 L 350 400 L 400 250 L 200 250 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4">
-                            <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <line x1="150" y1="400" x2="350" y2="400" stroke="#FF6B6B" stroke-width="4" marker-end="url(#arrow1)"/>
-                        <text x="250" y="430" fill="#FF6B6B" font-size="16" text-anchor="middle">(a,b)</text>
-                        <line x1="150" y1="400" x2="200" y2="250" stroke="#9370DB" stroke-width="4" marker-end="url(#arrow2)"/>
-                        <text x="120" y="325" fill="#9370DB" font-size="16" text-anchor="end">(c,d)</text>
-                        <defs>
-                            <marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FF6B6B"/>
-                            </marker>
-                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#9370DB"/>
-                            </marker>
-                        </defs>
-                        <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle">平行四边形面积</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle">面积 = ad - bc</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper"></div>
+</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：二阶行列式 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        行列式及其几何意义
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第10章 视频 10.1
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 行列式的定义</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 行列式的性质</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 行列式的计算</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 行列式的应用</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad10" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#f39c12;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#e67e22;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<rect fill="none" height="200" stroke="url(#grad10)" stroke-width="4" width="200" x="200" y="150">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</rect>
+<line stroke="#f39c12" stroke-width="2" x1="200" x2="350" y1="150" y2="250"></line>
+<line stroke="#e67e22" stroke-width="2" x1="400" x2="250" y1="350" y2="250"></line>
+<circle cx="300" cy="250" fill="#e67e22" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="6;12;6"></animate>
+</circle>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">三阶行列式</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<div class="formula-box">
+<p class="chalk-text">$$\begin{vmatrix} a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ a_{31} &amp; a_{32} &amp; a_{33} \end{vmatrix}$$</p>
+</div>
+<p class="chalk-text emphasis">对角线法则</p>
+<ul class="chalk-list">
+<li class="chalk-text">主对角线：$a_{11}a_{22}a_{33}$</li>
+<li class="chalk-text">副对角线：$a_{13}a_{22}a_{31}$</li>
+<li class="chalk-text">正项减负项</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<g transform="translate(180,160)">
+<g stroke="#e1bee7">
+<rect fill="rgba(225,190,231,0.08)" height="180" width="180" x="0" y="0"></rect>
+<line x1="60" x2="60" y1="0" y2="180"></line>
+<line x1="120" x2="120" y1="0" y2="180"></line>
+<line x1="0" x2="180" y1="60" y2="60"></line>
+<line x1="0" x2="180" y1="120" y2="120"></line>
+</g>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="30" y="38">a</text><text x="90" y="38">b</text><text x="150" y="38">c</text>
+<text x="30" y="98">d</text><text x="90" y="98">e</text><text x="150" y="98">f</text>
+<text x="30" y="158">g</text><text x="90" y="158">h</text><text x="150" y="158">i</text>
+</g>
+<g stroke="#e1bee7" transform="translate(180,0)">
+<rect fill="rgba(225,190,231,0.05)" height="180" width="120" x="0" y="0"></rect>
+<line x1="60" x2="60" y1="0" y2="180"></line>
+<line x1="0" x2="120" y1="60" y2="60"></line>
+<line x1="0" x2="120" y1="120" y2="120"></line>
+</g>
+<g fill="#fff" font-size="14" text-anchor="middle" transform="translate(180,0)">
+<text x="30" y="38">a</text><text x="90" y="38">b</text>
+<text x="30" y="98">d</text><text x="90" y="98">e</text>
+<text x="30" y="158">g</text><text x="90" y="158">h</text>
+</g>
+</g>
+<g stroke="#4ECDC4" stroke-width="4">
+<line x1="210" x2="360" y1="200" y2="350"></line>
+<line x1="270" x2="420" y1="200" y2="350"></line>
+<line x1="330" x2="480" y1="200" y2="350"></line>
+</g>
+<g stroke="#FF6B6B" stroke-width="4">
+<line x1="360" x2="210" y1="200" y2="350"></line>
+<line x1="420" x2="270" y1="200" y2="350"></line>
+<line x1="480" x2="330" y1="200" y2="350"></line>
+</g>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="420">det = 正对角线和 − 负对角线和</text>
+</svg>
+</div></div>
+</div>
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">行列式的性质</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">基本性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">行列互换，值不变</li>
+<li class="chalk-text">两行互换，值变号</li>
+<li class="chalk-text">某行乘k，值乘k</li>
+<li class="chalk-text">某行全为0，值为0</li>
+<li class="chalk-text">两行相同，值为0</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<g transform="translate(120,160)">
+<rect fill="rgba(78,205,196,0.12)" height="60" stroke="#4ECDC4" width="200" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="16" text-anchor="middle" x="100" y="37">行列互换值不变</text>
+<rect fill="rgba(255,224,102,0.12)" height="60" stroke="#FFE066" width="240" x="240" y="0"></rect>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="360" y="37">交换两行 → 值变号</text>
+<rect fill="rgba(255,107,107,0.12)" height="60" stroke="#FF6B6B" width="220" x="0" y="90"></rect>
+<text fill="#FF6B6B" font-size="16" text-anchor="middle" x="110" y="127">某行乘k → det乘k</text>
+<rect fill="rgba(147,112,219,0.12)" height="60" stroke="#9370DB" width="240" x="240" y="90"></rect>
+<text fill="#9370DB" font-size="16" text-anchor="middle" x="360" y="127">一行全0 / 两行相同 → 0</text>
+</g>
+</svg>
+</div></div>
+</div>
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">行列式的计算</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">例题</p>
+<div class="formula-box">
+<p class="chalk-text">$$\begin{vmatrix} 1 &amp; 2 &amp; 3 \\ 0 &amp; 4 &amp; 5 \\ 0 &amp; 0 &amp; 6 \end{vmatrix} = 1 \times 4 \times 6 = 24$$</p>
+</div>
+<p class="chalk-text small-text">上三角行列式等于主对角线元素之积</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<g transform="translate(220,180)">
+<rect fill="rgba(225,190,231,0.08)" height="210" stroke="#e1bee7" width="210" x="0" y="0"></rect>
+<g stroke="#e1bee7">
+<line x1="70" x2="70" y1="0" y2="210"></line>
+<line x1="140" x2="140" y1="0" y2="210"></line>
+<line x1="0" x2="210" y1="70" y2="70"></line>
+<line x1="0" x2="210" y1="140" y2="140"></line>
+</g>
+<rect fill="rgba(200,200,200,0.2)" height="70" width="70" x="0" y="140"></rect>
+<rect fill="rgba(200,200,200,0.2)" height="70" width="70" x="0" y="70"></rect>
+<rect fill="rgba(200,200,200,0.2)" height="70" width="70" x="70" y="140"></rect>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="35" y="42">a₁₁</text>
+<text x="105" y="112">a₂₂</text>
+<text x="175" y="182">a₃₃</text>
+</g>
+<line stroke="#FFE066" stroke-width="4" x1="0" x2="210" y1="0" y2="210"></line>
+</g>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="430">det = a₁₁·a₂₂·a₃₃</text>
+</svg>
+</div></div>
+</div>
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">克拉默法则</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">线性方程组的解</p>
+<div class="formula-box">
+<p class="chalk-text">$$x_i = \frac{D_i}{D}$$</p>
+</div>
+<p class="chalk-text">D是系数行列式，$D_i$是将第i列替换为常数项的行列式</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<g transform="translate(110,160)">
+<text fill="#e1bee7" font-size="16" text-anchor="middle" x="90" y="-20">D = det(A)</text>
+<rect fill="rgba(225,190,231,0.08)" height="180" stroke="#e1bee7" width="210" x="0" y="0"></rect>
+<line stroke="#e1bee7" x1="70" x2="70" y1="0" y2="180"></line>
+<line stroke="#e1bee7" x1="140" x2="140" y1="0" y2="180"></line>
+<line stroke="#e1bee7" x1="0" x2="210" y1="60" y2="60"></line>
+<line stroke="#e1bee7" x1="0" x2="210" y1="120" y2="120"></line>
+<g fill="#fff" font-size="12" text-anchor="middle">
+<text x="35" y="38">a₁₁</text><text x="105" y="38">a₁₂</text><text x="175" y="38">a₁₃</text>
+<text x="35" y="98">a₂₁</text><text x="105" y="98">a₂₂</text><text x="175" y="98">a₂₃</text>
+<text x="35" y="158">a₃₁</text><text x="105" y="158">a₃₂</text><text x="175" y="158">a₃₃</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="28" text-anchor="middle" x="350" y="240">→</text>
+<g transform="translate(400,160)">
+<text fill="#FF6B6B" font-size="16" text-anchor="middle" x="105" y="-20">D₁ = det(A₁)</text>
+<rect fill="rgba(255,107,107,0.08)" height="180" stroke="#FF6B6B" width="210" x="0" y="0"></rect>
+<line stroke="#FF6B6B" x1="70" x2="70" y1="0" y2="180"></line>
+<line stroke="#FF6B6B" x1="140" x2="140" y1="0" y2="180"></line>
+<line stroke="#FF6B6B" x1="0" x2="210" y1="60" y2="60"></line>
+<line stroke="#FF6B6B" x1="0" x2="210" y1="120" y2="120"></line>
+<rect fill="rgba(255,107,107,0.20)" height="180" width="70" x="0" y="0"></rect>
+<g fill="#fff" font-size="12" text-anchor="middle">
+<text x="35" y="38">b₁</text><text x="105" y="38">a₁₂</text><text x="175" y="38">a₁₃</text>
+<text x="35" y="98">b₂</text><text x="105" y="98">a₂₂</text><text x="175" y="98">a₂₃</text>
+<text x="35" y="158">b₃</text><text x="105" y="158">a₃₂</text><text x="175" y="158">a₃₃</text>
+</g>
+</g>
+<text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="380">x₁ = D₁ / D</text>
+</svg>
+</div></div>
+</div>
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心内容</p>
+<ul class="chalk-list">
+<li class="chalk-text">二阶、三阶行列式的计算</li>
+<li class="chalk-text">行列式的几何意义</li>
+<li class="chalk-text">行列式的性质</li>
+<li class="chalk-text">克拉默法则</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
+</circle>
+<text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">行列式</text>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<div class="subtitle-area" id="subtitleArea"></div>
 
-        <!-- 第2-6页 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">三阶行列式</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\begin{vmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{vmatrix}$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">对角线法则</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">主对角线：$a_{11}a_{22}a_{33}$</li>
-                        <li class="chalk-text">副对角线：$a_{13}a_{22}a_{31}$</li>
-                        <li class="chalk-text">正项减负项</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <g transform="translate(180,160)">
-                        <g stroke="#e1bee7">
-                            <rect x="0" y="0" width="180" height="180" fill="rgba(225,190,231,0.08)"/>
-                            <line x1="60" y1="0" x2="60" y2="180"/>
-                            <line x1="120" y1="0" x2="120" y2="180"/>
-                            <line x1="0" y1="60" x2="180" y2="60"/>
-                            <line x1="0" y1="120" x2="180" y2="120"/>
-                        </g>
-                        <g fill="#fff" font-size="14" text-anchor="middle">
-                            <text x="30" y="38">a</text><text x="90" y="38">b</text><text x="150" y="38">c</text>
-                            <text x="30" y="98">d</text><text x="90" y="98">e</text><text x="150" y="98">f</text>
-                            <text x="30" y="158">g</text><text x="90" y="158">h</text><text x="150" y="158">i</text>
-                        </g>
-                        <g transform="translate(180,0)" stroke="#e1bee7">
-                            <rect x="0" y="0" width="120" height="180" fill="rgba(225,190,231,0.05)"/>
-                            <line x1="60" y1="0" x2="60" y2="180"/>
-                            <line x1="0" y1="60" x2="120" y2="60"/>
-                            <line x1="0" y1="120" x2="120" y2="120"/>
-                        </g>
-                        <g transform="translate(180,0)" fill="#fff" font-size="14" text-anchor="middle">
-                            <text x="30" y="38">a</text><text x="90" y="38">b</text>
-                            <text x="30" y="98">d</text><text x="90" y="98">e</text>
-                            <text x="30" y="158">g</text><text x="90" y="158">h</text>
-                        </g>
-                    </g>
-                    <g stroke="#4ECDC4" stroke-width="4">
-                        <line x1="210" y1="200" x2="360" y2="350"/>
-                        <line x1="270" y1="200" x2="420" y2="350"/>
-                        <line x1="330" y1="200" x2="480" y2="350"/>
-                    </g>
-                    <g stroke="#FF6B6B" stroke-width="4">
-                        <line x1="360" y1="200" x2="210" y2="350"/>
-                        <line x1="420" y1="200" x2="270" y2="350"/>
-                        <line x1="480" y1="200" x2="330" y2="350"/>
-                    </g>
-                    <text x="350" y="420" fill="#FFE066" font-size="16" text-anchor="middle">det = 正对角线和 − 负对角线和</text>
-                </svg>
-            </div></div>
-        </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">行列式的性质</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">基本性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">行列互换，值不变</li>
-                        <li class="chalk-text">两行互换，值变号</li>
-                        <li class="chalk-text">某行乘k，值乘k</li>
-                        <li class="chalk-text">某行全为0，值为0</li>
-                        <li class="chalk-text">两行相同，值为0</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <g transform="translate(120,160)">
-                        <rect x="0" y="0" width="200" height="60" fill="rgba(78,205,196,0.12)" stroke="#4ECDC4"/>
-                        <text x="100" y="37" fill="#4ECDC4" font-size="16" text-anchor="middle">行列互换值不变</text>
-                        <rect x="240" y="0" width="240" height="60" fill="rgba(255,224,102,0.12)" stroke="#FFE066"/>
-                        <text x="360" y="37" fill="#FFE066" font-size="16" text-anchor="middle">交换两行 → 值变号</text>
-                        <rect x="0" y="90" width="220" height="60" fill="rgba(255,107,107,0.12)" stroke="#FF6B6B"/>
-                        <text x="110" y="127" fill="#FF6B6B" font-size="16" text-anchor="middle">某行乘k → det乘k</text>
-                        <rect x="240" y="90" width="240" height="60" fill="rgba(147,112,219,0.12)" stroke="#9370DB"/>
-                        <text x="360" y="127" fill="#9370DB" font-size="16" text-anchor="middle">一行全0 / 两行相同 → 0</text>
-                    </g>
-                </svg>
-            </div></div>
-        </div>
-
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">行列式的计算</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">例题</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\begin{vmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{vmatrix} = 1 \times 4 \times 6 = 24$$</p>
-                    </div>
-                    <p class="chalk-text small-text">上三角行列式等于主对角线元素之积</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <g transform="translate(220,180)">
-                        <rect x="0" y="0" width="210" height="210" fill="rgba(225,190,231,0.08)" stroke="#e1bee7"/>
-                        <g stroke="#e1bee7">
-                            <line x1="70" y1="0" x2="70" y2="210"/>
-                            <line x1="140" y1="0" x2="140" y2="210"/>
-                            <line x1="0" y1="70" x2="210" y2="70"/>
-                            <line x1="0" y1="140" x2="210" y2="140"/>
-                        </g>
-                        <rect x="0" y="140" width="70" height="70" fill="rgba(200,200,200,0.2)"/>
-                        <rect x="0" y="70" width="70" height="70" fill="rgba(200,200,200,0.2)"/>
-                        <rect x="70" y="140" width="70" height="70" fill="rgba(200,200,200,0.2)"/>
-                        <g fill="#fff" font-size="14" text-anchor="middle">
-                            <text x="35" y="42">a₁₁</text>
-                            <text x="105" y="112">a₂₂</text>
-                            <text x="175" y="182">a₃₃</text>
-                        </g>
-                        <line x1="0" y1="0" x2="210" y2="210" stroke="#FFE066" stroke-width="4"/>
-                    </g>
-                    <text x="350" y="430" fill="#FFE066" font-size="16" text-anchor="middle">det = a₁₁·a₂₂·a₃₃</text>
-                </svg>
-            </div></div>
-        </div>
-
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">克拉默法则</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">线性方程组的解</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$x_i = \frac{D_i}{D}$$</p>
-                    </div>
-                    <p class="chalk-text">D是系数行列式，$D_i$是将第i列替换为常数项的行列式</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <g transform="translate(110,160)">
-                        <text x="90" y="-20" fill="#e1bee7" font-size="16" text-anchor="middle">D = det(A)</text>
-                        <rect x="0" y="0" width="210" height="180" fill="rgba(225,190,231,0.08)" stroke="#e1bee7"/>
-                        <line x1="70" y1="0" x2="70" y2="180" stroke="#e1bee7"/>
-                        <line x1="140" y1="0" x2="140" y2="180" stroke="#e1bee7"/>
-                        <line x1="0" y1="60" x2="210" y2="60" stroke="#e1bee7"/>
-                        <line x1="0" y1="120" x2="210" y2="120" stroke="#e1bee7"/>
-                        <g fill="#fff" font-size="12" text-anchor="middle">
-                            <text x="35" y="38">a₁₁</text><text x="105" y="38">a₁₂</text><text x="175" y="38">a₁₃</text>
-                            <text x="35" y="98">a₂₁</text><text x="105" y="98">a₂₂</text><text x="175" y="98">a₂₃</text>
-                            <text x="35" y="158">a₃₁</text><text x="105" y="158">a₃₂</text><text x="175" y="158">a₃₃</text>
-                        </g>
-                    </g>
-                    <text x="350" y="240" fill="#ffffff" font-size="28" text-anchor="middle">→</text>
-                    <g transform="translate(400,160)">
-                        <text x="105" y="-20" fill="#FF6B6B" font-size="16" text-anchor="middle">D₁ = det(A₁)</text>
-                        <rect x="0" y="0" width="210" height="180" fill="rgba(255,107,107,0.08)" stroke="#FF6B6B"/>
-                        <line x1="70" y1="0" x2="70" y2="180" stroke="#FF6B6B"/>
-                        <line x1="140" y1="0" x2="140" y2="180" stroke="#FF6B6B"/>
-                        <line x1="0" y1="60" x2="210" y2="60" stroke="#FF6B6B"/>
-                        <line x1="0" y1="120" x2="210" y2="120" stroke="#FF6B6B"/>
-                        <rect x="0" y="0" width="70" height="180" fill="rgba(255,107,107,0.20)"/>
-                        <g fill="#fff" font-size="12" text-anchor="middle">
-                            <text x="35" y="38">b₁</text><text x="105" y="38">a₁₂</text><text x="175" y="38">a₁₃</text>
-                            <text x="35" y="98">b₂</text><text x="105" y="98">a₂₂</text><text x="175" y="98">a₂₃</text>
-                            <text x="35" y="158">b₃</text><text x="105" y="158">a₃₂</text><text x="175" y="158">a₃₃</text>
-                        </g>
-                    </g>
-                    <text x="350" y="380" fill="#FFE066" font-size="18" text-anchor="middle">x₁ = D₁ / D</text>
-                </svg>
-            </div></div>
-        </div>
-
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心内容</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">二阶、三阶行列式的计算</li>
-                        <li class="chalk-text">行列式的几何意义</li>
-                        <li class="chalk-text">行列式的性质</li>
-                        <li class="chalk-text">克拉默法则</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4">
-                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="255" fill="#FFE066" font-size="18" text-anchor="middle">行列式</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-
-    <div class="subtitle-area" id="subtitleArea"></div>
-
-    <script>
+<script>
         let currentPage = 1;
         const totalPages = 6;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
 
-        const pageContents = [
-            "二阶行列式等于ad减bc，几何意义是两个向量构成的平行四边形的面积。",
-            "三阶行列式可以用对角线法则计算，主对角线的积减去副对角线的积。",
-            "行列式有五个基本性质：行列互换值不变、两行互换值变号、某行乘k值乘k、某行全为0值为0、两行相同值为0。",
-            "上三角行列式的值等于主对角线元素之积，这是一个重要的计算技巧。",
-            "克拉默法则用行列式求解线性方程组，xi等于Di除以D。",
-            "总结：行列式是线性代数的基础工具，掌握计算方法和性质非常重要。"
-        ];
+        const subtitleScript = {
+            1: `欢迎学习行列式及其几何意义。二阶行列式等于ad减bc，它的几何意义是两个向量构成的平行四边形的面积。行列式是线性代数的基础工具，在求解线性方程组、计算面积体积等方面有广泛应用。`,
+            2: `三阶行列式可以用对角线法则计算。主对角线是从左上到右下的三条线，副对角线是从右上到左下的三条线。行列式的值等于主对角线三个元素乘积之和，减去副对角线三个元素乘积之和。`,
+            3: `行列式有五个基本性质：第一，行列互换值不变；第二，两行互换值变号；第三，某行乘k值乘k；第四，某行全为0值为0；第五，两行相同值为0。这些性质在计算行列式时非常有用。`,
+            4: `上三角行列式的值等于主对角线元素之积。这是一个重要的计算技巧。通过行变换，我们可以把一般的行列式化为上三角形式，然后直接计算主对角线元素的乘积。`,
+            5: `克拉默法则用行列式求解线性方程组。xi等于Di除以D，其中D是系数行列式，Di是将第i列替换为常数项后的行列式。克拉默法则给出了线性方程组解的显式表达式。`,
+            6: `总结一下，行列式是线性代数的基础工具。我们学习了二阶和三阶行列式的计算、行列式的几何意义、五个基本性质，以及克拉默法则。掌握这些内容对后续学习矩阵和线性方程组非常重要。`
+        };
 
         const autoPlayDurations = {
-            1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000
+            1: 18000, 2: 20000, 3: 20000, 4: 18000, 5: 20000, 6: 20000
         };
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message; indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -442,11 +474,93 @@
         }
 
         async function startTeaching() {
-            console.log('开始讲解');
+            try {
+                await waitForSDK(); updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
-        async function startAutoPlay() {
-            console.log('自动播放');
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放'; btn.style.background = '';
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -473,6 +587,11 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
         });
     </script>
 </body>

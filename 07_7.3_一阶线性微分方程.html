@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第07章 一阶线性微分方程</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第07章 一阶线性微分方程</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -281,9 +281,19 @@
             left: -300px;
             transition: left 0.5s ease;
         }
-    </style>
     
-    <script>
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
+    </style>
+<script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\(', '\)']],
@@ -317,515 +327,502 @@
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：一阶线性微分方程的标准形式 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">一阶线性微分方程</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">标准形式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$y' + P(x)y = Q(x)$$</p>
-                    </div>
-                    <ul class="chalk-list">
-                        <li class="chalk-text"><strong>线性：</strong>y和y'都是一次的</li>
-                        <li class="chalk-text"><strong>P(x)：</strong>y的系数</li>
-                        <li class="chalk-text"><strong>Q(x)：</strong>非齐次项</li>
-                    </ul>
-                    <p class="chalk-text small-text">这是工程中最常见的微分方程类型</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow1">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <!-- 标准形式框 -->
-                        <rect x="150" y="100" width="400" height="80" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="4" rx="10" filter="url(#glow1)">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="145" fill="#FF6B6B" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow1)">y' + P(x)y = Q(x)</text>
-
-                        <!-- 三个部分标注 -->
-                        <g id="part1">
-                            <circle cx="200" cy="250" r="50" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow1)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="200" y="245" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow1)">y'</text>
-                            <text x="200" y="265" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle" filter="url(#glow1)">导数项</text>
-                            <line x1="250" y1="180" x2="220" y2="210" stroke="#4ECDC4" stroke-width="2" filter="url(#glow1)">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-
-                        <g id="part2">
-                            <circle cx="350" cy="250" r="50" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow1)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="350" y="245" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow1)">P(x)y</text>
-                            <text x="350" y="265" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle" filter="url(#glow1)">线性项</text>
-                            <line x1="350" y1="180" x2="350" y2="200" stroke="#FFE066" stroke-width="2" filter="url(#glow1)">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-
-                        <g id="part3">
-                            <circle cx="500" cy="250" r="50" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow1)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="500" y="245" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow1)">Q(x)</text>
-                            <text x="500" y="265" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle" filter="url(#glow1)">非齐次项</text>
-                            <line x1="450" y1="180" x2="480" y2="210" stroke="#FF6B6B" stroke-width="2" filter="url(#glow1)">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="1s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-
-                        <!-- 标注 -->
-                        <text x="350" y="380" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow1)">一阶线性微分方程的三个组成部分</text>
-
-                        <!-- 例子 -->
-                        <rect x="150" y="420" width="400" height="60" fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" rx="10" filter="url(#glow1)">
-                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="455" fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow1)">例：y' - 2y = e³ˣ</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第2页：积分因子法 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">积分因子法</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心思想</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\mu(x) = e^{\int P(x)dx}$$</p>
-                        <p class="chalk-text small-text">积分因子</p>
-                    </div>
-                    <p class="chalk-text emphasis">解题步骤</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">求积分因子 $\mu(x)$</li>
-                        <li class="chalk-text">两边乘以 $\mu(x)$</li>
-                        <li class="chalk-text">左边变为 $(\mu(x)y)'$</li>
-                        <li class="chalk-text">积分求解</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow2">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 原方程 -->
-                        <rect x="150" y="80" width="400" height="60" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" rx="8" filter="url(#glow2)"/>
-                        <text x="350" y="115" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow2)">y' + P(x)y = Q(x)</text>
-
-                        <!-- 箭头 -->
-                        <path d="M 350 150 L 350 180" stroke="#FFE066" stroke-width="4" marker-end="url(#arrow1)" filter="url(#glow2)"/>
-                        <text x="380" y="170" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow2)">乘以μ(x)</text>
-
-                        <defs>
-                            <marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 乘以积分因子后 -->
-                        <rect x="100" y="200" width="500" height="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="8" filter="url(#glow2)">
-                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="235" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow2)">μ(x)y' + μ(x)P(x)y = μ(x)Q(x)</text>
-
-                        <!-- 箭头 -->
-                        <path d="M 350 270 L 350 300" stroke="#FFE066" stroke-width="4" marker-end="url(#arrow2)" filter="url(#glow2)"/>
-                        <text x="380" y="290" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow2)">化简</text>
-
-                        <defs>
-                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 化简后 -->
-                        <rect x="150" y="320" width="400" height="60" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="3" rx="8" filter="url(#glow2)">
-                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="355" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow2)">[μ(x)y]' = μ(x)Q(x)</text>
-
-                        <!-- 箭头 -->
-                        <path d="M 350 390 L 350 420" stroke="#FFE066" stroke-width="4" marker-end="url(#arrow3)" filter="url(#glow2)"/>
-                        <text x="380" y="410" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow2)">积分</text>
-
-                        <defs>
-                            <marker id="arrow3" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 最终解 -->
-                        <rect x="100" y="440" width="500" height="60" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" rx="8" filter="url(#glow2)"/>
-                        <text x="350" y="475" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow2)">y = (1/μ(x))∫μ(x)Q(x)dx + C</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第3页：例题1 - 求解y' - 2y = e³ˣ -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">例题1：求解 $y' - 2y = e^{3x}$</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">步骤1：找积分因子</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$P(x) = -2$$</p>
-                        <p class="chalk-text">$$\mu(x) = e^{-2x}$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">步骤2：两边乘以 $\mu(x)$</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$e^{-2x}y' - 2e^{-2x}y = e^x$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">步骤3：化简并积分</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$(e^{-2x}y)' = e^x$$</p>
-                        <p class="chalk-text">$$y = e^{3x} + Ce^{2x}$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow3">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow3)"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow3)"/>
-                        <text x="620" y="455" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow3)">x</text>
-                        <text x="95" y="85" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow3)">y</text>
-
-                        <!-- 解曲线族 -->
-                        <path d="M 100 440 Q 200 400, 300 300 Q 400 180, 500 80" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow3)"/>
-                        <path d="M 100 430 Q 200 380, 300 270 Q 400 150, 500 60" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow3)"/>
-                        <path d="M 100 420 Q 200 360, 300 240 Q 400 120, 500 40" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow3)">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 100 410 Q 200 340, 300 210 Q 400 90, 500 20" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow3)"/>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">y = e³ˣ + Ce²ˣ</text>
-                        <text x="350" y="500" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper"></div>
+</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：一阶线性微分方程的标准形式 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        一阶线性微分方程
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第7章 视频 7.3
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 微分的定义</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 微分的几何意义</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 微分的计算</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 微分的应用</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad7" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#c0392b;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad7)" font-family="serif" font-size="60" text-anchor="middle" x="300" y="100">
+                            dy/dx
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<path d="M 100 400 Q 200 200 300 300 T 500 200" fill="none" stroke="#e74c3c" stroke-width="3">
+<animate attributename="stroke-dasharray" dur="3s" repeatcount="indefinite" values="0,1000;1000,0"></animate>
+</path>
+<circle cx="300" cy="300" fill="#c0392b" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;15;8"></animate>
+</circle>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">积分因子法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心思想</p>
+<div class="formula-box">
+<p class="chalk-text">$$\mu(x) = e^{\int P(x)dx}$$</p>
+<p class="chalk-text small-text">积分因子</p>
+</div>
+<p class="chalk-text emphasis">解题步骤</p>
+<ul class="chalk-list">
+<li class="chalk-text">求积分因子 $\mu(x)$</li>
+<li class="chalk-text">两边乘以 $\mu(x)$</li>
+<li class="chalk-text">左边变为 $(\mu(x)y)'$</li>
+<li class="chalk-text">积分求解</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow2">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 原方程 -->
+<rect fill="rgba(255,107,107,0.2)" filter="url(#glow2)" height="60" rx="8" stroke="#FF6B6B" stroke-width="3" width="400" x="150" y="80"></rect>
+<text fill="#FF6B6B" filter="url(#glow2)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="115">y' + P(x)y = Q(x)</text>
+<!-- 箭头 -->
+<path d="M 350 150 L 350 180" filter="url(#glow2)" marker-end="url(#arrow1)" stroke="#FFE066" stroke-width="4"></path>
+<text fill="#FFE066" filter="url(#glow2)" font-size="16" font-weight="bold" x="380" y="170">乘以μ(x)</text>
+<defs>
+<marker id="arrow1" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FFE066" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<!-- 乘以积分因子后 -->
+<rect fill="rgba(78,205,196,0.2)" filter="url(#glow2)" height="60" rx="8" stroke="#4ECDC4" stroke-width="3" width="500" x="100" y="200">
+<animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.2;0.4;0.2"></animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#glow2)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="235">μ(x)y' + μ(x)P(x)y = μ(x)Q(x)</text>
+<!-- 箭头 -->
+<path d="M 350 270 L 350 300" filter="url(#glow2)" marker-end="url(#arrow2)" stroke="#FFE066" stroke-width="4"></path>
+<text fill="#FFE066" filter="url(#glow2)" font-size="16" font-weight="bold" x="380" y="290">化简</text>
+<defs>
+<marker id="arrow2" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FFE066" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<!-- 化简后 -->
+<rect fill="rgba(255,224,102,0.2)" filter="url(#glow2)" height="60" rx="8" stroke="#FFE066" stroke-width="3" width="400" x="150" y="320">
+<animate attributename="fill-opacity" begin="1s" dur="2s" repeatcount="indefinite" values="0.2;0.4;0.2"></animate>
+</rect>
+<text fill="#FFE066" filter="url(#glow2)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="355">[μ(x)y]' = μ(x)Q(x)</text>
+<!-- 箭头 -->
+<path d="M 350 390 L 350 420" filter="url(#glow2)" marker-end="url(#arrow3)" stroke="#FFE066" stroke-width="4"></path>
+<text fill="#FFE066" filter="url(#glow2)" font-size="16" font-weight="bold" x="380" y="410">积分</text>
+<defs>
+<marker id="arrow3" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FFE066" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<!-- 最终解 -->
+<rect fill="rgba(255,107,107,0.2)" filter="url(#glow2)" height="60" rx="8" stroke="#FF6B6B" stroke-width="3" width="500" x="100" y="440"></rect>
+<text fill="#FF6B6B" filter="url(#glow2)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="475">y = (1/μ(x))∫μ(x)Q(x)dx + C</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：例题1 - 求解y' - 2y = e³ˣ -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1：求解 $y' - 2y = e^{3x}$</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">步骤1：找积分因子</p>
+<div class="formula-box">
+<p class="chalk-text">$$P(x) = -2$$</p>
+<p class="chalk-text">$$\mu(x) = e^{-2x}$$</p>
+</div>
+<p class="chalk-text emphasis">步骤2：两边乘以 $\mu(x)$</p>
+<div class="formula-box">
+<p class="chalk-text">$$e^{-2x}y' - 2e^{-2x}y = e^x$$</p>
+</div>
+<p class="chalk-text emphasis">步骤3：化简并积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$(e^{-2x}y)' = e^x$$</p>
+<p class="chalk-text">$$y = e^{3x} + Ce^{2x}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow3">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 坐标系 -->
+<line filter="url(#glow3)" stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line filter="url(#glow3)" stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#FFE066" filter="url(#glow3)" font-size="18" font-weight="bold" x="620" y="455">x</text>
+<text fill="#FFE066" filter="url(#glow3)" font-size="18" font-weight="bold" x="95" y="85">y</text>
+<!-- 解曲线族 -->
+<path d="M 100 440 Q 200 400, 300 300 Q 400 180, 500 80" fill="none" filter="url(#glow3)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 430 Q 200 380, 300 270 Q 400 150, 500 60" fill="none" filter="url(#glow3)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 420 Q 200 360, 300 240 Q 400 120, 500 40" fill="none" filter="url(#glow3)" stroke="#FF6B6B" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<path d="M 100 410 Q 200 340, 300 210 Q 400 90, 500 20" fill="none" filter="url(#glow3)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<!-- 标注 -->
+<text fill="#FF6B6B" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="50">y = e³ˣ + Ce²ˣ</text>
+<text fill="#4ECDC4" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="500">
                             通解曲线族
-                            <animate attributeName="fill-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                        </text>
-
-                        <!-- 动画点 -->
-                        <circle r="10" fill="#FFE066" filter="url(#glow3)">
-                            <animateMotion dur="5s" repeatCount="indefinite">
-                                <mpath href="#solutionPath"/>
-                            </animateMotion>
-                        </circle>
-                        <path id="solutionPath" d="M 100 420 Q 200 360, 300 240 Q 400 120, 500 40" fill="none"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第4页：例题2 - 求解y' + y = e⁻ˣ -->
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">例题2：求解 $y' + y = e^{-x}$</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">步骤1：找积分因子</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$P(x) = 1$$</p>
-                        <p class="chalk-text">$$\mu(x) = e^x$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">步骤2：两边乘以 $e^x$</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$e^x y' + e^x y = 1$$</p>
-                        <p class="chalk-text">$$(e^x y)' = 1$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">步骤3：积分求解</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$e^x y = x + C$$</p>
-                        <p class="chalk-text">$$y = (x + C)e^{-x}$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow4">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="2" filter="url(#glow4)"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow4)"/>
-                        <text x="620" y="305" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow4)">x</text>
-                        <text x="95" y="85" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow4)">y</text>
-
-                        <!-- 解曲线族 y = (x+C)e^(-x) -->
-                        <path d="M 100 280 Q 200 250, 300 240 Q 400 250, 500 280" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow4)"/>
-                        <path d="M 100 290 Q 200 270, 300 265 Q 400 270, 500 290" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow4)"/>
-                        <path d="M 100 300 Q 200 290, 300 290 Q 400 290, 500 300" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow4)">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 100 310 Q 200 310, 300 315 Q 400 310, 500 310" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow4)"/>
-                        <path d="M 100 320 Q 200 330, 300 340 Q 400 330, 500 320" stroke="#4ECDC4" stroke-width="2" fill="none" opacity="0.3" filter="url(#glow4)"/>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow4)">y = (x + C)e⁻ˣ</text>
-                        <text x="350" y="500" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">
+                            <animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</text>
+<!-- 动画点 -->
+<circle fill="#FFE066" filter="url(#glow3)" r="10">
+<animatemotion dur="5s" repeatcount="indefinite">
+<mpath href="#solutionPath"></mpath>
+</animatemotion>
+</circle>
+<path d="M 100 420 Q 200 360, 300 240 Q 400 120, 500 40" fill="none" id="solutionPath"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第4页：例题2 - 求解y' + y = e⁻ˣ -->
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2：求解 $y' + y = e^{-x}$</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">步骤1：找积分因子</p>
+<div class="formula-box">
+<p class="chalk-text">$$P(x) = 1$$</p>
+<p class="chalk-text">$$\mu(x) = e^x$$</p>
+</div>
+<p class="chalk-text emphasis">步骤2：两边乘以 $e^x$</p>
+<div class="formula-box">
+<p class="chalk-text">$$e^x y' + e^x y = 1$$</p>
+<p class="chalk-text">$$(e^x y)' = 1$$</p>
+</div>
+<p class="chalk-text emphasis">步骤3：积分求解</p>
+<div class="formula-box">
+<p class="chalk-text">$$e^x y = x + C$$</p>
+<p class="chalk-text">$$y = (x + C)e^{-x}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow4">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 坐标系 -->
+<line filter="url(#glow4)" stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="300" y2="300"></line>
+<line filter="url(#glow4)" stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#FFE066" filter="url(#glow4)" font-size="18" font-weight="bold" x="620" y="305">x</text>
+<text fill="#FFE066" filter="url(#glow4)" font-size="18" font-weight="bold" x="95" y="85">y</text>
+<!-- 解曲线族 y = (x+C)e^(-x) -->
+<path d="M 100 280 Q 200 250, 300 240 Q 400 250, 500 280" fill="none" filter="url(#glow4)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 290 Q 200 270, 300 265 Q 400 270, 500 290" fill="none" filter="url(#glow4)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 300 Q 200 290, 300 290 Q 400 290, 500 300" fill="none" filter="url(#glow4)" stroke="#FF6B6B" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<path d="M 100 310 Q 200 310, 300 315 Q 400 310, 500 310" fill="none" filter="url(#glow4)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<path d="M 100 320 Q 200 330, 300 340 Q 400 330, 500 320" fill="none" filter="url(#glow4)" opacity="0.3" stroke="#4ECDC4" stroke-width="2"></path>
+<!-- 标注 -->
+<text fill="#FF6B6B" filter="url(#glow4)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="50">y = (x + C)e⁻ˣ</text>
+<text fill="#4ECDC4" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="500">
                             钟形曲线族
                         </text>
-
-                        <!-- 峰值标记 -->
-                        <circle cx="300" cy="290" r="8" fill="#FFE066">
-                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="320" y="285" fill="#FFE066" font-size="16">峰值</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第5页：应用-RC电路 -->
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用：RC电路充电</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">电路方程</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$RC\frac{dU_C}{dt} + U_C = E$$</p>
-                        <p class="chalk-text small-text">$U_C$是电容电压，E是电源电压</p>
-                    </div>
-                    <p class="chalk-text emphasis">化为标准形式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\frac{dU_C}{dt} + \frac{1}{RC}U_C = \frac{E}{RC}$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">解</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$U_C = E(1 - e^{-t/RC})$$</p>
-                    </div>
-                    <p class="chalk-text small-text">电容电压从0逐渐上升到E</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow5">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2" filter="url(#glow5)"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2" filter="url(#glow5)"/>
-                        <text x="620" y="455" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow5)">t</text>
-                        <text x="95" y="85" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow5)">U</text>
-
-                        <!-- 充电曲线 -->
-                        <path d="M 100 450 Q 200 300, 300 200 Q 400 150, 500 130" stroke="#4ECDC4" stroke-width="4" fill="none" filter="url(#glow5)">
-                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-                        </path>
-
-                        <!-- 渐近线 -->
-                        <line x1="100" y1="130" x2="600" y2="130" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="10,5" filter="url(#glow5)"/>
-                        <text x="610" y="135" fill="#FF6B6B" font-size="16" font-weight="bold" filter="url(#glow5)">E</text>
-
-                        <!-- 初始点 -->
-                        <circle cx="100" cy="450" r="8" fill="#FFE066" filter="url(#glow5)">
-                            <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="120" y="455" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow5)">t=0</text>
-
-                        <!-- 时间常数标记 -->
-                        <line x1="250" y1="450" x2="250" y2="200" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5" filter="url(#glow5)"/>
-                        <text x="255" y="470" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow5)">τ=RC</text>
-
-                        <!-- 动画点 -->
-                        <circle r="10" fill="#FF6B6B" filter="url(#glow5)">
-                            <animateMotion dur="5s" repeatCount="indefinite">
-                                <mpath href="#chargePath"/>
-                            </animateMotion>
-                        </circle>
-                        <path id="chargePath" d="M 100 450 Q 200 300, 300 200 Q 400 150, 500 130" fill="none"/>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#4ECDC4" font-size="20" text-anchor="middle">U = E(1 - e⁻ᵗ/ᴿᶜ)</text>
-                        <text x="350" y="500" fill="#ffffff" font-size="18" text-anchor="middle">
+<!-- 峰值标记 -->
+<circle cx="300" cy="290" fill="#FFE066" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="320" y="285">峰值</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：应用-RC电路 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：RC电路充电</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">电路方程</p>
+<div class="formula-box">
+<p class="chalk-text">$$RC\frac{dU_C}{dt} + U_C = E$$</p>
+<p class="chalk-text small-text">$U_C$是电容电压，E是电源电压</p>
+</div>
+<p class="chalk-text emphasis">化为标准形式</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dU_C}{dt} + \frac{1}{RC}U_C = \frac{E}{RC}$$</p>
+</div>
+<p class="chalk-text emphasis">解</p>
+<div class="formula-box">
+<p class="chalk-text">$$U_C = E(1 - e^{-t/RC})$$</p>
+</div>
+<p class="chalk-text small-text">电容电压从0逐渐上升到E</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow5">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 坐标系 -->
+<line filter="url(#glow5)" stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line filter="url(#glow5)" stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#FFE066" filter="url(#glow5)" font-size="18" font-weight="bold" x="620" y="455">t</text>
+<text fill="#FFE066" filter="url(#glow5)" font-size="18" font-weight="bold" x="95" y="85">U</text>
+<!-- 充电曲线 -->
+<path d="M 100 450 Q 200 300, 300 200 Q 400 150, 500 130" fill="none" filter="url(#glow5)" stroke="#4ECDC4" stroke-width="4">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="4;6;4"></animate>
+</path>
+<!-- 渐近线 -->
+<line filter="url(#glow5)" stroke="#FF6B6B" stroke-dasharray="10,5" stroke-width="2" x1="100" x2="600" y1="130" y2="130"></line>
+<text fill="#FF6B6B" filter="url(#glow5)" font-size="16" font-weight="bold" x="610" y="135">E</text>
+<!-- 初始点 -->
+<circle cx="100" cy="450" fill="#FFE066" filter="url(#glow5)" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8"></animate>
+</circle>
+<text fill="#FFE066" filter="url(#glow5)" font-size="16" font-weight="bold" x="120" y="455">t=0</text>
+<!-- 时间常数标记 -->
+<line filter="url(#glow5)" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="250" x2="250" y1="450" y2="200"></line>
+<text fill="#FFE066" filter="url(#glow5)" font-size="16" font-weight="bold" x="255" y="470">τ=RC</text>
+<!-- 动画点 -->
+<circle fill="#FF6B6B" filter="url(#glow5)" r="10">
+<animatemotion dur="5s" repeatcount="indefinite">
+<mpath href="#chargePath"></mpath>
+</animatemotion>
+</circle>
+<path d="M 100 450 Q 200 300, 300 200 Q 400 150, 500 130" fill="none" id="chargePath"></path>
+<!-- 标注 -->
+<text fill="#4ECDC4" font-size="20" text-anchor="middle" x="350" y="50">U = E(1 - e⁻ᵗ/ᴿᶜ)</text>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="500">
                             电容充电过程
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第6页：总结 -->
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">一阶线性微分方程</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$y' + P(x)y = Q(x)$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">通解公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$y = e^{-\int P(x)dx}\left[\int Q(x)e^{\int P(x)dx}dx + C\right]$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">解题关键</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">找到积分因子 $\mu(x) = e^{\int P(x)dx}$</li>
-                        <li class="chalk-text">两边乘以积分因子</li>
-                        <li class="chalk-text">化简为 $(\mu y)' = \mu Q$</li>
-                        <li class="chalk-text">积分求解</li>
-                    </ul>
-                    <p class="chalk-text small-text">广泛应用于电路、力学、化学等领域</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow6">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 中心圆 -->
-                        <circle cx="350" cy="250" r="90" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="4" filter="url(#glow6)">
-                            <animate attributeName="r" values="90;100;90" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="245" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow6)">一阶线性</text>
-                        <text x="350" y="270" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow6)">微分方程</text>
-
-                        <!-- 四个应用领域 -->
-                        <g id="app1">
-                            <circle cx="180" cy="120" r="55" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow6)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="180" y="115" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">电路</text>
-                            <text x="180" y="135" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow6)">RC/RL</text>
-                            <line x1="280" y1="200" x2="210" y2="150" stroke="#4ECDC4" stroke-width="2" filter="url(#glow6)"/>
-                        </g>
-
-                        <g id="app2">
-                            <circle cx="520" cy="120" r="55" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow6)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="520" y="115" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">力学</text>
-                            <text x="520" y="135" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow6)">阻尼振动</text>
-                            <line x1="420" y1="200" x2="490" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow6)"/>
-                        </g>
-
-                        <g id="app3">
-                            <circle cx="180" cy="380" r="55" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow6)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="180" y="375" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">化学</text>
-                            <text x="180" y="395" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow6)">反应速率</text>
-                            <line x1="280" y1="300" x2="210" y2="350" stroke="#FF6B6B" stroke-width="2" filter="url(#glow6)"/>
-                        </g>
-
-                        <g id="app4">
-                            <circle cx="520" cy="380" r="55" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3" filter="url(#glow6)">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="3s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="520" y="375" fill="#ffffff" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">经济</text>
-                            <text x="520" y="395" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#glow6)">增长模型</text>
-                            <line x1="420" y1="300" x2="490" y2="350" stroke="#9370DB" stroke-width="2" filter="url(#glow6)"/>
-                        </g>
-
-                        <!-- 标注 -->
-                        <text x="350" y="520" fill="#ffffff" font-size="20" text-anchor="middle">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：总结 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">一阶线性微分方程</p>
+<div class="formula-box">
+<p class="chalk-text">$$y' + P(x)y = Q(x)$$</p>
+</div>
+<p class="chalk-text emphasis">通解公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$y = e^{-\int P(x)dx}\left[\int Q(x)e^{\int P(x)dx}dx + C\right]$$</p>
+</div>
+<p class="chalk-text emphasis">解题关键</p>
+<ul class="chalk-list">
+<li class="chalk-text">找到积分因子 $\mu(x) = e^{\int P(x)dx}$</li>
+<li class="chalk-text">两边乘以积分因子</li>
+<li class="chalk-text">化简为 $(\mu y)' = \mu Q$</li>
+<li class="chalk-text">积分求解</li>
+</ul>
+<p class="chalk-text small-text">广泛应用于电路、力学、化学等领域</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow6">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 中心圆 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" filter="url(#glow6)" r="90" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="90;100;90"></animate>
+</circle>
+<text fill="#FFE066" filter="url(#glow6)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="245">一阶线性</text>
+<text fill="#FFE066" filter="url(#glow6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="270">微分方程</text>
+<!-- 四个应用领域 -->
+<g id="app1">
+<circle cx="180" cy="120" fill="rgba(78,205,196,0.3)" filter="url(#glow6)" r="55" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="180" y="115">电路</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="180" y="135">RC/RL</text>
+<line filter="url(#glow6)" stroke="#4ECDC4" stroke-width="2" x1="280" x2="210" y1="200" y2="150"></line>
+</g>
+<g id="app2">
+<circle cx="520" cy="120" fill="rgba(255,224,102,0.3)" filter="url(#glow6)" r="55" stroke="#FFE066" stroke-width="3">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="520" y="115">力学</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="520" y="135">阻尼振动</text>
+<line filter="url(#glow6)" stroke="#FFE066" stroke-width="2" x1="420" x2="490" y1="200" y2="150"></line>
+</g>
+<g id="app3">
+<circle cx="180" cy="380" fill="rgba(255,107,107,0.3)" filter="url(#glow6)" r="55" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="fill-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="180" y="375">化学</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="180" y="395">反应速率</text>
+<line filter="url(#glow6)" stroke="#FF6B6B" stroke-width="2" x1="280" x2="210" y1="300" y2="350"></line>
+</g>
+<g id="app4">
+<circle cx="520" cy="380" fill="rgba(147,112,219,0.3)" filter="url(#glow6)" r="55" stroke="#9370DB" stroke-width="3">
+<animate attributename="fill-opacity" begin="3s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="520" y="375">经济</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="520" y="395">增长模型</text>
+<line filter="url(#glow6)" stroke="#9370DB" stroke-width="2" x1="420" x2="490" y1="300" y2="350"></line>
+</g>
+<!-- 标注 -->
+<text fill="#ffffff" font-size="20" text-anchor="middle" x="350" y="520">
                             广泛的应用领域
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- 控制栏 -->
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<!-- 字幕区域 -->
+<div class="subtitle-area" id="subtitleArea"></div>
 
-    <!-- 控制栏 -->
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
 
-    <!-- 字幕区域 -->
-    <div class="subtitle-area" id="subtitleArea"></div>
+        window.AvatarPlatform = AvatarPlatform;
+        window.SDKEvents = SDKEvents;
+        window.PlayerEvents = PlayerEvents;
+        window.RecorderEvents = RecorderEvents;
+        window.UserMedia = UserMedia;
 
-    <script>
+        console.log('✅ 讯飞官方SDK模块已加载');
+        console.log('SDK版本:', AvatarPlatform.getVersion());
+
+    } catch (error) {
+        console.error('❌ SDK模块加载失败:', error);
+    }
+
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
+
+<script>
         let currentPage = 1;
         const totalPages = 6;
         let avatarPlatform = null;
         let isConnected = false;
+        let isTeaching = false;
         let isAutoPlaying = false;
 
-        const pageContents = [
-            "一阶线性微分方程的标准形式是y'加P(x)y等于Q(x)，其中y和y'都是一次的，这是工程中最常见的微分方程类型。",
-            "积分因子法是求解一阶线性微分方程的核心方法。积分因子μ(x)等于e的∫P(x)dx次方，两边乘以积分因子后，左边可以化简为μ(x)y的导数。",
-            "例如求解y'减2y等于e的3x次方，积分因子是e的负2x次方，最终得到通解y等于e的3x次方加C乘以e的2x次方。",
-            "再看一个例题，求解y'加y等于e的负x次方，积分因子是e的x次方，最终得到y等于x加C乘以e的负x次方，这是一组钟形曲线。",
-            "一阶线性微分方程在RC电路中有重要应用。电容充电过程满足方程RC乘以dU/dt加U等于E，解得U等于E乘以1减e的负t除以RC次方，电压从0逐渐上升到E。",
-            "总结：一阶线性微分方程的通解公式是y等于e的负∫P(x)dx次方乘以∫Q(x)e的∫P(x)dx次方dx加C。这类方程广泛应用于电路、力学、化学、经济等领域。"
-        ];
+        // === 字幕脚本设置 ===
+        const subtitleScript = {
+            1: `欢迎学习一阶线性微分方程。一阶线性微分方程的标准形式是y'加P(x)y等于Q(x)，其中y和y'都是一次的。这是工程和科学中最常见的微分方程类型，掌握它的求解方法非常重要。`,
+            2: `积分因子法是求解一阶线性微分方程的核心方法。关键步骤是找到积分因子μ(x)，它等于e的∫P(x)dx次方。两边同时乘以积分因子后，方程左边可以化简为μ(x)y的导数，这样就可以直接积分求解了。`,
+            3: `让我们看一个具体例子：求解y'减2y等于e的3x次方。首先确定P(x)等于负2，积分因子是e的负2x次方。两边乘以积分因子后积分，最终得到通解y等于e的3x次方加C乘以e的2x次方。`,
+            4: `再看另一个例题：求解y'加y等于e的负x次方。这里P(x)等于1，积分因子是e的x次方。按照标准步骤求解，最终得到y等于x加C乘以e的负x次方。这是一组钟形曲线，在不同的C值下形成曲线族。`,
+            5: `一阶线性微分方程在RC电路中有重要应用。电容充电过程满足方程RC乘以dU除以dt加U等于E。用积分因子法求解，得到U等于E乘以括号1减e的负t除以RC次方。电压从0开始，逐渐上升，最终趋近于电源电压E。`,
+            6: `总结一下，一阶线性微分方程的通解公式是：y等于e的负∫P(x)dx次方，乘以括号∫Q(x)e的∫P(x)dx次方dx加C。这类方程广泛应用于电路分析、力学系统、化学反应速率、经济增长模型等众多领域。`
+        };
 
         const autoPlayDurations = {
-            1: 10000,
-            2: 12000,
-            3: 12000,
-            4: 12000,
-            5: 12000,
-            6: 12000
+            1: 16000,
+            2: 20000,
+            3: 20000,
+            4: 20000,
+            5: 22000,
+            6: 20000
         };
+
+        // 虚拟人相关函数
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') {
+                    indicator.classList.add('connected');
+                } else if (type === 'error') {
+                    indicator.classList.add('error');
+                } else if (type === 'connecting') {
+                    indicator.classList.add('connecting');
+                } else if (type === 'recording') {
+                    indicator.classList.add('recording');
+                }
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                }, 10000);
+
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -860,11 +857,190 @@
         }
 
         async function startTeaching() {
-            console.log('开始讲解');
+            try {
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
+
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({
+                    useInlinePlayer: true
+                });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+
+                        setTimeout(() => {
+                            speakContent(currentPage);
+                        }, 1000);
+                    })
+                    .on('disconnected', (err) => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                        if (err) {
+                            console.error('❌ 连接异常断开:', err);
+                        }
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 虚拟人错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        isTeaching = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    })
+                    .on('tts_duration', (data) => {
+                        console.log('📊 TTS时长信息:', data);
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                await avatarPlatform.start({
+                    wrapper: document.getElementById('avatarWrapper')
+                });
+
+                console.log('🎓 虚拟人教学系统启动完成');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                alert(`启动失败：${error.message}\n\n请检查控制台获取详细错误信息。`);
+            }
+        }
+
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                return;
+            }
+
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+
+            try {
+                await avatarPlatform.writeText(content, {
+                    nlp: false
+                });
+
+                console.log(`✅ 虚拟人讲解第${pageNum}页`);
+                updateSubtitle(content);
+            } catch (error) {
+                console.error('❌ 虚拟人讲解失败:', error);
+            }
         }
 
         async function startAutoPlay() {
-            console.log('自动播放');
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.body.classList.remove('recording-mode');
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = '';
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -891,6 +1067,16 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            }
+
+            if (avatarPlatform && isConnected) {
+                avatarPlatform.stop();
+            }
         });
     </script>
 </body>

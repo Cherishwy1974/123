@@ -1,18 +1,19 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>02_2.3_极限的运算法则</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   02_2.3_极限的运算法则
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://d3js.org/d3.v7.min.js">
+</script>
+<style>
+   * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Serif SC', serif;
             background: #1a1a2e;
@@ -60,6 +61,17 @@
         .page.active {
             opacity: 1; visibility: visible;
         }
+        /* 封面页特殊样式 - 覆盖grid布局 */
+        .page.cover-page {
+            display: flex !important;
+            grid-template-columns: none !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
         .chalk-text {
             color: #ffffff;
             font-family: 'Noto Serif SC', serif;
@@ -103,32 +115,74 @@
             padding: 0 20px; line-height: 1.4;
         }
         .control-bar {
-            position: fixed; left: -220px; top: 50%;
-            transform: translateY(-50%); width: 250px;
-            background: rgba(30,30,30,0.95);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 10px; z-index: 200;
-            border-radius: 0 15px 15px 0;
-            padding: 20px 15px; transition: left 0.3s ease;
-        }
-        .control-bar:hover { left: 0; }
-        .control-bar::before {
-            content: '▶️'; position: absolute;
-            top: 50%; right: -25px;
+            position: fixed;
+            left: -240px;
+            top: 50%;
             transform: translateY(-50%);
-            background: rgba(30,30,30,0.95);
-            padding: 10px 5px; border-radius: 0 10px 10px 0;
-            font-size: 0.8rem; writing-mode: vertical-lr;
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 200;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .control-bar:hover { 
+            left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
+        }
+        .control-bar::before {
+            content: '▶️';
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
+            writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
         }
         .btn {
-            padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666);
-            color: white; border: none; border-radius: 8px;
-            cursor: pointer; font-size: 13px; font-weight: bold;
-            transition: all 0.3s ease; width: 100%; text-align: center;
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
-        .btn:hover { background: linear-gradient(135deg, #555, #777); transform: translateY(-2px); }
-        .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+        .btn:hover { 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+        }
+        .btn.primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
+        }
 
         /* 坐标系样式 - 改为白色 */
         .viz-panel .axis path,
@@ -177,46 +231,121 @@
         .recording-mode .control-bar {
             left: -300px; transition: left 0.5s ease;
         }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">
+    等待连接
+   </div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper">
+</div>
+</div>
+<div class="content-area" id="contentArea">
+<div class="page active cover-page" data-page="1">
+<div style="display: flex !important; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+        极限的运算法则
+       </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+        第2章 视频 2.3
+       </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+         ✓ 极限四则运算法则
+        </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+         ✓ 极限运算的充要条件
+        </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+         ✓ 复合函数的极限
+        </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+         ✓ 典型例题与应用
+        </p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad1" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#3498db;stop-opacity:1">
+</stop>
+<stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1">
+</stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad1)" font-family="serif" font-size="60" text-anchor="middle" x="300" y="120">
+         lim
+         <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</text>
+<line stroke="#3498db" stroke-width="3" x1="100" x2="500" y1="250" y2="250">
+</line>
+<circle cx="500" cy="250" fill="#e74c3c" r="15">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="10;20;10">
+</animate>
+</circle>
+<path d="M 100 250 Q 300 150 500 250" fill="none" stroke="#2ecc71" stroke-width="3">
+<animate attributename="stroke-dasharray" dur="3s" repeatcount="indefinite" values="0,1000;1000,0">
+</animate>
+</path>
+<text fill="#e74c3c" font-size="24" text-anchor="middle" x="500" y="300">
+         x→x₀
+        </text>
+</svg>
+</div>
+</div>
+</div>
 
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-
-        <div class="content-area" id="contentArea">
-            <!-- Pages will be dynamically generated here -->
-        </div>
-
-        <div class="subtitle-area" id="subtitleArea">
-            欢迎学习极限的运算法则！点击"开始讲课"启动虚拟人讲师。
-        </div>
-
-        <div class="control-bar">
-            <div style="color: white; margin-bottom: 1rem; text-align: center; font-size: 12px;">
-                第 <span id="currentPage">1</span> 页 / 共 <span id="totalPages">9</span> 页
-            </div>
-            <div id="connectionStatus" style="color: #ffab40; margin-bottom: 1rem; text-align: center; font-size: 11px;">
-                虚拟人未连接
-            </div>
-            <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-            <button class="btn primary" onclick="startTeaching()" id="startBtn">🎀 开始讲课</button>
-            <button class="btn" onclick="nextPage()">下一页 ➡️</button>
-            <button class="btn" onclick="restart()">🔄 重新开始</button>
-            <button class="btn" onclick="startAutoPlay()" id="autoPlayBtn" style="background: linear-gradient(135deg, #2196f3, #1976d2);">🎬 自动播放</button>
-            <div style="color: #ffab40; margin-top: 0.5rem; text-align: center; font-size: 10px; line-height: 1.2;">
-                💡 录制提示:<br>
-                点击自动播放后立即开始录屏<br>
-                系统会自动完成全部演示
-            </div>
-        </div>
+<!-- Pages will be dynamically generated here -->
+</div>
+<div class="subtitle-area" id="subtitleArea">
+    欢迎学习极限的运算法则！点击"开始讲课"启动虚拟人讲师。
+   </div>
+<div class="control-bar">
+<div style="color: white; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+     第
+     <span id="currentPage">
+      1
+     </span>
+     页 / 共
+     <span id="totalPages">
+      9
+     </span>
+     页
     </div>
-
-    <script>
-        window.MathJax = {
+<div id="connectionStatus" style="color: #ffab40; margin-bottom: 1rem; text-align: center; font-size: 11px;">
+     虚拟人未连接
+    </div>
+<button class="btn" onclick="previousPage()">
+     ⬅️ 上一页
+    </button>
+<button class="btn primary" id="startBtn" onclick="startTeaching()">
+     🎀 开始讲课
+    </button>
+<button class="btn" onclick="nextPage()">
+     下一页 ➡️
+    </button>
+<button class="btn" onclick="restart()">
+     🔄 重新开始
+    </button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()" style="background: linear-gradient(135deg, #2196f3, #1976d2);">
+     🎬 自动播放
+    </button>
+<div style="color: #ffab40; margin-top: 0.5rem; text-align: center; font-size: 10px; line-height: 1.2;">
+     💡 录制提示:
+     <br/>
+     点击自动播放后立即开始录屏
+     <br/>
+     系统会自动完成全部演示
+    </div>
+</div>
+</div>
+<script>
+   window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
@@ -229,12 +358,12 @@
                 }
             }
         };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <!-- 讯飞官方SDK - 按照成功案例的加载方式 -->
-    <script type="module">
-        try {
+  </script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<!-- 讯飞官方SDK - 按照成功案例的加载方式 -->
+<script type="module">
+   try {
                     // 根据成功案例,导入讯飞官方SDK
         const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
 
@@ -256,10 +385,9 @@
 
         // 触发自定义事件,通知SDK已准备就绪
         window.dispatchEvent(new CustomEvent('sdkReady'));
-    </script>
-
-    <script>
-        let avatarPlatform = null;
+  </script>
+<script>
+   let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let currentPage = 1;
@@ -362,49 +490,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             const contentArea = document.getElementById('contentArea');
             
-            // 先创建封面页
-            const coverPage = document.createElement('div');
-            coverPage.className = 'page active';
-            coverPage.dataset.page = '1';
-            coverPage.innerHTML = `
-                <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-                    <div style="flex: 1; text-align: center; padding: 2rem;">
-                        <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-                            极限的运算法则
-                        </h1>
-                        <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-                            第2章 视频 2.3
-                        </p>
-                        <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限的四则运算法则</p>
-                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 复合函数的极限</p>
-                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 运算法则的应用</p>
-                            <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 运算法则的前提条件</p>
-                        </div>
-                    </div>
-                    <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                        <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
-                            <defs>
-                                <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#e74c3c;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <text x="150" y="140" font-size="60" fill="url(#grad3)" text-anchor="middle" font-family="serif">+</text>
-                            <text x="250" y="140" font-size="60" fill="url(#grad3)" text-anchor="middle" font-family="serif">−</text>
-                            <text x="350" y="140" font-size="60" fill="url(#grad3)" text-anchor="middle" font-family="serif">×</text>
-                            <text x="450" y="140" font-size="60" fill="url(#grad3)" text-anchor="middle" font-family="serif">÷</text>
-                            <circle cx="300" cy="300" r="80" fill="none" stroke="#f39c12" stroke-width="3">
-                                <animate attributeName="r" values="80;95;80" dur="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="300" y="315" font-size="28" fill="#ecf0f1" text-anchor="middle">运算法则</text>
-                        </svg>
-                    </div>
-                </div>
-            `;
-            contentArea.appendChild(coverPage);
-            
-            // 再创建内容页
+            // 封面页已经在HTML中存在，不需要动态创建
+
+            // 创建内容页
             boardContent.forEach((content, i) => {
                 const page = document.createElement('div');
                 page.className = 'page';
@@ -486,7 +574,18 @@
         }
 
         function drawPageGraph(pageNum) {
+            // 封面页（第1页）不需要绘制图像，已有静态SVG
+            if (pageNum === 1) {
+                console.log('✅ 第1页是封面页，跳过图像绘制');
+                return;
+            }
+
             const svg = d3.select(`#viz-${pageNum}`);
+            if (svg.empty()) {
+                console.log(`⚠️ 未找到#viz-${pageNum}的SVG元素`);
+                return;
+            }
+
             svg.selectAll("*").remove();
 
             const container = svg.node().parentNode;
@@ -495,7 +594,6 @@
             svg.attr('viewBox', `0 0 ${width} ${height}`);
 
             switch(pageNum) {
-                case 1: drawIntroGraph(svg, width, height); break;
                 case 2: drawPrerequGraph(svg, width, height); break;
                 case 3: drawAdditionGraph(svg, width, height); break;
                 case 4: drawSubtractionGraph(svg, width, height); break;
@@ -995,6 +1093,6 @@
                 avatarPlatform.stop();
             }
         });
-    </script>
+  </script>
 </body>
 </html>

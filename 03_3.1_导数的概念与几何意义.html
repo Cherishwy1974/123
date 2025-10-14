@@ -160,61 +160,79 @@
 
         /* 左侧控制栏 */
         .control-bar {
-            position: fixed; 
-            left: -220px; 
+            position: fixed;
+            left: -240px;
             top: 50%;
-            transform: translateY(-50%); 
-            width: 250px;
-            background: rgba(30,30,30,0.95);
-            display: flex; 
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
             justify-content: center;
-            gap: 10px; 
+            gap: 12px;
             z-index: 200;
-            border-radius: 0 15px 15px 0;
-            padding: 20px 15px; 
-            transition: left 0.3s ease;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .control-bar:hover { 
             left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
         
         .control-bar::before {
-            content: '▶️'; 
+            content: '▶️';
             position: absolute;
-            top: 50%; 
-            right: -25px;
+            top: 50%;
+            right: -30px;
             transform: translateY(-50%);
-            background: rgba(30,30,30,0.95);
-            padding: 10px 5px; 
-            border-radius: 0 10px 10px 0;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
             writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
         }
         
         .btn {
-            padding: 12px 20px; 
-            background: linear-gradient(135deg, #4a4a4a, #666);
-            color: white; 
-            border: none; 
-            border-radius: 8px;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease; 
-            width: 100%; 
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
             text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
         
         .btn:hover { 
-            background: linear-gradient(135deg, #555, #777); 
-            transform: translateY(-2px); 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
         }
         
         .btn.primary { 
-            background: linear-gradient(135deg, #FF69B4, #FF1493); 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
         }
         
         .btn:disabled {
@@ -324,7 +342,46 @@
 
     <div id="slide-container" class="slide-container flex-grow">
         
-        <div class="slide active"><div class="slide-content"><div class="blackboard-text w-1/2 text-center"><h1 class="text-6xl font-bold">导数的核心概念与几何意义</h1><p class="text-2xl mt-4 text-gray-300">第3章 视频 3.1</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" /><stop offset="100%" style="stop-color:#e74c3c;stop-opacity:1" /></linearGradient></defs><text x="300" y="150" font-size="80" fill="url(#grad1)" text-anchor="middle" font-family="serif">f'(x)<animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/></text><circle cx="200" cy="300" r="40" fill="none" stroke="#3498db" stroke-width="3"><animate attributeName="r" values="40;50;40" dur="2s" repeatCount="indefinite"/></circle><circle cx="400" cy="300" r="40" fill="none" stroke="#e74c3c" stroke-width="3"><animate attributeName="r" values="40;50;40" dur="2s" begin="1s" repeatCount="indefinite"/></circle><line x1="200" y1="340" x2="400" y2="340" stroke="#f39c12" stroke-width="2" stroke-dasharray="5,5"><animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite"/></line><text x="300" y="380" font-size="24" fill="#ecf0f1" text-anchor="middle">变化率</text></svg></div></div></div>
+        <div class="slide active">
+            <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+                <div style="flex: 1; text-align: center; padding: 2rem;">
+                    <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        导数的概念与几何意义
+                    </h1>
+                    <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第3章 视频 3.1
+                    </p>
+                    <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 导数的定义</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 导数的几何意义</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 基本求导公式</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 导数的应用</p>
+                    </div>
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+<defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#f39c12;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <text x="300" y="100" font-size="50" fill="url(#grad1)" text-anchor="middle" font-family="serif">
+                            dy/dx
+                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                        </text>
+                        <path d="M 100 350 Q 250 150 400 350" stroke="#3498db" stroke-width="3" fill="none"/>
+                        <line x1="200" y1="200" x2="350" y2="280" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="x2" values="200;350" dur="2s" repeatCount="indefinite"/>
+                        </line>
+                        <circle cx="275" cy="240" r="6" fill="#ffd700">
+                            <animate attributeName="r" values="6;10;6" dur="1.5s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">导数引入</h2><p class="mt-4 leading-relaxed">在日常生活中，我们经常需要了解某个瞬间的变化速度。</p><ul class="list-disc list-inside mt-6 space-y-4"><li><strong>生活例子：</strong>速度表读数、温度瞬时变化</li><li><strong>核心概念：</strong>导数 = 瞬时变化率</li></ul><p class="mt-8 leading-relaxed text-gray-400">导数告诉我们某个瞬间的变化速度，就像驾驶时看到的实时车速。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><circle cx="300" cy="250" r="120" fill="none" stroke="#3498db" stroke-width="4"/><g transform="translate(300,250)"><line x1="0" y1="0" x2="0" y2="-100" stroke="#e74c3c" stroke-width="6" transform="rotate(0)"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/></line><circle cx="0" cy="-100" r="8" fill="#e74c3c"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/></circle></g><text x="300" y="420" font-size="28" fill="#f39c12" text-anchor="middle">速度 = 位置的导数</text><g opacity="0"><text x="450" y="150" font-size="24" fill="#2ecc71" text-anchor="middle">v = ds/dt</text><animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite"/></g></svg></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">极限定义</h2><p class="mt-4 leading-relaxed">导数的严格定义基于极限的概念。</p><div class="text-center mt-10 math-formula">$\displaystyle f'(x_0)=\lim_{\Delta x\to0}\frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}$</div><p class="mt-8 leading-relaxed"><strong>坡度理解：</strong>割线 → 切线</p><p class="mt-4 text-gray-400">导数就是函数值变化量与自变量变化量的比值，在Δx趋向 0 时得到切线斜率。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><line x1="50" y1="450" x2="550" y2="450" stroke="#ecf0f1" stroke-width="2"/><line x1="50" y1="450" x2="50" y2="50" stroke="#ecf0f1" stroke-width="2"/><path d="M 100 400 Q 300 150, 500 350" stroke="#3498db" stroke-width="4" fill="none"/><circle cx="250" cy="220" r="6" fill="#e74c3c"/><circle cx="350" cy="260" r="6" fill="#e74c3c" opacity="0"><animate attributeName="opacity" values="0;1;1;1;1" dur="6s" repeatCount="indefinite"/></circle><line x1="200" y1="180" x2="400" y2="300" stroke="#f39c12" stroke-width="3" stroke-dasharray="5,5" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" dur="6s" repeatCount="indefinite"/><animate attributeName="x2" values="400;280;280;280;400" dur="6s" repeatCount="indefinite"/><animate attributeName="y2" values="300;230;230;230;300" dur="6s" repeatCount="indefinite"/></line><line x1="180" y1="180" x2="320" y2="260" stroke="#2ecc71" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;1;1" dur="6s" repeatCount="indefinite"/></line><text x="400" y="150" font-size="20" fill="#f39c12" opacity="0">割线<animate attributeName="opacity" values="0;1;1;0;0" dur="6s" repeatCount="indefinite"/></text><text x="350" y="200" font-size="20" fill="#2ecc71" opacity="0">切线<animate attributeName="opacity" values="0;0;0;1;1" dur="6s" repeatCount="indefinite"/></text></svg></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">几何意义</h2><p class="mt-4 leading-relaxed">导数不仅是计算，更是几何直观。</p><ul class="list-disc list-inside mt-6 space-y-4"><li><strong>切线斜率</strong> = 导数值</li><li><strong>正值</strong>表示上坡，<strong>负值</strong>表示下坡</li><li><strong>例：</strong>$y=x^2$ 在 $x=1$ 处导数为 2</li></ul><p class="mt-8 leading-relaxed text-gray-400">斜率告诉我们曲线在该点是上升还是下降。</p></div><div class="animation-pane w-1/2"><svg class="w-full h-full" viewBox="0 0 600 500"><line x1="50" y1="400" x2="550" y2="400" stroke="#ecf0f1" stroke-width="2"/><line x1="300" y1="450" x2="300" y2="50" stroke="#ecf0f1" stroke-width="2"/><path d="M 150 380 Q 300 200, 450 380" stroke="#3498db" stroke-width="4" fill="none"/><circle cx="350" cy="287" r="6" fill="#e74c3c"/><line x1="250" y1="187" x2="450" y2="387" stroke="#2ecc71" stroke-width="3"/><g opacity="0"><line x1="350" y1="287" x2="400" y2="287" stroke="#f39c12" stroke-width="2"/><line x1="400" y1="287" x2="400" y2="387" stroke="#f39c12" stroke-width="2"/><text x="420" y="337" font-size="18" fill="#f39c12">Δy</text><text x="370" y="275" font-size="18" fill="#f39c12">Δx</text><text x="470" y="350" font-size="20" fill="#2ecc71">斜率=2</text><animate attributeName="opacity" values="0;0;1;1;0" dur="6s" repeatCount="indefinite"/></g></svg></div></div></div>

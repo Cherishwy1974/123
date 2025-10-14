@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第08章 全微分、梯度与方向导数</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第08章 全微分、梯度与方向导数</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -277,9 +277,19 @@
             left: -300px;
             transition: left 0.5s ease;
         }
-    </style>
     
-    <script>
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
+    </style>
+<script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\(', '\)']],
@@ -298,474 +308,449 @@
             options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：全微分的概念 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">全微分的概念</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">全微分的定义</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$dz = \frac{\partial z}{\partial x}dx + \frac{\partial z}{\partial y}dy$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">几何意义</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">全微分是函数增量的线性主部</li>
-                        <li class="chalk-text">用切平面近似曲面</li>
-                    </ul>
-                    <p class="chalk-text emphasis">例：$z = x^2 + xy$</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$dz = (2x+y)dx + x dy$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow1">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 3D坐标系 -->
-                        <line x1="350" y1="400" x2="150" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
-                        <line x1="350" y1="400" x2="550" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
-                        <line x1="350" y1="400" x2="350" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow1)"/>
-
-                        <!-- 曲面 -->
-                        <path d="M 250 280 Q 350 260, 450 280" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 250 320 Q 350 300, 450 320" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow1)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-                        </path>
-
-                        <!-- 切平面 -->
-                        <path d="M 250 270 L 450 270 L 450 330 L 250 330 Z" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow1)">
-                            <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
-                        </path>
-
-                        <!-- 增量 -->
-                        <line x1="350" y1="300" x2="400" y2="300" stroke="#FFE066" stroke-width="3" filter="url(#glow1)"/>
-                        <text x="410" y="305" fill="#FFE066" font-size="16" font-weight="bold">dx</text>
-
-                        <line x1="400" y1="300" x2="400" y2="280" stroke="#FFE066" stroke-width="3" filter="url(#glow1)"/>
-                        <text x="410" y="290" fill="#FFE066" font-size="16" font-weight="bold">dy</text>
-
-                        <line x1="350" y1="300" x2="350" y2="250" stroke="#FF6B6B" stroke-width="4" filter="url(#glow1)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-                        </line>
-                        <text x="360" y="275" fill="#FF6B6B" font-size="18" font-weight="bold">dz</text>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="22" text-anchor="middle" font-weight="bold">dz = f_x dx + f_y dy</text>
-                        <text x="350" y="520" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold">
-                            全微分的几何意义
-                        </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第2页：梯度的概念 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">梯度的概念</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">梯度的定义</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\nabla f = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right)$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">梯度的性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">梯度是一个向量</li>
-                        <li class="chalk-text">指向函数增长最快的方向</li>
-                        <li class="chalk-text">梯度的模是最大变化率</li>
-                    </ul>
-                    <p class="chalk-text emphasis">例：$f = x^2 + y^2$</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\nabla f = (2x, 2y)$$</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow2">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- 等高线 -->
-                        <circle cx="350" cy="300" r="50" fill="none" stroke="#4ECDC4" stroke-width="2" filter="url(#glow2)">
-                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="4s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="350" cy="300" r="100" fill="none" stroke="#4ECDC4" stroke-width="2" filter="url(#glow2)">
-                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="4s" begin="0.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="350" cy="300" r="150" fill="none" stroke="#4ECDC4" stroke-width="2" filter="url(#glow2)">
-                            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="4s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-
-                        <!-- 梯度向量 -->
-                        <line x1="350" y1="300" x2="450" y2="300" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowGrad)" filter="url(#glow2)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-                        </line>
-                        <text x="460" y="305" fill="#FF6B6B" font-size="20" font-weight="bold">∇f</text>
-
-                        <line x1="350" y1="300" x2="420" y2="230" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowGrad2)" filter="url(#glow2)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                        </line>
-
-                        <line x1="350" y1="300" x2="280" y2="230" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowGrad3)" filter="url(#glow2)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </line>
-
-                        <defs>
-                            <marker id="arrowGrad" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#FF6B6B"/>
-                            </marker>
-                            <marker id="arrowGrad2" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#FF6B6B"/>
-                            </marker>
-                            <marker id="arrowGrad3" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#FF6B6B"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 中心点 -->
-                        <circle cx="350" cy="300" r="10" fill="#FFE066" filter="url(#glow2)">
-                            <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="22" text-anchor="middle" font-weight="bold">梯度垂直于等高线</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper"></div>
+</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：全微分的概念 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        全微分梯度与方向导数
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第8章 视频 8.2
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 导数的定义</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 导数的几何意义</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 基本求导公式</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 导数的应用</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad8" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad8)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="100">
+                            ∂z/∂x
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<ellipse cx="300" cy="280" fill="none" rx="150" ry="80" stroke="#9b59b6" stroke-width="3">
+<animate attributename="rx" dur="2s" repeatcount="indefinite" values="150;160;150"></animate>
+</ellipse>
+<line stroke="#8e44ad" stroke-width="2" x1="200" x2="400" y1="220" y2="340"></line>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">梯度的概念</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">梯度的定义</p>
+<div class="formula-box">
+<p class="chalk-text">$$\nabla f = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right)$$</p>
+</div>
+<p class="chalk-text emphasis">梯度的性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">梯度是一个向量</li>
+<li class="chalk-text">指向函数增长最快的方向</li>
+<li class="chalk-text">梯度的模是最大变化率</li>
+</ul>
+<p class="chalk-text emphasis">例：$f = x^2 + y^2$</p>
+<div class="formula-box">
+<p class="chalk-text">$$\nabla f = (2x, 2y)$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow2">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 等高线 -->
+<circle cx="350" cy="300" fill="none" filter="url(#glow2)" r="50" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="stroke-opacity" dur="4s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</circle>
+<circle cx="350" cy="300" fill="none" filter="url(#glow2)" r="100" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="stroke-opacity" begin="0.5s" dur="4s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</circle>
+<circle cx="350" cy="300" fill="none" filter="url(#glow2)" r="150" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="stroke-opacity" begin="1s" dur="4s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</circle>
+<!-- 梯度向量 -->
+<line filter="url(#glow2)" marker-end="url(#arrowGrad)" stroke="#FF6B6B" stroke-width="5" x1="350" x2="450" y1="300" y2="300">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.7;1;0.7"></animate>
+</line>
+<text fill="#FF6B6B" font-size="20" font-weight="bold" x="460" y="305">∇f</text>
+<line filter="url(#glow2)" marker-end="url(#arrowGrad2)" stroke="#FF6B6B" stroke-width="5" x1="350" x2="420" y1="300" y2="230">
+<animate attributename="stroke-opacity" begin="0.5s" dur="2s" repeatcount="indefinite" values="0.7;1;0.7"></animate>
+</line>
+<line filter="url(#glow2)" marker-end="url(#arrowGrad3)" stroke="#FF6B6B" stroke-width="5" x1="350" x2="280" y1="300" y2="230">
+<animate attributename="stroke-opacity" begin="1s" dur="2s" repeatcount="indefinite" values="0.7;1;0.7"></animate>
+</line>
+<defs>
+<marker id="arrowGrad" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#FF6B6B" points="0,0 12,6 0,12"></polygon>
+</marker>
+<marker id="arrowGrad2" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#FF6B6B" points="0,0 12,6 0,12"></polygon>
+</marker>
+<marker id="arrowGrad3" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#FF6B6B" points="0,0 12,6 0,12"></polygon>
+</marker>
+</defs>
+<!-- 中心点 -->
+<circle cx="350" cy="300" fill="#FFE066" filter="url(#glow2)" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="10;14;10"></animate>
+</circle>
+<!-- 标注 -->
+<text fill="#FF6B6B" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="50">梯度垂直于等高线</text>
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="520">
                             梯度指向函数增长最快的方向
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第3页：方向导数 -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">方向导数</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">方向导数的定义</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\frac{\partial f}{\partial l} = \nabla f \cdot \vec{l}$$</p>
-                        <p class="chalk-text small-text">$\vec{l}$是单位方向向量</p>
-                    </div>
-                    <p class="chalk-text emphasis">计算公式</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\frac{\partial f}{\partial l} = f_x \cos\alpha + f_y \sin\alpha$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">最大方向导数</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">沿梯度方向最大</li>
-                        <li class="chalk-text">最大值为 $|\nabla f|$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <defs>
-                            <filter id="glow3">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                            <marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
-                            </marker>
-                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
-                            </marker>
-                            <marker id="arrow3" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
-                            </marker>
-                            <marker id="arrow4" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#FF6B6B"/>
-                            </marker>
-                        </defs>
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="2" filter="url(#glow3)"/>
-                        <line x1="350" y1="100" x2="350" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow3)"/>
-
-                        <!-- 多个方向 -->
-                        <line x1="350" y1="300" x2="500" y2="300" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow1)" filter="url(#glow3)">
-                            <animate attributeName="stroke-opacity" values="0.5;0.8;0.5" dur="3s" repeatCount="indefinite"/>
-                        </line>
-                        <line x1="350" y1="300" x2="480" y2="220" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow2)" filter="url(#glow3)">
-                            <animate attributeName="stroke-opacity" values="0.5;0.8;0.5" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-                        </line>
-                        <line x1="350" y1="300" x2="420" y2="180" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow3)" filter="url(#glow3)">
-                            <animate attributeName="stroke-opacity" values="0.5;0.8;0.5" dur="3s" begin="1s" repeatCount="indefinite"/>
-                        </line>
-                        <line x1="350" y1="300" x2="350" y2="150" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrow4)" filter="url(#glow3)">
-                            <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-                        </line>
-                        <text x="360" y="140" fill="#FF6B6B" font-size="20" font-weight="bold">∇f (最大)</text>
-
-                        <!-- 中心点 -->
-                        <circle cx="350" cy="300" r="10" fill="#FFE066" filter="url(#glow3)">
-                            <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="22" text-anchor="middle" font-weight="bold">不同方向的方向导数</text>
-                        <text x="350" y="520" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：方向导数 -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">方向导数</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">方向导数的定义</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{\partial f}{\partial l} = \nabla f \cdot \vec{l}$$</p>
+<p class="chalk-text small-text">$\vec{l}$是单位方向向量</p>
+</div>
+<p class="chalk-text emphasis">计算公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{\partial f}{\partial l} = f_x \cos\alpha + f_y \sin\alpha$$</p>
+</div>
+<p class="chalk-text emphasis">最大方向导数</p>
+<ul class="chalk-list">
+<li class="chalk-text">沿梯度方向最大</li>
+<li class="chalk-text">最大值为 $|\nabla f|$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow3">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<marker id="arrow1" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow2" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow3" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow4" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#FF6B6B" points="0,0 12,6 0,12"></polygon>
+</marker>
+</defs>
+<!-- 坐标系 -->
+<line filter="url(#glow3)" stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="300" y2="300"></line>
+<line filter="url(#glow3)" stroke="#FFE066" stroke-width="2" x1="350" x2="350" y1="100" y2="500"></line>
+<!-- 多个方向 -->
+<line filter="url(#glow3)" marker-end="url(#arrow1)" stroke="#4ECDC4" stroke-width="3" x1="350" x2="500" y1="300" y2="300">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;0.8;0.5"></animate>
+</line>
+<line filter="url(#glow3)" marker-end="url(#arrow2)" stroke="#4ECDC4" stroke-width="3" x1="350" x2="480" y1="300" y2="220">
+<animate attributename="stroke-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.5;0.8;0.5"></animate>
+</line>
+<line filter="url(#glow3)" marker-end="url(#arrow3)" stroke="#4ECDC4" stroke-width="3" x1="350" x2="420" y1="300" y2="180">
+<animate attributename="stroke-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.5;0.8;0.5"></animate>
+</line>
+<line filter="url(#glow3)" marker-end="url(#arrow4)" stroke="#FF6B6B" stroke-width="5" x1="350" x2="350" y1="300" y2="150">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.7;1;0.7"></animate>
+</line>
+<text fill="#FF6B6B" font-size="20" font-weight="bold" x="360" y="140">∇f (最大)</text>
+<!-- 中心点 -->
+<circle cx="350" cy="300" fill="#FFE066" filter="url(#glow3)" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="10;14;10"></animate>
+</circle>
+<!-- 标注 -->
+<text fill="#ffffff" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="50">不同方向的方向导数</text>
+<text fill="#FF6B6B" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="520">
                             梯度方向的方向导数最大
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第4页：例题 -->
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">例题：求梯度和方向导数</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">题目</p>
-                    <p class="chalk-text">设 $f(x,y) = x^2 - y^2$，求点(1,1)处的梯度和沿方向 $(1,1)$ 的方向导数。</p>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$f_x = 2x$，$f_y = -2y$</li>
-                        <li class="chalk-text">在(1,1)处：$\nabla f = (2, -2)$</li>
-                        <li class="chalk-text">方向向量单位化：$\vec{l} = (\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}})$</li>
-                        <li class="chalk-text">方向导数：$\frac{\partial f}{\partial l} = 2 \cdot \frac{1}{\sqrt{2}} + (-2) \cdot \frac{1}{\sqrt{2}} = 0$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标系 -->
-                        <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="350" y1="100" x2="350" y2="500" stroke="#FFE066" stroke-width="2"/>
-
-                        <!-- 点(1,1) -->
-                        <circle cx="400" cy="250" r="10" fill="#FFE066">
-                            <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="410" y="245" fill="#FFE066" font-size="16">(1,1)</text>
-
-                        <!-- 梯度向量 -->
-                        <line x1="400" y1="250" x2="480" y2="190" stroke="#FF6B6B" stroke-width="5" marker-end="url(#arrowEx1)">
-                            <animate attributeName="stroke-width" values="5;7;5" dur="2s" repeatCount="indefinite"/>
-                        </line>
-                        <text x="490" y="185" fill="#FF6B6B" font-size="16">∇f=(2,-2)</text>
-
-                        <!-- 方向向量 -->
-                        <line x1="400" y1="250" x2="480" y2="330" stroke="#4ECDC4" stroke-width="5" marker-end="url(#arrowEx2)">
-                            <animate attributeName="stroke-width" values="5;7;5" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </line>
-                        <text x="490" y="345" fill="#4ECDC4" font-size="16">l=(1,1)</text>
-
-                        <defs>
-                            <marker id="arrowEx1" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#FF6B6B"/>
-                            </marker>
-                            <marker id="arrowEx2" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#4ECDC4"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="20" text-anchor="middle">梯度与方向向量垂直</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" text-anchor="middle">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第4页：例题 -->
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：求梯度和方向导数</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">设 $f(x,y) = x^2 - y^2$，求点(1,1)处的梯度和沿方向 $(1,1)$ 的方向导数。</p>
+<p class="chalk-text emphasis">解答</p>
+<ul class="chalk-list">
+<li class="chalk-text">$f_x = 2x$，$f_y = -2y$</li>
+<li class="chalk-text">在(1,1)处：$\nabla f = (2, -2)$</li>
+<li class="chalk-text">方向向量单位化：$\vec{l} = (\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}})$</li>
+<li class="chalk-text">方向导数：$\frac{\partial f}{\partial l} = 2 \cdot \frac{1}{\sqrt{2}} + (-2) \cdot \frac{1}{\sqrt{2}} = 0$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标系 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="300" y2="300"></line>
+<line stroke="#FFE066" stroke-width="2" x1="350" x2="350" y1="100" y2="500"></line>
+<!-- 点(1,1) -->
+<circle cx="400" cy="250" fill="#FFE066" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="10;14;10"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="410" y="245">(1,1)</text>
+<!-- 梯度向量 -->
+<line marker-end="url(#arrowEx1)" stroke="#FF6B6B" stroke-width="5" x1="400" x2="480" y1="250" y2="190">
+<animate attributename="stroke-width" dur="2s" repeatcount="indefinite" values="5;7;5"></animate>
+</line>
+<text fill="#FF6B6B" font-size="16" x="490" y="185">∇f=(2,-2)</text>
+<!-- 方向向量 -->
+<line marker-end="url(#arrowEx2)" stroke="#4ECDC4" stroke-width="5" x1="400" x2="480" y1="250" y2="330">
+<animate attributename="stroke-width" begin="1s" dur="2s" repeatcount="indefinite" values="5;7;5"></animate>
+</line>
+<text fill="#4ECDC4" font-size="16" x="490" y="345">l=(1,1)</text>
+<defs>
+<marker id="arrowEx1" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#FF6B6B" points="0,0 12,6 0,12"></polygon>
+</marker>
+<marker id="arrowEx2" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#4ECDC4" points="0,0 12,6 0,12"></polygon>
+</marker>
+</defs>
+<!-- 标注 -->
+<text fill="#ffffff" font-size="20" text-anchor="middle" x="350" y="50">梯度与方向向量垂直</text>
+<text fill="#4ECDC4" font-size="18" text-anchor="middle" x="350" y="520">
                             方向导数为0
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第5页：应用-最速下降法 -->
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用：最速下降法</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">最速下降法原理</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">沿负梯度方向函数下降最快</li>
-                        <li class="chalk-text">迭代公式：$\vec{x}_{k+1} = \vec{x}_k - \alpha \nabla f(\vec{x}_k)$</li>
-                        <li class="chalk-text">$\alpha$是步长</li>
-                    </ul>
-                    <p class="chalk-text emphasis">应用领域</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">机器学习中的梯度下降</li>
-                        <li class="chalk-text">优化问题求解</li>
-                        <li class="chalk-text">神经网络训练</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 等高线 -->
-                        <ellipse cx="350" cy="300" rx="40" ry="30" fill="none" stroke="#4ECDC4" stroke-width="2"/>
-                        <ellipse cx="350" cy="300" rx="80" ry="60" fill="none" stroke="#4ECDC4" stroke-width="2"/>
-                        <ellipse cx="350" cy="300" rx="120" ry="90" fill="none" stroke="#4ECDC4" stroke-width="2"/>
-                        <ellipse cx="350" cy="300" rx="160" ry="120" fill="none" stroke="#4ECDC4" stroke-width="2"/>
-
-                        <!-- 下降路径 -->
-                        <path d="M 500 200 L 450 230 L 410 260 L 380 280 L 360 295" stroke="#FF6B6B" stroke-width="4" fill="none" marker-end="url(#arrowDesc)">
-                            <animate attributeName="stroke-dasharray" values="0,500;500,0" dur="3s" repeatCount="indefinite"/>
-                        </path>
-
-                        <defs>
-                            <marker id="arrowDesc" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
-                                <polygon points="0,0 12,6 0,12" fill="#FF6B6B"/>
-                            </marker>
-                        </defs>
-
-                        <!-- 起点和终点 -->
-                        <circle cx="500" cy="200" r="10" fill="#FFE066">
-                            <animate attributeName="r" values="10;14;10" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="510" y="205" fill="#FFE066" font-size="16">起点</text>
-
-                        <circle cx="350" cy="300" r="10" fill="#FF6B6B">
-                            <animate attributeName="r" values="10;14;10" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="360" y="305" fill="#FF6B6B" font-size="16">最小值</text>
-
-                        <!-- 标注 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="20" text-anchor="middle">沿负梯度方向下降</text>
-                        <text x="350" y="520" fill="#ffffff" font-size="18" text-anchor="middle">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：应用-最速下降法 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：最速下降法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">最速下降法原理</p>
+<ul class="chalk-list">
+<li class="chalk-text">沿负梯度方向函数下降最快</li>
+<li class="chalk-text">迭代公式：$\vec{x}_{k+1} = \vec{x}_k - \alpha \nabla f(\vec{x}_k)$</li>
+<li class="chalk-text">$\alpha$是步长</li>
+</ul>
+<p class="chalk-text emphasis">应用领域</p>
+<ul class="chalk-list">
+<li class="chalk-text">机器学习中的梯度下降</li>
+<li class="chalk-text">优化问题求解</li>
+<li class="chalk-text">神经网络训练</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 等高线 -->
+<ellipse cx="350" cy="300" fill="none" rx="40" ry="30" stroke="#4ECDC4" stroke-width="2"></ellipse>
+<ellipse cx="350" cy="300" fill="none" rx="80" ry="60" stroke="#4ECDC4" stroke-width="2"></ellipse>
+<ellipse cx="350" cy="300" fill="none" rx="120" ry="90" stroke="#4ECDC4" stroke-width="2"></ellipse>
+<ellipse cx="350" cy="300" fill="none" rx="160" ry="120" stroke="#4ECDC4" stroke-width="2"></ellipse>
+<!-- 下降路径 -->
+<path d="M 500 200 L 450 230 L 410 260 L 380 280 L 360 295" fill="none" marker-end="url(#arrowDesc)" stroke="#FF6B6B" stroke-width="4">
+<animate attributename="stroke-dasharray" dur="3s" repeatcount="indefinite" values="0,500;500,0"></animate>
+</path>
+<defs>
+<marker id="arrowDesc" markerheight="12" markerwidth="12" orient="auto" refx="6" refy="6">
+<polygon fill="#FF6B6B" points="0,0 12,6 0,12"></polygon>
+</marker>
+</defs>
+<!-- 起点和终点 -->
+<circle cx="500" cy="200" fill="#FFE066" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="10;14;10"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" x="510" y="205">起点</text>
+<circle cx="350" cy="300" fill="#FF6B6B" r="10">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="10;14;10"></animate>
+</circle>
+<text fill="#FF6B6B" font-size="16" x="360" y="305">最小值</text>
+<!-- 标注 -->
+<text fill="#FF6B6B" font-size="20" text-anchor="middle" x="350" y="50">沿负梯度方向下降</text>
+<text fill="#ffffff" font-size="18" text-anchor="middle" x="350" y="520">
                             最速下降法的迭代路径
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第6页：总结 -->
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">三个核心概念</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text"><strong>全微分：</strong>$dz = f_x dx + f_y dy$</li>
-                        <li class="chalk-text"><strong>梯度：</strong>$\nabla f = (f_x, f_y)$</li>
-                        <li class="chalk-text"><strong>方向导数：</strong>$\frac{\partial f}{\partial l} = \nabla f \cdot \vec{l}$</li>
-                    </ul>
-                    <p class="chalk-text emphasis">关键性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">梯度指向函数增长最快的方向</li>
-                        <li class="chalk-text">梯度垂直于等高线</li>
-                        <li class="chalk-text">沿梯度方向的方向导数最大</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 中心圆 -->
-                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4">
-                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="245" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold">多元函数</text>
-                        <text x="350" y="270" fill="#FFE066" font-size="16" text-anchor="middle">微分学</text>
-
-                        <!-- 三个分支 -->
-                        <g id="concept1">
-                            <circle cx="200" cy="120" r="55" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="200" y="115" fill="#ffffff" font-size="16" text-anchor="middle">全微分</text>
-                            <text x="200" y="135" fill="#ffffff" font-size="14" text-anchor="middle">dz</text>
-                            <line x1="290" y1="200" x2="230" y2="150" stroke="#4ECDC4" stroke-width="2"/>
-                        </g>
-
-                        <g id="concept2">
-                            <circle cx="500" cy="120" r="55" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="500" y="115" fill="#ffffff" font-size="16" text-anchor="middle">梯度</text>
-                            <text x="500" y="135" fill="#ffffff" font-size="14" text-anchor="middle">∇f</text>
-                            <line x1="410" y1="200" x2="470" y2="150" stroke="#FFE066" stroke-width="2"/>
-                        </g>
-
-                        <g id="concept3">
-                            <circle cx="350" cy="400" r="55" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3">
-                                <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="350" y="395" fill="#ffffff" font-size="16" text-anchor="middle">方向导数</text>
-                            <text x="350" y="415" fill="#ffffff" font-size="14" text-anchor="middle">∂f/∂l</text>
-                            <line x1="350" y1="330" x2="350" y2="345" stroke="#FF6B6B" stroke-width="2"/>
-                        </g>
-
-                        <!-- 标注 -->
-                        <text x="350" y="520" fill="#ffffff" font-size="20" text-anchor="middle">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：总结 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">三个核心概念</p>
+<ul class="chalk-list">
+<li class="chalk-text"><strong>全微分：</strong>$dz = f_x dx + f_y dy$</li>
+<li class="chalk-text"><strong>梯度：</strong>$\nabla f = (f_x, f_y)$</li>
+<li class="chalk-text"><strong>方向导数：</strong>$\frac{\partial f}{\partial l} = \nabla f \cdot \vec{l}$</li>
+</ul>
+<p class="chalk-text emphasis">关键性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">梯度指向函数增长最快的方向</li>
+<li class="chalk-text">梯度垂直于等高线</li>
+<li class="chalk-text">沿梯度方向的方向导数最大</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 中心圆 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
+</circle>
+<text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="245">多元函数</text>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="270">微分学</text>
+<!-- 三个分支 -->
+<g id="concept1">
+<circle cx="200" cy="120" fill="rgba(78,205,196,0.3)" r="55" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" font-size="16" text-anchor="middle" x="200" y="115">全微分</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="200" y="135">dz</text>
+<line stroke="#4ECDC4" stroke-width="2" x1="290" x2="230" y1="200" y2="150"></line>
+</g>
+<g id="concept2">
+<circle cx="500" cy="120" fill="rgba(255,224,102,0.3)" r="55" stroke="#FFE066" stroke-width="3">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" font-size="16" text-anchor="middle" x="500" y="115">梯度</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="500" y="135">∇f</text>
+<line stroke="#FFE066" stroke-width="2" x1="410" x2="470" y1="200" y2="150"></line>
+</g>
+<g id="concept3">
+<circle cx="350" cy="400" fill="rgba(255,107,107,0.3)" r="55" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="fill-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" font-size="16" text-anchor="middle" x="350" y="395">方向导数</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="350" y="415">∂f/∂l</text>
+<line stroke="#FF6B6B" stroke-width="2" x1="350" x2="350" y1="330" y2="345"></line>
+</g>
+<!-- 标注 -->
+<text fill="#ffffff" font-size="20" text-anchor="middle" x="350" y="520">
                             三个核心概念
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- 控制栏 -->
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<!-- 字幕区域 -->
+<div class="subtitle-area" id="subtitleArea"></div>
 
-    <!-- 控制栏 -->
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform;
+        window.SDKEvents = SDKEvents;
+        window.PlayerEvents = PlayerEvents;
+        window.RecorderEvents = RecorderEvents;
+        window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) {
+        console.error('❌ SDK模块加载失败:', error);
+    }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-    <!-- 字幕区域 -->
-    <div class="subtitle-area" id="subtitleArea"></div>
-
-    <script>
+<script>
         let currentPage = 1;
         const totalPages = 6;
         let avatarPlatform = null;
         let isConnected = false;
+        let isTeaching = false;
         let isAutoPlaying = false;
 
-        const pageContents = [
-            "全微分是函数增量的线性主部，公式是dz等于偏f对x乘以dx加偏f对y乘以dy。全微分的几何意义是用切平面近似曲面。",
-            "梯度是由两个偏导数组成的向量，记作∇f等于(fx, fy)。梯度指向函数增长最快的方向，梯度的模是最大变化率。",
-            "方向导数是函数沿某个方向的变化率，等于梯度与方向向量的点积。沿梯度方向的方向导数最大，等于梯度的模。",
-            "例题：对于函数f等于x平方减y平方，在点(1,1)处梯度是(2,-2)，沿方向(1,1)的方向导数为0，因为梯度与方向向量垂直。",
-            "最速下降法是沿负梯度方向迭代，使函数值下降最快。这个方法广泛应用于机器学习的梯度下降算法和神经网络训练。",
-            "总结：全微分、梯度和方向导数是多元函数微分学的三个核心概念。梯度指向增长最快的方向，垂直于等高线，沿梯度方向的方向导数最大。"
-        ];
+        const subtitleScript = {
+            1: `欢迎学习全微分、梯度与方向导数。全微分是函数增量的线性主部，公式是dz等于偏f对x乘以dx加偏f对y乘以dy。全微分的几何意义是用切平面近似曲面，这在工程计算中非常有用。`,
+            2: `梯度是由两个偏导数组成的向量，记作∇f等于括号fx逗号fy。梯度有两个重要性质：第一，梯度指向函数增长最快的方向；第二，梯度的模就是最大变化率。梯度在优化问题中起着核心作用。`,
+            3: `方向导数是函数沿某个方向的变化率，等于梯度与方向向量的点积。沿梯度方向的方向导数最大，等于梯度的模。沿垂直于梯度的方向，方向导数为0，这就是等高线的方向。`,
+            4: `让我们看一个例题。对于函数f等于x平方减y平方，在点(1,1)处，偏导数fx等于2，fy等于负2，所以梯度是(2,-2)。沿方向(1,1)的方向导数等于梯度点乘单位方向向量，结果为0，因为梯度与这个方向垂直。`,
+            5: `最速下降法是沿负梯度方向迭代，使函数值下降最快。每一步都沿着当前点的负梯度方向移动，逐步接近最小值点。这个方法广泛应用于机器学习的梯度下降算法和神经网络训练，是现代人工智能的基础。`,
+            6: `总结一下，全微分、梯度和方向导数是多元函数微分学的三个核心概念。全微分用于近似计算，梯度指向增长最快的方向并垂直于等高线，方向导数描述任意方向的变化率。这些概念在优化、机器学习等领域有广泛应用。`
+        };
 
         const autoPlayDurations = {
-            1: 10000,
-            2: 12000,
-            3: 12000,
-            4: 12000,
-            5: 12000,
-            6: 10000
+            1: 18000, 2: 20000, 3: 20000, 4: 22000, 5: 22000, 6: 20000
         };
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -800,11 +785,102 @@
         }
 
         async function startTeaching() {
-            console.log('开始讲解');
+            try {
+                await waitForSDK();
+                updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) {
+                updateStatus('启动失败', 'error');
+                alert(`启动失败：${error.message}`);
+            }
         }
 
-        async function startAutoPlay() {
-            console.log('自动播放');
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try {
+                await avatarPlatform.writeText(content, {nlp: false});
+                updateSubtitle(content);
+            } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放';
+                btn.style.background = '';
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -832,7 +908,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
         });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
     </script>
 </body>
 </html>
-

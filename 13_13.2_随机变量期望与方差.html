@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第13章 随机变量与期望方差</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第13章 随机变量与期望方差</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
@@ -36,576 +37,617 @@
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
     </style>
-    <script>
+<script>
         window.MathJax = {
             tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
             startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
             options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：随机变量的概念 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">随机变量的概念</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <p class="chalk-text">随机变量是样本空间到实数的映射</p>
-                    <p class="chalk-text emphasis">离散型随机变量</p>
-                    <p class="chalk-text">取值有限或可数无穷</p>
-                    <p class="chalk-text emphasis">例：掷骰子</p>
-                    <div class="formula-box"><p class="chalk-text">$$X = \{1, 2, 3, 4, 5, 6\}$$</p></div>
-                    <p class="chalk-text emphasis">分布律</p>
-                    <div class="formula-box"><p class="chalk-text">$$P(X = k) = p_k, \quad k = 1,2,\ldots,6$$</p></div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 样本空间 -->
-                        <rect x="80" y="100" width="200" height="300" fill="rgba(255,224,102,0.1)" stroke="#FFE066" stroke-width="2" rx="10"/>
-                        <text x="180" y="80" fill="#FFE066" font-size="14" text-anchor="middle">样本空间 Ω</text>
-                        
-                        <!-- 样本点 -->
-                        <circle cx="130" cy="150" r="15" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="r" values="15;18;15" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="130" y="155" fill="#ffffff" font-size="12" text-anchor="middle">⚀</text>
-                        
-                        <circle cx="230" cy="180" r="15" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="r" values="15;18;15" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="230" y="185" fill="#ffffff" font-size="12" text-anchor="middle">⚁</text>
-                        
-                        <circle cx="150" cy="240" r="15" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="r" values="15;18;15" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="150" y="245" fill="#ffffff" font-size="12" text-anchor="middle">⚂</text>
-                        
-                        <circle cx="210" cy="280" r="15" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="r" values="15;18;15" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="210" y="285" fill="#ffffff" font-size="12" text-anchor="middle">⚃</text>
-                        
-                        <circle cx="120" cy="330" r="15" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="r" values="15;18;15" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="120" y="335" fill="#ffffff" font-size="12" text-anchor="middle">⚄</text>
-                        
-                        <circle cx="240" cy="350" r="15" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="r" values="15;18;15" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="240" y="355" fill="#ffffff" font-size="12" text-anchor="middle">⚅</text>
-                        
-                        <!-- 映射箭头 -->
-                        <path d="M 280 250 Q 350 250 420 250" fill="none" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow-map)">
-                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="350" y="230" fill="#4ECDC4" font-size="14" text-anchor="middle">X(ω)</text>
-                        
-                        <!-- 实数轴 -->
-                        <line x1="420" y1="250" x2="620" y2="250" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-axis)"/>
-                        <text x="630" y="255" fill="#ffffff" font-size="14">ℝ</text>
-                        
-                        <!-- 数值点 -->
-                        <circle cx="450" cy="250" r="5" fill="#4ECDC4"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></circle>
-                        <text x="450" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle">1</text>
-                        
-                        <circle cx="480" cy="250" r="5" fill="#4ECDC4"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.3s" repeatCount="indefinite"/></circle>
-                        <text x="480" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle">2</text>
-                        
-                        <circle cx="510" cy="250" r="5" fill="#4ECDC4"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/></circle>
-                        <text x="510" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle">3</text>
-                        
-                        <circle cx="540" cy="250" r="5" fill="#4ECDC4"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.9s" repeatCount="indefinite"/></circle>
-                        <text x="540" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle">4</text>
-                        
-                        <circle cx="570" cy="250" r="5" fill="#4ECDC4"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.2s" repeatCount="indefinite"/></circle>
-                        <text x="570" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle">5</text>
-                        
-                        <circle cx="600" cy="250" r="5" fill="#4ECDC4"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.5s" repeatCount="indefinite"/></circle>
-                        <text x="600" y="275" fill="#4ECDC4" font-size="12" text-anchor="middle">6</text>
-                        
-                        <defs>
-                            <marker id="arrow-map" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#4ECDC4"/>
-                            </marker>
-                            <marker id="arrow-axis" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                        </defs>
-                        
-                        <text x="350" y="450" fill="#e1bee7" font-size="14" text-anchor="middle">随机变量：样本空间 → 实数</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：随机变量的概念 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        随机变量期望与方差
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第13章 视频 13.2
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 随机变量的概念</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 分布函数</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 数学期望</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 方差</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad13" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#00bcd4;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#0097a7;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad13)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="100">
+                            P(X)
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<path d="M 100 350 Q 200 150 300 250 T 500 200" fill="none" stroke="#00bcd4" stroke-width="3"></path>
+<path d="M 100 350 Q 200 150 300 250 T 500 200 L 500 350 L 100 350 Z" fill="url(#grad13)" opacity="0.3">
+<animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</path>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">分布律</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<p class="chalk-text">$P(X = x_k) = p_k$，描述随机变量的概率分布</p>
+<p class="chalk-text emphasis">性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">$p_k \geq 0$</li>
+<li class="chalk-text">$\sum_{k} p_k = 1$</li>
+</ul>
+<p class="chalk-text emphasis">例：掷骰子</p>
+<div class="formula-box"><p class="chalk-text">$$P(X = k) = \frac{1}{6}, \quad k = 1,2,3,4,5,6$$</p></div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标轴 -->
+<line marker-end="url(#arrow-x)" stroke="#ffffff" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line marker-end="url(#arrow-y)" stroke="#ffffff" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<text fill="#ffffff" font-size="14" x="610" y="455">X</text>
+<text fill="#ffffff" font-size="14" x="90" y="90">P</text>
+<!-- 概率条形图 -->
+<rect fill="rgba(255,107,107,0.5)" height="200" stroke="#FF6B6B" stroke-width="2" width="50" x="140" y="250">
+<animate attributename="height" dur="2s" repeatcount="indefinite" values="0;200;200"></animate>
+<animate attributename="y" dur="2s" repeatcount="indefinite" values="450;250;250"></animate>
+</rect>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="165" y="470">1</text>
+<rect fill="rgba(78,205,196,0.5)" height="200" stroke="#4ECDC4" stroke-width="2" width="50" x="210" y="250">
+<animate attributename="height" begin="0.3s" dur="2s" repeatcount="indefinite" values="0;200;200"></animate>
+<animate attributename="y" begin="0.3s" dur="2s" repeatcount="indefinite" values="450;250;250"></animate>
+</rect>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="235" y="470">2</text>
+<rect fill="rgba(147,112,219,0.5)" height="200" stroke="#9370DB" stroke-width="2" width="50" x="280" y="250">
+<animate attributename="height" begin="0.6s" dur="2s" repeatcount="indefinite" values="0;200;200"></animate>
+<animate attributename="y" begin="0.6s" dur="2s" repeatcount="indefinite" values="450;250;250"></animate>
+</rect>
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="305" y="470">3</text>
+<rect fill="rgba(255,224,102,0.5)" height="200" stroke="#FFE066" stroke-width="2" width="50" x="350" y="250">
+<animate attributename="height" begin="0.9s" dur="2s" repeatcount="indefinite" values="0;200;200"></animate>
+<animate attributename="y" begin="0.9s" dur="2s" repeatcount="indefinite" values="450;250;250"></animate>
+</rect>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="375" y="470">4</text>
+<rect fill="rgba(255,107,107,0.5)" height="200" stroke="#FF6B6B" stroke-width="2" width="50" x="420" y="250">
+<animate attributename="height" begin="1.2s" dur="2s" repeatcount="indefinite" values="0;200;200"></animate>
+<animate attributename="y" begin="1.2s" dur="2s" repeatcount="indefinite" values="450;250;250"></animate>
+</rect>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="445" y="470">5</text>
+<rect fill="rgba(78,205,196,0.5)" height="200" stroke="#4ECDC4" stroke-width="2" width="50" x="490" y="250">
+<animate attributename="height" begin="1.5s" dur="2s" repeatcount="indefinite" values="0;200;200"></animate>
+<animate attributename="y" begin="1.5s" dur="2s" repeatcount="indefinite" values="450;250;250"></animate>
+</rect>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="515" y="470">6</text>
+<!-- 概率标注 -->
+<line stroke="#ffffff" stroke-width="1" x1="90" x2="110" y1="250" y2="250"></line>
+<text fill="#ffffff" font-size="12" text-anchor="end" x="80" y="255">1/6</text>
+<defs>
+<marker id="arrow-x" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#ffffff" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow-y" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#ffffff" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<text fill="#e1bee7" font-size="14" text-anchor="middle" x="350" y="520">均匀分布：P(X=k) = 1/6</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3-6页继续... -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">数学期望</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<div class="formula-box"><p class="chalk-text">$$E(X) = \sum_{k} x_k p_k$$</p></div>
+<p class="chalk-text">期望是随机变量的平均值</p>
+<p class="chalk-text emphasis">性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">$E(C) = C$（常数）</li>
+<li class="chalk-text">$E(aX + b) = aE(X) + b$</li>
+<li class="chalk-text">$E(X + Y) = E(X) + E(Y)$</li>
+</ul>
+<p class="chalk-text emphasis">例：掷骰子</p>
+<div class="formula-box"><p class="chalk-text">$$E(X) = \frac{1+2+3+4+5+6}{6} = 3.5$$</p></div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 天平 -->
+<line stroke="#FFE066" stroke-width="4" x1="350" x2="350" y1="150" y2="300"></line>
+<polygon fill="#FFE066" points="330,300 370,300 350,330"></polygon>
+<!-- 天平横梁 -->
+<line stroke="#4ECDC4" stroke-width="6" x1="150" x2="550" y1="150" y2="150">
+<animatetransform attributename="transform" dur="4s" repeatcount="indefinite" type="rotate" values="0 350 150; -2 350 150; 2 350 150; 0 350 150"></animatetransform>
+</line>
+<!-- 左侧砝码 -->
+<circle cx="200" cy="120" fill="rgba(255,107,107,0.6)" r="20" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" dur="2s" repeatcount="indefinite" values="120;115;120"></animate>
+</circle>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="200" y="125">1</text>
+<circle cx="250" cy="120" fill="rgba(255,107,107,0.6)" r="20" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" begin="0.3s" dur="2s" repeatcount="indefinite" values="120;115;120"></animate>
+</circle>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="250" y="125">2</text>
+<circle cx="300" cy="120" fill="rgba(255,107,107,0.6)" r="20" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" begin="0.6s" dur="2s" repeatcount="indefinite" values="120;115;120"></animate>
+</circle>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="300" y="125">3</text>
+<!-- 右侧砝码 -->
+<circle cx="400" cy="120" fill="rgba(78,205,196,0.6)" r="20" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="0.9s" dur="2s" repeatcount="indefinite" values="120;115;120"></animate>
+</circle>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="400" y="125">4</text>
+<circle cx="450" cy="120" fill="rgba(78,205,196,0.6)" r="20" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="1.2s" dur="2s" repeatcount="indefinite" values="120;115;120"></animate>
+</circle>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="450" y="125">5</text>
+<circle cx="500" cy="120" fill="rgba(78,205,196,0.6)" r="20" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="1.5s" dur="2s" repeatcount="indefinite" values="120;115;120"></animate>
+</circle>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="500" y="125">6</text>
+<!-- 平衡点标记 -->
+<line marker-end="url(#arrow-balance)" stroke="#FFE066" stroke-width="3" x1="350" x2="350" y1="380" y2="420"></line>
+<text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="450">E(X) = 3.5</text>
+<!-- 数轴 -->
+<line stroke="#ffffff" stroke-width="2" x1="150" x2="550" y1="500" y2="500"></line>
+<circle cx="200" cy="500" fill="#FF6B6B" r="4"></circle>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="200" y="520">1</text>
+<circle cx="267" cy="500" fill="#FF6B6B" r="4"></circle>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="267" y="520">2</text>
+<circle cx="333" cy="500" fill="#FF6B6B" r="4"></circle>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="333" y="520">3</text>
+<circle cx="350" cy="500" fill="#FFE066" r="6">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="6;9;6"></animate>
+</circle>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="350" y="540">3.5</text>
+<circle cx="400" cy="500" fill="#4ECDC4" r="4"></circle>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="400" y="520">4</text>
+<circle cx="467" cy="500" fill="#4ECDC4" r="4"></circle>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="467" y="520">5</text>
+<circle cx="533" cy="500" fill="#4ECDC4" r="4"></circle>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="533" y="520">6</text>
+<defs>
+<marker id="arrow-balance" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FFE066" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">方差</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<div class="formula-box"><p class="chalk-text">$$D(X) = E[(X - E(X))^2] = E(X^2) - [E(X)]^2$$</p></div>
+<p class="chalk-text">方差衡量随机变量的离散程度</p>
+<p class="chalk-text emphasis">标准差</p>
+<div class="formula-box"><p class="chalk-text">$$\sigma(X) = \sqrt{D(X)}$$</p></div>
+<p class="chalk-text emphasis">性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">$D(C) = 0$（常数）</li>
+<li class="chalk-text">$D(aX + b) = a^2D(X)$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 两组数据对比 -->
+<text fill="#FF6B6B" font-size="16" text-anchor="middle" x="200" y="80">小方差</text>
+<text fill="#4ECDC4" font-size="16" text-anchor="middle" x="500" y="80">大方差</text>
+<!-- 左侧：小方差分布 -->
+<line stroke="#ffffff" stroke-width="2" x1="100" x2="300" y1="300" y2="300"></line>
+<circle cx="200" cy="300" fill="#FFE066" r="5">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="5;8;5"></animate>
+</circle>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="200" y="330">μ</text>
+<!-- 数据点集中 -->
+<circle cx="180" cy="250" fill="rgba(255,107,107,0.6)" r="8" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" dur="2s" repeatcount="indefinite" values="250;245;250"></animate>
+</circle>
+<circle cx="190" cy="250" fill="rgba(255,107,107,0.6)" r="8" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" begin="0.3s" dur="2s" repeatcount="indefinite" values="250;245;250"></animate>
+</circle>
+<circle cx="200" cy="250" fill="rgba(255,107,107,0.6)" r="8" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" begin="0.6s" dur="2s" repeatcount="indefinite" values="250;245;250"></animate>
+</circle>
+<circle cx="210" cy="250" fill="rgba(255,107,107,0.6)" r="8" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" begin="0.9s" dur="2s" repeatcount="indefinite" values="250;245;250"></animate>
+</circle>
+<circle cx="220" cy="250" fill="rgba(255,107,107,0.6)" r="8" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="cy" begin="1.2s" dur="2s" repeatcount="indefinite" values="250;245;250"></animate>
+</circle>
+<!-- 方差范围标记 -->
+<line stroke="#FF6B6B" stroke-width="2" x1="180" x2="220" y1="350" y2="350"></line>
+<line stroke="#FF6B6B" stroke-width="2" x1="180" x2="180" y1="340" y2="360"></line>
+<line stroke="#FF6B6B" stroke-width="2" x1="220" x2="220" y1="340" y2="360"></line>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="200" y="380">σ 小</text>
+<!-- 右侧：大方差分布 -->
+<line stroke="#ffffff" stroke-width="2" x1="400" x2="600" y1="300" y2="300"></line>
+<circle cx="500" cy="300" fill="#FFE066" r="5">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="5;8;5"></animate>
+</circle>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="500" y="330">μ</text>
+<!-- 数据点分散 -->
+<circle cx="420" cy="200" fill="rgba(78,205,196,0.6)" r="8" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" dur="2s" repeatcount="indefinite" values="200;195;200"></animate>
+</circle>
+<circle cx="450" cy="220" fill="rgba(78,205,196,0.6)" r="8" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="0.3s" dur="2s" repeatcount="indefinite" values="220;215;220"></animate>
+</circle>
+<circle cx="500" cy="250" fill="rgba(78,205,196,0.6)" r="8" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="0.6s" dur="2s" repeatcount="indefinite" values="250;245;250"></animate>
+</circle>
+<circle cx="550" cy="220" fill="rgba(78,205,196,0.6)" r="8" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="0.9s" dur="2s" repeatcount="indefinite" values="220;215;220"></animate>
+</circle>
+<circle cx="580" cy="200" fill="rgba(78,205,196,0.6)" r="8" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="cy" begin="1.2s" dur="2s" repeatcount="indefinite" values="200;195;200"></animate>
+</circle>
+<!-- 方差范围标记 -->
+<line stroke="#4ECDC4" stroke-width="2" x1="420" x2="580" y1="350" y2="350"></line>
+<line stroke="#4ECDC4" stroke-width="2" x1="420" x2="420" y1="340" y2="360"></line>
+<line stroke="#4ECDC4" stroke-width="2" x1="580" x2="580" y1="340" y2="360"></line>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="500" y="380">σ 大</text>
+<text fill="#e1bee7" font-size="14" text-anchor="middle" x="350" y="480">方差越大，数据越分散</text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">常见分布的期望和方差</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">0-1分布</p>
+<div class="formula-box"><p class="chalk-text">$$E(X) = p, \quad D(X) = p(1-p)$$</p></div>
+<p class="chalk-text emphasis">二项分布 B(n,p)</p>
+<div class="formula-box"><p class="chalk-text">$$E(X) = np, \quad D(X) = np(1-p)$$</p></div>
+<p class="chalk-text emphasis">泊松分布 P(λ)</p>
+<div class="formula-box"><p class="chalk-text">$$E(X) = \lambda, \quad D(X) = \lambda$$</p></div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 三种分布对比 -->
+<text fill="#ffffff" font-size="16" text-anchor="middle" x="350" y="50">常见分布</text>
+<!-- 0-1分布 -->
+<g>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="180" y="120">0-1分布</text>
+<line stroke="#ffffff" stroke-width="1" x1="100" x2="260" y1="250" y2="250"></line>
+<line stroke="#ffffff" stroke-width="1" x1="100" x2="100" y1="250" y2="150"></line>
+<rect fill="rgba(255,107,107,0.5)" height="50" stroke="#FF6B6B" stroke-width="2" width="40" x="120" y="200">
+<animate attributename="height" dur="2s" repeatcount="indefinite" values="0;50;50"></animate>
+<animate attributename="y" dur="2s" repeatcount="indefinite" values="250;200;200"></animate>
+</rect>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="140" y="270">0</text>
+<rect fill="rgba(255,107,107,0.5)" height="70" stroke="#FF6B6B" stroke-width="2" width="40" x="200" y="180">
+<animate attributename="height" begin="0.5s" dur="2s" repeatcount="indefinite" values="0;70;70"></animate>
+<animate attributename="y" begin="0.5s" dur="2s" repeatcount="indefinite" values="250;180;180"></animate>
+</rect>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="220" y="270">1</text>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="180" y="300">E=p, D=p(1-p)</text>
+</g>
+<!-- 二项分布 -->
+<g>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="400" y="120">二项分布</text>
+<line stroke="#ffffff" stroke-width="1" x1="320" x2="480" y1="250" y2="250"></line>
+<line stroke="#ffffff" stroke-width="1" x1="320" x2="320" y1="250" y2="150"></line>
+<rect fill="rgba(78,205,196,0.5)" height="20" stroke="#4ECDC4" stroke-width="1" width="20" x="330" y="230">
+<animate attributename="height" dur="2s" repeatcount="indefinite" values="0;20;20"></animate>
+<animate attributename="y" dur="2s" repeatcount="indefinite" values="250;230;230"></animate>
+</rect>
+<rect fill="rgba(78,205,196,0.5)" height="40" stroke="#4ECDC4" stroke-width="1" width="20" x="355" y="210">
+<animate attributename="height" begin="0.2s" dur="2s" repeatcount="indefinite" values="0;40;40"></animate>
+<animate attributename="y" begin="0.2s" dur="2s" repeatcount="indefinite" values="250;210;210"></animate>
+</rect>
+<rect fill="rgba(78,205,196,0.5)" height="70" stroke="#4ECDC4" stroke-width="1" width="20" x="380" y="180">
+<animate attributename="height" begin="0.4s" dur="2s" repeatcount="indefinite" values="0;70;70"></animate>
+<animate attributename="y" begin="0.4s" dur="2s" repeatcount="indefinite" values="250;180;180"></animate>
+</rect>
+<rect fill="rgba(78,205,196,0.5)" height="40" stroke="#4ECDC4" stroke-width="1" width="20" x="405" y="210">
+<animate attributename="height" begin="0.6s" dur="2s" repeatcount="indefinite" values="0;40;40"></animate>
+<animate attributename="y" begin="0.6s" dur="2s" repeatcount="indefinite" values="250;210;210"></animate>
+</rect>
+<rect fill="rgba(78,205,196,0.5)" height="20" stroke="#4ECDC4" stroke-width="1" width="20" x="430" y="230">
+<animate attributename="height" begin="0.8s" dur="2s" repeatcount="indefinite" values="0;20;20"></animate>
+<animate attributename="y" begin="0.8s" dur="2s" repeatcount="indefinite" values="250;230;230"></animate>
+</rect>
+<text fill="#4ECDC4" font-size="11" text-anchor="middle" x="400" y="300">E=np, D=np(1-p)</text>
+</g>
+<!-- 泊松分布 -->
+<g>
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="350" y="380">泊松分布</text>
+<line stroke="#ffffff" stroke-width="1" x1="200" x2="500" y1="510" y2="510"></line>
+<line stroke="#ffffff" stroke-width="1" x1="200" x2="200" y1="510" y2="410"></line>
+<rect fill="rgba(147,112,219,0.5)" height="20" stroke="#9370DB" stroke-width="1" width="25" x="220" y="490">
+<animate attributename="height" dur="2s" repeatcount="indefinite" values="0;20;20"></animate>
+<animate attributename="y" dur="2s" repeatcount="indefinite" values="510;490;490"></animate>
+</rect>
+<rect fill="rgba(147,112,219,0.5)" height="40" stroke="#9370DB" stroke-width="1" width="25" x="250" y="470">
+<animate attributename="height" begin="0.2s" dur="2s" repeatcount="indefinite" values="0;40;40"></animate>
+<animate attributename="y" begin="0.2s" dur="2s" repeatcount="indefinite" values="510;470;470"></animate>
+</rect>
+<rect fill="rgba(147,112,219,0.5)" height="70" stroke="#9370DB" stroke-width="1" width="25" x="280" y="440">
+<animate attributename="height" begin="0.4s" dur="2s" repeatcount="indefinite" values="0;70;70"></animate>
+<animate attributename="y" begin="0.4s" dur="2s" repeatcount="indefinite" values="510;440;440"></animate>
+</rect>
+<rect fill="rgba(147,112,219,0.5)" height="80" stroke="#9370DB" stroke-width="1" width="25" x="310" y="430">
+<animate attributename="height" begin="0.6s" dur="2s" repeatcount="indefinite" values="0;80;80"></animate>
+<animate attributename="y" begin="0.6s" dur="2s" repeatcount="indefinite" values="510;430;430"></animate>
+</rect>
+<rect fill="rgba(147,112,219,0.5)" height="60" stroke="#9370DB" stroke-width="1" width="25" x="340" y="450">
+<animate attributename="height" begin="0.8s" dur="2s" repeatcount="indefinite" values="0;60;60"></animate>
+<animate attributename="y" begin="0.8s" dur="2s" repeatcount="indefinite" values="510;450;450"></animate>
+</rect>
+<rect fill="rgba(147,112,219,0.5)" height="35" stroke="#9370DB" stroke-width="1" width="25" x="370" y="475">
+<animate attributename="height" begin="1s" dur="2s" repeatcount="indefinite" values="0;35;35"></animate>
+<animate attributename="y" begin="1s" dur="2s" repeatcount="indefinite" values="510;475;475"></animate>
+</rect>
+<rect fill="rgba(147,112,219,0.5)" height="15" stroke="#9370DB" stroke-width="1" width="25" x="400" y="495">
+<animate attributename="height" begin="1.2s" dur="2s" repeatcount="indefinite" values="0;15;15"></animate>
+<animate attributename="y" begin="1.2s" dur="2s" repeatcount="indefinite" values="510;495;495"></animate>
+</rect>
+<text fill="#9370DB" font-size="11" text-anchor="middle" x="350" y="550">E=λ, D=λ</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心内容</p>
+<ul class="chalk-list">
+<li class="chalk-text">随机变量：样本空间到实数的映射</li>
+<li class="chalk-text">分布律：$P(X = x_k) = p_k$</li>
+<li class="chalk-text">期望：$E(X) = \sum x_k p_k$</li>
+<li class="chalk-text">方差：$D(X) = E(X^2) - [E(X)]^2$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 知识树 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="245">随机变量</text>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="350" y="265">X</text>
+<!-- 分支1：分布律 -->
+<line stroke="#FF6B6B" stroke-width="3" x1="280" x2="180" y1="200" y2="120"></line>
+<circle cx="180" cy="120" fill="rgba(255,107,107,0.3)" r="45" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="180" y="120">分布律</text>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="180" y="135">P(X=xₖ)</text>
+<!-- 分支2：期望 -->
+<line stroke="#4ECDC4" stroke-width="3" x1="420" x2="520" y1="200" y2="120"></line>
+<circle cx="520" cy="120" fill="rgba(78,205,196,0.3)" r="45" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="520" y="120">期望</text>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="520" y="135">E(X)</text>
+<!-- 分支3：方差 -->
+<line stroke="#9370DB" stroke-width="3" x1="280" x2="180" y1="300" y2="380"></line>
+<circle cx="180" cy="380" fill="rgba(147,112,219,0.3)" r="45" stroke="#9370DB" stroke-width="3">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#9370DB" font-size="12" text-anchor="middle" x="180" y="380">方差</text>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="180" y="395">D(X)</text>
+<!-- 分支4：应用 -->
+<line stroke="#e1bee7" stroke-width="3" x1="420" x2="520" y1="300" y2="380"></line>
+<circle cx="520" cy="380" fill="rgba(225,190,231,0.3)" r="45" stroke="#e1bee7" stroke-width="3">
+<animate attributename="r" begin="1.5s" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#e1bee7" font-size="12" text-anchor="middle" x="520" y="380">常见分布</text>
+<text fill="#e1bee7" font-size="10" text-anchor="middle" x="520" y="395">0-1,二项,泊松</text>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<div class="subtitle-area" id="subtitleArea"></div>
 
-        <!-- 第2页：分布律 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">分布律</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <p class="chalk-text">$P(X = x_k) = p_k$，描述随机变量的概率分布</p>
-                    <p class="chalk-text emphasis">性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$p_k \geq 0$</li>
-                        <li class="chalk-text">$\sum_{k} p_k = 1$</li>
-                    </ul>
-                    <p class="chalk-text emphasis">例：掷骰子</p>
-                    <div class="formula-box"><p class="chalk-text">$$P(X = k) = \frac{1}{6}, \quad k = 1,2,3,4,5,6$$</p></div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标轴 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-x)"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-y)"/>
-                        <text x="610" y="455" fill="#ffffff" font-size="14">X</text>
-                        <text x="90" y="90" fill="#ffffff" font-size="14">P</text>
-                        
-                        <!-- 概率条形图 -->
-                        <rect x="140" y="250" width="50" height="200" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="height" values="0;200;200" dur="2s" repeatCount="indefinite"/>
-                            <animate attributeName="y" values="450;250;250" dur="2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="165" y="470" fill="#FF6B6B" font-size="14" text-anchor="middle">1</text>
-                        
-                        <rect x="210" y="250" width="50" height="200" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="height" values="0;200;200" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                            <animate attributeName="y" values="450;250;250" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="235" y="470" fill="#4ECDC4" font-size="14" text-anchor="middle">2</text>
-                        
-                        <rect x="280" y="250" width="50" height="200" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="2">
-                            <animate attributeName="height" values="0;200;200" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                            <animate attributeName="y" values="450;250;250" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="305" y="470" fill="#9370DB" font-size="14" text-anchor="middle">3</text>
-                        
-                        <rect x="350" y="250" width="50" height="200" fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="2">
-                            <animate attributeName="height" values="0;200;200" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                            <animate attributeName="y" values="450;250;250" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="375" y="470" fill="#FFE066" font-size="14" text-anchor="middle">4</text>
-                        
-                        <rect x="420" y="250" width="50" height="200" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="height" values="0;200;200" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                            <animate attributeName="y" values="450;250;250" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="445" y="470" fill="#FF6B6B" font-size="14" text-anchor="middle">5</text>
-                        
-                        <rect x="490" y="250" width="50" height="200" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="height" values="0;200;200" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                            <animate attributeName="y" values="450;250;250" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="515" y="470" fill="#4ECDC4" font-size="14" text-anchor="middle">6</text>
-                        
-                        <!-- 概率标注 -->
-                        <line x1="90" y1="250" x2="110" y2="250" stroke="#ffffff" stroke-width="1"/>
-                        <text x="80" y="255" fill="#ffffff" font-size="12" text-anchor="end">1/6</text>
-                        
-                        <defs>
-                            <marker id="arrow-x" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                            <marker id="arrow-y" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                        </defs>
-                        
-                        <text x="350" y="520" fill="#e1bee7" font-size="14" text-anchor="middle">均匀分布：P(X=k) = 1/6</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-        <!-- 第3-6页继续... -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">数学期望</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <div class="formula-box"><p class="chalk-text">$$E(X) = \sum_{k} x_k p_k$$</p></div>
-                    <p class="chalk-text">期望是随机变量的平均值</p>
-                    <p class="chalk-text emphasis">性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$E(C) = C$（常数）</li>
-                        <li class="chalk-text">$E(aX + b) = aE(X) + b$</li>
-                        <li class="chalk-text">$E(X + Y) = E(X) + E(Y)$</li>
-                    </ul>
-                    <p class="chalk-text emphasis">例：掷骰子</p>
-                    <div class="formula-box"><p class="chalk-text">$$E(X) = \frac{1+2+3+4+5+6}{6} = 3.5$$</p></div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 天平 -->
-                        <line x1="350" y1="150" x2="350" y2="300" stroke="#FFE066" stroke-width="4"/>
-                        <polygon points="330,300 370,300 350,330" fill="#FFE066"/>
-                        
-                        <!-- 天平横梁 -->
-                        <line x1="150" y1="150" x2="550" y2="150" stroke="#4ECDC4" stroke-width="6">
-                            <animateTransform attributeName="transform" type="rotate" values="0 350 150; -2 350 150; 2 350 150; 0 350 150" dur="4s" repeatCount="indefinite"/>
-                        </line>
-                        
-                        <!-- 左侧砝码 -->
-                        <circle cx="200" cy="120" r="20" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="120;115;120" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="200" y="125" fill="#ffffff" font-size="12" text-anchor="middle">1</text>
-                        
-                        <circle cx="250" cy="120" r="20" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="120;115;120" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="250" y="125" fill="#ffffff" font-size="12" text-anchor="middle">2</text>
-                        
-                        <circle cx="300" cy="120" r="20" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="120;115;120" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="300" y="125" fill="#ffffff" font-size="12" text-anchor="middle">3</text>
-                        
-                        <!-- 右侧砝码 -->
-                        <circle cx="400" cy="120" r="20" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="120;115;120" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="400" y="125" fill="#ffffff" font-size="12" text-anchor="middle">4</text>
-                        
-                        <circle cx="450" cy="120" r="20" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="120;115;120" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="450" y="125" fill="#ffffff" font-size="12" text-anchor="middle">5</text>
-                        
-                        <circle cx="500" cy="120" r="20" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="120;115;120" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="500" y="125" fill="#ffffff" font-size="12" text-anchor="middle">6</text>
-                        
-                        <!-- 平衡点标记 -->
-                        <line x1="350" y1="380" x2="350" y2="420" stroke="#FFE066" stroke-width="3" marker-end="url(#arrow-balance)"/>
-                        <text x="350" y="450" fill="#FFE066" font-size="18" text-anchor="middle">E(X) = 3.5</text>
-                        
-                        <!-- 数轴 -->
-                        <line x1="150" y1="500" x2="550" y2="500" stroke="#ffffff" stroke-width="2"/>
-                        <circle cx="200" cy="500" r="4" fill="#FF6B6B"/>
-                        <text x="200" y="520" fill="#FF6B6B" font-size="10" text-anchor="middle">1</text>
-                        <circle cx="267" cy="500" r="4" fill="#FF6B6B"/>
-                        <text x="267" y="520" fill="#FF6B6B" font-size="10" text-anchor="middle">2</text>
-                        <circle cx="333" cy="500" r="4" fill="#FF6B6B"/>
-                        <text x="333" y="520" fill="#FF6B6B" font-size="10" text-anchor="middle">3</text>
-                        <circle cx="350" cy="500" r="6" fill="#FFE066">
-                            <animate attributeName="r" values="6;9;6" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="540" fill="#FFE066" font-size="12" text-anchor="middle">3.5</text>
-                        <circle cx="400" cy="500" r="4" fill="#4ECDC4"/>
-                        <text x="400" y="520" fill="#4ECDC4" font-size="10" text-anchor="middle">4</text>
-                        <circle cx="467" cy="500" r="4" fill="#4ECDC4"/>
-                        <text x="467" y="520" fill="#4ECDC4" font-size="10" text-anchor="middle">5</text>
-                        <circle cx="533" cy="500" r="4" fill="#4ECDC4"/>
-                        <text x="533" y="520" fill="#4ECDC4" font-size="10" text-anchor="middle">6</text>
-                        
-                        <defs>
-                            <marker id="arrow-balance" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#FFE066"/>
-                            </marker>
-                        </defs>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">方差</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <div class="formula-box"><p class="chalk-text">$$D(X) = E[(X - E(X))^2] = E(X^2) - [E(X)]^2$$</p></div>
-                    <p class="chalk-text">方差衡量随机变量的离散程度</p>
-                    <p class="chalk-text emphasis">标准差</p>
-                    <div class="formula-box"><p class="chalk-text">$$\sigma(X) = \sqrt{D(X)}$$</p></div>
-                    <p class="chalk-text emphasis">性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$D(C) = 0$（常数）</li>
-                        <li class="chalk-text">$D(aX + b) = a^2D(X)$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 两组数据对比 -->
-                        <text x="200" y="80" fill="#FF6B6B" font-size="16" text-anchor="middle">小方差</text>
-                        <text x="500" y="80" fill="#4ECDC4" font-size="16" text-anchor="middle">大方差</text>
-                        
-                        <!-- 左侧：小方差分布 -->
-                        <line x1="100" y1="300" x2="300" y2="300" stroke="#ffffff" stroke-width="2"/>
-                        <circle cx="200" cy="300" r="5" fill="#FFE066">
-                            <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="200" y="330" fill="#FFE066" font-size="12" text-anchor="middle">μ</text>
-                        
-                        <!-- 数据点集中 -->
-                        <circle cx="180" cy="250" r="8" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="250;245;250" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="190" cy="250" r="8" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="250;245;250" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="200" cy="250" r="8" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="250;245;250" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="210" cy="250" r="8" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="250;245;250" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="220" cy="250" r="8" fill="rgba(255,107,107,0.6)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="cy" values="250;245;250" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                        </circle>
-                        
-                        <!-- 方差范围标记 -->
-                        <line x1="180" y1="350" x2="220" y2="350" stroke="#FF6B6B" stroke-width="2"/>
-                        <line x1="180" y1="340" x2="180" y2="360" stroke="#FF6B6B" stroke-width="2"/>
-                        <line x1="220" y1="340" x2="220" y2="360" stroke="#FF6B6B" stroke-width="2"/>
-                        <text x="200" y="380" fill="#FF6B6B" font-size="12" text-anchor="middle">σ 小</text>
-                        
-                        <!-- 右侧：大方差分布 -->
-                        <line x1="400" y1="300" x2="600" y2="300" stroke="#ffffff" stroke-width="2"/>
-                        <circle cx="500" cy="300" r="5" fill="#FFE066">
-                            <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="500" y="330" fill="#FFE066" font-size="12" text-anchor="middle">μ</text>
-                        
-                        <!-- 数据点分散 -->
-                        <circle cx="420" cy="200" r="8" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="200;195;200" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="450" cy="220" r="8" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="220;215;220" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="500" cy="250" r="8" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="250;245;250" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="550" cy="220" r="8" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="220;215;220" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="580" cy="200" r="8" fill="rgba(78,205,196,0.6)" stroke="#4ECDC4" stroke-width="2">
-                            <animate attributeName="cy" values="200;195;200" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                        </circle>
-                        
-                        <!-- 方差范围标记 -->
-                        <line x1="420" y1="350" x2="580" y2="350" stroke="#4ECDC4" stroke-width="2"/>
-                        <line x1="420" y1="340" x2="420" y2="360" stroke="#4ECDC4" stroke-width="2"/>
-                        <line x1="580" y1="340" x2="580" y2="360" stroke="#4ECDC4" stroke-width="2"/>
-                        <text x="500" y="380" fill="#4ECDC4" font-size="12" text-anchor="middle">σ 大</text>
-                        
-                        <text x="350" y="480" fill="#e1bee7" font-size="14" text-anchor="middle">方差越大，数据越分散</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">常见分布的期望和方差</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">0-1分布</p>
-                    <div class="formula-box"><p class="chalk-text">$$E(X) = p, \quad D(X) = p(1-p)$$</p></div>
-                    <p class="chalk-text emphasis">二项分布 B(n,p)</p>
-                    <div class="formula-box"><p class="chalk-text">$$E(X) = np, \quad D(X) = np(1-p)$$</p></div>
-                    <p class="chalk-text emphasis">泊松分布 P(λ)</p>
-                    <div class="formula-box"><p class="chalk-text">$$E(X) = \lambda, \quad D(X) = \lambda$$</p></div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 三种分布对比 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="16" text-anchor="middle">常见分布</text>
-                        
-                        <!-- 0-1分布 -->
-                        <g>
-                            <text x="180" y="120" fill="#FF6B6B" font-size="14" text-anchor="middle">0-1分布</text>
-                            <line x1="100" y1="250" x2="260" y2="250" stroke="#ffffff" stroke-width="1"/>
-                            <line x1="100" y1="250" x2="100" y2="150" stroke="#ffffff" stroke-width="1"/>
-                            
-                            <rect x="120" y="200" width="40" height="50" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                                <animate attributeName="height" values="0;50;50" dur="2s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;200;200" dur="2s" repeatCount="indefinite"/>
-                            </rect>
-                            <text x="140" y="270" fill="#FF6B6B" font-size="12" text-anchor="middle">0</text>
-                            
-                            <rect x="200" y="180" width="40" height="70" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="2">
-                                <animate attributeName="height" values="0;70;70" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;180;180" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                            </rect>
-                            <text x="220" y="270" fill="#FF6B6B" font-size="12" text-anchor="middle">1</text>
-                            
-                            <text x="180" y="300" fill="#FF6B6B" font-size="11" text-anchor="middle">E=p, D=p(1-p)</text>
-                        </g>
-                        
-                        <!-- 二项分布 -->
-                        <g>
-                            <text x="400" y="120" fill="#4ECDC4" font-size="14" text-anchor="middle">二项分布</text>
-                            <line x1="320" y1="250" x2="480" y2="250" stroke="#ffffff" stroke-width="1"/>
-                            <line x1="320" y1="250" x2="320" y2="150" stroke="#ffffff" stroke-width="1"/>
-                            
-                            <rect x="330" y="230" width="20" height="20" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="height" values="0;20;20" dur="2s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;230;230" dur="2s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="355" y="210" width="20" height="40" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="height" values="0;40;40" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;210;210" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="380" y="180" width="20" height="70" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="height" values="0;70;70" dur="2s" begin="0.4s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;180;180" dur="2s" begin="0.4s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="405" y="210" width="20" height="40" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="height" values="0;40;40" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;210;210" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="430" y="230" width="20" height="20" fill="rgba(78,205,196,0.5)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="height" values="0;20;20" dur="2s" begin="0.8s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="250;230;230" dur="2s" begin="0.8s" repeatCount="indefinite"/>
-                            </rect>
-                            
-                            <text x="400" y="300" fill="#4ECDC4" font-size="11" text-anchor="middle">E=np, D=np(1-p)</text>
-                        </g>
-                        
-                        <!-- 泊松分布 -->
-                        <g>
-                            <text x="350" y="380" fill="#9370DB" font-size="14" text-anchor="middle">泊松分布</text>
-                            <line x1="200" y1="510" x2="500" y2="510" stroke="#ffffff" stroke-width="1"/>
-                            <line x1="200" y1="510" x2="200" y2="410" stroke="#ffffff" stroke-width="1"/>
-                            
-                            <rect x="220" y="490" width="25" height="20" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;20;20" dur="2s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;490;490" dur="2s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="250" y="470" width="25" height="40" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;40;40" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;470;470" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="280" y="440" width="25" height="70" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;70;70" dur="2s" begin="0.4s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;440;440" dur="2s" begin="0.4s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="310" y="430" width="25" height="80" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;80;80" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;430;430" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="340" y="450" width="25" height="60" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;60;60" dur="2s" begin="0.8s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;450;450" dur="2s" begin="0.8s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="370" y="475" width="25" height="35" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;35;35" dur="2s" begin="1s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;475;475" dur="2s" begin="1s" repeatCount="indefinite"/>
-                            </rect>
-                            <rect x="400" y="495" width="25" height="15" fill="rgba(147,112,219,0.5)" stroke="#9370DB" stroke-width="1">
-                                <animate attributeName="height" values="0;15;15" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                                <animate attributeName="y" values="510;495;495" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-                            </rect>
-                            
-                            <text x="350" y="550" fill="#9370DB" font-size="11" text-anchor="middle">E=λ, D=λ</text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心内容</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">随机变量：样本空间到实数的映射</li>
-                        <li class="chalk-text">分布律：$P(X = x_k) = p_k$</li>
-                        <li class="chalk-text">期望：$E(X) = \sum x_k p_k$</li>
-                        <li class="chalk-text">方差：$D(X) = E(X^2) - [E(X)]^2$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 知识树 -->
-                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4">
-                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="245" fill="#FFE066" font-size="16" text-anchor="middle">随机变量</text>
-                        <text x="350" y="265" fill="#FFE066" font-size="14" text-anchor="middle">X</text>
-                        
-                        <!-- 分支1：分布律 -->
-                        <line x1="280" y1="200" x2="180" y2="120" stroke="#FF6B6B" stroke-width="3"/>
-                        <circle cx="180" cy="120" r="45" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="180" y="120" fill="#FF6B6B" font-size="12" text-anchor="middle">分布律</text>
-                        <text x="180" y="135" fill="#FF6B6B" font-size="10" text-anchor="middle">P(X=xₖ)</text>
-                        
-                        <!-- 分支2：期望 -->
-                        <line x1="420" y1="200" x2="520" y2="120" stroke="#4ECDC4" stroke-width="3"/>
-                        <circle cx="520" cy="120" r="45" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="520" y="120" fill="#4ECDC4" font-size="12" text-anchor="middle">期望</text>
-                        <text x="520" y="135" fill="#4ECDC4" font-size="10" text-anchor="middle">E(X)</text>
-                        
-                        <!-- 分支3：方差 -->
-                        <line x1="280" y1="300" x2="180" y2="380" stroke="#9370DB" stroke-width="3"/>
-                        <circle cx="180" cy="380" r="45" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="180" y="380" fill="#9370DB" font-size="12" text-anchor="middle">方差</text>
-                        <text x="180" y="395" fill="#9370DB" font-size="10" text-anchor="middle">D(X)</text>
-                        
-                        <!-- 分支4：应用 -->
-                        <line x1="420" y1="300" x2="520" y2="380" stroke="#e1bee7" stroke-width="3"/>
-                        <circle cx="520" cy="380" r="45" fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="520" y="380" fill="#e1bee7" font-size="12" text-anchor="middle">常见分布</text>
-                        <text x="520" y="395" fill="#e1bee7" font-size="10" text-anchor="middle">0-1,二项,泊松</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-    <div class="subtitle-area" id="subtitleArea"></div>
-
-    <script>
+<script>
         let currentPage = 1; const totalPages = 6;
-        const pageContents = ["随机变量是样本空间到实数的映射。离散型随机变量取值有限或可数无穷。例如掷骰子，X等于1到6。分布律描述随机变量的概率分布。","分布律P(X等于xk)等于pk，描述随机变量的概率分布。性质：pk大于等于0，所有pk之和等于1。例如掷骰子，P(X等于k)等于六分之一。","数学期望E(X)等于所有xk乘以pk的和，是随机变量的平均值。性质：常数的期望等于常数，线性性质，可加性。例如掷骰子的期望是3.5。","方差D(X)等于E(X减E(X)的平方)，衡量随机变量的离散程度。标准差是方差的平方根。性质：常数的方差为0，数乘的方差等于系数平方乘以原方差。","常见分布的期望和方差：0-1分布E等于p，D等于p乘以1减p；二项分布E等于np，D等于np乘以1减p；泊松分布E等于λ，D等于λ。","总结：随机变量是样本空间到实数的映射，分布律描述概率分布，期望是平均值，方差衡量离散程度。"];
-        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
+
+        const subtitleScript = {
+            1: `欢迎学习随机变量、期望与方差。随机变量是样本空间到实数的映射，用大写字母X表示。离散型随机变量取值有限或可数无穷。例如掷骰子，X等于1到6。分布律描述随机变量的概率分布。`,
+            2: `分布律P(X等于xk)等于pk，描述随机变量的概率分布。性质：pk大于等于0，所有pk之和等于1。例如掷骰子，P(X等于k)等于六分之一，k等于1到6。`,
+            3: `数学期望E(X)等于所有xk乘以pk的和，是随机变量的平均值。性质：常数的期望等于常数，线性性质E(aX加b)等于aE(X)加b，可加性E(X加Y)等于E(X)加E(Y)。例如掷骰子的期望是3.5。`,
+            4: `方差D(X)等于E(X减E(X)的平方)，衡量随机变量的离散程度。标准差是方差的平方根，记作σ。性质：常数的方差为0，D(aX加b)等于a平方乘以D(X)。`,
+            5: `常见分布的期望和方差：0-1分布，E等于p，D等于p乘以1减p；二项分布B(n,p)，E等于np，D等于np乘以1减p；泊松分布P(λ)，E等于λ，D等于λ。`,
+            6: `总结一下，随机变量是样本空间到实数的映射，分布律描述概率分布。期望是平均值，反映中心位置；方差衡量离散程度，反映波动大小。掌握常见分布的期望和方差对应用概率统计非常重要。`
+        };
+
+        const autoPlayDurations = {1: 18000, 2: 16000, 3: 22000, 4: 18000, 5: 20000, 6: 18000};
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message; indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
+                });
+            });
+        }
+
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
         function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
-        async function startTeaching() { console.log('开始讲解'); }
-        async function startAutoPlay() { console.log('自动播放'); }
+
+        async function startTeaching() {
+            try {
+                await waitForSDK(); updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
+        }
+
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放'; btn.style.background = '';
+            }
+        }
+
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
         let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
         document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
     </script>
 </body>
 </html>
-

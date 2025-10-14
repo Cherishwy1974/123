@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第13章 正态分布与中心极限定理</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第13章 正态分布与中心极限定理</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
@@ -36,530 +37,576 @@
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
     </style>
-    <script>
+<script>
         window.MathJax = {
             tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
             startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
             options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：正态分布的概念 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">正态分布的概念</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <p class="chalk-text">$X \sim N(\mu, \sigma^2)$</p>
-                    <p class="chalk-text emphasis">概率密度函数</p>
-                    <div class="formula-box"><p class="chalk-text">$$f(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$</p></div>
-                    <p class="chalk-text emphasis">参数</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$\mu$：期望（均值）</li>
-                        <li class="chalk-text">$\sigma^2$：方差</li>
-                        <li class="chalk-text">$\sigma$：标准差</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标轴 -->
-                        <line x1="100" y1="400" x2="600" y2="400" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-x)"/>
-                        <line x1="100" y1="400" x2="100" y2="100" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-y)"/>
-                        <text x="610" y="405" fill="#ffffff" font-size="14">x</text>
-                        <text x="90" y="90" fill="#ffffff" font-size="14">f(x)</text>
-                        
-                        <!-- 正态分布曲线 -->
-                        <path d="M 120 395 Q 150 380, 180 350 T 240 280 T 300 220 T 350 200 T 400 220 T 460 280 T 520 350 T 550 380 T 580 395" 
-                              fill="none" stroke="#4ECDC4" stroke-width="4">
-                            <animate attributeName="stroke-opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        
-                        <!-- 填充区域 -->
-                        <path d="M 120 400 L 120 395 Q 150 380, 180 350 T 240 280 T 300 220 T 350 200 T 400 220 T 460 280 T 520 350 T 550 380 T 580 395 L 580 400 Z" 
-                              fill="rgba(78,205,196,0.2)" stroke="none">
-                            <animate attributeName="fill-opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        
-                        <!-- 均值标记 -->
-                        <line x1="350" y1="400" x2="350" y2="200" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                        </line>
-                        <circle cx="350" cy="200" r="6" fill="#FFE066">
-                            <animate attributeName="r" values="6;9;6" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="430" fill="#FFE066" font-size="14" text-anchor="middle">μ</text>
-                        
-                        <!-- 标准差标记 -->
-                        <line x1="250" y1="420" x2="450" y2="420" stroke="#FF6B6B" stroke-width="3"/>
-                        <line x1="250" y1="415" x2="250" y2="425" stroke="#FF6B6B" stroke-width="2"/>
-                        <line x1="450" y1="415" x2="450" y2="425" stroke="#FF6B6B" stroke-width="2"/>
-                        <text x="350" y="450" fill="#FF6B6B" font-size="12" text-anchor="middle">2σ</text>
-                        
-                        <!-- 对称性标记 -->
-                        <path d="M 200 300 Q 220 280, 240 300" fill="none" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-sym1)"/>
-                        <path d="M 500 300 Q 480 280, 460 300" fill="none" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-sym2)"/>
-                        <text x="350" y="480" fill="#9370DB" font-size="12" text-anchor="middle">关于 μ 对称</text>
-                        
-                        <defs>
-                            <marker id="arrow-x" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                            <marker id="arrow-y" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                            <marker id="arrow-sym1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#9370DB"/>
-                            </marker>
-                            <marker id="arrow-sym2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#9370DB"/>
-                            </marker>
-                        </defs>
-                        
-                        <text x="350" y="550" fill="#e1bee7" font-size="14" text-anchor="middle">钟形曲线</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：正态分布的概念 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        正态分布与中心极限定理
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第13章 视频 13.3
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限的定义</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限运算法则</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限存在条件</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 极限的应用</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad13" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#00bcd4;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#0097a7;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad13)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="100">
+                            P(X)
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<path d="M 100 350 Q 200 150 300 250 T 500 200" fill="none" stroke="#00bcd4" stroke-width="3"></path>
+<path d="M 100 350 Q 200 150 300 250 T 500 200 L 500 350 L 100 350 Z" fill="url(#grad13)" opacity="0.3">
+<animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</path>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">标准正态分布</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<p class="chalk-text">$\mu = 0, \sigma = 1$ 的正态分布</p>
+<div class="formula-box"><p class="chalk-text">$$Z \sim N(0, 1)$$</p></div>
+<p class="chalk-text emphasis">标准化变换</p>
+<div class="formula-box"><p class="chalk-text">$$Z = \frac{X - \mu}{\sigma}$$</p></div>
+<p class="chalk-text">将任意正态分布转化为标准正态分布</p>
+<p class="chalk-text emphasis">概率密度</p>
+<div class="formula-box"><p class="chalk-text">$$\varphi(z) = \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}$$</p></div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标轴 -->
+<line marker-end="url(#arrow-z)" stroke="#ffffff" stroke-width="2" x1="100" x2="600" y1="350" y2="350"></line>
+<line marker-end="url(#arrow-phi)" stroke="#ffffff" stroke-width="2" x1="350" x2="350" y1="450" y2="100"></line>
+<text fill="#ffffff" font-size="14" x="610" y="355">z</text>
+<text fill="#ffffff" font-size="14" x="340" y="90">φ(z)</text>
+<!-- 标准正态分布曲线 -->
+<path d="M 120 345 Q 150 330, 180 300 T 240 240 T 300 180 T 350 150 T 400 180 T 460 240 T 520 300 T 550 330 T 580 345" fill="none" stroke="#4ECDC4" stroke-width="4">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<!-- 68-95-99.7规则 -->
+<!-- 1σ区域 -->
+<path d="M 250 350 L 250 240 Q 300 180, 350 150 Q 400 180, 450 240 L 450 350 Z" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.1;0.3;0.1"></animate>
+</path>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="350" y="380">68%</text>
+<line stroke="#FF6B6B" stroke-width="2" x1="250" x2="250" y1="360" y2="370"></line>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="250" y="390">-1</text>
+<line stroke="#FF6B6B" stroke-width="2" x1="450" x2="450" y1="360" y2="370"></line>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="450" y="390">+1</text>
+<!-- 2σ区域 -->
+<line stroke="#FFE066" stroke-width="2" x1="150" x2="150" y1="360" y2="370"></line>
+<text fill="#FFE066" font-size="10" text-anchor="middle" x="150" y="390">-2</text>
+<line stroke="#FFE066" stroke-width="2" x1="550" x2="550" y1="360" y2="370"></line>
+<text fill="#FFE066" font-size="10" text-anchor="middle" x="550" y="390">+2</text>
+<text fill="#FFE066" font-size="10" text-anchor="middle" x="150" y="410">95%</text>
+<text fill="#FFE066" font-size="10" text-anchor="middle" x="550" y="410">95%</text>
+<!-- 3σ区域 -->
+<line stroke="#9370DB" stroke-width="2" x1="120" x2="120" y1="360" y2="370"></line>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="120" y="390">-3</text>
+<line stroke="#9370DB" stroke-width="2" x1="580" x2="580" y1="360" y2="370"></line>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="580" y="390">+3</text>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="120" y="430">99.7%</text>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="580" y="430">99.7%</text>
+<!-- 中心标记 -->
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="350" x2="350" y1="350" y2="150">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.3;0.8;0.3"></animate>
+</line>
+<circle cx="350" cy="150" fill="#FFE066" r="5">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="5;8;5"></animate>
+</circle>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="350" y="370">0</text>
+<defs>
+<marker id="arrow-z" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#ffffff" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow-phi" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#ffffff" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<text fill="#e1bee7" font-size="14" text-anchor="middle" x="350" y="500">68-95-99.7 规则</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：正态分布的性质 -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">正态分布的性质</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">对称性</p>
+<p class="chalk-text">关于 $x = \mu$ 对称</p>
+<p class="chalk-text emphasis">最大值</p>
+<p class="chalk-text">在 $x = \mu$ 处取得最大值</p>
+<p class="chalk-text emphasis">拐点</p>
+<p class="chalk-text">在 $x = \mu \pm \sigma$ 处</p>
+<p class="chalk-text emphasis">线性组合</p>
+<div class="formula-box"><p class="chalk-text">$$aX + b \sim N(a\mu + b, a^2\sigma^2)$$</p></div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 不同参数的正态分布对比 -->
+<text fill="#ffffff" font-size="16" text-anchor="middle" x="350" y="50">不同参数的正态分布</text>
+<!-- 坐标轴 -->
+<line stroke="#ffffff" stroke-width="2" x1="100" x2="600" y1="400" y2="400"></line>
+<line stroke="#ffffff" stroke-width="2" x1="100" x2="100" y1="400" y2="100"></line>
+<!-- μ=0, σ=1 (标准) -->
+<path d="M 120 395 Q 180 350, 240 280 T 350 200 T 460 280 T 520 350 T 580 395" fill="none" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<text fill="#4ECDC4" font-size="12" x="500" y="250">σ=1</text>
+<!-- μ=0, σ=0.5 (窄) -->
+<path d="M 280 395 Q 300 350, 320 250 T 350 150 T 380 250 T 400 350 T 420 395" fill="none" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="stroke-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<text fill="#FF6B6B" font-size="12" x="380" y="180">σ=0.5</text>
+<!-- μ=0, σ=1.5 (宽) -->
+<path d="M 100 395 Q 150 370, 200 320 T 300 250 T 350 230 T 400 250 T 500 320 T 550 370 T 600 395" fill="none" stroke="#FFE066" stroke-width="3">
+<animate attributename="stroke-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<text fill="#FFE066" font-size="12" x="520" y="320">σ=1.5</text>
+<!-- 均值标记 -->
+<line stroke="rgba(255,255,255,0.3)" stroke-dasharray="3,3" stroke-width="1" x1="350" x2="350" y1="400" y2="150"></line>
+<text fill="#ffffff" font-size="12" text-anchor="middle" x="350" y="430">μ=0</text>
+<!-- 说明 -->
+<rect fill="rgba(255,255,255,0.05)" height="80" rx="5" stroke="#ffffff" stroke-width="1" width="400" x="150" y="470"></rect>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="350" y="495">σ 越小，曲线越高越窄</text>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="350" y="515">σ 越大，曲线越矮越宽</text>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="350" y="535">μ 决定曲线的位置</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第4页：中心极限定理 -->
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">中心极限定理</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定理</p>
+<p class="chalk-text">大量独立同分布随机变量的和近似服从正态分布</p>
+<p class="chalk-text emphasis">数学表述</p>
+<div class="formula-box"><p class="chalk-text">$$\frac{\sum_{i=1}^{n} X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1)$$</p></div>
+<p class="chalk-text emphasis">意义</p>
+<ul class="chalk-list">
+<li class="chalk-text">解释了正态分布的普遍性</li>
+<li class="chalk-text">为统计推断提供理论基础</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 演示：从均匀分布到正态分布 -->
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="350" y="40">中心极限定理演示</text>
+<!-- n=1: 均匀分布 -->
+<g>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="150" y="100">n=1 (单个变量)</text>
+<rect fill="rgba(255,107,107,0.3)" height="80" stroke="#FF6B6B" stroke-width="2" width="100" x="100" y="110">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</rect>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="150" y="210">均匀分布</text>
+</g>
+<!-- n=2: 开始变化 -->
+<g>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="350" y="100">n=2 (两个变量)</text>
+<path d="M 300 190 L 320 150 L 340 130 L 360 130 L 380 150 L 400 190" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</path>
+<line stroke="#4ECDC4" stroke-width="1" x1="300" x2="400" y1="190" y2="190"></line>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="350" y="210">三角形分布</text>
+</g>
+<!-- n=5: 接近正态 -->
+<g>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="550" y="100">n=5 (五个变量)</text>
+<path d="M 500 190 Q 520 170, 530 150 T 550 130 T 570 150 T 580 170 T 600 190" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2">
+<animate attributename="fill-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</path>
+<line stroke="#FFE066" stroke-width="1" x1="500" x2="600" y1="190" y2="190"></line>
+<text fill="#FFE066" font-size="10" text-anchor="middle" x="550" y="210">接近正态</text>
+</g>
+<!-- 箭头指示 -->
+<path d="M 210 150 L 280 150" marker-end="url(#arrow-clt1)" stroke="#9370DB" stroke-width="2"></path>
+<path d="M 410 150 L 480 150" marker-end="url(#arrow-clt2)" stroke="#9370DB" stroke-width="2"></path>
+<!-- n→∞: 正态分布 -->
+<g>
+<text fill="#e1bee7" font-size="14" text-anchor="middle" x="350" y="280">n → ∞ (大量变量)</text>
+<line stroke="#ffffff" stroke-width="2" x1="150" x2="550" y1="500" y2="500"></line>
+<line stroke="#ffffff" stroke-width="2" x1="150" x2="150" y1="500" y2="300"></line>
+<path d="M 170 495 Q 200 470, 230 420 T 290 340 T 350 310 T 410 340 T 470 420 T 500 470 T 530 495" fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="350" x2="350" y1="500" y2="310">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.3;0.8;0.3"></animate>
+</line>
+<circle cx="350" cy="310" fill="#FFE066" r="5">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="5;8;5"></animate>
+</circle>
+<text fill="#e1bee7" font-size="12" text-anchor="middle" x="350" y="540">正态分布 N(μ, σ²/n)</text>
+</g>
+<defs>
+<marker id="arrow-clt1" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#9370DB" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow-clt2" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#9370DB" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：应用实例 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">正态分布的应用</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">质量控制</p>
+<p class="chalk-text">产品尺寸、重量等服从正态分布</p>
+<p class="chalk-text emphasis">测量误差</p>
+<p class="chalk-text">测量误差通常服从正态分布</p>
+<p class="chalk-text emphasis">考试成绩</p>
+<p class="chalk-text">大规模考试成绩近似正态分布</p>
+<p class="chalk-text emphasis">自然现象</p>
+<ul class="chalk-list">
+<li class="chalk-text">人的身高、体重</li>
+<li class="chalk-text">智商分布</li>
+<li class="chalk-text">血压、心率等生理指标</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 应用场景示意图 -->
+<text fill="#ffffff" font-size="16" text-anchor="middle" x="350" y="40">正态分布的应用</text>
+<!-- 质量控制 -->
+<g>
+<circle cx="180" cy="150" fill="rgba(255,107,107,0.2)" r="60" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="60;65;60"></animate>
+</circle>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="180" y="145">质量控制</text>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="180" y="165">产品尺寸</text>
+<!-- 小钟形曲线 -->
+<path d="M 150 180 Q 165 170, 180 165 Q 195 170, 210 180" fill="none" stroke="#FF6B6B" stroke-width="2">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+</g>
+<!-- 考试成绩 -->
+<g>
+<circle cx="520" cy="150" fill="rgba(78,205,196,0.2)" r="60" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="r" begin="1s" dur="3s" repeatcount="indefinite" values="60;65;60"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="520" y="145">考试成绩</text>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="520" y="165">分数分布</text>
+<!-- 小钟形曲线 -->
+<path d="M 490 180 Q 505 170, 520 165 Q 535 170, 550 180" fill="none" stroke="#4ECDC4" stroke-width="2">
+<animate attributename="stroke-opacity" begin="1s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+</g>
+<!-- 身高分布 -->
+<g>
+<circle cx="180" cy="350" fill="rgba(255,224,102,0.2)" r="60" stroke="#FFE066" stroke-width="3">
+<animate attributename="r" begin="2s" dur="3s" repeatcount="indefinite" values="60;65;60"></animate>
+</circle>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="180" y="345">身高分布</text>
+<text fill="#FFE066" font-size="10" text-anchor="middle" x="180" y="365">人群身高</text>
+<!-- 小钟形曲线 -->
+<path d="M 150 380 Q 165 370, 180 365 Q 195 370, 210 380" fill="none" stroke="#FFE066" stroke-width="2">
+<animate attributename="stroke-opacity" begin="2s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+</g>
+<!-- 测量误差 -->
+<g>
+<circle cx="520" cy="350" fill="rgba(147,112,219,0.2)" r="60" stroke="#9370DB" stroke-width="3">
+<animate attributename="r" begin="3s" dur="3s" repeatcount="indefinite" values="60;65;60"></animate>
+</circle>
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="520" y="345">测量误差</text>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="520" y="365">误差分布</text>
+<!-- 小钟形曲线 -->
+<path d="M 490 380 Q 505 370, 520 365 Q 535 370, 550 380" fill="none" stroke="#9370DB" stroke-width="2">
+<animate attributename="stroke-opacity" begin="3s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+</g>
+<!-- 中心正态分布 -->
+<g>
+<line stroke="#ffffff" stroke-width="2" x1="250" x2="450" y1="520" y2="520"></line>
+<line stroke="#ffffff" stroke-width="2" x1="250" x2="250" y1="520" y2="450"></line>
+<path d="M 260 515 Q 290 490, 320 470 T 350 460 T 380 470 T 410 490 T 440 515" fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<line stroke="#FFE066" stroke-dasharray="3,3" stroke-width="2" x1="350" x2="350" y1="520" y2="460">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.3;0.8;0.3"></animate>
+</line>
+<text fill="#e1bee7" font-size="12" text-anchor="middle" x="350" y="550">普遍存在的正态分布</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：总结 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心内容</p>
+<ul class="chalk-list">
+<li class="chalk-text">正态分布：$N(\mu, \sigma^2)$</li>
+<li class="chalk-text">标准正态分布：$N(0, 1)$</li>
+<li class="chalk-text">68-95-99.7规则</li>
+<li class="chalk-text">中心极限定理：解释正态分布的普遍性</li>
+<li class="chalk-text">广泛应用于自然和社会现象</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 知识树 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="245">正态分布</text>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="350" y="265">N(μ,σ²)</text>
+<!-- 分支1：标准正态 -->
+<line stroke="#FF6B6B" stroke-width="3" x1="280" x2="180" y1="200" y2="120"></line>
+<circle cx="180" cy="120" fill="rgba(255,107,107,0.3)" r="45" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="180" y="120">标准正态</text>
+<text fill="#FF6B6B" font-size="10" text-anchor="middle" x="180" y="135">N(0,1)</text>
+<!-- 分支2：性质 -->
+<line stroke="#4ECDC4" stroke-width="3" x1="420" x2="520" y1="200" y2="120"></line>
+<circle cx="520" cy="120" fill="rgba(78,205,196,0.3)" r="45" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="520" y="115">性质</text>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="520" y="130">对称、钟形</text>
+<!-- 分支3：中心极限定理 -->
+<line stroke="#9370DB" stroke-width="3" x1="280" x2="180" y1="300" y2="380"></line>
+<circle cx="180" cy="380" fill="rgba(147,112,219,0.3)" r="45" stroke="#9370DB" stroke-width="3">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#9370DB" font-size="11" text-anchor="middle" x="180" y="375">中心极限</text>
+<text fill="#9370DB" font-size="10" text-anchor="middle" x="180" y="390">定理</text>
+<!-- 分支4：应用 -->
+<line stroke="#e1bee7" stroke-width="3" x1="420" x2="520" y1="300" y2="380"></line>
+<circle cx="520" cy="380" fill="rgba(225,190,231,0.3)" r="45" stroke="#e1bee7" stroke-width="3">
+<animate attributename="r" begin="1.5s" dur="2s" repeatcount="indefinite" values="45;50;45"></animate>
+</circle>
+<text fill="#e1bee7" font-size="12" text-anchor="middle" x="520" y="375">应用</text>
+<text fill="#e1bee7" font-size="10" text-anchor="middle" x="520" y="390">质量控制等</text>
+<!-- 底部钟形曲线 -->
+<path d="M 250 500 Q 300 470, 350 460 Q 400 470, 450 500" fill="none" stroke="#FFE066" stroke-width="3">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="350" y="540">最重要的连续分布</text>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<div class="subtitle-area" id="subtitleArea"></div>
 
-        <!-- 第2页：标准正态分布 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">标准正态分布</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <p class="chalk-text">$\mu = 0, \sigma = 1$ 的正态分布</p>
-                    <div class="formula-box"><p class="chalk-text">$$Z \sim N(0, 1)$$</p></div>
-                    <p class="chalk-text emphasis">标准化变换</p>
-                    <div class="formula-box"><p class="chalk-text">$$Z = \frac{X - \mu}{\sigma}$$</p></div>
-                    <p class="chalk-text">将任意正态分布转化为标准正态分布</p>
-                    <p class="chalk-text emphasis">概率密度</p>
-                    <div class="formula-box"><p class="chalk-text">$$\varphi(z) = \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}$$</p></div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标轴 -->
-                        <line x1="100" y1="350" x2="600" y2="350" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-z)"/>
-                        <line x1="350" y1="450" x2="350" y2="100" stroke="#ffffff" stroke-width="2" marker-end="url(#arrow-phi)"/>
-                        <text x="610" y="355" fill="#ffffff" font-size="14">z</text>
-                        <text x="340" y="90" fill="#ffffff" font-size="14">φ(z)</text>
-                        
-                        <!-- 标准正态分布曲线 -->
-                        <path d="M 120 345 Q 150 330, 180 300 T 240 240 T 300 180 T 350 150 T 400 180 T 460 240 T 520 300 T 550 330 T 580 345" 
-                              fill="none" stroke="#4ECDC4" stroke-width="4">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        
-                        <!-- 68-95-99.7规则 -->
-                        <!-- 1σ区域 -->
-                        <path d="M 250 350 L 250 240 Q 300 180, 350 150 Q 400 180, 450 240 L 450 350 Z" 
-                              fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2">
-                            <animate attributeName="fill-opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="350" y="380" fill="#FF6B6B" font-size="12" text-anchor="middle">68%</text>
-                        <line x1="250" y1="360" x2="250" y2="370" stroke="#FF6B6B" stroke-width="2"/>
-                        <text x="250" y="390" fill="#FF6B6B" font-size="10" text-anchor="middle">-1</text>
-                        <line x1="450" y1="360" x2="450" y2="370" stroke="#FF6B6B" stroke-width="2"/>
-                        <text x="450" y="390" fill="#FF6B6B" font-size="10" text-anchor="middle">+1</text>
-                        
-                        <!-- 2σ区域 -->
-                        <line x1="150" y1="360" x2="150" y2="370" stroke="#FFE066" stroke-width="2"/>
-                        <text x="150" y="390" fill="#FFE066" font-size="10" text-anchor="middle">-2</text>
-                        <line x1="550" y1="360" x2="550" y2="370" stroke="#FFE066" stroke-width="2"/>
-                        <text x="550" y="390" fill="#FFE066" font-size="10" text-anchor="middle">+2</text>
-                        <text x="150" y="410" fill="#FFE066" font-size="10" text-anchor="middle">95%</text>
-                        <text x="550" y="410" fill="#FFE066" font-size="10" text-anchor="middle">95%</text>
-                        
-                        <!-- 3σ区域 -->
-                        <line x1="120" y1="360" x2="120" y2="370" stroke="#9370DB" stroke-width="2"/>
-                        <text x="120" y="390" fill="#9370DB" font-size="10" text-anchor="middle">-3</text>
-                        <line x1="580" y1="360" x2="580" y2="370" stroke="#9370DB" stroke-width="2"/>
-                        <text x="580" y="390" fill="#9370DB" font-size="10" text-anchor="middle">+3</text>
-                        <text x="120" y="430" fill="#9370DB" font-size="10" text-anchor="middle">99.7%</text>
-                        <text x="580" y="430" fill="#9370DB" font-size="10" text-anchor="middle">99.7%</text>
-                        
-                        <!-- 中心标记 -->
-                        <line x1="350" y1="350" x2="350" y2="150" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5">
-                            <animate attributeName="stroke-opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
-                        </line>
-                        <circle cx="350" cy="150" r="5" fill="#FFE066">
-                            <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="370" fill="#FFE066" font-size="12" text-anchor="middle">0</text>
-                        
-                        <defs>
-                            <marker id="arrow-z" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                            <marker id="arrow-phi" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#ffffff"/>
-                            </marker>
-                        </defs>
-                        
-                        <text x="350" y="500" fill="#e1bee7" font-size="14" text-anchor="middle">68-95-99.7 规则</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-        <!-- 第3页：正态分布的性质 -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">正态分布的性质</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">对称性</p>
-                    <p class="chalk-text">关于 $x = \mu$ 对称</p>
-                    <p class="chalk-text emphasis">最大值</p>
-                    <p class="chalk-text">在 $x = \mu$ 处取得最大值</p>
-                    <p class="chalk-text emphasis">拐点</p>
-                    <p class="chalk-text">在 $x = \mu \pm \sigma$ 处</p>
-                    <p class="chalk-text emphasis">线性组合</p>
-                    <div class="formula-box"><p class="chalk-text">$$aX + b \sim N(a\mu + b, a^2\sigma^2)$$</p></div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 不同参数的正态分布对比 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="16" text-anchor="middle">不同参数的正态分布</text>
-                        
-                        <!-- 坐标轴 -->
-                        <line x1="100" y1="400" x2="600" y2="400" stroke="#ffffff" stroke-width="2"/>
-                        <line x1="100" y1="400" x2="100" y2="100" stroke="#ffffff" stroke-width="2"/>
-                        
-                        <!-- μ=0, σ=1 (标准) -->
-                        <path d="M 120 395 Q 180 350, 240 280 T 350 200 T 460 280 T 520 350 T 580 395" 
-                              fill="none" stroke="#4ECDC4" stroke-width="3">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="500" y="250" fill="#4ECDC4" font-size="12">σ=1</text>
-                        
-                        <!-- μ=0, σ=0.5 (窄) -->
-                        <path d="M 280 395 Q 300 350, 320 250 T 350 150 T 380 250 T 400 350 T 420 395" 
-                              fill="none" stroke="#FF6B6B" stroke-width="3">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="1s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="380" y="180" fill="#FF6B6B" font-size="12">σ=0.5</text>
-                        
-                        <!-- μ=0, σ=1.5 (宽) -->
-                        <path d="M 100 395 Q 150 370, 200 320 T 300 250 T 350 230 T 400 250 T 500 320 T 550 370 T 600 395" 
-                              fill="none" stroke="#FFE066" stroke-width="3">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="2s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="520" y="320" fill="#FFE066" font-size="12">σ=1.5</text>
-                        
-                        <!-- 均值标记 -->
-                        <line x1="350" y1="400" x2="350" y2="150" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="3,3"/>
-                        <text x="350" y="430" fill="#ffffff" font-size="12" text-anchor="middle">μ=0</text>
-                        
-                        <!-- 说明 -->
-                        <rect x="150" y="470" width="400" height="80" fill="rgba(255,255,255,0.05)" stroke="#ffffff" stroke-width="1" rx="5"/>
-                        <text x="350" y="495" fill="#FF6B6B" font-size="12" text-anchor="middle">σ 越小，曲线越高越窄</text>
-                        <text x="350" y="515" fill="#4ECDC4" font-size="12" text-anchor="middle">σ 越大，曲线越矮越宽</text>
-                        <text x="350" y="535" fill="#FFE066" font-size="12" text-anchor="middle">μ 决定曲线的位置</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第4页：中心极限定理 -->
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">中心极限定理</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定理</p>
-                    <p class="chalk-text">大量独立同分布随机变量的和近似服从正态分布</p>
-                    <p class="chalk-text emphasis">数学表述</p>
-                    <div class="formula-box"><p class="chalk-text">$$\frac{\sum_{i=1}^{n} X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1)$$</p></div>
-                    <p class="chalk-text emphasis">意义</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">解释了正态分布的普遍性</li>
-                        <li class="chalk-text">为统计推断提供理论基础</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 演示：从均匀分布到正态分布 -->
-                        <text x="350" y="40" fill="#ffffff" font-size="14" text-anchor="middle">中心极限定理演示</text>
-                        
-                        <!-- n=1: 均匀分布 -->
-                        <g>
-                            <text x="150" y="100" fill="#FF6B6B" font-size="12" text-anchor="middle">n=1 (单个变量)</text>
-                            <rect x="100" y="110" width="100" height="80" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2">
-                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
-                            </rect>
-                            <text x="150" y="210" fill="#FF6B6B" font-size="10" text-anchor="middle">均匀分布</text>
-                        </g>
-                        
-                        <!-- n=2: 开始变化 -->
-                        <g>
-                            <text x="350" y="100" fill="#4ECDC4" font-size="12" text-anchor="middle">n=2 (两个变量)</text>
-                            <path d="M 300 190 L 320 150 L 340 130 L 360 130 L 380 150 L 400 190" 
-                                  fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2">
-                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
-                            </path>
-                            <line x1="300" y1="190" x2="400" y2="190" stroke="#4ECDC4" stroke-width="1"/>
-                            <text x="350" y="210" fill="#4ECDC4" font-size="10" text-anchor="middle">三角形分布</text>
-                        </g>
-                        
-                        <!-- n=5: 接近正态 -->
-                        <g>
-                            <text x="550" y="100" fill="#FFE066" font-size="12" text-anchor="middle">n=5 (五个变量)</text>
-                            <path d="M 500 190 Q 520 170, 530 150 T 550 130 T 570 150 T 580 170 T 600 190" 
-                                  fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2">
-                                <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="3s" begin="2s" repeatCount="indefinite"/>
-                            </path>
-                            <line x1="500" y1="190" x2="600" y2="190" stroke="#FFE066" stroke-width="1"/>
-                            <text x="550" y="210" fill="#FFE066" font-size="10" text-anchor="middle">接近正态</text>
-                        </g>
-                        
-                        <!-- 箭头指示 -->
-                        <path d="M 210 150 L 280 150" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-clt1)"/>
-                        <path d="M 410 150 L 480 150" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-clt2)"/>
-                        
-                        <!-- n→∞: 正态分布 -->
-                        <g>
-                            <text x="350" y="280" fill="#e1bee7" font-size="14" text-anchor="middle">n → ∞ (大量变量)</text>
-                            <line x1="150" y1="500" x2="550" y2="500" stroke="#ffffff" stroke-width="2"/>
-                            <line x1="150" y1="500" x2="150" y2="300" stroke="#ffffff" stroke-width="2"/>
-                            
-                            <path d="M 170 495 Q 200 470, 230 420 T 290 340 T 350 310 T 410 340 T 470 420 T 500 470 T 530 495" 
-                                  fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                            </path>
-                            
-                            <line x1="350" y1="500" x2="350" y2="310" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5">
-                                <animate attributeName="stroke-opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
-                            </line>
-                            <circle cx="350" cy="310" r="5" fill="#FFE066">
-                                <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
-                            </circle>
-                            
-                            <text x="350" y="540" fill="#e1bee7" font-size="12" text-anchor="middle">正态分布 N(μ, σ²/n)</text>
-                        </g>
-                        
-                        <defs>
-                            <marker id="arrow-clt1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#9370DB"/>
-                            </marker>
-                            <marker id="arrow-clt2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                <polygon points="0,0 10,5 0,10" fill="#9370DB"/>
-                            </marker>
-                        </defs>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第5页：应用实例 -->
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">正态分布的应用</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">质量控制</p>
-                    <p class="chalk-text">产品尺寸、重量等服从正态分布</p>
-                    <p class="chalk-text emphasis">测量误差</p>
-                    <p class="chalk-text">测量误差通常服从正态分布</p>
-                    <p class="chalk-text emphasis">考试成绩</p>
-                    <p class="chalk-text">大规模考试成绩近似正态分布</p>
-                    <p class="chalk-text emphasis">自然现象</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">人的身高、体重</li>
-                        <li class="chalk-text">智商分布</li>
-                        <li class="chalk-text">血压、心率等生理指标</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 应用场景示意图 -->
-                        <text x="350" y="40" fill="#ffffff" font-size="16" text-anchor="middle">正态分布的应用</text>
-                        
-                        <!-- 质量控制 -->
-                        <g>
-                            <circle cx="180" cy="150" r="60" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="3">
-                                <animate attributeName="r" values="60;65;60" dur="3s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="180" y="145" fill="#FF6B6B" font-size="14" text-anchor="middle">质量控制</text>
-                            <text x="180" y="165" fill="#FF6B6B" font-size="10" text-anchor="middle">产品尺寸</text>
-                            
-                            <!-- 小钟形曲线 -->
-                            <path d="M 150 180 Q 165 170, 180 165 Q 195 170, 210 180" 
-                                  fill="none" stroke="#FF6B6B" stroke-width="2">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                            </path>
-                        </g>
-                        
-                        <!-- 考试成绩 -->
-                        <g>
-                            <circle cx="520" cy="150" r="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3">
-                                <animate attributeName="r" values="60;65;60" dur="3s" begin="1s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="520" y="145" fill="#4ECDC4" font-size="14" text-anchor="middle">考试成绩</text>
-                            <text x="520" y="165" fill="#4ECDC4" font-size="10" text-anchor="middle">分数分布</text>
-                            
-                            <!-- 小钟形曲线 -->
-                            <path d="M 490 180 Q 505 170, 520 165 Q 535 170, 550 180" 
-                                  fill="none" stroke="#4ECDC4" stroke-width="2">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="1s" repeatCount="indefinite"/>
-                            </path>
-                        </g>
-                        
-                        <!-- 身高分布 -->
-                        <g>
-                            <circle cx="180" cy="350" r="60" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="3">
-                                <animate attributeName="r" values="60;65;60" dur="3s" begin="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="180" y="345" fill="#FFE066" font-size="14" text-anchor="middle">身高分布</text>
-                            <text x="180" y="365" fill="#FFE066" font-size="10" text-anchor="middle">人群身高</text>
-                            
-                            <!-- 小钟形曲线 -->
-                            <path d="M 150 380 Q 165 370, 180 365 Q 195 370, 210 380" 
-                                  fill="none" stroke="#FFE066" stroke-width="2">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="2s" repeatCount="indefinite"/>
-                            </path>
-                        </g>
-                        
-                        <!-- 测量误差 -->
-                        <g>
-                            <circle cx="520" cy="350" r="60" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="3">
-                                <animate attributeName="r" values="60;65;60" dur="3s" begin="3s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="520" y="345" fill="#9370DB" font-size="14" text-anchor="middle">测量误差</text>
-                            <text x="520" y="365" fill="#9370DB" font-size="10" text-anchor="middle">误差分布</text>
-                            
-                            <!-- 小钟形曲线 -->
-                            <path d="M 490 380 Q 505 370, 520 365 Q 535 370, 550 380" 
-                                  fill="none" stroke="#9370DB" stroke-width="2">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="3s" repeatCount="indefinite"/>
-                            </path>
-                        </g>
-                        
-                        <!-- 中心正态分布 -->
-                        <g>
-                            <line x1="250" y1="520" x2="450" y2="520" stroke="#ffffff" stroke-width="2"/>
-                            <line x1="250" y1="520" x2="250" y2="450" stroke="#ffffff" stroke-width="2"/>
-                            
-                            <path d="M 260 515 Q 290 490, 320 470 T 350 460 T 380 470 T 410 490 T 440 515" 
-                                  fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
-                                <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                            </path>
-                            
-                            <line x1="350" y1="520" x2="350" y2="460" stroke="#FFE066" stroke-width="2" stroke-dasharray="3,3">
-                                <animate attributeName="stroke-opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
-                            </line>
-                            
-                            <text x="350" y="550" fill="#e1bee7" font-size="12" text-anchor="middle">普遍存在的正态分布</text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第6页：总结 -->
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心内容</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">正态分布：$N(\mu, \sigma^2)$</li>
-                        <li class="chalk-text">标准正态分布：$N(0, 1)$</li>
-                        <li class="chalk-text">68-95-99.7规则</li>
-                        <li class="chalk-text">中心极限定理：解释正态分布的普遍性</li>
-                        <li class="chalk-text">广泛应用于自然和社会现象</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 知识树 -->
-                        <circle cx="350" cy="250" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4">
-                            <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="245" fill="#FFE066" font-size="16" text-anchor="middle">正态分布</text>
-                        <text x="350" y="265" fill="#FFE066" font-size="14" text-anchor="middle">N(μ,σ²)</text>
-                        
-                        <!-- 分支1：标准正态 -->
-                        <line x1="280" y1="200" x2="180" y2="120" stroke="#FF6B6B" stroke-width="3"/>
-                        <circle cx="180" cy="120" r="45" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="180" y="120" fill="#FF6B6B" font-size="12" text-anchor="middle">标准正态</text>
-                        <text x="180" y="135" fill="#FF6B6B" font-size="10" text-anchor="middle">N(0,1)</text>
-                        
-                        <!-- 分支2：性质 -->
-                        <line x1="420" y1="200" x2="520" y2="120" stroke="#4ECDC4" stroke-width="3"/>
-                        <circle cx="520" cy="120" r="45" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="520" y="115" fill="#4ECDC4" font-size="12" text-anchor="middle">性质</text>
-                        <text x="520" y="130" fill="#4ECDC4" font-size="10" text-anchor="middle">对称、钟形</text>
-                        
-                        <!-- 分支3：中心极限定理 -->
-                        <line x1="280" y1="300" x2="180" y2="380" stroke="#9370DB" stroke-width="3"/>
-                        <circle cx="180" cy="380" r="45" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="180" y="375" fill="#9370DB" font-size="11" text-anchor="middle">中心极限</text>
-                        <text x="180" y="390" fill="#9370DB" font-size="10" text-anchor="middle">定理</text>
-                        
-                        <!-- 分支4：应用 -->
-                        <line x1="420" y1="300" x2="520" y2="380" stroke="#e1bee7" stroke-width="3"/>
-                        <circle cx="520" cy="380" r="45" fill="rgba(225,190,231,0.3)" stroke="#e1bee7" stroke-width="3">
-                            <animate attributeName="r" values="45;50;45" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="520" y="375" fill="#e1bee7" font-size="12" text-anchor="middle">应用</text>
-                        <text x="520" y="390" fill="#e1bee7" font-size="10" text-anchor="middle">质量控制等</text>
-                        
-                        <!-- 底部钟形曲线 -->
-                        <path d="M 250 500 Q 300 470, 350 460 Q 400 470, 450 500" 
-                              fill="none" stroke="#FFE066" stroke-width="3">
-                            <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="350" y="540" fill="#FFE066" font-size="12" text-anchor="middle">最重要的连续分布</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-    <div class="subtitle-area" id="subtitleArea"></div>
-
-    <script>
+<script>
         let currentPage = 1; const totalPages = 6;
-        const pageContents = ["正态分布记作X服从N(μ,σ平方)。概率密度函数是钟形曲线。参数μ是期望即均值，σ平方是方差，σ是标准差。","标准正态分布是μ等于0、σ等于1的正态分布，记作Z服从N(0,1)。标准化变换Z等于X减μ除以σ，可以将任意正态分布转化为标准正态分布。68-95-99.7规则：1个标准差内68%，2个标准差内95%，3个标准差内99.7%。","正态分布的性质：关于x等于μ对称，在x等于μ处取得最大值，在x等于μ加减σ处有拐点。线性组合aX加b服从N(aμ加b,a平方σ平方)。σ越小曲线越高越窄，σ越大曲线越矮越宽。","中心极限定理：大量独立同分布随机变量的和近似服从正态分布。这解释了正态分布的普遍性，为统计推断提供理论基础。从均匀分布开始，随着变量个数增加，逐渐趋向正态分布。","正态分布的应用：质量控制中产品尺寸和重量，测量误差，考试成绩分布，人的身高体重，智商分布，血压心率等生理指标。正态分布在自然和社会现象中普遍存在。","总结：正态分布N(μ,σ平方)是最重要的连续分布。标准正态分布N(0,1)，68-95-99.7规则，中心极限定理解释其普遍性，广泛应用于各个领域。"];
-        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
+        let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
+
+        const subtitleScript = {
+            1: `欢迎学习正态分布与中心极限定理。正态分布记作X服从N(μ,σ平方)。概率密度函数是钟形曲线。参数μ是期望即均值，σ平方是方差，σ是标准差。正态分布是最重要的连续分布。`,
+            2: `标准正态分布是μ等于0、σ等于1的正态分布，记作Z服从N(0,1)。标准化变换Z等于X减μ除以σ，可以将任意正态分布转化为标准正态分布。68-95-99.7规则：1个标准差内68%，2个标准差内95%，3个标准差内99.7%。这个规则在质量控制中非常有用。`,
+            3: `正态分布的性质：关于x等于μ对称，在x等于μ处取得最大值，在x等于μ加减σ处有拐点。线性组合aX加b服从N(aμ加b,a平方σ平方)。σ越小曲线越高越窄，σ越大曲线越矮越宽。`,
+            4: `中心极限定理：大量独立同分布随机变量的和近似服从正态分布。这解释了正态分布的普遍性，为统计推断提供理论基础。从均匀分布开始，随着变量个数增加，和的分布逐渐趋向正态分布。`,
+            5: `正态分布的应用：质量控制中产品尺寸和重量，测量误差，考试成绩分布，人的身高体重，智商分布，血压心率等生理指标。正态分布在自然和社会现象中普遍存在。`,
+            6: `总结一下，正态分布N(μ,σ平方)是最重要的连续分布。标准正态分布N(0,1)，68-95-99.7规则，中心极限定理解释其普遍性。正态分布广泛应用于各个领域，是统计学的基石。`
+        };
+
+        const autoPlayDurations = {1: 16000, 2: 22000, 3: 20000, 4: 20000, 5: 18000, 6: 18000};
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message; indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
+                });
+            });
+        }
+
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
         function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
-        async function startTeaching() { console.log('开始讲解'); }
-        async function startAutoPlay() { console.log('自动播放'); }
+
+        async function startTeaching() {
+            try {
+                await waitForSDK(); updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
+        }
+
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放'; btn.style.background = '';
+            }
+        }
+
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
         let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
         document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
     </script>
 </body>
 </html>
-

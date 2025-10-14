@@ -234,55 +234,78 @@
         /* 控制栏 */
         .control-bar {
             position: fixed;
-            left: -220px;
+            left: -240px;
             top: 50%;
             transform: translateY(-50%);
-            width: 250px;
-            background: rgba(30,30,30,0.7);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
             z-index: 200;
-            border-radius: 0 15px 15px 0;
-            padding: 20px 15px;
-            transition: left 0.3s ease;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .control-bar:hover { left: 0; }
+        .control-bar:hover { 
+            left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
+        }
 
         .control-bar::before {
             content: '▶️';
             position: absolute;
             top: 50%;
-            right: -25px;
+            right: -30px;
             transform: translateY(-50%);
-            background: rgba(30,30,30,0.95);
-            padding: 10px 5px;
-            border-radius: 0 10px 10px 0;
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
             writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
         }
 
         .btn {
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #4a4a4a, #666);
-            color: white;
-            border: none;
-            border-radius: 8px;
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
 
         .btn:hover {
-            background: linear-gradient(135deg, #555, #777);
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
         .btn.primary {
-            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .btn.primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
         }
 
         /* 字幕区域 - 全宽显示，虚拟人不影响布局 */
@@ -794,6 +817,26 @@
                         updateStatus('错误: ' + error.message, 'error');
                         startBtn.textContent = '❌ 连接失败';
                         startBtn.disabled = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        // 虚拟人讲完一帧（一段话），在自动播放模式下触发翻页
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPageSilent(currentPage);
+                                    updateStatus(`📖 第${currentPage}页/${totalPages}页 - ${getPageTitle(currentPage)}`, 'recording');
+                                    // 短暂停顿后开始下一页讲解
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500); // 翻页前短暂停顿1.5秒
+                        }
                     });
 
                 avatarPlatform.setApiInfo({
@@ -811,7 +854,7 @@
                     avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
                 });
 
-                await avatarPlatform.start('#avatarWrapper');
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
                 console.log('✅ 虚拟人启动成功');
 
             } catch (error) {
@@ -845,9 +888,134 @@
             }
         }
 
-        // 自动播放
+        // 自动播放相关函数
+        function switchToPageSilent(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) {
+                console.log(`❌ 页面切换失败：页码${pageNum}超出范围(1-${totalPages})`);
+                return;
+            }
+
+            console.log(`🔄 开始切换到第${pageNum}页...`);
+
+            // 移除所有页面的active类
+            const allPages = document.querySelectorAll('.page');
+            console.log(`📄 找到${allPages.length}个页面元素`);
+
+            allPages.forEach((p, index) => {
+                p.classList.remove('active');
+            });
+
+            // 添加active类到目标页面
+            const targetPage = document.querySelector(`[data-page="${pageNum}"]`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                console.log(`✅ 第${pageNum}页已激活`);
+
+                // 渲染MathJax公式
+                renderMathJax(targetPage, pageNum);
+
+                // 延迟绘制图形
+                setTimeout(() => {
+                    drawPageGraph(pageNum);
+                }, 300);
+            } else {
+                console.error(`❌ 未找到页面${pageNum}`);
+            }
+
+            currentPage = pageNum;
+            updatePageInfo();
+        }
+
+        function getPageTitle(pageNum) {
+            const titles = {
+                1: "极限的定义与存在条件",
+                2: "断桥迷思",
+                3: "断桥视频演示",
+                4: "断桥的动画演示",
+                5: "彩虹桥的故事",
+                6: "奇迹发生了",
+                7: "团队协作目标",
+                8: "目标不同的困境",
+                9: "目标统一的奇迹",
+                10: "极限存在的核心条件"
+            };
+            return titles[pageNum] || `第${pageNum}页`;
+        }
+
+        function getPageDuration(pageNum) {
+            const durations = {
+                1: 25000, 2: 18000, 3: 20000, 4: 18000, 5: 20000,
+                6: 17000, 7: 19000, 8: 21000, 9: 20000, 10: 18000
+            };
+            return durations[pageNum] || 15000;
+        }
+
+        let isAutoPlaying = false;
         async function startAutoPlay() {
-            // 实现自动播放逻辑
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus(`🎬 自动播放将在 2 秒后开始，请准备录屏！`, 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                // 确保虚拟人已连接
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    // 等待连接完成
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                // 从第一页开始
+                currentPage = 1;
+                switchToPageSilent(1);
+                updateStatus(`📖 第1页/${totalPages}页 - ${getPageTitle(1)}`, 'recording');
+
+                // 等待页面渲染后开始第一页讲解,后续翻页由frame_stop事件驱动
+                await new Promise(resolve => setTimeout(resolve, 800));
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                updateStatus('自动播放失败: ' + error.message, 'error');
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+
+                document.body.classList.remove('recording-mode');
+                console.log('📹 退出录制模式，恢复UI元素');
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
+
+                console.log('⏹️ 自动播放已停止');
+                updateStatus('自动播放已停止', 'normal');
+            }
         }
 
         // 初始化

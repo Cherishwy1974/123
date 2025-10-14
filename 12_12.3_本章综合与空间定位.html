@@ -1,12 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第12章 章节综合与空间定位</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   第12章 章节综合与空间定位
+  </title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
+   * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
         .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
@@ -36,255 +39,746 @@
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+  
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
     </style>
-    <script>
-        window.MathJax = {
+<script>
+   window.MathJax = {
             tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
             startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
             options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
         };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">第12章知识回顾</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心内容</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">向量：点积与叉积</li>
-                        <li class="chalk-text">平面方程</li>
-                        <li class="chalk-text">直线方程</li>
-                        <li class="chalk-text">位置关系与距离</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-                <defs><filter id="gs1"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-                <!-- 中心圆 -->
-                <circle cx="350" cy="280" r="70" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#gs1)"><animate attributeName="r" values="70;75;70" dur="3s" repeatCount="indefinite"/></circle>
-                <text x="350" y="290" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gs1)">第12章</text>
-                <!-- 4个核心内容 -->
-                <rect x="120" y="80" width="140" height="60" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="8" filter="url(#gs1)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></rect>
-                <text x="190" y="115" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs1)">向量·点积·叉积</text>
-                <line x1="260" y1="110" x2="300" y2="240" stroke="#FF6B6B" stroke-width="2" filter="url(#gs1)"/>
-                <rect x="440" y="80" width="140" height="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="8" filter="url(#gs1)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/></rect>
-                <text x="510" y="115" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs1)">平面·直线方程</text>
-                <line x1="440" y1="110" x2="400" y2="240" stroke="#4ECDC4" stroke-width="2" filter="url(#gs1)"/>
-                <rect x="120" y="420" width="140" height="60" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="2" rx="8" filter="url(#gs1)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/></rect>
-                <text x="190" y="455" fill="#9370DB" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs1)">位置关系</text>
-                <line x1="260" y1="450" x2="300" y2="320" stroke="#9370DB" stroke-width="2" filter="url(#gs1)"/>
-                <rect x="440" y="420" width="140" height="60" fill="rgba(255,23,68,0.2)" stroke="#FF1744" stroke-width="2" rx="8" filter="url(#gs1)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1.5s" repeatCount="indefinite"/></rect>
-                <text x="510" y="455" fill="#FF1744" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs1)">距离公式</text>
-                <line x1="440" y1="450" x2="400" y2="320" stroke="#FF1744" stroke-width="2" filter="url(#gs1)"/>
-            </svg></div></div>
-        </div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">
+    等待连接
+   </div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper">
+</div>
+</div>
+<div class="page-indicator">
+    第
+    <span id="currentPage">
+     1
+    </span>
+    / 6 页
+   </div>
+<div class="page active cover-page" data-page="1">
+<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+       本章综合与空间定位
+      </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+       第12章 视频 12.3
+      </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 空间解析几何总结
+       </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 向量方法综合应用
+       </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 空间定位问题
+       </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 工程实际应用
+       </p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad12" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
+</stop>
+<stop offset="100%" style="stop-color:#3498db;stop-opacity:1">
+</stop>
+</lineargradient>
+</defs>
+<line stroke="url(#grad12)" stroke-width="4" x1="300" x2="150" y1="100" y2="300">
+<animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<line stroke="url(#grad12)" stroke-width="4" x1="300" x2="450" y1="100" y2="300">
+<animate attributename="opacity" begin="0.5s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<line stroke="url(#grad12)" stroke-width="4" x1="300" x2="300" y1="100" y2="400">
+<animate attributename="opacity" begin="1s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<circle cx="300" cy="100" fill="#e74c3c" r="15">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="12;18;12">
+</animate>
+</circle>
+<text fill="#9b59b6" font-size="32" text-anchor="middle" x="300" y="60">
+        向量与空间
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      应用：GPS定位
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       原理
+      </p>
+<p class="chalk-text">
+       通过测量到多个卫星的距离确定位置
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        每个卫星确定一个球面
+       </li>
+<li class="chalk-text">
+        三个球面的交点确定位置
+       </li>
+</ul>
+<p class="chalk-text small-text">
+       用空间几何方程求解
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="gs2">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<text fill="#ffffff" filter="url(#gs2)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="40">
+        GPS定位原理：3个球面交点
+       </text>
+<!-- 卫星1 -->
+<circle cx="200" cy="150" fill="#FFE066" filter="url(#gs2)" r="15">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="15;18;15">
+</animate>
+</circle>
+<text fill="#FFE066" filter="url(#gs2)" font-size="14" font-weight="bold" x="215" y="145">
+        卫星1
+       </text>
+<circle cx="200" cy="150" fill="none" filter="url(#gs2)" opacity="0.6" r="150" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.3;0.7;0.3">
+</animate>
+</circle>
+<!-- 卫星2 -->
+<circle cx="500" cy="150" fill="#4ECDC4" filter="url(#gs2)" r="15">
+<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="15;18;15">
+</animate>
+</circle>
+<text fill="#4ECDC4" filter="url(#gs2)" font-size="14" font-weight="bold" x="440" y="145">
+        卫星2
+       </text>
+<circle cx="500" cy="150" fill="none" filter="url(#gs2)" opacity="0.6" r="150" stroke="#4ECDC4" stroke-dasharray="5,5" stroke-width="2">
+<animate attributename="stroke-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.3;0.7;0.3">
+</animate>
+</circle>
+<!-- 卫星3 -->
+<circle cx="350" cy="80" fill="#FF6B6B" filter="url(#gs2)" r="15">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="15;18;15">
+</animate>
+</circle>
+<text fill="#FF6B6B" filter="url(#gs2)" font-size="14" font-weight="bold" x="365" y="75">
+        卫星3
+       </text>
+<circle cx="350" cy="80" fill="none" filter="url(#gs2)" opacity="0.6" r="140" stroke="#FF6B6B" stroke-dasharray="5,5" stroke-width="2">
+<animate attributename="stroke-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.3;0.7;0.3">
+</animate>
+</circle>
+<!-- 交点（定位点） -->
+<circle cx="350" cy="190" fill="#00E676" filter="url(#gs2)" r="12">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="12;16;12">
+</animate>
+</circle>
+<text fill="#00E676" filter="url(#gs2)" font-size="18" font-weight="bold" x="370" y="195">
+        定位点
+       </text>
+<rect fill="rgba(0,230,118,0.2)" filter="url(#gs2)" height="80" rx="10" stroke="#00E676" stroke-width="2" width="500" x="100" y="370">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#00E676" filter="url(#gs2)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="405">
+        三个球面方程：
+       </text>
+<text fill="#00E676" filter="url(#gs2)" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="430">
+        (x-x₁)²+(y-y₁)²+(z-z₁)²=r₁²
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      应用：机器人运动
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       空间路径规划
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        用向量表示位置和方向
+       </li>
+<li class="chalk-text">
+        用直线方程描述运动轨迹
+       </li>
+<li class="chalk-text">
+        用平面方程描述障碍物
+       </li>
+</ul>
+<p class="chalk-text small-text">
+       计算最短路径和避障
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="gs3">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+<marker id="arrowRobot" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
+<polygon fill="#4ECDC4" points="0 0, 10 3, 0 6">
+</polygon>
+</marker>
+</defs>
+<text fill="#ffffff" filter="url(#gs3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="40">
+        机器人路径规划
+       </text>
+<!-- 机器人 -->
+<circle cx="150" cy="450" fill="rgba(78,205,196,0.4)" filter="url(#gs3)" r="25" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.3;0.6;0.3">
+</animate>
+</circle>
+<text fill="#4ECDC4" filter="url(#gs3)" font-size="14" font-weight="bold" text-anchor="middle" x="150" y="455">
+        🤖
+       </text>
+<!-- 障碍物平面 -->
+<path d="M 280 250 L 450 220 L 460 380 L 290 410 Z" fill="rgba(255,107,107,0.3)" filter="url(#gs3)" stroke="#FF6B6B" stroke-width="3">
+</path>
+<text fill="#FF6B6B" filter="url(#gs3)" font-size="16" font-weight="bold" x="370" y="300">
+        障碍物
+       </text>
+<!-- 运动轨迹（避障路径） -->
+<path d="M 150 450 Q 200 350, 250 250 Q 300 150, 450 120" fill="none" filter="url(#gs3)" marker-end="url(#arrowRobot)" stroke="#FFE066" stroke-width="5">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</path>
+<text fill="#FFE066" filter="url(#gs3)" font-size="16" font-weight="bold" x="300" y="180">
+        运动轨迹
+       </text>
+<!-- 目标点 -->
+<circle cx="450" cy="120" fill="rgba(76,175,80,0.4)" filter="url(#gs3)" r="20" stroke="#4CAF50" stroke-width="3">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="20;24;20">
+</animate>
+</circle>
+<text fill="#4CAF50" filter="url(#gs3)" font-size="16" font-weight="bold" text-anchor="middle" x="450" y="125">
+        🎯
+       </text>
+<rect fill="rgba(147,112,219,0.2)" filter="url(#gs3)" height="60" rx="10" stroke="#9370DB" stroke-width="2" width="500" x="100" y="500">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#9370DB" filter="url(#gs3)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="535">
+        用向量和直线方程描述运动，用平面避障
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      应用：建筑设计
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       空间结构分析
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        用平面方程描述墙面和楼板
+       </li>
+<li class="chalk-text">
+        用直线方程描述梁柱
+       </li>
+<li class="chalk-text">
+        计算交点和距离
+       </li>
+</ul>
+<p class="chalk-text small-text">
+       CAD软件的数学基础
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="gs4">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<text fill="#ffffff" filter="url(#gs4)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="40">
+        建筑结构CAD设计
+       </text>
+<!-- 地面 -->
+<path d="M 100 450 L 600 440 L 620 480 L 120 490 Z" fill="rgba(147,112,219,0.3)" filter="url(#gs4)" stroke="#9370DB" stroke-width="2">
+</path>
+<text fill="#9370DB" filter="url(#gs4)" font-size="14" font-weight="bold" x="360" y="470">
+        地面（平面方程）
+       </text>
+<!-- 墙面1 -->
+<path d="M 200 450 L 200 200 L 240 180 L 240 440 Z" fill="rgba(255,107,107,0.3)" filter="url(#gs4)" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</path>
+<text fill="#FF6B6B" filter="url(#gs4)" font-size="14" font-weight="bold" x="160" y="320">
+        墙面
+       </text>
+<!-- 墙面2 -->
+<path d="M 240 440 L 240 180 L 520 160 L 520 430 Z" fill="rgba(78,205,196,0.3)" filter="url(#gs4)" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</path>
+<text fill="#4ECDC4" filter="url(#gs4)" font-size="14" font-weight="bold" x="380" y="300">
+        墙面（平面）
+       </text>
+<!-- 柱子（直线） -->
+<line filter="url(#gs4)" stroke="#FFE066" stroke-width="8" x1="240" x2="240" y1="440" y2="180">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6">
+</animate>
+</line>
+<text fill="#FFE066" filter="url(#gs4)" font-size="14" font-weight="bold" x="250" y="280">
+        柱
+       </text>
+<line filter="url(#gs4)" stroke="#FFE066" stroke-width="8" x1="520" x2="520" y1="430" y2="160">
+<animate attributename="stroke-opacity" begin="0.5s" dur="2s" repeatcount="indefinite" values="0.6;1;0.6">
+</animate>
+</line>
+<rect fill="rgba(255,224,102,0.2)" filter="url(#gs4)" height="60" rx="10" stroke="#FFE066" stroke-width="2" width="500" x="100" y="510">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#FFE066" filter="url(#gs4)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="545">
+        空间解析几何 → CAD软件核心算法
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      应用：计算机图形学
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       3D渲染
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        用向量表示光线方向
+       </li>
+<li class="chalk-text">
+        用平面方程表示物体表面
+       </li>
+<li class="chalk-text">
+        计算光线与物体的交点
+       </li>
+</ul>
+<p class="chalk-text small-text">
+       游戏和动画的数学基础
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="gs5">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+<marker id="arrowLight" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
+<polygon fill="#FFE066" points="0 0, 10 3, 0 6">
+</polygon>
+</marker>
+</defs>
+<text fill="#ffffff" filter="url(#gs5)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="40">
+        光线追踪（Ray Tracing）
+       </text>
+<!-- 物体表面（平面） -->
+<path d="M 200 350 L 500 300 L 520 380 L 220 430 Z" fill="rgba(78,205,196,0.3)" filter="url(#gs5)" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</path>
+<text fill="#4ECDC4" filter="url(#gs5)" font-size="16" font-weight="bold" x="360" y="360">
+        物体表面（平面方程）
+       </text>
+<!-- 光源 -->
+<circle cx="150" cy="120" fill="rgba(255,224,102,0.5)" filter="url(#gs5)" r="20" stroke="#FFE066" stroke-width="3">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="20;24;20">
+</animate>
+</circle>
+<text fill="#FFE066" filter="url(#gs5)" font-size="18" font-weight="bold" text-anchor="middle" x="150" y="125">
+        💡
+       </text>
+<text fill="#FFE066" filter="url(#gs5)" font-size="14" font-weight="bold" x="180" y="125">
+        光源
+       </text>
+<!-- 入射光线 -->
+<line filter="url(#gs5)" marker-end="url(#arrowLight)" stroke="#FFE066" stroke-width="4" x1="150" x2="320" y1="120" y2="340">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<text fill="#FFE066" filter="url(#gs5)" font-size="14" font-weight="bold" x="220" y="220">
+        入射光线
+       </text>
+<!-- 交点 -->
+<circle cx="320" cy="340" fill="#FF6B6B" filter="url(#gs5)" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8">
+</animate>
+</circle>
+<text fill="#FF6B6B" filter="url(#gs5)" font-size="14" font-weight="bold" x="330" y="335">
+        交点
+       </text>
+<!-- 反射光线 -->
+<line filter="url(#gs5)" marker-end="url(#arrowLight)" stroke="#4ECDC4" stroke-width="4" x1="320" x2="550" y1="340" y2="150">
+<animate attributename="stroke-opacity" begin="0.5s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<text fill="#4ECDC4" filter="url(#gs5)" font-size="14" font-weight="bold" x="450" y="220">
+        反射光线
+       </text>
+<rect fill="rgba(255,107,107,0.2)" filter="url(#gs5)" height="70" rx="10" stroke="#FF6B6B" stroke-width="2" width="540" x="80" y="480">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#gs5)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="515">
+        游戏引擎·动画制作·虚拟现实
+       </text>
+<text fill="#FF6B6B" filter="url(#gs5)" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="540">
+        核心数学：向量·直线·平面方程
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      总结与展望
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       第12章总结
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        向量与空间几何是现代科技的基础
+       </li>
+<li class="chalk-text">
+        广泛应用于定位、机器人、建筑、图形学
+       </li>
+</ul>
+<p class="chalk-text emphasis">
+       下一步
+      </p>
+<p class="chalk-text">
+       学习概率统计（第13章）
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="gs6">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 第12章完成圆 -->
+<circle cx="350" cy="200" fill="rgba(76,175,80,0.3)" filter="url(#gs6)" r="80" stroke="#4CAF50" stroke-width="5">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;85;80">
+</animate>
+</circle>
+<text fill="#4CAF50" filter="url(#gs6)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="195">
+        第12章
+       </text>
+<text fill="#4CAF50" filter="url(#gs6)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="220">
+        ✓完成
+       </text>
+<!-- 应用领域 -->
+<rect fill="rgba(255,224,102,0.2)" filter="url(#gs6)" height="50" rx="8" stroke="#FFE066" stroke-width="2" width="120" x="100" y="320">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#FFE066" filter="url(#gs6)" font-size="14" font-weight="bold" text-anchor="middle" x="160" y="350">
+        GPS定位
+       </text>
+<rect fill="rgba(78,205,196,0.2)" filter="url(#gs6)" height="50" rx="8" stroke="#4ECDC4" stroke-width="2" width="120" x="250" y="320">
+<animate attributename="fill-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#gs6)" font-size="14" font-weight="bold" text-anchor="middle" x="310" y="350">
+        机器人
+       </text>
+<rect fill="rgba(147,112,219,0.2)" filter="url(#gs6)" height="50" rx="8" stroke="#9370DB" stroke-width="2" width="120" x="400" y="320">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#9370DB" filter="url(#gs6)" font-size="14" font-weight="bold" text-anchor="middle" x="460" y="350">
+        建筑CAD
+       </text>
+<rect fill="rgba(255,107,107,0.2)" filter="url(#gs6)" height="50" rx="8" stroke="#FF6B6B" stroke-width="2" width="120" x="550" y="320">
+<animate attributename="fill-opacity" begin="1.5s" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#gs6)" font-size="14" font-weight="bold" text-anchor="middle" x="610" y="350">
+        图形学
+       </text>
+<!-- 下一章指引 -->
+<rect fill="rgba(255,224,102,0.3)" filter="url(#gs6)" height="70" rx="10" stroke="#FFE066" stroke-width="3" width="300" x="200" y="430">
+<animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.3;0.5;0.3">
+</animate>
+</rect>
+<text fill="#FFE066" filter="url(#gs6)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="460">
+        → 第13章
+       </text>
+<text fill="#FFE066" filter="url(#gs6)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="485">
+        概率统计
+       </text>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">
+    ⬅️ 上一页
+   </button>
+<button class="btn primary" onclick="nextPage()">
+    下一页 ➡️
+   </button>
+<button class="btn" onclick="startTeaching()">
+    🎤 开始讲解
+   </button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
+    🎬 自动播放
+   </button>
+</div>
+<div class="subtitle-area" id="subtitleArea">
+</div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用：GPS定位</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">原理</p>
-                    <p class="chalk-text">通过测量到多个卫星的距离确定位置</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">每个卫星确定一个球面</li>
-                        <li class="chalk-text">三个球面的交点确定位置</li>
-                    </ul>
-                    <p class="chalk-text small-text">用空间几何方程求解</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-                <defs><filter id="gs2"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-                <text x="350" y="40" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gs2)">GPS定位原理：3个球面交点</text>
-                <!-- 卫星1 -->
-                <circle cx="200" cy="150" r="15" fill="#FFE066" filter="url(#gs2)"><animate attributeName="r" values="15;18;15" dur="2s" repeatCount="indefinite"/></circle>
-                <text x="215" y="145" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#gs2)">卫星1</text>
-                <circle cx="200" cy="150" r="150" fill="none" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5" opacity="0.6" filter="url(#gs2)"><animate attributeName="stroke-opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite"/></circle>
-                <!-- 卫星2 -->
-                <circle cx="500" cy="150" r="15" fill="#4ECDC4" filter="url(#gs2)"><animate attributeName="r" values="15;18;15" dur="2s" begin="0.5s" repeatCount="indefinite"/></circle>
-                <text x="440" y="145" fill="#4ECDC4" font-size="14" font-weight="bold" filter="url(#gs2)">卫星2</text>
-                <circle cx="500" cy="150" r="150" fill="none" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5" opacity="0.6" filter="url(#gs2)"><animate attributeName="stroke-opacity" values="0.3;0.7;0.3" dur="3s" begin="0.5s" repeatCount="indefinite"/></circle>
-                <!-- 卫星3 -->
-                <circle cx="350" cy="80" r="15" fill="#FF6B6B" filter="url(#gs2)"><animate attributeName="r" values="15;18;15" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
-                <text x="365" y="75" fill="#FF6B6B" font-size="14" font-weight="bold" filter="url(#gs2)">卫星3</text>
-                <circle cx="350" cy="80" r="140" fill="none" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="5,5" opacity="0.6" filter="url(#gs2)"><animate attributeName="stroke-opacity" values="0.3;0.7;0.3" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
-                <!-- 交点（定位点） -->
-                <circle cx="350" cy="190" r="12" fill="#00E676" filter="url(#gs2)"><animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite"/></circle>
-                <text x="370" y="195" fill="#00E676" font-size="18" font-weight="bold" filter="url(#gs2)">定位点</text>
-                <rect x="100" y="370" width="500" height="80" fill="rgba(0,230,118,0.2)" stroke="#00E676" stroke-width="2" rx="10" filter="url(#gs2)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></rect>
-                <text x="350" y="405" fill="#00E676" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs2)">三个球面方程：</text>
-                <text x="350" y="430" fill="#00E676" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs2)">(x-x₁)²+(y-y₁)²+(z-z₁)²=r₁²</text>
-            </svg></div></div>
-        </div>
+<script>
+   let currentPage = 1; const totalPages = 6;
+        let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用：机器人运动</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">空间路径规划</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">用向量表示位置和方向</li>
-                        <li class="chalk-text">用直线方程描述运动轨迹</li>
-                        <li class="chalk-text">用平面方程描述障碍物</li>
-                    </ul>
-                    <p class="chalk-text small-text">计算最短路径和避障</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-                <defs><filter id="gs3"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arrowRobot" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/></marker></defs>
-                <text x="350" y="40" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gs3)">机器人路径规划</text>
-                <!-- 机器人 -->
-                <circle cx="150" cy="450" r="25" fill="rgba(78,205,196,0.4)" stroke="#4ECDC4" stroke-width="3" filter="url(#gs3)"><animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite"/></circle>
-                <text x="150" y="455" fill="#4ECDC4" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs3)">🤖</text>
-                <!-- 障碍物平面 -->
-                <path d="M 280 250 L 450 220 L 460 380 L 290 410 Z" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#gs3)"/>
-                <text x="370" y="300" fill="#FF6B6B" font-size="16" font-weight="bold" filter="url(#gs3)">障碍物</text>
-                <!-- 运动轨迹（避障路径） -->
-                <path d="M 150 450 Q 200 350, 250 250 Q 300 150, 450 120" stroke="#FFE066" stroke-width="5" fill="none" marker-end="url(#arrowRobot)" filter="url(#gs3)"><animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/></path>
-                <text x="300" y="180" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#gs3)">运动轨迹</text>
-                <!-- 目标点 -->
-                <circle cx="450" cy="120" r="20" fill="rgba(76,175,80,0.4)" stroke="#4CAF50" stroke-width="3" filter="url(#gs3)"><animate attributeName="r" values="20;24;20" dur="2s" repeatCount="indefinite"/></circle>
-                <text x="450" y="125" fill="#4CAF50" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs3)">🎯</text>
-                <rect x="100" y="500" width="500" height="60" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="2" rx="10" filter="url(#gs3)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></rect>
-                <text x="350" y="535" fill="#9370DB" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs3)">用向量和直线方程描述运动，用平面避障</text>
-            </svg></div></div>
-        </div>
+        const subtitleScript = {
+            1: `欢迎来到第12章综合与空间定位。第12章我们学习了向量的点积与叉积、平面方程、直线方程，以及位置关系与距离。这些内容是空间解析几何的基础，在现代科技中有广泛应用。`,
+            2: `应用1：GPS定位。通过测量到多个卫星的距离，每个卫星确定一个球面方程。三个球面的交点确定位置。这是GPS定位系统的数学基础，广泛应用于导航和定位服务。`,
+            3: `应用2：机器人运动。用向量表示机器人的位置和方向，用直线方程描述运动轨迹，用平面方程描述障碍物。通过计算直线与平面的交点，可以实现避障和路径规划。`,
+            4: `应用3：建筑设计。用平面方程描述墙面和楼板，用直线方程描述梁柱。通过计算平面与直线的交点和距离，可以进行建筑结构分析。这是CAD软件的数学基础。`,
+            5: `应用4：计算机图形学。用向量表示光线方向，用平面方程表示物体表面，计算光线与物体的交点来实现光线追踪。这是游戏和动画渲染的数学基础，创造逼真的三维图像。`,
+            6: `总结一下，向量与空间几何是现代科技的基础，广泛应用于GPS定位、机器人运动、建筑设计、计算机图形学等领域。掌握这些知识对从事工程技术工作非常重要。下一章我们将学习概率统计。`
+        };
 
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用：建筑设计</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">空间结构分析</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">用平面方程描述墙面和楼板</li>
-                        <li class="chalk-text">用直线方程描述梁柱</li>
-                        <li class="chalk-text">计算交点和距离</li>
-                    </ul>
-                    <p class="chalk-text small-text">CAD软件的数学基础</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-                <defs><filter id="gs4"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-                <text x="350" y="40" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gs4)">建筑结构CAD设计</text>
-                <!-- 地面 -->
-                <path d="M 100 450 L 600 440 L 620 480 L 120 490 Z" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="2" filter="url(#gs4)"/>
-                <text x="360" y="470" fill="#9370DB" font-size="14" font-weight="bold" filter="url(#gs4)">地面（平面方程）</text>
-                <!-- 墙面1 -->
-                <path d="M 200 450 L 200 200 L 240 180 L 240 440 Z" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#gs4)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></path>
-                <text x="160" y="320" fill="#FF6B6B" font-size="14" font-weight="bold" filter="url(#gs4)">墙面</text>
-                <!-- 墙面2 -->
-                <path d="M 240 440 L 240 180 L 520 160 L 520 430 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#gs4)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/></path>
-                <text x="380" y="300" fill="#4ECDC4" font-size="14" font-weight="bold" filter="url(#gs4)">墙面（平面）</text>
-                <!-- 柱子（直线） -->
-                <line x1="240" y1="440" x2="240" y2="180" stroke="#FFE066" stroke-width="8" filter="url(#gs4)"><animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/></line>
-                <text x="250" y="280" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#gs4)">柱</text>
-                <line x1="520" y1="430" x2="520" y2="160" stroke="#FFE066" stroke-width="8" filter="url(#gs4)"><animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/></line>
-                <rect x="100" y="510" width="500" height="60" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" rx="10" filter="url(#gs4)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></rect>
-                <text x="350" y="545" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs4)">空间解析几何 → CAD软件核心算法</text>
-            </svg></div></div>
-        </div>
+        const autoPlayDurations = {1: 18000, 2: 20000, 3: 20000, 4: 18000, 5: 20000, 6: 20000};
 
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">应用：计算机图形学</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">3D渲染</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">用向量表示光线方向</li>
-                        <li class="chalk-text">用平面方程表示物体表面</li>
-                        <li class="chalk-text">计算光线与物体的交点</li>
-                    </ul>
-                    <p class="chalk-text small-text">游戏和动画的数学基础</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-                <defs><filter id="gs5"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arrowLight" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#FFE066"/></marker></defs>
-                <text x="350" y="40" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gs5)">光线追踪（Ray Tracing）</text>
-                <!-- 物体表面（平面） -->
-                <path d="M 200 350 L 500 300 L 520 380 L 220 430 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#gs5)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></path>
-                <text x="360" y="360" fill="#4ECDC4" font-size="16" font-weight="bold" filter="url(#gs5)">物体表面（平面方程）</text>
-                <!-- 光源 -->
-                <circle cx="150" cy="120" r="20" fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="3" filter="url(#gs5)"><animate attributeName="r" values="20;24;20" dur="2s" repeatCount="indefinite"/></circle>
-                <text x="150" y="125" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#gs5)">💡</text>
-                <text x="180" y="125" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#gs5)">光源</text>
-                <!-- 入射光线 -->
-                <line x1="150" y1="120" x2="320" y2="340" stroke="#FFE066" stroke-width="4" marker-end="url(#arrowLight)" filter="url(#gs5)"><animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/></line>
-                <text x="220" y="220" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#gs5)">入射光线</text>
-                <!-- 交点 -->
-                <circle cx="320" cy="340" r="8" fill="#FF6B6B" filter="url(#gs5)"><animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/></circle>
-                <text x="330" y="335" fill="#FF6B6B" font-size="14" font-weight="bold" filter="url(#gs5)">交点</text>
-                <!-- 反射光线 -->
-                <line x1="320" y1="340" x2="550" y2="150" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrowLight)" filter="url(#gs5)"><animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.5s" repeatCount="indefinite"/></line>
-                <text x="450" y="220" fill="#4ECDC4" font-size="14" font-weight="bold" filter="url(#gs5)">反射光线</text>
-                <rect x="80" y="480" width="540" height="70" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="10" filter="url(#gs5)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></rect>
-                <text x="350" y="515" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs5)">游戏引擎·动画制作·虚拟现实</text>
-                <text x="350" y="540" fill="#FF6B6B" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs5)">核心数学：向量·直线·平面方程</text>
-            </svg></div></div>
-        </div>
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message; indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
 
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结与展望</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">第12章总结</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">向量与空间几何是现代科技的基础</li>
-                        <li class="chalk-text">广泛应用于定位、机器人、建筑、图形学</li>
-                    </ul>
-                    <p class="chalk-text emphasis">下一步</p>
-                    <p class="chalk-text">学习概率统计（第13章）</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-                <defs><filter id="gs6"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-                <!-- 第12章完成圆 -->
-                <circle cx="350" cy="200" r="80" fill="rgba(76,175,80,0.3)" stroke="#4CAF50" stroke-width="5" filter="url(#gs6)"><animate attributeName="r" values="80;85;80" dur="3s" repeatCount="indefinite"/></circle>
-                <text x="350" y="195" fill="#4CAF50" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#gs6)">第12章</text>
-                <text x="350" y="220" fill="#4CAF50" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#gs6)">✓完成</text>
-                <!-- 应用领域 -->
-                <rect x="100" y="320" width="120" height="50" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" rx="8" filter="url(#gs6)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/></rect>
-                <text x="160" y="350" fill="#FFE066" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs6)">GPS定位</text>
-                <rect x="250" y="320" width="120" height="50" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="8" filter="url(#gs6)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/></rect>
-                <text x="310" y="350" fill="#4ECDC4" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs6)">机器人</text>
-                <rect x="400" y="320" width="120" height="50" fill="rgba(147,112,219,0.2)" stroke="#9370DB" stroke-width="2" rx="8" filter="url(#gs6)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/></rect>
-                <text x="460" y="350" fill="#9370DB" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs6)">建筑CAD</text>
-                <rect x="550" y="320" width="120" height="50" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="8" filter="url(#gs6)"><animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1.5s" repeatCount="indefinite"/></rect>
-                <text x="610" y="350" fill="#FF6B6B" font-size="14" text-anchor="middle" font-weight="bold" filter="url(#gs6)">图形学</text>
-                <!-- 下一章指引 -->
-                <rect x="200" y="430" width="300" height="70" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#gs6)"><animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="2s" repeatCount="indefinite"/></rect>
-                <text x="350" y="460" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#gs6)">→ 第13章</text>
-                <text x="350" y="485" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#gs6)">概率统计</text>
-            </svg></div></div>
-        </div>
-    </div>
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
 
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-    <div class="subtitle-area" id="subtitleArea"></div>
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
+                });
+            });
+        }
 
-    <script>
-        let currentPage = 1; const totalPages = 6;
-        const pageContents = ["第12章我们学习了向量的点积与叉积、平面方程、直线方程以及位置关系与距离。","应用1：GPS定位。通过测量到多个卫星的距离，每个卫星确定一个球面，三个球面的交点确定位置。","应用2：机器人运动。用向量表示位置和方向，用直线方程描述运动轨迹，用平面方程描述障碍物。","应用3：建筑设计。用平面方程描述墙面和楼板，用直线方程描述梁柱，这是CAD软件的数学基础。","应用4：计算机图形学。用向量表示光线方向，用平面方程表示物体表面，计算光线与物体的交点。这是游戏和动画的数学基础。","总结：向量与空间几何是现代科技的基础，广泛应用于定位、机器人、建筑、图形学等领域。下一章学习概率统计。"];
-        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
         function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
-        async function startTeaching() { console.log('开始讲解'); }
-        async function startAutoPlay() { console.log('自动播放'); }
+
+        async function startTeaching() {
+            try {
+                await waitForSDK(); updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
+        }
+
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放'; btn.style.background = '';
+            }
+        }
+
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
         let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
         document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
-    </script>
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
+  </script>
 </body>
 </html>
-

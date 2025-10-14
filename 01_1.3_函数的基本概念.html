@@ -216,61 +216,79 @@
 
         /* 左侧控制栏 */
         .control-bar {
-            position: fixed; 
-            left: -220px; 
+            position: fixed;
+            left: -240px;
             top: 50%;
-            transform: translateY(-50%); 
-            width: 250px;
-            background: rgba(30,30,30,0.95);
-            display: flex; 
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
             justify-content: center;
-            gap: 10px; 
+            gap: 12px;
             z-index: 200;
-            border-radius: 0 15px 15px 0;
-            padding: 20px 15px; 
-            transition: left 0.3s ease;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .control-bar:hover { 
             left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
         
         .control-bar::before {
-            content: '▶️'; 
+            content: '▶️';
             position: absolute;
-            top: 50%; 
-            right: -25px;
+            top: 50%;
+            right: -30px;
             transform: translateY(-50%);
-            background: rgba(30,30,30,0.95);
-            padding: 10px 5px; 
-            border-radius: 0 10px 10px 0;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
             writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
         }
         
         .btn {
-            padding: 12px 20px; 
-            background: linear-gradient(135deg, #4a4a4a, #666);
-            color: white; 
-            border: none; 
-            border-radius: 8px;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease; 
-            width: 100%; 
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
             text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
         
         .btn:hover { 
-            background: linear-gradient(135deg, #555, #777); 
-            transform: translateY(-2px); 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
         }
         
         .btn.primary { 
-            background: linear-gradient(135deg, #FF69B4, #FF1493); 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
         }
         
         .btn:disabled {
@@ -449,15 +467,66 @@
         
         <!-- 第1页：标题页 -->
         <div class="slide active">
-            <div class="slide-content">
-                <div class="chalkboard w-full text-center" style="flex: 1; border: none; justify-content: center; padding-top: 2rem;">
-                    <h1 class="font-bold" style="color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.5); font-size: 6rem;">函数基础</h1>
-                    <p class="mt-4" style="color: white; font-size: 2.5rem;">从常量变量到反函数的完整体系</p>
+            <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+                <div style="flex: 1; text-align: center; padding: 2rem;">
+                    <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        函数的基本概念
+                    </h1>
+                    <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第1章 视频 1.3
+                    </p>
+                    <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的定义域</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的值域</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的单调性</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的奇偶性</p>
+                    </div>
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+<defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <text x="300" y="120" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
+                            f(x)
+                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                        </text>
+                        <path d="M 100 400 Q 200 200 300 250 T 500 300" stroke="#3498db" stroke-width="4" fill="none">
+                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <circle cx="200" cy="250" r="8" fill="#e74c3c">
+                            <animate attributeName="cy" values="250;200;250" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
                 </div>
             </div>
         </div>
-
-        <!-- 第2页：常量与变量 -->
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+<defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <text x="300" y="120" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
+                            f(x)
+                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                        </text>
+                        <path d="M 100 400 Q 200 200 300 250 T 500 300" stroke="#3498db" stroke-width="4" fill="none">
+                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <circle cx="200" cy="250" r="8" fill="#e74c3c">
+                            <animate attributeName="cy" values="250;200;250" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </div><!-- 第2页：常量与变量 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">

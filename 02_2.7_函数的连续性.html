@@ -161,61 +161,79 @@
 
         /* 左侧控制栏 */
         .control-bar {
-            position: fixed; 
-            left: -220px; 
+            position: fixed;
+            left: -240px;
             top: 50%;
-            transform: translateY(-50%); 
-            width: 250px;
-            background: rgba(30,30,30,0.95);
-            display: flex; 
+            transform: translateY(-50%);
+            width: 270px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            display: flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
             justify-content: center;
-            gap: 10px; 
+            gap: 12px;
             z-index: 200;
-            border-radius: 0 15px 15px 0;
-            padding: 20px 15px; 
-            transition: left 0.3s ease;
+            border-radius: 0 20px 20px 0;
+            padding: 25px 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .control-bar:hover { 
             left: 0; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
         }
         
         .control-bar::before {
-            content: '▶️'; 
+            content: '▶️';
             position: absolute;
-            top: 50%; 
-            right: -25px;
+            top: 50%;
+            right: -30px;
             transform: translateY(-50%);
-            background: rgba(30,30,30,0.95);
-            padding: 10px 5px; 
-            border-radius: 0 10px 10px 0;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 8px;
+            border-radius: 0 15px 15px 0;
+            font-size: 0.9rem;
             writing-mode: vertical-lr;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
         }
         
         .btn {
-            padding: 12px 20px; 
-            background: linear-gradient(135deg, #4a4a4a, #666);
-            color: white; 
-            border: none; 
-            border-radius: 8px;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease; 
-            width: 100%; 
+            padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.25);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
             text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
         
         .btn:hover { 
-            background: linear-gradient(135deg, #555, #777); 
-            transform: translateY(-2px); 
+            background: rgba(255, 255, 255, 0.35); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
         }
         
         .btn.primary { 
-            background: linear-gradient(135deg, #FF69B4, #FF1493); 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #fff; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+        }
+        
+        .btn.primary:hover { 
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
         }
         
         .btn:disabled {
@@ -325,42 +343,67 @@
 
     <div id="slide-container" class="slide-container flex-grow">
         
-        <div class="slide active"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-            <div style="flex: 1; text-align: center; padding: 2rem;">
-                <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-                    函数的连续性
-                </h1>
-                <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-                    第2章 视频 2.7
-                </p>
-                <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 连续性的定义</p>
-                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 间断点的分类</p>
-                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 连续函数的性质</p>
-                    <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 闭区间连续函数定理</p>
+        <div class="slide active">
+            <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+                <div style="flex: 1; text-align: center; padding: 2rem;">
+                    <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        函数的连续性
+                    </h1>
+                    <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第2章 视频 2.7
+                    </p>
+                    <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的定义域</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的值域</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的单调性</p>
+                        <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 函数的奇偶性</p>
+                    </div>
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+<defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <text x="300" y="120" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
+                            f(x)
+                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                        </text>
+                        <path d="M 100 400 Q 200 200 300 250 T 500 300" stroke="#3498db" stroke-width="4" fill="none">
+                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <circle cx="200" cy="250" r="8" fill="#e74c3c">
+                            <animate attributeName="cy" values="250;200;250" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
                 </div>
             </div>
-            <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
-                    <defs>
-                        <linearGradient id="grad7" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#3498db;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="300" y="120" font-size="48" fill="url(#grad7)" text-anchor="middle" font-family="serif">
-                        f(x)
-                        <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
-                    </text>
-                    <path d="M 100 350 Q 200 200, 300 250 T 500 300" stroke="#2ecc71" stroke-width="4" fill="none">
-                        <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
-                    </path>
-                    <circle cx="300" cy="250" r="8" fill="#e74c3c"/>
-                    <text x="300" y="380" font-size="24" fill="#ecf0f1" text-anchor="middle">连续性</text>
-                </svg>
+        </div>
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
+<defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <text x="300" y="120" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
+                            f(x)
+                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
+                        </text>
+                        <path d="M 100 400 Q 200 200 300 250 T 500 300" stroke="#3498db" stroke-width="4" fill="none">
+                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <circle cx="200" cy="250" r="8" fill="#e74c3c">
+                            <animate attributeName="cy" values="250;200;250" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
             </div>
-        </div></div>
-        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">直观理解：什么是连续？</h2><p class="mt-4 leading-relaxed">在图像上，一个函数是<strong>连续</strong>的，就意味着它的图线是<strong>没有断开</strong>的，我们可用一支笔<strong>一笔画</strong>出来。</p><p class="mt-8 leading-relaxed">如果画图时，笔被迫抬起，那么抬笔的那个点就是<strong>间断点</strong>。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        </div><div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">直观理解：什么是连续？</h2><p class="mt-4 leading-relaxed">在图像上，一个函数是<strong>连续</strong>的，就意味着它的图线是<strong>没有断开</strong>的，我们可用一支笔<strong>一笔画</strong>出来。</p><p class="mt-8 leading-relaxed">如果画图时，笔被迫抬起，那么抬笔的那个点就是<strong>间断点</strong>。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">从增量开始</h2><p class="mt-4 leading-relaxed">在讨论连续之前，我们先理解<strong>增量</strong>的概念，即变化量。</p><p class="mt-6 leading-relaxed">当自变量 $x$ 从 $x₀$ 变化了 $Δx$ 时，函数值 $y$ 也会跟着变化 $Δy$。这个 $Δy$ 就是函数的增量。</p><div class="text-center mt-10 math-formula">$Δy = f(x₀ + Δx) - f(x₀)$</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">连续的严格定义</h2><p class="mt-4 leading-relaxed">直观的一笔画需要用严格的数学语言来定义。函数 $f(x)$ 在点 $x_0$ 处连续，必须<strong>同时满足</strong>三个条件。</p><p class="mt-8 leading-relaxed">接下来，我们将逐一剖析这三个条件。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">条件一：点有定义</h2><p class="mt-4 leading-relaxed">函数在 $x_0$ 这一点必须有意义，不能是一个无底洞。</p><p class="mt-8 leading-relaxed">也就是说，当我们把 $x_0$ 代入函数时，必须能得到一个确定的函数值 $f(x_0)$。</p><div class="text-center mt-10 math-formula">$f(x_0)$ 必须存在</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>

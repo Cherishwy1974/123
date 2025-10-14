@@ -1,12 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第11章 级数概念与敛散性判别</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   第11章 级数概念与敛散性判别
+  </title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
+   * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
         .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
@@ -36,523 +39,999 @@
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+  
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
     </style>
-    <script>
-        window.MathJax = {
+<script>
+   window.MathJax = {
             tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
             startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
             options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
         };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">级数的概念</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">无穷级数</p>
-                    <div class="formula-box"><p class="chalk-text">$$\sum_{n=1}^{\infty} u_n = u_1 + u_2 + u_3 + \cdots$$</p></div>
-                    <p class="chalk-text emphasis">部分和</p>
-                    <div class="formula-box"><p class="chalk-text">$$S_n = \sum_{k=1}^{n} u_k$$</p></div>
-                    <p class="chalk-text emphasis">收敛与发散</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">若 $\lim_{n \to \infty} S_n$ 存在，级数收敛</li>
-                        <li class="chalk-text">否则，级数发散</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <defs>
-                        <filter id="glow1">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <!-- 标题 -->
-                    <text x="350" y="50" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow1)">无穷级数累加示意</text>
-                    
-                    <!-- 级数项可视化 - 递减的矩形 -->
-                    <rect x="80" y="150" width="100" height="100" fill="rgba(255,107,107,0.8)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow1)">
-                        <animate attributeName="fill-opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="130" y="210" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">u₁</text>
-                    
-                    <rect x="200" y="170" width="80" height="80" fill="rgba(78,205,196,0.8)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow1)">
-                        <animate attributeName="fill-opacity" values="0.3;0.8;0.3" dur="4s" begin="0.5s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="240" y="220" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">u₂</text>
-                    
-                    <rect x="300" y="190" width="60" height="60" fill="rgba(255,224,102,0.8)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow1)">
-                        <animate attributeName="fill-opacity" values="0.3;0.8;0.3" dur="4s" begin="1s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="330" y="230" fill="#333" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">u₃</text>
-                    
-                    <rect x="380" y="205" width="45" height="45" fill="rgba(159,168,218,0.8)" stroke="#9FA8DA" stroke-width="3" rx="10" filter="url(#glow1)">
-                        <animate attributeName="fill-opacity" values="0.3;0.8;0.3" dur="4s" begin="1.5s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="402" y="235" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow1)">u₄</text>
-                    
-                    <rect x="445" y="217" width="30" height="33" fill="rgba(255,183,77,0.8)" stroke="#FFB74D" stroke-width="3" rx="10" filter="url(#glow1)">
-                        <animate attributeName="fill-opacity" values="0.3;0.8;0.3" dur="4s" begin="2s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="460" y="240" fill="#333" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow1)">u₅</text>
-                    
-                    <!-- 加号 -->
-                    <text x="182" y="135" fill="#FFE066" font-size="32" text-anchor="middle" font-weight="bold" filter="url(#glow1)">+</text>
-                    <text x="282" y="155" fill="#FFE066" font-size="32" text-anchor="middle" font-weight="bold" filter="url(#glow1)">+</text>
-                    <text x="362" y="175" fill="#FFE066" font-size="32" text-anchor="middle" font-weight="bold" filter="url(#glow1)">+</text>
-                    <text x="427" y="190" fill="#FFE066" font-size="32" text-anchor="middle" font-weight="bold" filter="url(#glow1)">+</text>
-                    <text x="495" y="200" fill="#FFE066" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow1)">⋯</text>
-                    
-                    <!-- 部分和S_n指示 -->
-                    <path d="M 80 300 L 500 300" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="5,5" filter="url(#glow1)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                    </path>
-                    <text x="290" y="330" fill="#FF6B6B" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow1)">部分和 Sₙ = u₁ + u₂ + ⋯ + uₙ</text>
-                    
-                    <!-- 极限箭头 -->
-                    <path d="M 290 360 L 290 430" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrowhead)" filter="url(#glow1)">
-                        <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
-                    </path>
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                            <polygon points="0 0, 10 5, 0 10" fill="#4ECDC4"/>
-                        </marker>
-                    </defs>
-                    
-                    <!-- 极限公式 -->
-                    <rect x="180" y="450" width="220" height="60" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow1)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="290" y="488" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow1)">lim(n→∞) Sₙ = S</text>
-                </svg>
-            </div></div>
-        </div>
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">
+    等待连接
+   </div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper">
+</div>
+</div>
+<div class="page-indicator">
+    第
+    <span id="currentPage">
+     1
+    </span>
+    / 6 页
+   </div>
+<div class="page active cover-page" data-page="1">
+<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+       级数的概念与敛散性判别
+      </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+       第11章 视频 11.1
+      </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 数项级数的概念
+       </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 级数收敛的定义
+       </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 正项级数判别法
+       </p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
+        ✓ 交错级数判别法
+       </p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad11" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1">
+</stop>
+<stop offset="100%" style="stop-color:#f39c12;stop-opacity:1">
+</stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad11)" font-family="serif" font-size="120" text-anchor="middle" x="300" y="180">
+        Σ
+        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</text>
+<circle cx="200" cy="300" fill="none" r="20" stroke="#3498db" stroke-width="3">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="15;25;15">
+</animate>
+</circle>
+<circle cx="300" cy="320" fill="none" r="20" stroke="#2ecc71" stroke-width="3">
+<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="15;25;15">
+</animate>
+</circle>
+<circle cx="400" cy="300" fill="none" r="20" stroke="#9b59b6" stroke-width="3">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="15;25;15">
+</animate>
+</circle>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page1">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      级数的概念
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       无穷级数
+      </p>
+<div class="formula-box">
+<p class="chalk-text">
+        $$\sum_{n=1}^{\infty} u_n = u_1 + u_2 + u_3 + \cdots$$
+       </p>
+</div>
+<p class="chalk-text emphasis">
+       部分和
+      </p>
+<div class="formula-box">
+<p class="chalk-text">
+        $$S_n = \sum_{k=1}^{n} u_k$$
+       </p>
+</div>
+<p class="chalk-text emphasis">
+       收敛与发散
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        若 $\lim_{n \to \infty} S_n$ 存在，级数收敛
+       </li>
+<li class="chalk-text">
+        否则，级数发散
+       </li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow1">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 标题 -->
+<text fill="#e1bee7" filter="url(#glow1)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="50">
+        无穷级数累加示意
+       </text>
+<!-- 级数项可视化 - 递减的矩形 -->
+<rect fill="rgba(255,107,107,0.8)" filter="url(#glow1)" height="100" rx="10" stroke="#FF6B6B" stroke-width="3" width="100" x="80" y="150">
+<animate attributename="fill-opacity" dur="4s" repeatcount="indefinite" values="0.3;0.8;0.3">
+</animate>
+</rect>
+<text fill="#ffffff" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="130" y="210">
+        u₁
+       </text>
+<rect fill="rgba(78,205,196,0.8)" filter="url(#glow1)" height="80" rx="10" stroke="#4ECDC4" stroke-width="3" width="80" x="200" y="170">
+<animate attributename="fill-opacity" begin="0.5s" dur="4s" repeatcount="indefinite" values="0.3;0.8;0.3">
+</animate>
+</rect>
+<text fill="#ffffff" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="240" y="220">
+        u₂
+       </text>
+<rect fill="rgba(255,224,102,0.8)" filter="url(#glow1)" height="60" rx="10" stroke="#FFE066" stroke-width="3" width="60" x="300" y="190">
+<animate attributename="fill-opacity" begin="1s" dur="4s" repeatcount="indefinite" values="0.3;0.8;0.3">
+</animate>
+</rect>
+<text fill="#333" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="330" y="230">
+        u₃
+       </text>
+<rect fill="rgba(159,168,218,0.8)" filter="url(#glow1)" height="45" rx="10" stroke="#9FA8DA" stroke-width="3" width="45" x="380" y="205">
+<animate attributename="fill-opacity" begin="1.5s" dur="4s" repeatcount="indefinite" values="0.3;0.8;0.3">
+</animate>
+</rect>
+<text fill="#ffffff" filter="url(#glow1)" font-size="18" font-weight="bold" text-anchor="middle" x="402" y="235">
+        u₄
+       </text>
+<rect fill="rgba(255,183,77,0.8)" filter="url(#glow1)" height="33" rx="10" stroke="#FFB74D" stroke-width="3" width="30" x="445" y="217">
+<animate attributename="fill-opacity" begin="2s" dur="4s" repeatcount="indefinite" values="0.3;0.8;0.3">
+</animate>
+</rect>
+<text fill="#333" filter="url(#glow1)" font-size="16" font-weight="bold" text-anchor="middle" x="460" y="240">
+        u₅
+       </text>
+<!-- 加号 -->
+<text fill="#FFE066" filter="url(#glow1)" font-size="32" font-weight="bold" text-anchor="middle" x="182" y="135">
+        +
+       </text>
+<text fill="#FFE066" filter="url(#glow1)" font-size="32" font-weight="bold" text-anchor="middle" x="282" y="155">
+        +
+       </text>
+<text fill="#FFE066" filter="url(#glow1)" font-size="32" font-weight="bold" text-anchor="middle" x="362" y="175">
+        +
+       </text>
+<text fill="#FFE066" filter="url(#glow1)" font-size="32" font-weight="bold" text-anchor="middle" x="427" y="190">
+        +
+       </text>
+<text fill="#FFE066" filter="url(#glow1)" font-size="28" font-weight="bold" text-anchor="middle" x="495" y="200">
+        ⋯
+       </text>
+<!-- 部分和S_n指示 -->
+<path d="M 80 300 L 500 300" filter="url(#glow1)" stroke="#FF6B6B" stroke-dasharray="5,5" stroke-width="4">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</path>
+<text fill="#FF6B6B" filter="url(#glow1)" font-size="22" font-weight="bold" text-anchor="middle" x="290" y="330">
+        部分和 Sₙ = u₁ + u₂ + ⋯ + uₙ
+       </text>
+<!-- 极限箭头 -->
+<path d="M 290 360 L 290 430" filter="url(#glow1)" marker-end="url(#arrowhead)" stroke="#4ECDC4" stroke-width="4">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6">
+</animate>
+</path>
+<defs>
+<marker id="arrowhead" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0 0, 10 5, 0 10">
+</polygon>
+</marker>
+</defs>
+<!-- 极限公式 -->
+<rect fill="rgba(78,205,196,0.2)" filter="url(#glow1)" height="60" rx="10" stroke="#4ECDC4" stroke-width="3" width="220" x="180" y="450">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="290" y="488">
+        lim(n→∞) Sₙ = S
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      几何级数
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       定义
+      </p>
+<div class="formula-box">
+<p class="chalk-text">
+        $$\sum_{n=0}^{\infty} ar^n = a + ar + ar^2 + \cdots$$
+       </p>
+</div>
+<p class="chalk-text emphasis">
+       收敛性
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        $|r| &lt; 1$：收敛，和为 $\frac{a}{1-r}$
+       </li>
+<li class="chalk-text">
+        $|r| \geq 1$：发散
+       </li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow2">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 标题 -->
+<text fill="#e1bee7" filter="url(#glow2)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="50">
+        几何级数收敛示意（|r| &lt; 1）
+       </text>
+<!-- 坐标系 -->
+<line filter="url(#glow2)" stroke="#FFE066" stroke-width="3" x1="100" x2="600" y1="480" y2="480">
+</line>
+<line filter="url(#glow2)" stroke="#FFE066" stroke-width="3" x1="100" x2="100" y1="480" y2="120">
+</line>
+<text fill="#FFE066" filter="url(#glow2)" font-size="18" font-weight="bold" x="620" y="485">
+        n
+       </text>
+<text fill="#FFE066" filter="url(#glow2)" font-size="18" font-weight="bold" x="90" y="105">
+        Sₙ
+       </text>
+<!-- 几何级数项 - 递减的柱状图 -->
+<rect fill="rgba(255,107,107,0.7)" filter="url(#glow2)" height="200" rx="5" stroke="#FF6B6B" stroke-width="3" width="50" x="130" y="280">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="155" y="500">
+        a
+       </text>
+<rect fill="rgba(78,205,196,0.7)" filter="url(#glow2)" height="150" rx="5" stroke="#4ECDC4" stroke-width="3" width="50" x="200" y="330">
+<animate attributename="fill-opacity" begin="0.3s" dur="3s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="225" y="500">
+        ar
+       </text>
+<rect fill="rgba(255,224,102,0.7)" filter="url(#glow2)" height="112" rx="5" stroke="#FFE066" stroke-width="3" width="50" x="270" y="368">
+<animate attributename="fill-opacity" begin="0.6s" dur="3s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#333" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="295" y="500">
+        ar²
+       </text>
+<rect fill="rgba(159,168,218,0.7)" filter="url(#glow2)" height="84" rx="5" stroke="#9FA8DA" stroke-width="3" width="50" x="340" y="396">
+<animate attributename="fill-opacity" begin="0.9s" dur="3s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#9FA8DA" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="365" y="500">
+        ar³
+       </text>
+<rect fill="rgba(255,183,77,0.7)" filter="url(#glow2)" height="63" rx="5" stroke="#FFB74D" stroke-width="3" width="50" x="410" y="417">
+<animate attributename="fill-opacity" begin="1.2s" dur="3s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#333" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="435" y="500">
+        ar⁴
+       </text>
+<text fill="#FFE066" filter="url(#glow2)" font-size="24" font-weight="bold" text-anchor="middle" x="495" y="460">
+        ⋯
+       </text>
+<!-- 收敛线 -->
+<line filter="url(#glow2)" stroke="#FF6B6B" stroke-dasharray="8,4" stroke-width="4" x1="100" x2="600" y1="200" y2="200">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<text fill="#FF6B6B" filter="url(#glow2)" font-size="20" font-weight="bold" text-anchor="middle" x="550" y="190">
+        S = a/(1-r)
+       </text>
+<!-- 收敛箭头指示 -->
+<path d="M 480 420 Q 520 350, 540 220" fill="none" filter="url(#glow2)" marker-end="url(#arrow2)" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="stroke-opacity" dur="2.5s" repeatcount="indefinite" values="0.6;1;0.6">
+</animate>
+</path>
+<defs>
+<marker id="arrow2" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0 0, 10 5, 0 10">
+</polygon>
+</marker>
+</defs>
+<!-- 说明文字 -->
+<rect fill="rgba(78,205,196,0.2)" filter="url(#glow2)" height="50" rx="8" stroke="#4ECDC4" stroke-width="2" width="240" x="140" y="100">
+</rect>
+<text fill="#4ECDC4" filter="url(#glow2)" font-size="18" font-weight="bold" text-anchor="middle" x="260" y="133">
+        当 |r| &lt; 1 时收敛
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      级数的性质
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       基本性质
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        收敛级数可以逐项相加减
+       </li>
+<li class="chalk-text">
+        收敛级数乘常数仍收敛
+       </li>
+<li class="chalk-text">
+        改变有限项不影响敛散性
+       </li>
+<li class="chalk-text">
+        收敛的必要条件：$\lim_{n \to \infty} u_n = 0$
+       </li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow3">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 标题 -->
+<text fill="#e1bee7" filter="url(#glow3)" font-size="26" font-weight="bold" text-anchor="middle" x="350" y="40">
+        级数的基本性质
+       </text>
+<!-- 性质1：线性运算 -->
+<rect fill="rgba(255,107,107,0.15)" filter="url(#glow3)" height="90" rx="12" stroke="#FF6B6B" stroke-width="3" width="540" x="80" y="80">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="110">
+        性质1：线性运算
+       </text>
+<text fill="#ffffff" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="145">
+        ∑(auₙ + bvₙ) = a∑uₙ + b∑vₙ
+       </text>
+<!-- 性质2：改变有限项 -->
+<rect fill="rgba(78,205,196,0.15)" filter="url(#glow3)" height="90" rx="12" stroke="#4ECDC4" stroke-width="3" width="540" x="80" y="190">
+<animate attributename="stroke-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="220">
+        性质2：改变有限项
+       </text>
+<text fill="#ffffff" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="255">
+        敛散性不变，和可能改变
+       </text>
+<!-- 性质3：必要条件 -->
+<rect fill="rgba(255,224,102,0.15)" filter="url(#glow3)" height="110" rx="12" stroke="#FFE066" stroke-width="3" width="540" x="80" y="300">
+<animate attributename="stroke-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</rect>
+<text fill="#FFE066" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="330">
+        性质3：收敛必要条件
+       </text>
+<text fill="#333" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="365">
+        若 ∑uₙ 收敛，则 lim(n→∞) uₙ = 0
+       </text>
+<text fill="#FF6B6B" filter="url(#glow3)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="395">
+        ⚠️ 注意：反之不成立！
+       </text>
+<!-- 示例图示 -->
+<circle cx="150" cy="480" fill="rgba(255,107,107,0.4)" filter="url(#glow3)" r="35" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="35;40;35">
+</animate>
+</circle>
+<text fill="#ffffff" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="150" y="490">
+        ∑uₙ
+       </text>
+<text fill="#FFE066" filter="url(#glow3)" font-size="28" font-weight="bold" text-anchor="middle" x="230" y="490">
+        +
+       </text>
+<circle cx="310" cy="480" fill="rgba(78,205,196,0.4)" filter="url(#glow3)" r="35" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="r" begin="0.3s" dur="2s" repeatcount="indefinite" values="35;40;35">
+</animate>
+</circle>
+<text fill="#ffffff" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="310" y="490">
+        ∑vₙ
+       </text>
+<text fill="#FFE066" filter="url(#glow3)" font-size="28" font-weight="bold" text-anchor="middle" x="380" y="490">
+        =
+       </text>
+<ellipse cx="490" cy="480" fill="rgba(159,168,218,0.4)" filter="url(#glow3)" rx="60" ry="40" stroke="#9FA8DA" stroke-width="3">
+<animate attributename="rx" begin="0.6s" dur="2s" repeatcount="indefinite" values="60;65;60">
+</animate>
+</ellipse>
+<text fill="#ffffff" filter="url(#glow3)" font-size="18" font-weight="bold" text-anchor="middle" x="490" y="490">
+        ∑(uₙ+vₙ)
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      正项级数判别法
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       比值判别法
+      </p>
+<div class="formula-box">
+<p class="chalk-text">
+        $$\lim_{n \to \infty} \frac{u_{n+1}}{u_n} = \rho$$
+       </p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">
+        $\rho &lt; 1$：收敛
+       </li>
+<li class="chalk-text">
+        $\rho &gt; 1$：发散
+       </li>
+<li class="chalk-text">
+        $\rho = 1$：不确定
+       </li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow4">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 标题 -->
+<text fill="#e1bee7" filter="url(#glow4)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
+        比值判别法（达朗贝尔判别法）
+       </text>
+<!-- 坐标系 -->
+<line filter="url(#glow4)" stroke="#FFE066" stroke-width="3" x1="100" x2="600" y1="500" y2="500">
+</line>
+<line filter="url(#glow4)" stroke="#FFE066" stroke-width="3" x1="350" x2="350" y1="520" y2="80">
+</line>
+<text fill="#FFE066" filter="url(#glow4)" font-size="18" font-weight="bold" x="615" y="505">
+        ρ
+       </text>
+<!-- ρ = 1 分界线 -->
+<line filter="url(#glow4)" stroke="#FF6B6B" stroke-dasharray="8,4" stroke-width="4" x1="350" x2="350" y1="80" y2="500">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<text fill="#FF6B6B" filter="url(#glow4)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="70">
+        ρ = 1
+       </text>
+<!-- 收敛区域 (ρ < 1) -->
+<rect fill="rgba(78,205,196,0.3)" filter="url(#glow4)" height="120" rx="10" stroke="#4ECDC4" stroke-width="3" width="220" x="110" y="150">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#glow4)" font-size="24" font-weight="bold" text-anchor="middle" x="220" y="195">
+        收敛
+       </text>
+<text fill="#4ECDC4" filter="url(#glow4)" font-size="20" font-weight="bold" text-anchor="middle" x="220" y="230">
+        ρ &lt; 1
+       </text>
+<circle cx="180" cy="320" fill="#4ECDC4" filter="url(#glow4)" r="8">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8">
+</animate>
+</circle>
+<circle cx="240" cy="360" fill="#4ECDC4" filter="url(#glow4)" r="8">
+<animate attributename="r" begin="0.3s" dur="2s" repeatcount="indefinite" values="8;12;8">
+</animate>
+</circle>
+<circle cx="200" cy="400" fill="#4ECDC4" filter="url(#glow4)" r="8">
+<animate attributename="r" begin="0.6s" dur="2s" repeatcount="indefinite" values="8;12;8">
+</animate>
+</circle>
+<!-- 不确定区域 (ρ = 1) -->
+<rect fill="rgba(255,224,102,0.3)" filter="url(#glow4)" height="100" rx="10" stroke="#FFE066" stroke-width="3" width="60" x="320" y="300">
+<animate attributename="fill-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#FFE066" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="340">
+        不
+       </text>
+<text fill="#FFE066" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="365">
+        确
+       </text>
+<text fill="#FFE066" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="390">
+        定
+       </text>
+<!-- 发散区域 (ρ > 1) -->
+<rect fill="rgba(255,107,107,0.3)" filter="url(#glow4)" height="120" rx="10" stroke="#FF6B6B" stroke-width="3" width="220" x="370" y="150">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#glow4)" font-size="24" font-weight="bold" text-anchor="middle" x="480" y="195">
+        发散
+       </text>
+<text fill="#FF6B6B" filter="url(#glow4)" font-size="20" font-weight="bold" text-anchor="middle" x="480" y="230">
+        ρ &gt; 1
+       </text>
+<path d="M 420 320 L 460 360 L 500 340 L 540 380 L 560 400" fill="none" filter="url(#glow4)" stroke="#FF6B6B" stroke-width="4">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6">
+</animate>
+</path>
+<!-- 公式框 -->
+<rect fill="rgba(159,168,218,0.2)" filter="url(#glow4)" height="40" rx="8" stroke="#9FA8DA" stroke-width="2" width="420" x="140" y="450">
+</rect>
+<text fill="#9FA8DA" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="478">
+        ρ = lim(n→∞) |uₙ₊₁/uₙ|
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      交错级数
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       莱布尼茨判别法
+      </p>
+<p class="chalk-text">
+       若交错级数 $\sum_{n=1}^{\infty} (-1)^{n-1}u_n$ 满足：
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        $u_n$ 单调递减
+       </li>
+<li class="chalk-text">
+        $\lim_{n \to \infty} u_n = 0$
+       </li>
+</ul>
+<p class="chalk-text">
+       则级数收敛
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow5">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 标题 -->
+<text fill="#e1bee7" filter="url(#glow5)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
+        交错级数与莱布尼茨判别法
+       </text>
+<!-- 坐标系 -->
+<line filter="url(#glow5)" stroke="#FFE066" stroke-width="3" x1="100" x2="600" y1="350" y2="350">
+</line>
+<line filter="url(#glow5)" stroke="#FFE066" stroke-width="3" x1="100" x2="100" y1="500" y2="120">
+</line>
+<text fill="#FFE066" filter="url(#glow5)" font-size="18" font-weight="bold" x="615" y="355">
+        n
+       </text>
+<text fill="#FFE066" filter="url(#glow5)" font-size="18" font-weight="bold" x="90" y="110">
+        Sₙ
+       </text>
+<!-- 交错级数项 - 上下振荡 -->
+<rect fill="rgba(255,107,107,0.7)" filter="url(#glow5)" height="150" rx="5" stroke="#FF6B6B" stroke-width="3" width="50" x="130" y="200">
+<animate attributename="fill-opacity" dur="4s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="155" y="190">
+        +u₁
+       </text>
+<rect fill="rgba(78,205,196,0.7)" filter="url(#glow5)" height="120" rx="5" stroke="#4ECDC4" stroke-width="3" width="50" x="200" y="350">
+<animate attributename="fill-opacity" begin="0.5s" dur="4s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#4ECDC4" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="225" y="490">
+        -u₂
+       </text>
+<rect fill="rgba(255,224,102,0.7)" filter="url(#glow5)" height="90" rx="5" stroke="#FFE066" stroke-width="3" width="50" x="270" y="260">
+<animate attributename="fill-opacity" begin="1s" dur="4s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#FFE066" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="295" y="250">
+        +u₃
+       </text>
+<rect fill="rgba(159,168,218,0.7)" filter="url(#glow5)" height="70" rx="5" stroke="#9FA8DA" stroke-width="3" width="50" x="340" y="350">
+<animate attributename="fill-opacity" begin="1.5s" dur="4s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#9FA8DA" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="365" y="440">
+        -u₄
+       </text>
+<rect fill="rgba(255,183,77,0.7)" filter="url(#glow5)" height="55" rx="5" stroke="#FFB74D" stroke-width="3" width="50" x="410" y="295">
+<animate attributename="fill-opacity" begin="2s" dur="4s" repeatcount="indefinite" values="0.4;0.7;0.4">
+</animate>
+</rect>
+<text fill="#FFB74D" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="435" y="285">
+        +u₅
+       </text>
+<!-- 收敛线 -->
+<line filter="url(#glow5)" stroke="#FF6B6B" stroke-dasharray="8,4" stroke-width="4" x1="100" x2="580" y1="310" y2="310">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<text fill="#FF6B6B" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="550" y="300">
+        收敛到S
+       </text>
+<!-- 振荡曲线 -->
+<path d="M 155 200 Q 177 275, 225 370 T 295 260 T 365 350 T 435 295" fill="none" filter="url(#glow5)" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.6;1;0.6">
+</animate>
+</path>
+<!-- 条件说明框 -->
+<rect fill="rgba(255,107,107,0.2)" filter="url(#glow5)" height="30" rx="8" stroke="#FF6B6B" stroke-width="2" width="400" x="150" y="80">
+</rect>
+<text fill="#FF6B6B" filter="url(#glow5)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="103">
+        条件：uₙ↓0 且单调递减
+       </text>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      总结
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       核心内容
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        级数的概念：部分和的极限
+       </li>
+<li class="chalk-text">
+        几何级数：$|r| &lt; 1$ 时收敛
+       </li>
+<li class="chalk-text">
+        判别法：比值判别法、莱布尼茨判别法
+       </li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow6">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 中心核心 -->
+<circle cx="350" cy="280" fill="rgba(255,224,102,0.3)" filter="url(#glow6)" r="80" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80">
+</animate>
+</circle>
+<text fill="#FFE066" filter="url(#glow6)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="290">
+        级数理论
+       </text>
+<!-- 分支1：级数概念 -->
+<line filter="url(#glow6)" stroke="#FF6B6B" stroke-width="3" x1="280" x2="180" y1="240" y2="150">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<circle cx="180" cy="150" fill="rgba(255,107,107,0.3)" filter="url(#glow6)" r="55" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="fill-opacity" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</circle>
+<text fill="#FF6B6B" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="180" y="145">
+        级数
+       </text>
+<text fill="#FF6B6B" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="180" y="165">
+        概念
+       </text>
+<!-- 分支2：几何级数 -->
+<line filter="url(#glow6)" stroke="#4ECDC4" stroke-width="3" x1="420" x2="520" y1="240" y2="150">
+<animate attributename="stroke-opacity" begin="0.3s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<circle cx="520" cy="150" fill="rgba(78,205,196,0.3)" filter="url(#glow6)" r="55" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" begin="0.3s" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</circle>
+<text fill="#4ECDC4" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="520" y="145">
+        几何
+       </text>
+<text fill="#4ECDC4" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="520" y="165">
+        级数
+       </text>
+<!-- 分支3：比值判别法 -->
+<line filter="url(#glow6)" stroke="#9FA8DA" stroke-width="3" x1="280" x2="180" y1="320" y2="410">
+<animate attributename="stroke-opacity" begin="0.6s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<circle cx="180" cy="410" fill="rgba(159,168,218,0.3)" filter="url(#glow6)" r="55" stroke="#9FA8DA" stroke-width="3">
+<animate attributename="fill-opacity" begin="0.6s" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</circle>
+<text fill="#9FA8DA" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="180" y="405">
+        比值
+       </text>
+<text fill="#9FA8DA" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="180" y="425">
+        判别法
+       </text>
+<!-- 分支4：交错级数 -->
+<line filter="url(#glow6)" stroke="#FFB74D" stroke-width="3" x1="420" x2="520" y1="320" y2="410">
+<animate attributename="stroke-opacity" begin="0.9s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</line>
+<circle cx="520" cy="410" fill="rgba(255,183,77,0.3)" filter="url(#glow6)" r="55" stroke="#FFB74D" stroke-width="3">
+<animate attributename="fill-opacity" begin="0.9s" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
+</animate>
+</circle>
+<text fill="#FFB74D" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="520" y="405">
+        交错
+       </text>
+<text fill="#FFB74D" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="520" y="425">
+        级数
+       </text>
+<!-- 标题 -->
+<text fill="#e1bee7" filter="url(#glow6)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="50">
+        级数知识体系总结
+       </text>
+<!-- 底部提示 -->
+<rect fill="rgba(78,205,196,0.2)" filter="url(#glow6)" height="40" rx="8" stroke="#4ECDC4" stroke-width="2" width="300" x="200" y="510">
+</rect>
+<text fill="#4ECDC4" filter="url(#glow6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="538">
+        掌握敛散性判别方法
+       </text>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">
+    ⬅️ 上一页
+   </button>
+<button class="btn primary" onclick="nextPage()">
+    下一页 ➡️
+   </button>
+<button class="btn" onclick="startTeaching()">
+    🎤 开始讲解
+   </button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
+    🎬 自动播放
+   </button>
+</div>
+<div class="subtitle-area" id="subtitleArea">
+</div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">几何级数</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义</p>
-                    <div class="formula-box"><p class="chalk-text">$$\sum_{n=0}^{\infty} ar^n = a + ar + ar^2 + \cdots$$</p></div>
-                    <p class="chalk-text emphasis">收敛性</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$|r| < 1$：收敛，和为 $\frac{a}{1-r}$</li>
-                        <li class="chalk-text">$|r| \geq 1$：发散</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <defs>
-                        <filter id="glow2">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <!-- 标题 -->
-                    <text x="350" y="50" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow2)">几何级数收敛示意（|r| < 1）</text>
-                    
-                    <!-- 坐标系 -->
-                    <line x1="100" y1="480" x2="600" y2="480" stroke="#FFE066" stroke-width="3" filter="url(#glow2)"/>
-                    <line x1="100" y1="480" x2="100" y2="120" stroke="#FFE066" stroke-width="3" filter="url(#glow2)"/>
-                    <text x="620" y="485" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow2)">n</text>
-                    <text x="90" y="105" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow2)">Sₙ</text>
-                    
-                    <!-- 几何级数项 - 递减的柱状图 -->
-                    <rect x="130" y="280" width="50" height="200" fill="rgba(255,107,107,0.7)" stroke="#FF6B6B" stroke-width="3" rx="5" filter="url(#glow2)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="155" y="500" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">a</text>
-                    
-                    <rect x="200" y="330" width="50" height="150" fill="rgba(78,205,196,0.7)" stroke="#4ECDC4" stroke-width="3" rx="5" filter="url(#glow2)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="3s" begin="0.3s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="225" y="500" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">ar</text>
-                    
-                    <rect x="270" y="368" width="50" height="112" fill="rgba(255,224,102,0.7)" stroke="#FFE066" stroke-width="3" rx="5" filter="url(#glow2)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="3s" begin="0.6s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="295" y="500" fill="#333" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">ar²</text>
-                    
-                    <rect x="340" y="396" width="50" height="84" fill="rgba(159,168,218,0.7)" stroke="#9FA8DA" stroke-width="3" rx="5" filter="url(#glow2)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="3s" begin="0.9s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="365" y="500" fill="#9FA8DA" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">ar³</text>
-                    
-                    <rect x="410" y="417" width="50" height="63" fill="rgba(255,183,77,0.7)" stroke="#FFB74D" stroke-width="3" rx="5" filter="url(#glow2)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="3s" begin="1.2s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="435" y="500" fill="#333" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow2)">ar⁴</text>
-                    
-                    <text x="495" y="460" fill="#FFE066" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow2)">⋯</text>
-                    
-                    <!-- 收敛线 -->
-                    <line x1="100" y1="200" x2="600" y2="200" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="8,4" filter="url(#glow2)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                    </line>
-                    <text x="550" y="190" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow2)">S = a/(1-r)</text>
-                    
-                    <!-- 收敛箭头指示 -->
-                    <path d="M 480 420 Q 520 350, 540 220" stroke="#4ECDC4" stroke-width="3" fill="none" marker-end="url(#arrow2)" filter="url(#glow2)">
-                        <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
-                    </path>
-                    <defs>
-                        <marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                            <polygon points="0 0, 10 5, 0 10" fill="#4ECDC4"/>
-                        </marker>
-                    </defs>
-                    
-                    <!-- 说明文字 -->
-                    <rect x="140" y="100" width="240" height="50" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="8" filter="url(#glow2)"/>
-                    <text x="260" y="133" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow2)">当 |r| < 1 时收敛</text>
-                </svg>
-            </div></div>
-        </div>
+<script>
+   let currentPage = 1; const totalPages = 6;
+        let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">级数的性质</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">基本性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">收敛级数可以逐项相加减</li>
-                        <li class="chalk-text">收敛级数乘常数仍收敛</li>
-                        <li class="chalk-text">改变有限项不影响敛散性</li>
-                        <li class="chalk-text">收敛的必要条件：$\lim_{n \to \infty} u_n = 0$</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <defs>
-                        <filter id="glow3">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <!-- 标题 -->
-                    <text x="350" y="40" fill="#e1bee7" font-size="26" text-anchor="middle" font-weight="bold" filter="url(#glow3)">级数的基本性质</text>
-                    
-                    <!-- 性质1：线性运算 -->
-                    <rect x="80" y="80" width="540" height="90" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="3" rx="12" filter="url(#glow3)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="350" y="110" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">性质1：线性运算</text>
-                    <text x="350" y="145" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">∑(auₙ + bvₙ) = a∑uₙ + b∑vₙ</text>
-                    
-                    <!-- 性质2：改变有限项 -->
-                    <rect x="80" y="190" width="540" height="90" fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="3" rx="12" filter="url(#glow3)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="350" y="220" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">性质2：改变有限项</text>
-                    <text x="350" y="255" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">敛散性不变，和可能改变</text>
-                    
-                    <!-- 性质3：必要条件 -->
-                    <rect x="80" y="300" width="540" height="110" fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="3" rx="12" filter="url(#glow3)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" begin="1s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="350" y="330" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow3)">性质3：收敛必要条件</text>
-                    <text x="350" y="365" fill="#333" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">若 ∑uₙ 收敛，则 lim(n→∞) uₙ = 0</text>
-                    <text x="350" y="395" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow3)">⚠️ 注意：反之不成立！</text>
-                    
-                    <!-- 示例图示 -->
-                    <circle cx="150" cy="480" r="35" fill="rgba(255,107,107,0.4)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow3)">
-                        <animate attributeName="r" values="35;40;35" dur="2s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="150" y="490" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">∑uₙ</text>
-                    
-                    <text x="230" y="490" fill="#FFE066" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow3)">+</text>
-                    
-                    <circle cx="310" cy="480" r="35" fill="rgba(78,205,196,0.4)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow3)">
-                        <animate attributeName="r" values="35;40;35" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="310" y="490" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">∑vₙ</text>
-                    
-                    <text x="380" y="490" fill="#FFE066" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow3)">=</text>
-                    
-                    <ellipse cx="490" cy="480" rx="60" ry="40" fill="rgba(159,168,218,0.4)" stroke="#9FA8DA" stroke-width="3" filter="url(#glow3)">
-                        <animate attributeName="rx" values="60;65;60" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                    </ellipse>
-                    <text x="490" y="490" fill="#ffffff" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow3)">∑(uₙ+vₙ)</text>
-                </svg>
-            </div></div>
-        </div>
+        const subtitleScript = {
+            1: `欢迎学习级数的概念与敛散性判别。无穷级数是无穷多项相加，部分和Sn是前n项的和。若部分和的极限存在，级数收敛；否则发散。级数是微积分的重要内容，在数值计算和函数逼近中有广泛应用。`,
+            2: `几何级数是ar的n次方的和，从n等于0到无穷。当r的绝对值小于1时，级数收敛，和为a除以1减r；当r的绝对值大于等于1时，级数发散。几何级数是最基本、最重要的级数。`,
+            3: `级数的基本性质：第一，收敛级数可以逐项相加减；第二，级数乘以常数仍收敛；第三，改变有限项不影响敛散性。收敛的必要条件是通项趋于0，但这不是充分条件。`,
+            4: `正项级数的比值判别法：若un加1除以un的极限ρ小于1，则级数收敛；大于1则发散；等于1时不确定，需要用其他方法判别。这个方法在实际应用中非常有用。`,
+            5: `交错级数的莱布尼茨判别法：若un单调递减且趋于0，则交错级数收敛。交错级数是正负项交替出现的级数，莱布尼茨判别法给出了简单的判别条件。`,
+            6: `总结一下，级数是部分和的极限。几何级数是最基本的级数，掌握它的敛散性非常重要。比值判别法和莱布尼茨判别法帮助我们判断级数的敛散性。级数理论是分析学的重要基础。`
+        };
 
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">正项级数判别法</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">比值判别法</p>
-                    <div class="formula-box"><p class="chalk-text">$$\lim_{n \to \infty} \frac{u_{n+1}}{u_n} = \rho$$</p></div>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$\rho < 1$：收敛</li>
-                        <li class="chalk-text">$\rho > 1$：发散</li>
-                        <li class="chalk-text">$\rho = 1$：不确定</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <defs>
-                        <filter id="glow4">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <!-- 标题 -->
-                    <text x="350" y="40" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow4)">比值判别法（达朗贝尔判别法）</text>
-                    
-                    <!-- 坐标系 -->
-                    <line x1="100" y1="500" x2="600" y2="500" stroke="#FFE066" stroke-width="3" filter="url(#glow4)"/>
-                    <line x1="350" y1="520" x2="350" y2="80" stroke="#FFE066" stroke-width="3" filter="url(#glow4)"/>
-                    <text x="615" y="505" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow4)">ρ</text>
-                    
-                    <!-- ρ = 1 分界线 -->
-                    <line x1="350" y1="80" x2="350" y2="500" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="8,4" filter="url(#glow4)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                    </line>
-                    <text x="350" y="70" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow4)">ρ = 1</text>
-                    
-                    <!-- 收敛区域 (ρ < 1) -->
-                    <rect x="110" y="150" width="220" height="120" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="10" filter="url(#glow4)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="220" y="195" fill="#4ECDC4" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow4)">收敛</text>
-                    <text x="220" y="230" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow4)">ρ < 1</text>
-                    <circle cx="180" cy="320" r="8" fill="#4ECDC4" filter="url(#glow4)">
-                        <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="240" cy="360" r="8" fill="#4ECDC4" filter="url(#glow4)">
-                        <animate attributeName="r" values="8;12;8" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="200" cy="400" r="8" fill="#4ECDC4" filter="url(#glow4)">
-                        <animate attributeName="r" values="8;12;8" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                    </circle>
-                    
-                    <!-- 不确定区域 (ρ = 1) -->
-                    <rect x="320" y="300" width="60" height="100" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow4)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="350" y="340" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">不</text>
-                    <text x="350" y="365" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">确</text>
-                    <text x="350" y="390" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">定</text>
-                    
-                    <!-- 发散区域 (ρ > 1) -->
-                    <rect x="370" y="150" width="220" height="120" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" rx="10" filter="url(#glow4)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="3s" begin="1s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="480" y="195" fill="#FF6B6B" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow4)">发散</text>
-                    <text x="480" y="230" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow4)">ρ > 1</text>
-                    <path d="M 420 320 L 460 360 L 500 340 L 540 380 L 560 400" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow4)">
-                        <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
-                    </path>
-                    
-                    <!-- 公式框 -->
-                    <rect x="140" y="450" width="420" height="40" fill="rgba(159,168,218,0.2)" stroke="#9FA8DA" stroke-width="2" rx="8" filter="url(#glow4)"/>
-                    <text x="350" y="478" fill="#9FA8DA" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow4)">ρ = lim(n→∞) |uₙ₊₁/uₙ|</text>
-                </svg>
-            </div></div>
-        </div>
+        const autoPlayDurations = {1: 18000, 2: 18000, 3: 18000, 4: 18000, 5: 18000, 6: 18000};
 
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">交错级数</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">莱布尼茨判别法</p>
-                    <p class="chalk-text">若交错级数 $\sum_{n=1}^{\infty} (-1)^{n-1}u_n$ 满足：</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$u_n$ 单调递减</li>
-                        <li class="chalk-text">$\lim_{n \to \infty} u_n = 0$</li>
-                    </ul>
-                    <p class="chalk-text">则级数收敛</p>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <defs>
-                        <filter id="glow5">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <!-- 标题 -->
-                    <text x="350" y="40" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow5)">交错级数与莱布尼茨判别法</text>
-                    
-                    <!-- 坐标系 -->
-                    <line x1="100" y1="350" x2="600" y2="350" stroke="#FFE066" stroke-width="3" filter="url(#glow5)"/>
-                    <line x1="100" y1="500" x2="100" y2="120" stroke="#FFE066" stroke-width="3" filter="url(#glow5)"/>
-                    <text x="615" y="355" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow5)">n</text>
-                    <text x="90" y="110" fill="#FFE066" font-size="18" font-weight="bold" filter="url(#glow5)">Sₙ</text>
-                    
-                    <!-- 交错级数项 - 上下振荡 -->
-                    <rect x="130" y="200" width="50" height="150" fill="rgba(255,107,107,0.7)" stroke="#FF6B6B" stroke-width="3" rx="5" filter="url(#glow5)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="4s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="155" y="190" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">+u₁</text>
-                    
-                    <rect x="200" y="350" width="50" height="120" fill="rgba(78,205,196,0.7)" stroke="#4ECDC4" stroke-width="3" rx="5" filter="url(#glow5)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="4s" begin="0.5s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="225" y="490" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">-u₂</text>
-                    
-                    <rect x="270" y="260" width="50" height="90" fill="rgba(255,224,102,0.7)" stroke="#FFE066" stroke-width="3" rx="5" filter="url(#glow5)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="4s" begin="1s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="295" y="250" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">+u₃</text>
-                    
-                    <rect x="340" y="350" width="50" height="70" fill="rgba(159,168,218,0.7)" stroke="#9FA8DA" stroke-width="3" rx="5" filter="url(#glow5)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="4s" begin="1.5s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="365" y="440" fill="#9FA8DA" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">-u₄</text>
-                    
-                    <rect x="410" y="295" width="50" height="55" fill="rgba(255,183,77,0.7)" stroke="#FFB74D" stroke-width="3" rx="5" filter="url(#glow5)">
-                        <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="4s" begin="2s" repeatCount="indefinite"/>
-                    </rect>
-                    <text x="435" y="285" fill="#FFB74D" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">+u₅</text>
-                    
-                    <!-- 收敛线 -->
-                    <line x1="100" y1="310" x2="580" y2="310" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="8,4" filter="url(#glow5)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                    </line>
-                    <text x="550" y="300" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow5)">收敛到S</text>
-                    
-                    <!-- 振荡曲线 -->
-                    <path d="M 155 200 Q 177 275, 225 370 T 295 260 T 365 350 T 435 295" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow5)">
-                        <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
-                    </path>
-                    
-                    <!-- 条件说明框 -->
-                    <rect x="150" y="80" width="400" height="30" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2" rx="8" filter="url(#glow5)"/>
-                    <text x="350" y="103" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow5)">条件：uₙ↓0 且单调递减</text>
-                </svg>
-            </div></div>
-        </div>
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message; indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
 
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心内容</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">级数的概念：部分和的极限</li>
-                        <li class="chalk-text">几何级数：$|r| < 1$ 时收敛</li>
-                        <li class="chalk-text">判别法：比值判别法、莱布尼茨判别法</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel"><div class="animation-container">
-                <svg class="svg-animation" viewBox="0 0 700 600">
-                    <defs>
-                        <filter id="glow6">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    
-                    <!-- 中心核心 -->
-                    <circle cx="350" cy="280" r="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow6)">
-                        <animate attributeName="r" values="80;90;80" dur="3s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="350" y="290" fill="#FFE066" font-size="22" text-anchor="middle" font-weight="bold" filter="url(#glow6)">级数理论</text>
-                    
-                    <!-- 分支1：级数概念 -->
-                    <line x1="280" y1="240" x2="180" y2="150" stroke="#FF6B6B" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                    </line>
-                    <circle cx="180" cy="150" r="55" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="180" y="145" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">级数</text>
-                    <text x="180" y="165" fill="#FF6B6B" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">概念</text>
-                    
-                    <!-- 分支2：几何级数 -->
-                    <line x1="420" y1="240" x2="520" y2="150" stroke="#4ECDC4" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-                    </line>
-                    <circle cx="520" cy="150" r="55" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="520" y="145" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">几何</text>
-                    <text x="520" y="165" fill="#4ECDC4" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">级数</text>
-                    
-                    <!-- 分支3：比值判别法 -->
-                    <line x1="280" y1="320" x2="180" y2="410" stroke="#9FA8DA" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-                    </line>
-                    <circle cx="180" cy="410" r="55" fill="rgba(159,168,218,0.3)" stroke="#9FA8DA" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" begin="0.6s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="180" y="405" fill="#9FA8DA" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">比值</text>
-                    <text x="180" y="425" fill="#9FA8DA" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">判别法</text>
-                    
-                    <!-- 分支4：交错级数 -->
-                    <line x1="420" y1="320" x2="520" y2="410" stroke="#FFB74D" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-                    </line>
-                    <circle cx="520" cy="410" r="55" fill="rgba(255,183,77,0.3)" stroke="#FFB74D" stroke-width="3" filter="url(#glow6)">
-                        <animate attributeName="fill-opacity" values="0.2;0.4;0.2" dur="2.5s" begin="0.9s" repeatCount="indefinite"/>
-                    </circle>
-                    <text x="520" y="405" fill="#FFB74D" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">交错</text>
-                    <text x="520" y="425" fill="#FFB74D" font-size="16" text-anchor="middle" font-weight="bold" filter="url(#glow6)">级数</text>
-                    
-                    <!-- 标题 -->
-                    <text x="350" y="50" fill="#e1bee7" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#glow6)">级数知识体系总结</text>
-                    
-                    <!-- 底部提示 -->
-                    <rect x="200" y="510" width="300" height="40" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" rx="8" filter="url(#glow6)"/>
-                    <text x="350" y="538" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow6)">掌握敛散性判别方法</text>
-                </svg>
-            </div></div>
-        </div>
-    </div>
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
 
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-    <div class="subtitle-area" id="subtitleArea"></div>
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
+                });
+            });
+        }
 
-    <script>
-        let currentPage = 1; const totalPages = 6;
-        const pageContents = ["无穷级数是无穷多项相加，部分和Sn是前n项的和。若部分和的极限存在，级数收敛，否则发散。","几何级数是ar的n次方的和。当r的绝对值小于1时收敛，和为a除以1减r；当r的绝对值大于等于1时发散。","级数的基本性质：收敛级数可以逐项相加减，乘常数仍收敛，改变有限项不影响敛散性。收敛的必要条件是通项趋于0。","正项级数的比值判别法：若un加1除以un的极限ρ小于1则收敛，大于1则发散，等于1不确定。","交错级数的莱布尼茨判别法：若un单调递减且趋于0，则交错级数收敛。","总结：级数是部分和的极限，几何级数是最基本的级数，判别法帮助我们判断级数的敛散性。"];
-        const autoPlayDurations = {1: 10000, 2: 10000, 3: 10000, 4: 10000, 5: 10000, 6: 10000};
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
         function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
-        async function startTeaching() { console.log('开始讲解'); }
-        async function startAutoPlay() { console.log('自动播放'); }
+
+        async function startTeaching() {
+            try {
+                await waitForSDK(); updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
+        }
+
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放'; btn.style.background = '';
+            }
+        }
+
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
         let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
         document.addEventListener('DOMContentLoaded', () => { switchToPage(1); });
-    </script>
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
+  </script>
 </body>
 </html>
-

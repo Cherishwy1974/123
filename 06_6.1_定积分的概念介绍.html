@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>06_6.1_定积分的概念介绍</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>06_6.1_定积分的概念介绍</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
@@ -36,459 +37,496 @@
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
         .recording-mode .control-bar { left: -300px; transition: left 0.5s ease; }
+    
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
     </style>
-    <script>
+<script>
         window.MathJax = {
             tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
             startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
             options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 5 页</div>
-
-        <!-- 第1页：引入问题 - 如何计算曲线下的面积 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">一个古老的问题</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">如何计算曲线下的面积？</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">古希腊：阿基米德的穷竭法</li>
-                        <li class="chalk-text">17世纪：牛顿&莱布尼茨</li>
-                        <li class="chalk-text">发现了微积分基本定理</li>
-                    </ul>
-                    <div class="formula-box">
-                        <p class="chalk-text small-text">这个发现改变了整个数学世界</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标轴 -->
-                        <defs>
-                            <filter id="glow">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <line x1="100" y1="500" x2="600" y2="500" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="100" y1="500" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
-                        <polygon points="600,500 590,495 590,505" fill="#FFE066"/>
-                        <polygon points="100,100 95,110 105,110" fill="#FFE066"/>
-
-                        <!-- 曲线 -->
-                        <path id="mainCurve" d="M 100 400 Q 250 200, 400 300 T 600 150" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)">
-                            <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
-                        </path>
-
-                        <!-- 面积渐变填充 -->
-                        <defs>
-                            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.7"/>
-                                <stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.2"/>
-                            </linearGradient>
-                        </defs>
-
-                        <path d="M 200 500 L 200 350 Q 300 250, 400 300 T 500 200 L 500 500 Z" fill="url(#areaGradient)" opacity="0">
-                            <animate attributeName="opacity" values="0;0;0.8;0.8;0" dur="5s" repeatCount="indefinite"/>
-                        </path>
-
-                        <!-- 问号动画 -->
-                        <text x="350" y="380" fill="#FFE066" font-size="60" text-anchor="middle" opacity="0" filter="url(#glow)">
-                            ?
-                            <animate attributeName="opacity" values="0;1;1;0" dur="5s" repeatCount="indefinite"/>
-                            <animate attributeName="font-size" values="55;65;55" dur="5s" repeatCount="indefinite"/>
-                        </text>
-
-                        <!-- 标签 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="24" text-anchor="middle" font-weight="bold">如何求这个面积？</text>
-                        <text x="200" y="530" fill="#FFE066" font-size="18">a</text>
-                        <text x="500" y="530" fill="#FFE066" font-size="18">b</text>
-                        <text x="610" y="505" fill="#FFE066" font-size="16">x</text>
-                        <text x="95" y="90" fill="#FFE066" font-size="16">y</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第2页：积分的想法 - 切成小块然后加起来 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">积分的想法</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">切成小块，然后加起来</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\int_a^b f(x) \, dx$$</p>
-                    </div>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">∫ 是拉长的 S (Sum 求和)</li>
-                        <li class="chalk-text">dx 是极小的宽度</li>
-                        <li class="chalk-text">f(x) 是每块的高度</li>
-                        <li class="chalk-text">积分 = 无限多小块的和</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标轴 -->
-                        <line x1="100" y1="480" x2="600" y2="480" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="100" y1="480" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
-
-                        <!-- 曲线 -->
-                        <path d="M 100 380 Q 250 180, 400 280 T 600 130" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
-
-                        <!-- 矩形分割动画 - 4个矩形 -->
-                        <defs>
-                            <linearGradient id="rectGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.6"/>
-                                <stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.3"/>
-                            </linearGradient>
-                        </defs>
-                        <g id="rect4">
-                            <rect x="150" y="330" width="100" height="150" fill="url(#rectGrad)" stroke="#4ECDC4" stroke-width="2" rx="3">
-                                <animate attributeName="height" values="0;150" dur="0.5s" begin="0s;rect4.end+2s" fill="freeze"/>
-                                <animate attributeName="y" values="480;330" dur="0.5s" begin="0s;rect4.end+2s" fill="freeze"/>
-                                <animate attributeName="opacity" values="0;1" dur="0.3s" begin="0s;rect4.end+2s" fill="freeze"/>
-                            </rect>
-                            <rect x="250" y="230" width="100" height="250" fill="url(#rectGrad)" stroke="#4ECDC4" stroke-width="2" rx="3">
-                                <animate attributeName="height" values="0;250" dur="0.5s" begin="0.5s;rect4.end+2.5s" fill="freeze"/>
-                                <animate attributeName="y" values="480;230" dur="0.5s" begin="0.5s;rect4.end+2.5s" fill="freeze"/>
-                                <animate attributeName="opacity" values="0;1" dur="0.3s" begin="0.5s;rect4.end+2.5s" fill="freeze"/>
-                            </rect>
-                            <rect x="350" y="255" width="100" height="225" fill="url(#rectGrad)" stroke="#4ECDC4" stroke-width="2" rx="3">
-                                <animate attributeName="height" values="0;225" dur="0.5s" begin="1.0s;rect4.end+3.0s" fill="freeze"/>
-                                <animate attributeName="y" values="480;255" dur="0.5s" begin="1.0s;rect4.end+3.0s" fill="freeze"/>
-                                <animate attributeName="opacity" values="0;1" dur="0.3s" begin="1.0s;rect4.end+3.0s" fill="freeze"/>
-                            </rect>
-                            <rect x="450" y="180" width="100" height="300" fill="url(#rectGrad)" stroke="#4ECDC4" stroke-width="2" rx="3">
-                                <animate attributeName="height" values="0;300" dur="0.5s" begin="1.5s;rect4.end+3.5s" id="rect4" fill="freeze"/>
-                                <animate attributeName="y" values="480;180" dur="0.5s" begin="1.5s;rect4.end+3.5s" fill="freeze"/>
-                                <animate attributeName="opacity" values="0;1" dur="0.3s" begin="1.5s;rect4.end+3.5s" fill="freeze"/>
-                            </rect>
-                        </g>
-
-                        <!-- 标签 -->
-                        <text x="350" y="550" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold">切成小矩形求和</text>
-
-                        <!-- dx 标注 -->
-                        <g opacity="0">
-                            <line x1="150" y1="495" x2="250" y2="495" stroke="#FFE066" stroke-width="2"/>
-                            <line x1="150" y1="490" x2="150" y2="500" stroke="#FFE066" stroke-width="2"/>
-                            <line x1="250" y1="490" x2="250" y2="500" stroke="#FFE066" stroke-width="2"/>
-                            <text x="200" y="515" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold">Δx</text>
-                            <animate attributeName="opacity" values="0;1;1;0" dur="5s" repeatCount="indefinite"/>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第3页：分得越细越精确 - 极限思想 -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">分得越细越精确</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">极限的思想</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\lim_{n \to \infty} \sum_{i=1}^{n} f(x_i) \Delta x = \int_a^b f(x)dx$$</p>
-                    </div>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">n = 4：粗略近似</li>
-                        <li class="chalk-text">n = 8：更好一些</li>
-                        <li class="chalk-text">n = 16：相当接近</li>
-                        <li class="chalk-text">n → ∞：完全精确！</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 坐标轴 -->
-                        <line x1="100" y1="450" x2="600" y2="450" stroke="#FFE066" stroke-width="2"/>
-                        <line x1="100" y1="450" x2="100" y2="100" stroke="#FFE066" stroke-width="2"/>
-
-                        <!-- 曲线 -->
-                        <path d="M 100 350 C 200 200, 300 250, 400 200 S 500 250, 600 150" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
-
-                        <!-- 16个细矩形近似 -->
-                        <defs>
-                            <linearGradient id="fineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.5"/>
-                                <stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.2"/>
-                            </linearGradient>
-                        </defs>
-                        <g id="fineRects">
-                            <rect x="120" y="330" width="30" height="120" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0s;fineRects.end+3s" fill="freeze"/>
-                            </rect>
-                            <rect x="150" y="310" width="30" height="140" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.1s;fineRects.end+3.1s" fill="freeze"/>
-                            </rect>
-                            <rect x="180" y="280" width="30" height="170" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.2s;fineRects.end+3.2s" fill="freeze"/>
-                            </rect>
-                            <rect x="210" y="250" width="30" height="200" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.3s;fineRects.end+3.3s" fill="freeze"/>
-                            </rect>
-                            <rect x="240" y="230" width="30" height="220" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.4s;fineRects.end+3.4s" fill="freeze"/>
-                            </rect>
-                            <rect x="270" y="220" width="30" height="230" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.5s;fineRects.end+3.5s" fill="freeze"/>
-                            </rect>
-                            <rect x="300" y="225" width="30" height="225" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.6s;fineRects.end+3.6s" fill="freeze"/>
-                            </rect>
-                            <rect x="330" y="215" width="30" height="235" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.7s;fineRects.end+3.7s" fill="freeze"/>
-                            </rect>
-                            <rect x="360" y="205" width="30" height="245" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.8s;fineRects.end+3.8s" fill="freeze"/>
-                            </rect>
-                            <rect x="390" y="200" width="30" height="250" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="0.9s;fineRects.end+3.9s" fill="freeze"/>
-                            </rect>
-                            <rect x="420" y="210" width="30" height="240" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="1.0s;fineRects.end+4.0s" fill="freeze"/>
-                            </rect>
-                            <rect x="450" y="220" width="30" height="230" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="1.1s;fineRects.end+4.1s" fill="freeze"/>
-                            </rect>
-                            <rect x="480" y="210" width="30" height="240" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="1.2s;fineRects.end+4.2s" fill="freeze"/>
-                            </rect>
-                            <rect x="510" y="190" width="30" height="260" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="1.3s;fineRects.end+4.3s" fill="freeze"/>
-                            </rect>
-                            <rect x="540" y="170" width="30" height="280" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="1.4s;fineRects.end+4.4s" fill="freeze"/>
-                            </rect>
-                            <rect x="570" y="150" width="30" height="300" fill="url(#fineGrad)" stroke="#4ECDC4" stroke-width="1">
-                                <animate attributeName="opacity" values="0;1" dur="0.1s" begin="1.5s;fineRects.end+4.5s" id="fineRects" fill="freeze"/>
-                            </rect>
-                        </g>
-
-                        <!-- 文字说明 -->
-                        <text x="350" y="70" fill="#FFE066" font-size="24" text-anchor="middle" font-weight="bold">n = 16 个矩形</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold">
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 5 页</div>
+<!-- 封面页 -->
+<div class="page active cover-page" data-page="1" id="page1">
+<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        定积分的概念介绍
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第6章 视频 6.1
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 定积分的概念</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 定积分的性质</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 定积分的计算</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的几何意义</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#2ecc71;stop-opacity:0.8"></stop>
+<stop offset="100%" style="stop-color:#27ae60;stop-opacity:0.3"></stop>
+</lineargradient>
+</defs>
+<text fill="#2ecc71" font-family="serif" font-size="70" text-anchor="middle" x="300" y="80">
+                            ∫
+                            <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7"></animate>
+</text>
+<path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320" fill="none" stroke="#3498db" stroke-width="3"></path>
+<path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320 L 450 350 L 150 350 Z" fill="url(#grad1)">
+<animate attributename="opacity" dur="4s" repeatcount="indefinite" values="0;0.7;0.7;0.3"></animate>
+</path>
+<line stroke="#666" stroke-width="2" x1="150" x2="150" y1="150" y2="350"></line>
+<line stroke="#666" stroke-dasharray="5,5" stroke-width="2" x1="450" x2="450" y1="150" y2="350"></line>
+</svg>
+</div>
+</div>
+</div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">积分的想法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">切成小块，然后加起来</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_a^b f(x) \, dx$$</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">∫ 是拉长的 S (Sum 求和)</li>
+<li class="chalk-text">dx 是极小的宽度</li>
+<li class="chalk-text">f(x) 是每块的高度</li>
+<li class="chalk-text">积分 = 无限多小块的和</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标轴 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="480" y2="480"></line>
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="480" y2="100"></line>
+<!-- 曲线 -->
+<path d="M 100 380 Q 250 180, 400 280 T 600 130" fill="none" filter="url(#glow)" stroke="#FF6B6B" stroke-width="4"></path>
+<!-- 矩形分割动画 - 4个矩形 -->
+<defs>
+<lineargradient id="rectGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.6"></stop>
+<stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.3"></stop>
+</lineargradient>
+</defs>
+<g id="rect4">
+<rect fill="url(#rectGrad)" height="150" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="150" y="330">
+<animate attributename="height" begin="0s;rect4.end+2s" dur="0.5s" fill="freeze" values="0;150"></animate>
+<animate attributename="y" begin="0s;rect4.end+2s" dur="0.5s" fill="freeze" values="480;330"></animate>
+<animate attributename="opacity" begin="0s;rect4.end+2s" dur="0.3s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#rectGrad)" height="250" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="250" y="230">
+<animate attributename="height" begin="0.5s;rect4.end+2.5s" dur="0.5s" fill="freeze" values="0;250"></animate>
+<animate attributename="y" begin="0.5s;rect4.end+2.5s" dur="0.5s" fill="freeze" values="480;230"></animate>
+<animate attributename="opacity" begin="0.5s;rect4.end+2.5s" dur="0.3s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#rectGrad)" height="225" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="350" y="255">
+<animate attributename="height" begin="1.0s;rect4.end+3.0s" dur="0.5s" fill="freeze" values="0;225"></animate>
+<animate attributename="y" begin="1.0s;rect4.end+3.0s" dur="0.5s" fill="freeze" values="480;255"></animate>
+<animate attributename="opacity" begin="1.0s;rect4.end+3.0s" dur="0.3s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#rectGrad)" height="300" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="450" y="180">
+<animate attributename="height" begin="1.5s;rect4.end+3.5s" dur="0.5s" fill="freeze" id="rect4" values="0;300"></animate>
+<animate attributename="y" begin="1.5s;rect4.end+3.5s" dur="0.5s" fill="freeze" values="480;180"></animate>
+<animate attributename="opacity" begin="1.5s;rect4.end+3.5s" dur="0.3s" fill="freeze" values="0;1"></animate>
+</rect>
+</g>
+<!-- 标签 -->
+<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="550">切成小矩形求和</text>
+<!-- dx 标注 -->
+<g opacity="0">
+<line stroke="#FFE066" stroke-width="2" x1="150" x2="250" y1="495" y2="495"></line>
+<line stroke="#FFE066" stroke-width="2" x1="150" x2="150" y1="490" y2="500"></line>
+<line stroke="#FFE066" stroke-width="2" x1="250" x2="250" y1="490" y2="500"></line>
+<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="200" y="515">Δx</text>
+<animate attributename="opacity" dur="5s" repeatcount="indefinite" values="0;1;1;0"></animate>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：分得越细越精确 - 极限思想 -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">分得越细越精确</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">极限的思想</p>
+<div class="formula-box">
+<p class="chalk-text">$$\lim_{n \to \infty} \sum_{i=1}^{n} f(x_i) \Delta x = \int_a^b f(x)dx$$</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">n = 4：粗略近似</li>
+<li class="chalk-text">n = 8：更好一些</li>
+<li class="chalk-text">n = 16：相当接近</li>
+<li class="chalk-text">n → ∞：完全精确！</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 坐标轴 -->
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
+<!-- 曲线 -->
+<path d="M 100 350 C 200 200, 300 250, 400 200 S 500 250, 600 150" fill="none" filter="url(#glow)" stroke="#FF6B6B" stroke-width="4"></path>
+<!-- 16个细矩形近似 -->
+<defs>
+<lineargradient id="fineGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.5"></stop>
+<stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.2"></stop>
+</lineargradient>
+</defs>
+<g id="fineRects">
+<rect fill="url(#fineGrad)" height="120" stroke="#4ECDC4" stroke-width="1" width="30" x="120" y="330">
+<animate attributename="opacity" begin="0s;fineRects.end+3s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="140" stroke="#4ECDC4" stroke-width="1" width="30" x="150" y="310">
+<animate attributename="opacity" begin="0.1s;fineRects.end+3.1s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="170" stroke="#4ECDC4" stroke-width="1" width="30" x="180" y="280">
+<animate attributename="opacity" begin="0.2s;fineRects.end+3.2s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="200" stroke="#4ECDC4" stroke-width="1" width="30" x="210" y="250">
+<animate attributename="opacity" begin="0.3s;fineRects.end+3.3s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="220" stroke="#4ECDC4" stroke-width="1" width="30" x="240" y="230">
+<animate attributename="opacity" begin="0.4s;fineRects.end+3.4s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="230" stroke="#4ECDC4" stroke-width="1" width="30" x="270" y="220">
+<animate attributename="opacity" begin="0.5s;fineRects.end+3.5s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="225" stroke="#4ECDC4" stroke-width="1" width="30" x="300" y="225">
+<animate attributename="opacity" begin="0.6s;fineRects.end+3.6s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="235" stroke="#4ECDC4" stroke-width="1" width="30" x="330" y="215">
+<animate attributename="opacity" begin="0.7s;fineRects.end+3.7s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="245" stroke="#4ECDC4" stroke-width="1" width="30" x="360" y="205">
+<animate attributename="opacity" begin="0.8s;fineRects.end+3.8s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="250" stroke="#4ECDC4" stroke-width="1" width="30" x="390" y="200">
+<animate attributename="opacity" begin="0.9s;fineRects.end+3.9s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="240" stroke="#4ECDC4" stroke-width="1" width="30" x="420" y="210">
+<animate attributename="opacity" begin="1.0s;fineRects.end+4.0s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="230" stroke="#4ECDC4" stroke-width="1" width="30" x="450" y="220">
+<animate attributename="opacity" begin="1.1s;fineRects.end+4.1s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="240" stroke="#4ECDC4" stroke-width="1" width="30" x="480" y="210">
+<animate attributename="opacity" begin="1.2s;fineRects.end+4.2s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="260" stroke="#4ECDC4" stroke-width="1" width="30" x="510" y="190">
+<animate attributename="opacity" begin="1.3s;fineRects.end+4.3s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="280" stroke="#4ECDC4" stroke-width="1" width="30" x="540" y="170">
+<animate attributename="opacity" begin="1.4s;fineRects.end+4.4s" dur="0.1s" fill="freeze" values="0;1"></animate>
+</rect>
+<rect fill="url(#fineGrad)" height="300" stroke="#4ECDC4" stroke-width="1" width="30" x="570" y="150">
+<animate attributename="opacity" begin="1.5s;fineRects.end+4.5s" dur="0.1s" fill="freeze" id="fineRects" values="0;1"></animate>
+</rect>
+</g>
+<!-- 文字说明 -->
+<text fill="#FFE066" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="70">n = 16 个矩形</text>
+<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="520">
                             误差越来越小
-                            <animate attributeName="fill-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                        </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第4页：速度与距离的例子 - 实际应用 -->
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">实际例子：开车</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">速度 → 距离</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">速度: v(t) km/h</li>
-                        <li class="chalk-text">时间: t 小时</li>
-                        <li class="chalk-text">距离 = 速度×时间</li>
-                    </ul>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$s = \int_0^t v(\tau) \, d\tau$$</p>
-                    </div>
-                    <p class="chalk-text small-text">积分就是累加所有瞬间的距离</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 道路 -->
-                        <defs>
-                            <linearGradient id="roadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#3d3d3d;stop-opacity:1"/>
-                                <stop offset="50%" style="stop-color:#2d2d2d;stop-opacity:1"/>
-                                <stop offset="100%" style="stop-color:#3d3d3d;stop-opacity:1"/>
-                            </linearGradient>
-                        </defs>
-                        <rect x="50" y="250" width="600" height="100" fill="url(#roadGrad)" rx="5"/>
-                        <line x1="50" y1="300" x2="650" y2="300" stroke="#FFE066" stroke-width="3" stroke-dasharray="20,10" opacity="0.8">
-                            <animate attributeName="stroke-dashoffset" values="0;-30" dur="1s" repeatCount="indefinite"/>
-                        </line>
-
-                        <!-- 汽车 -->
-                        <g id="car">
-                            <rect x="0" y="270" width="80" height="40" fill="#FF6B6B" rx="8" filter="url(#glow)"/>
-                            <rect x="10" y="260" width="50" height="25" fill="#FF6B6B" rx="5"/>
-                            <circle cx="20" cy="315" r="8" fill="#333">
-                                <animateTransform attributeName="transform" type="rotate" values="0 20 315; 360 20 315" dur="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <circle cx="60" cy="315" r="8" fill="#333">
-                                <animateTransform attributeName="transform" type="rotate" values="0 60 315; 360 60 315" dur="2s" repeatCount="indefinite"/>
-                            </circle>
-                            <rect x="55" y="265" width="15" height="15" fill="#87CEEB" opacity="0.7" rx="2"/>
-                            <animateTransform attributeName="transform" type="translate" values="80,0; 550,0; 80,0" dur="8s" repeatCount="indefinite"/>
-                        </g>
-
-                        <!-- 速度计 -->
-                        <g transform="translate(500, 50)">
-                            <circle cx="75" cy="75" r="70" fill="#2d3436" stroke="#FFE066" stroke-width="3" filter="url(#glow)"/>
-                            <text x="75" y="130" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold">km/h</text>
-                            <!-- 刻度 -->
-                            <line x1="75" y1="15" x2="75" y2="25" stroke="#ffffff" stroke-width="2"/>
-                            <line x1="135" y1="75" x2="125" y2="75" stroke="#ffffff" stroke-width="2"/>
-                            <line x1="75" y1="135" x2="75" y2="125" stroke="#ffffff" stroke-width="2"/>
-                            <line x1="15" y1="75" x2="25" y2="75" stroke="#ffffff" stroke-width="2"/>
-                            <!-- 指针 -->
-                            <line x1="75" y1="75" x2="75" y2="25" stroke="#FF6B6B" stroke-width="4" stroke-linecap="round" filter="url(#glow)">
-                                <animateTransform attributeName="transform" type="rotate" values="0 75 75; 60 75 75; 120 75 75; 30 75 75; 0 75 75" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <circle cx="75" cy="75" r="5" fill="#FF6B6B"/>
-                        </g>
-
-                        <!-- 速度-时间图 -->
-                        <g transform="translate(50, 380)">
-                            <line x1="0" y1="150" x2="300" y2="150" stroke="#FFE066" stroke-width="2"/>
-                            <line x1="0" y1="150" x2="0" y2="0" stroke="#FFE066" stroke-width="2"/>
-                            <polygon points="300,150 290,145 290,155" fill="#FFE066"/>
-                            <polygon points="0,0 -5,10 5,10" fill="#FFE066"/>
-
-                            <!-- 速度曲线 -->
-                            <polyline points="0,100 50,80 100,40 150,70 200,90 250,110 300,100" stroke="#4ECDC4" stroke-width="3" fill="none" filter="url(#glow)">
-                                <animate attributeName="stroke-dasharray" values="0,1000; 1000,0" dur="3s" fill="freeze"/>
-                                <animate attributeName="stroke-dashoffset" values="1000;0" dur="3s" fill="freeze"/>
-                            </polyline>
-
-                            <!-- 面积填充 -->
-                            <path d="M 0 150 L 0 100 L 50 80 L 100 40 L 150 70 L 200 90 L 250 110 L 300 100 L 300 150 Z" fill="rgba(78,205,196,0.4)">
-                                <animate attributeName="fill-opacity" values="0;0.4;0.4;0" dur="8s" repeatCount="indefinite"/>
-                            </path>
-
-                            <text x="150" y="170" fill="#FFE066" font-size="16" text-anchor="middle" font-weight="bold">时间 t</text>
-                            <text x="-20" y="75" fill="#FFE066" font-size="16" font-weight="bold">v(t)</text>
-                            <text x="150" y="75" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">面积 = 距离</text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第5页：改变世界 - 微积分的应用 -->
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">改变世界</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">微积分的应用</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">物理学：运动定律</li>
-                        <li class="chalk-text">工程学：建筑设计</li>
-                        <li class="chalk-text">经济学：最优化</li>
-                        <li class="chalk-text">人工智能：深度学习</li>
-                    </ul>
-                    <div class="formula-box">
-                        <p class="chalk-text small-text">现代科技的数学基础！</p>
-                    </div>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 中心：微积分 -->
-                        <circle cx="350" cy="300" r="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow)">
-                            <animate attributeName="r" values="60;70;60" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="310" fill="#FFE066" font-size="22" text-anchor="middle" font-weight="bold">微积分</text>
-
-                        <!-- 应用领域 - 物理 -->
-                        <g transform="translate(200, 150)">
-                            <circle cx="0" cy="0" r="50" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3">
-                                <animate attributeName="r" values="50;55;50" dur="2s" begin="0s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="0" y="5" fill="#4ECDC4" font-size="18" text-anchor="middle" font-weight="bold">物理</text>
-                            <text x="0" y="-60" fill="#ffffff" font-size="14" text-anchor="middle">F=ma</text>
-                            <!-- 连接线 -->
-                            <line x1="40" y1="40" x2="290" y2="240" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5" opacity="0.5">
-                                <animate attributeName="stroke-dashoffset" values="10;0" dur="1s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-
-                        <!-- 工程 -->
-                        <g transform="translate(500, 150)">
-                            <circle cx="0" cy="0" r="50" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3">
-                                <animate attributeName="r" values="50;55;50" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="0" y="5" fill="#FF6B6B" font-size="18" text-anchor="middle" font-weight="bold">工程</text>
-                            <!-- 桥梁图标 -->
-                            <path d="M -30 -20 Q 0 -35, 30 -20" stroke="#ffffff" stroke-width="2" fill="none"/>
-                            <line x1="-30" y1="-20" x2="-30" y2="-10" stroke="#ffffff" stroke-width="2"/>
-                            <line x1="30" y1="-20" x2="30" y2="-10" stroke="#ffffff" stroke-width="2"/>
-                            <!-- 连接线 -->
-                            <line x1="-40" y1="40" x2="-110" y2="240" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5" opacity="0.5">
-                                <animate attributeName="stroke-dashoffset" values="10;0" dur="1s" begin="0.25s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-
-                        <!-- 经济 -->
-                        <g transform="translate(200, 450)">
-                            <circle cx="0" cy="0" r="50" fill="rgba(155,89,182,0.3)" stroke="#9B59B6" stroke-width="3">
-                                <animate attributeName="r" values="50;55;50" dur="2s" begin="1s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="0" y="5" fill="#9B59B6" font-size="18" text-anchor="middle" font-weight="bold">经济</text>
-                            <!-- 增长曲线 -->
-                            <polyline points="-20,20 -10,10 0,15 10,5 20,-5" stroke="#ffffff" stroke-width="2" fill="none"/>
-                            <!-- 连接线 -->
-                            <line x1="40" y1="-40" x2="290" y2="-90" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5" opacity="0.5">
-                                <animate attributeName="stroke-dashoffset" values="10;0" dur="1s" begin="0.5s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-
-                        <!-- AI -->
-                        <g transform="translate(500, 450)">
-                            <circle cx="0" cy="0" r="50" fill="rgba(52,152,219,0.3)" stroke="#3498DB" stroke-width="3">
-                                <animate attributeName="r" values="50;55;50" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-                            </circle>
-                            <text x="0" y="5" fill="#3498DB" font-size="18" text-anchor="middle" font-weight="bold">AI</text>
-                            <!-- 神经网络图标 -->
-                            <circle cx="-15" cy="-15" r="3" fill="#ffffff"/>
-                            <circle cx="0" cy="-15" r="3" fill="#ffffff"/>
-                            <circle cx="15" cy="-15" r="3" fill="#ffffff"/>
-                            <circle cx="0" cy="15" r="3" fill="#ffffff"/>
-                            <line x1="-15" y1="-15" x2="0" y2="15" stroke="#ffffff" stroke-width="1"/>
-                            <line x1="0" y1="-15" x2="0" y2="15" stroke="#ffffff" stroke-width="1"/>
-                            <line x1="15" y1="-15" x2="0" y2="15" stroke="#ffffff" stroke-width="1"/>
-                            <!-- 连接线 -->
-                            <line x1="-40" y1="-40" x2="-110" y2="-90" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5" opacity="0.5">
-                                <animate attributeName="stroke-dashoffset" values="10;0" dur="1s" begin="0.75s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="control-bar">
-        <div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+                            <animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第4页：速度与距离的例子 - 实际应用 -->
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">实际例子：开车</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">速度 → 距离</p>
+<ul class="chalk-list">
+<li class="chalk-text">速度: v(t) km/h</li>
+<li class="chalk-text">时间: t 小时</li>
+<li class="chalk-text">距离 = 速度×时间</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text">$$s = \int_0^t v(\tau) \, d\tau$$</p>
+</div>
+<p class="chalk-text small-text">积分就是累加所有瞬间的距离</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 道路 -->
+<defs>
+<lineargradient id="roadGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#3d3d3d;stop-opacity:1"></stop>
+<stop offset="50%" style="stop-color:#2d2d2d;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#3d3d3d;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<rect fill="url(#roadGrad)" height="100" rx="5" width="600" x="50" y="250"></rect>
+<line opacity="0.8" stroke="#FFE066" stroke-dasharray="20,10" stroke-width="3" x1="50" x2="650" y1="300" y2="300">
+<animate attributename="stroke-dashoffset" dur="1s" repeatcount="indefinite" values="0;-30"></animate>
+</line>
+<!-- 汽车 -->
+<g id="car">
+<rect fill="#FF6B6B" filter="url(#glow)" height="40" rx="8" width="80" x="0" y="270"></rect>
+<rect fill="#FF6B6B" height="25" rx="5" width="50" x="10" y="260"></rect>
+<circle cx="20" cy="315" fill="#333" r="8">
+<animatetransform attributename="transform" dur="2s" repeatcount="indefinite" type="rotate" values="0 20 315; 360 20 315"></animatetransform>
+</circle>
+<circle cx="60" cy="315" fill="#333" r="8">
+<animatetransform attributename="transform" dur="2s" repeatcount="indefinite" type="rotate" values="0 60 315; 360 60 315"></animatetransform>
+</circle>
+<rect fill="#87CEEB" height="15" opacity="0.7" rx="2" width="15" x="55" y="265"></rect>
+<animatetransform attributename="transform" dur="8s" repeatcount="indefinite" type="translate" values="80,0; 550,0; 80,0"></animatetransform>
+</g>
+<!-- 速度计 -->
+<g transform="translate(500, 50)">
+<circle cx="75" cy="75" fill="#2d3436" filter="url(#glow)" r="70" stroke="#FFE066" stroke-width="3"></circle>
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="75" y="130">km/h</text>
+<!-- 刻度 -->
+<line stroke="#ffffff" stroke-width="2" x1="75" x2="75" y1="15" y2="25"></line>
+<line stroke="#ffffff" stroke-width="2" x1="135" x2="125" y1="75" y2="75"></line>
+<line stroke="#ffffff" stroke-width="2" x1="75" x2="75" y1="135" y2="125"></line>
+<line stroke="#ffffff" stroke-width="2" x1="15" x2="25" y1="75" y2="75"></line>
+<!-- 指针 -->
+<line filter="url(#glow)" stroke="#FF6B6B" stroke-linecap="round" stroke-width="4" x1="75" x2="75" y1="75" y2="25">
+<animatetransform attributename="transform" dur="8s" repeatcount="indefinite" type="rotate" values="0 75 75; 60 75 75; 120 75 75; 30 75 75; 0 75 75"></animatetransform>
+</line>
+<circle cx="75" cy="75" fill="#FF6B6B" r="5"></circle>
+</g>
+<!-- 速度-时间图 -->
+<g transform="translate(50, 380)">
+<line stroke="#FFE066" stroke-width="2" x1="0" x2="300" y1="150" y2="150"></line>
+<line stroke="#FFE066" stroke-width="2" x1="0" x2="0" y1="150" y2="0"></line>
+<polygon fill="#FFE066" points="300,150 290,145 290,155"></polygon>
+<polygon fill="#FFE066" points="0,0 -5,10 5,10"></polygon>
+<!-- 速度曲线 -->
+<polyline fill="none" filter="url(#glow)" points="0,100 50,80 100,40 150,70 200,90 250,110 300,100" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="stroke-dasharray" dur="3s" fill="freeze" values="0,1000; 1000,0"></animate>
+<animate attributename="stroke-dashoffset" dur="3s" fill="freeze" values="1000;0"></animate>
+</polyline>
+<!-- 面积填充 -->
+<path d="M 0 150 L 0 100 L 50 80 L 100 40 L 150 70 L 200 90 L 250 110 L 300 100 L 300 150 Z" fill="rgba(78,205,196,0.4)">
+<animate attributename="fill-opacity" dur="8s" repeatcount="indefinite" values="0;0.4;0.4;0"></animate>
+</path>
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="150" y="170">时间 t</text>
+<text fill="#FFE066" font-size="16" font-weight="bold" x="-20" y="75">v(t)</text>
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="150" y="75">面积 = 距离</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：改变世界 - 微积分的应用 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">改变世界</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">微积分的应用</p>
+<ul class="chalk-list">
+<li class="chalk-text">物理学：运动定律</li>
+<li class="chalk-text">工程学：建筑设计</li>
+<li class="chalk-text">经济学：最优化</li>
+<li class="chalk-text">人工智能：深度学习</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text small-text">现代科技的数学基础！</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 中心：微积分 -->
+<circle cx="350" cy="300" fill="rgba(255,224,102,0.3)" filter="url(#glow)" r="60" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="60;70;60"></animate>
+</circle>
+<text fill="#FFE066" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="310">微积分</text>
+<!-- 应用领域 - 物理 -->
+<g transform="translate(200, 150)">
+<circle cx="0" cy="0" fill="rgba(78,205,196,0.3)" r="50" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="r" begin="0s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">物理</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="0" y="-60">F=ma</text>
+<!-- 连接线 -->
+<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="40" x2="290" y1="40" y2="240">
+<animate attributename="stroke-dashoffset" dur="1s" repeatcount="indefinite" values="10;0"></animate>
+</line>
+</g>
+<!-- 工程 -->
+<g transform="translate(500, 150)">
+<circle cx="0" cy="0" fill="rgba(255,107,107,0.3)" r="50" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
+</circle>
+<text fill="#FF6B6B" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">工程</text>
+<!-- 桥梁图标 -->
+<path d="M -30 -20 Q 0 -35, 30 -20" fill="none" stroke="#ffffff" stroke-width="2"></path>
+<line stroke="#ffffff" stroke-width="2" x1="-30" x2="-30" y1="-20" y2="-10"></line>
+<line stroke="#ffffff" stroke-width="2" x1="30" x2="30" y1="-20" y2="-10"></line>
+<!-- 连接线 -->
+<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="-40" x2="-110" y1="40" y2="240">
+<animate attributename="stroke-dashoffset" begin="0.25s" dur="1s" repeatcount="indefinite" values="10;0"></animate>
+</line>
+</g>
+<!-- 经济 -->
+<g transform="translate(200, 450)">
+<circle cx="0" cy="0" fill="rgba(155,89,182,0.3)" r="50" stroke="#9B59B6" stroke-width="3">
+<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
+</circle>
+<text fill="#9B59B6" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">经济</text>
+<!-- 增长曲线 -->
+<polyline fill="none" points="-20,20 -10,10 0,15 10,5 20,-5" stroke="#ffffff" stroke-width="2"></polyline>
+<!-- 连接线 -->
+<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="40" x2="290" y1="-40" y2="-90">
+<animate attributename="stroke-dashoffset" begin="0.5s" dur="1s" repeatcount="indefinite" values="10;0"></animate>
+</line>
+</g>
+<!-- AI -->
+<g transform="translate(500, 450)">
+<circle cx="0" cy="0" fill="rgba(52,152,219,0.3)" r="50" stroke="#3498DB" stroke-width="3">
+<animate attributename="r" begin="1.5s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
+</circle>
+<text fill="#3498DB" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">AI</text>
+<!-- 神经网络图标 -->
+<circle cx="-15" cy="-15" fill="#ffffff" r="3"></circle>
+<circle cx="0" cy="-15" fill="#ffffff" r="3"></circle>
+<circle cx="15" cy="-15" fill="#ffffff" r="3"></circle>
+<circle cx="0" cy="15" fill="#ffffff" r="3"></circle>
+<line stroke="#ffffff" stroke-width="1" x1="-15" x2="0" y1="-15" y2="15"></line>
+<line stroke="#ffffff" stroke-width="1" x1="0" x2="0" y1="-15" y2="15"></line>
+<line stroke="#ffffff" stroke-width="1" x1="15" x2="0" y1="-15" y2="15"></line>
+<!-- 连接线 -->
+<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="-40" x2="-110" y1="-40" y2="-90">
+<animate attributename="stroke-dashoffset" begin="0.75s" dur="1s" repeatcount="indefinite" values="10;0"></animate>
+</line>
+</g>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="control-bar">
+<div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
             第 <span id="currentPageControl">1</span> 页 / 共 5 页
         </div>
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
-    <div class="subtitle-area" id="subtitleArea">欢迎学习定积分！</div>
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<div class="subtitle-area" id="subtitleArea">欢迎学习定积分！</div>
 
-    <script>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+
+        window.AvatarPlatform = AvatarPlatform;
+        window.SDKEvents = SDKEvents;
+        window.PlayerEvents = PlayerEvents;
+        window.RecorderEvents = RecorderEvents;
+        window.UserMedia = UserMedia;
+
+        console.log('✅ 讯飞官方SDK模块已加载');
+        console.log('SDK版本:', AvatarPlatform.getVersion());
+
+    } catch (error) {
+        console.error('❌ SDK模块加载失败:', error);
+    }
+
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
+
+<script>
+        // === 虚拟人相关配置 ===
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+
         let currentPage = 1;
         const totalPages = 5;
+
+        // === 字幕脚本设置 ===
+        const subtitleScript = {
+            1: `欢迎来到定积分的学习。定积分是微积分中的核心概念之一，它将无限细分与求和的思想完美结合，为我们解决实际问题提供了强大的工具。今天我们将从直观的角度理解定积分的本质。`,
+            2: `定积分的核心思想非常简单：切成小块，然后加起来。积分符号∫实际上是拉长的字母S，代表求和Sum。dx表示极小的宽度，f(x)是每一小块的高度。当我们把无限多个小块加起来，就得到了定积分。`,
+            3: `分得越细，近似就越精确。这就是极限的思想。当我们把区间分成4个小矩形时，只是粗略近似；分成8个会更好一些；分成16个就相当接近了。当分割数趋向无穷时，我们就得到了完全精确的结果。`,
+            4: `让我们看一个实际例子：开车的距离问题。如果速度是变化的，怎么计算总距离呢？答案就是对速度函数求积分。每一小段时间内的距离等于速度乘以时间，把所有瞬间的距离累加起来，就得到了总距离。速度-时间图像下的面积，就是行驶的距离。`,
+            5: `微积分改变了世界。从物理学的运动定律，到工程学的建筑设计，从经济学的最优化问题，到人工智能的深度学习，微积分都是现代科技的数学基础。掌握定积分，你就掌握了理解世界的一把钥匙。`
+        };
+
+        // 虚拟人相关函数
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') {
+                    indicator.classList.add('connected');
+                } else if (type === 'error') {
+                    indicator.classList.add('error');
+                } else if (type === 'connecting') {
+                    indicator.classList.add('connecting');
+                } else if (type === 'recording') {
+                    indicator.classList.add('recording');
+                }
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+            }
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                }, 10000);
+
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -516,12 +554,217 @@
             if (currentPage > 1) switchToPage(currentPage - 1);
         }
 
-        function startTeaching() {
-            console.log('开始讲解');
+        async function startTeaching() {
+            try {
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
+
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({
+                    useInlinePlayer: true
+                });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+
+                        setTimeout(() => {
+                            speakContent(currentPage);
+                        }, 1000);
+                    })
+                    .on('disconnected', (err) => {
+                        console.log('🔌 虚拟人连接断开');
+                        isConnected = false;
+                        updateStatus('连接断开', 'error');
+                        if (err) {
+                            console.error('❌ 连接异常断开:', err);
+                        }
+                    })
+                    .on('error', (error) => {
+                        console.error('❌ 虚拟人错误:', error);
+                        updateStatus('错误: ' + error.message, 'error');
+                        isTeaching = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成');
+                    })
+                    .on('tts_duration', (data) => {
+                        console.log('📊 TTS时长信息:', data);
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                await avatarPlatform.start({
+                    wrapper: document.getElementById('avatarWrapper')
+                });
+
+                console.log('🎓 虚拟人教学系统启动完成');
+
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                alert(`启动失败：${error.message}\n\n请检查控制台获取详细错误信息。`);
+            }
         }
 
-        function startAutoPlay() {
-            console.log('自动播放');
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                return;
+            }
+
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+
+            try {
+                await avatarPlatform.writeText(content, {
+                    nlp: false
+                });
+
+                console.log(`✅ 虚拟人讲解第${pageNum}页`);
+                updateSubtitle(content);
+            } catch (error) {
+                console.error('❌ 虚拟人讲解失败:', error);
+            }
+        }
+
+        function getPageTitle(pageNum) {
+            const titles = {
+                1: "定积分的概念介绍",
+                2: "积分的想法",
+                3: "分得越细越精确",
+                4: "定积分的定义",
+                5: "总结"
+            };
+            return titles[pageNum] || `第${pageNum}页`;
+        }
+
+        function getPageDuration(pageNum) {
+            const durations = {
+                1: 20000, 2: 18000, 3: 20000, 4: 22000, 5: 15000
+            };
+            return durations[pageNum] || 15000;
+        }
+
+        async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                console.log(`⏰ 倒计时: 1秒`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                console.log('🚀 自动播放正式开始！');
+                document.body.classList.add('recording-mode');
+
+                console.log(`🚀 开始逐页播放，总共${totalPages}页`);
+                for (let page = 1; page <= totalPages; page++) {
+                    try {
+                        if (!isAutoPlaying) {
+                            console.log('🛑 自动播放被停止');
+                            break;
+                        }
+
+                        console.log(`\n🎬 === 开始播放第${page}页/${totalPages}页 ===`);
+                        switchToPage(page);
+                        console.log(`📄 已切换到第${page}页: ${getPageTitle(page)}`);
+
+                        console.log(`⏳ 等待页面渲染 0.8秒...`);
+                        await new Promise(resolve => setTimeout(resolve, 800));
+
+                        const pageTime = getPageDuration(page);
+                        console.log(`⏰ 等待阅读时间 ${pageTime/1000}秒...`);
+                        await new Promise(resolve => setTimeout(resolve, pageTime));
+
+                        if (page === totalPages) {
+                            console.log(`⏳ 最后一页，停顿2秒...`);
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                        }
+
+                        console.log(`✅ 第${page}页播放完成\n`);
+
+                    } catch (error) {
+                        console.error(`❌ 第${page}页播放过程出错:`, error);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
+                }
+
+                console.log('🎉 所有页面播放完成！');
+
+                if (isAutoPlaying) {
+                    console.log('⏰ 等待3秒后结束录制...');
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.body.classList.remove('recording-mode');
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
+                console.log('⏹️ 自动播放已停止');
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -548,6 +791,16 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            }
+
+            if (avatarPlatform && isConnected) {
+                avatarPlatform.stop();
+            }
         });
     </script>
 </body>

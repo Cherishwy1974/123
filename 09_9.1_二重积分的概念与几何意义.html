@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第09章 二重积分的概念与几何意义</title>
-    <link rel="stylesheet" href="./noto-serif-sc.css">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第09章 二重积分的概念与几何意义</title>
+<link href="./noto-serif-sc.css" rel="stylesheet"/>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -277,9 +277,19 @@
             left: -300px;
             transition: left 0.5s ease;
         }
-    </style>
     
-    <script>
+        /* 封面页样式覆盖 */
+        .page.cover-page {
+            display: flex !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .page.cover-page > div {
+            display: flex !important;
+        }
+    </style>
+<script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\(', '\)']],
@@ -294,454 +304,426 @@
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="blackboard">
-        <div id="statusIndicator" class="status-indicator">等待连接</div>
-        <div class="avatar-container">
-            <div class="wrapper" id="avatarWrapper"></div>
-        </div>
-        <div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
-        
-        <!-- 第1页：二重积分的引入 -->
-        <div class="page active" id="page1">
-            <div class="left-panel">
-                <h1 class="title chalk-text">二重积分的引入</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">从一重积分到二重积分</p>
-                    <p class="chalk-text">一重积分：求曲边梯形的面积</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\int_a^b f(x)dx$$</p>
-                    </div>
-                    <p class="chalk-text">二重积分：求曲顶柱体的体积</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\iint_D f(x,y)dxdy$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">实际问题</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">计算不规则物体的体积</li>
-                        <li class="chalk-text">计算平面薄板的质量</li>
-                        <li class="chalk-text">计算区域的面积</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 滤镜定义 -->
-                        <defs>
-                            <filter id="glow09_1">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <!-- 3D坐标系 - 添加发光效果 -->
-                        <line x1="350" y1="400" x2="150" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow09_1)"/>
-                        <line x1="350" y1="400" x2="550" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow09_1)"/>
-                        <line x1="350" y1="400" x2="350" y2="150" stroke="#FFE066" stroke-width="2" filter="url(#glow09_1)"/>
-                        <text x="130" y="510" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow09_1)">x</text>
-                        <text x="570" y="510" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow09_1)">y</text>
-                        <text x="360" y="140" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow09_1)">z</text>
-
-                        <!-- 底面区域D - 添加发光效果 -->
-                        <ellipse cx="350" cy="420" rx="120" ry="40" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_1)">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
-                        </ellipse>
-                        <text x="350" y="430" fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow09_1)">D</text>
-
-                        <!-- 曲面 - 添加发光效果 -->
-                        <path d="M 230 350 Q 350 280, 470 350" fill="rgba(255,107,107,0.4)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_1)">
-                            <animate attributeName="fill-opacity" values="0.4;0.6;0.4" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <text x="350" y="300" fill="#FF6B6B" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow09_1)">z=f(x,y)</text>
-
-                        <!-- 侧面 - 添加发光效果 -->
-                        <path d="M 230 420 L 230 350 Q 350 280, 470 350 L 470 420" fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" filter="url(#glow09_1)"/>
-
-                        <!-- 标注 - 添加粗体和发光 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_1)">曲顶柱体</text>
-                        <text x="350" y="520" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow09_1)">
-                            二重积分求体积
-                        </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第2页：二重积分的定义 -->
-        <div class="page" id="page2">
-            <div class="left-panel">
-                <h1 class="title chalk-text">二重积分的定义</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">定义步骤</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text"><strong>分割：</strong>将区域D分成n个小区域</li>
-                        <li class="chalk-text"><strong>近似：</strong>每个小区域用小柱体近似</li>
-                        <li class="chalk-text"><strong>求和：</strong>所有小柱体体积相加</li>
-                        <li class="chalk-text"><strong>取极限：</strong>分割越来越细</li>
-                    </ul>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\iint_D f(x,y)dxdy = \lim_{n \to \infty} \sum_{i=1}^n f(\xi_i, \eta_i)\Delta\sigma_i$$</p>
-                    </div>
-                    <p class="chalk-text small-text">$\Delta\sigma_i$ 是第i个小区域的面积</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 滤镜定义 -->
-                        <defs>
-                            <filter id="glow09_2">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <!-- 区域分割 - 添加发光效果 -->
-                        <ellipse cx="350" cy="300" rx="150" ry="100" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_2)"/>
-
-                        <!-- 网格分割 - 添加发光效果 -->
-                        <line x1="200" y1="200" x2="200" y2="400" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="275" y1="200" x2="275" y2="400" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="350" y1="200" x2="350" y2="400" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="425" y1="200" x2="425" y2="400" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="500" y1="200" x2="500" y2="400" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-
-                        <line x1="200" y1="220" x2="500" y2="220" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="200" y1="270" x2="500" y2="270" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="200" y1="320" x2="500" y2="320" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-                        <line x1="200" y1="370" x2="500" y2="370" stroke="#FFE066" stroke-width="1" opacity="0.5" filter="url(#glow09_2)"/>
-
-                        <!-- 高亮一个小区域 - 添加圆角和发光 -->
-                        <rect x="275" y="270" width="75" height="50" rx="3" fill="rgba(255,107,107,0.5)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_2)">
-                            <animate attributeName="fill-opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="312" y="300" fill="#FF6B6B" font-size="14" font-weight="bold" text-anchor="middle" filter="url(#glow09_2)">Δσᵢ</text>
-
-                        <!-- 标注 - 添加粗体和发光 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_2)">分割区域D</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow09_2)">
+<div class="blackboard">
+<div class="status-indicator" id="statusIndicator">等待连接</div>
+<div class="avatar-container">
+<div class="wrapper" id="avatarWrapper"></div>
+</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<!-- 第1页：二重积分的引入 -->
+<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<div style="flex: 1; text-align: center; padding: 2rem;">
+<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
+                        二重积分的概念与几何意义
+                    </h1>
+<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                        第9章 视频 9.1
+                    </p>
+<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的概念</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的性质</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分计算方法</p>
+<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的应用</p>
+</div>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
+<defs>
+<lineargradient id="grad9" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#16a085;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#1abc9c;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<text fill="url(#grad9)" font-family="serif" font-size="60" text-anchor="middle" x="300" y="80">
+                            ∬
+                            <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</text>
+<rect fill="url(#grad9)" height="150" opacity="0.3" width="300" x="150" y="200">
+<animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0.2;0.5;0.2"></animate>
+</rect>
+<path d="M 150 200 L 450 200 L 450 350 L 150 350 Z" fill="none" stroke="#16a085" stroke-width="3"></path>
+</svg>
+</div>
+</div></div>
+<div class="page" id="page2">
+<div class="left-panel">
+<h1 class="title chalk-text">二重积分的定义</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义步骤</p>
+<ul class="chalk-list">
+<li class="chalk-text"><strong>分割：</strong>将区域D分成n个小区域</li>
+<li class="chalk-text"><strong>近似：</strong>每个小区域用小柱体近似</li>
+<li class="chalk-text"><strong>求和：</strong>所有小柱体体积相加</li>
+<li class="chalk-text"><strong>取极限：</strong>分割越来越细</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_D f(x,y)dxdy = \lim_{n \to \infty} \sum_{i=1}^n f(\xi_i, \eta_i)\Delta\sigma_i$$</p>
+</div>
+<p class="chalk-text small-text">$\Delta\sigma_i$ 是第i个小区域的面积</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 滤镜定义 -->
+<defs>
+<filter id="glow09_2">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 区域分割 - 添加发光效果 -->
+<ellipse cx="350" cy="300" fill="rgba(78,205,196,0.2)" filter="url(#glow09_2)" rx="150" ry="100" stroke="#4ECDC4" stroke-width="3"></ellipse>
+<!-- 网格分割 - 添加发光效果 -->
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="200" x2="200" y1="200" y2="400"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="275" x2="275" y1="200" y2="400"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="350" x2="350" y1="200" y2="400"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="425" x2="425" y1="200" y2="400"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="500" x2="500" y1="200" y2="400"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="200" x2="500" y1="220" y2="220"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="200" x2="500" y1="270" y2="270"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="200" x2="500" y1="320" y2="320"></line>
+<line filter="url(#glow09_2)" opacity="0.5" stroke="#FFE066" stroke-width="1" x1="200" x2="500" y1="370" y2="370"></line>
+<!-- 高亮一个小区域 - 添加圆角和发光 -->
+<rect fill="rgba(255,107,107,0.5)" filter="url(#glow09_2)" height="50" rx="3" stroke="#FF6B6B" stroke-width="3" width="75" x="275" y="270">
+<animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.5;0.8;0.5"></animate>
+</rect>
+<text fill="#FF6B6B" filter="url(#glow09_2)" font-size="14" font-weight="bold" text-anchor="middle" x="312" y="300">Δσᵢ</text>
+<!-- 标注 - 添加粗体和发光 -->
+<text fill="#ffffff" filter="url(#glow09_2)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="50">分割区域D</text>
+<text fill="#4ECDC4" filter="url(#glow09_2)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="520">
                             分割→近似→求和→取极限
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第3页：几何意义 -->
-        <div class="page" id="page3">
-            <div class="left-panel">
-                <h1 class="title chalk-text">二重积分的几何意义</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">当 $f(x,y) \geq 0$ 时</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\iint_D f(x,y)dxdy = 曲顶柱体的体积$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">特殊情况</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">$f(x,y) = 1$：区域D的面积</li>
-                        <li class="chalk-text">$f(x,y) = \rho(x,y)$：薄板的质量</li>
-                        <li class="chalk-text">$f(x,y) < 0$：体积取负值</li>
-                    </ul>
-                    <p class="chalk-text small-text">二重积分是一重积分在二维的推广</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 滤镜和渐变定义 -->
-                        <defs>
-                            <filter id="glow09_3">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                            <linearGradient id="surfaceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:0.8"/>
-                                <stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0.3"/>
-                            </linearGradient>
-                        </defs>
-
-                        <!-- 底面 - 添加发光效果 -->
-                        <ellipse cx="350" cy="420" rx="130" ry="50" fill="rgba(78,205,196,0.4)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_3)"/>
-
-                        <!-- 侧面 - 添加发光效果 -->
-                        <path d="M 220 420 L 220 320 Q 350 250, 480 320 L 480 420" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2" filter="url(#glow09_3)"/>
-
-                        <!-- 顶面（曲面） - 添加发光效果 -->
-                        <ellipse cx="350" cy="320" rx="130" ry="50" fill="url(#surfaceGrad)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_3)">
-                            <animate attributeName="ry" values="50;55;50" dur="3s" repeatCount="indefinite"/>
-                        </ellipse>
-
-                        <!-- 高度标注 - 添加发光效果 -->
-                        <line x1="500" y1="420" x2="500" y2="320" stroke="#FFE066" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow09_3)"/>
-                        <text x="510" y="370" fill="#FFE066" font-size="16" font-weight="bold" filter="url(#glow09_3)">h=f(x,y)</text>
-
-                        <!-- 体积标注 - 添加发光效果 -->
-                        <text x="350" y="370" fill="#ffffff" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow09_3)">V</text>
-
-                        <!-- 标注 - 添加粗体和发光 -->
-                        <text x="350" y="50" fill="#FF6B6B" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_3)">体积 = ∬f(x,y)dxdy</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow09_3)">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：几何意义 -->
+<div class="page" id="page3">
+<div class="left-panel">
+<h1 class="title chalk-text">二重积分的几何意义</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">当 $f(x,y) \geq 0$ 时</p>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_D f(x,y)dxdy = 曲顶柱体的体积$$</p>
+</div>
+<p class="chalk-text emphasis">特殊情况</p>
+<ul class="chalk-list">
+<li class="chalk-text">$f(x,y) = 1$：区域D的面积</li>
+<li class="chalk-text">$f(x,y) = \rho(x,y)$：薄板的质量</li>
+<li class="chalk-text">$f(x,y) &lt; 0$：体积取负值</li>
+</ul>
+<p class="chalk-text small-text">二重积分是一重积分在二维的推广</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 滤镜和渐变定义 -->
+<defs>
+<filter id="glow09_3">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<lineargradient id="surfaceGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:0.8"></stop>
+<stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0.3"></stop>
+</lineargradient>
+</defs>
+<!-- 底面 - 添加发光效果 -->
+<ellipse cx="350" cy="420" fill="rgba(78,205,196,0.4)" filter="url(#glow09_3)" rx="130" ry="50" stroke="#4ECDC4" stroke-width="3"></ellipse>
+<!-- 侧面 - 添加发光效果 -->
+<path d="M 220 420 L 220 320 Q 350 250, 480 320 L 480 420" fill="rgba(255,224,102,0.3)" filter="url(#glow09_3)" stroke="#FFE066" stroke-width="2"></path>
+<!-- 顶面（曲面） - 添加发光效果 -->
+<ellipse cx="350" cy="320" fill="url(#surfaceGrad)" filter="url(#glow09_3)" rx="130" ry="50" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="ry" dur="3s" repeatcount="indefinite" values="50;55;50"></animate>
+</ellipse>
+<!-- 高度标注 - 添加发光效果 -->
+<line filter="url(#glow09_3)" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="3" x1="500" x2="500" y1="420" y2="320"></line>
+<text fill="#FFE066" filter="url(#glow09_3)" font-size="16" font-weight="bold" x="510" y="370">h=f(x,y)</text>
+<!-- 体积标注 - 添加发光效果 -->
+<text fill="#ffffff" filter="url(#glow09_3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="370">V</text>
+<!-- 标注 - 添加粗体和发光 -->
+<text fill="#FF6B6B" filter="url(#glow09_3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="50">体积 = ∬f(x,y)dxdy</text>
+<text fill="#4ECDC4" filter="url(#glow09_3)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="520">
                             曲顶柱体的体积
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第4页：二重积分的性质 -->
-        <div class="page" id="page4">
-            <div class="left-panel">
-                <h1 class="title chalk-text">二重积分的性质</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">线性性质</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\iint_D [af(x,y) + bg(x,y)]dxdy$$</p>
-                        <p class="chalk-text">$$= a\iint_D f(x,y)dxdy + b\iint_D g(x,y)dxdy$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">区域可加性</p>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$\iint_{D_1+D_2} f(x,y)dxdy = \iint_{D_1} f(x,y)dxdy + \iint_{D_2} f(x,y)dxdy$$</p>
-                    </div>
-                    <p class="chalk-text emphasis">比较性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">若 $f(x,y) \leq g(x,y)$，则积分值也满足不等式</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 滤镜定义 -->
-                        <defs>
-                            <filter id="glow09_4">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <!-- 区域可加性示意 - 添加发光效果 -->
-                        <circle cx="280" cy="300" r="80" fill="rgba(78,205,196,0.4)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_4)">
-                            <animate attributeName="fill-opacity" values="0.4;0.6;0.4" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="280" y="305" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow09_4)">D₁</text>
-
-                        <circle cx="420" cy="300" r="80" fill="rgba(255,107,107,0.4)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_4)">
-                            <animate attributeName="fill-opacity" values="0.4;0.6;0.4" dur="3s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="420" y="305" fill="#FF6B6B" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow09_4)">D₂</text>
-
-                        <!-- 加号 - 添加发光效果 -->
-                        <text x="350" y="310" fill="#FFE066" font-size="30" text-anchor="middle" font-weight="bold" filter="url(#glow09_4)">+</text>
-
-                        <!-- 等号和结果 - 添加发光效果 -->
-                        <text x="350" y="150" fill="#FFE066" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow09_4)">=</text>
-
-                        <ellipse cx="350" cy="200" rx="140" ry="70" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" filter="url(#glow09_4)">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                        </ellipse>
-                        <text x="350" y="205" fill="#FFE066" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow09_4)">D₁+D₂</text>
-
-                        <!-- 标注 - 添加粗体和发光 -->
-                        <text x="350" y="480" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_4)">区域可加性</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第5页：例题 -->
-        <div class="page" id="page5">
-            <div class="left-panel">
-                <h1 class="title chalk-text">例题：估计积分值</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">题目</p>
-                    <p class="chalk-text">估计 $\iint_D (x^2+y^2)dxdy$ 的值，其中D是单位圆。</p>
-                    <p class="chalk-text emphasis">解答</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">在单位圆内：$0 \leq x^2+y^2 \leq 1$</li>
-                        <li class="chalk-text">区域D的面积：$\pi \cdot 1^2 = \pi$</li>
-                        <li class="chalk-text">由比较性质：</li>
-                    </ul>
-                    <div class="formula-box">
-                        <p class="chalk-text">$$0 \leq \iint_D (x^2+y^2)dxdy \leq \pi$$</p>
-                    </div>
-                    <p class="chalk-text small-text">实际值约为 $\frac{\pi}{2}$</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 滤镜定义 -->
-                        <defs>
-                            <filter id="glow09_5">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <!-- 坐标系 - 添加发光效果 -->
-                        <line x1="100" y1="300" x2="600" y2="300" stroke="#FFE066" stroke-width="2" filter="url(#glow09_5)"/>
-                        <line x1="350" y1="100" x2="350" y2="500" stroke="#FFE066" stroke-width="2" filter="url(#glow09_5)"/>
-
-                        <!-- 单位圆 - 添加发光效果 -->
-                        <circle cx="350" cy="300" r="150" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4" filter="url(#glow09_5)">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="305" fill="#4ECDC4" font-size="20" text-anchor="middle" font-weight="bold" filter="url(#glow09_5)">D</text>
-
-                        <!-- 半径标注 - 添加发光效果 -->
-                        <line x1="350" y1="300" x2="500" y2="300" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_5)"/>
-                        <text x="425" y="290" fill="#FF6B6B" font-size="16" font-weight="bold" filter="url(#glow09_5)">r=1</text>
-
-                        <!-- 函数值示意 - 添加发光效果 -->
-                        <circle cx="350" cy="300" r="5" fill="#FFE066" filter="url(#glow09_5)"/>
-                        <text x="360" y="295" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#glow09_5)">(0,0): f=0</text>
-
-                        <circle cx="500" cy="300" r="5" fill="#FFE066" filter="url(#glow09_5)"/>
-                        <text x="510" y="295" fill="#FFE066" font-size="14" font-weight="bold" filter="url(#glow09_5)">(1,0): f=1</text>
-
-                        <!-- 标注 - 添加粗体和发光 -->
-                        <text x="350" y="50" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_5)">单位圆上的积分</text>
-                        <text x="350" y="520" fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow09_5)">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第4页：二重积分的性质 -->
+<div class="page" id="page4">
+<div class="left-panel">
+<h1 class="title chalk-text">二重积分的性质</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">线性性质</p>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_D [af(x,y) + bg(x,y)]dxdy$$</p>
+<p class="chalk-text">$$= a\iint_D f(x,y)dxdy + b\iint_D g(x,y)dxdy$$</p>
+</div>
+<p class="chalk-text emphasis">区域可加性</p>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_{D_1+D_2} f(x,y)dxdy = \iint_{D_1} f(x,y)dxdy + \iint_{D_2} f(x,y)dxdy$$</p>
+</div>
+<p class="chalk-text emphasis">比较性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">若 $f(x,y) \leq g(x,y)$，则积分值也满足不等式</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 滤镜定义 -->
+<defs>
+<filter id="glow09_4">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 区域可加性示意 - 添加发光效果 -->
+<circle cx="280" cy="300" fill="rgba(78,205,196,0.4)" filter="url(#glow09_4)" r="80" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.4;0.6;0.4"></animate>
+</circle>
+<text fill="#4ECDC4" filter="url(#glow09_4)" font-size="20" font-weight="bold" text-anchor="middle" x="280" y="305">D₁</text>
+<circle cx="420" cy="300" fill="rgba(255,107,107,0.4)" filter="url(#glow09_4)" r="80" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.4;0.6;0.4"></animate>
+</circle>
+<text fill="#FF6B6B" filter="url(#glow09_4)" font-size="20" font-weight="bold" text-anchor="middle" x="420" y="305">D₂</text>
+<!-- 加号 - 添加发光效果 -->
+<text fill="#FFE066" filter="url(#glow09_4)" font-size="30" font-weight="bold" text-anchor="middle" x="350" y="310">+</text>
+<!-- 等号和结果 - 添加发光效果 -->
+<text fill="#FFE066" filter="url(#glow09_4)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="150">=</text>
+<ellipse cx="350" cy="200" fill="rgba(255,224,102,0.3)" filter="url(#glow09_4)" rx="140" ry="70" stroke="#FFE066" stroke-width="3">
+<animate attributename="fill-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</ellipse>
+<text fill="#FFE066" filter="url(#glow09_4)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="205">D₁+D₂</text>
+<!-- 标注 - 添加粗体和发光 -->
+<text fill="#ffffff" filter="url(#glow09_4)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="480">区域可加性</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：例题 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：估计积分值</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">估计 $\iint_D (x^2+y^2)dxdy$ 的值，其中D是单位圆。</p>
+<p class="chalk-text emphasis">解答</p>
+<ul class="chalk-list">
+<li class="chalk-text">在单位圆内：$0 \leq x^2+y^2 \leq 1$</li>
+<li class="chalk-text">区域D的面积：$\pi \cdot 1^2 = \pi$</li>
+<li class="chalk-text">由比较性质：</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text">$$0 \leq \iint_D (x^2+y^2)dxdy \leq \pi$$</p>
+</div>
+<p class="chalk-text small-text">实际值约为 $\frac{\pi}{2}$</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 滤镜定义 -->
+<defs>
+<filter id="glow09_5">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 坐标系 - 添加发光效果 -->
+<line filter="url(#glow09_5)" stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="300" y2="300"></line>
+<line filter="url(#glow09_5)" stroke="#FFE066" stroke-width="2" x1="350" x2="350" y1="100" y2="500"></line>
+<!-- 单位圆 - 添加发光效果 -->
+<circle cx="350" cy="300" fill="rgba(78,205,196,0.3)" filter="url(#glow09_5)" r="150" stroke="#4ECDC4" stroke-width="4">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</circle>
+<text fill="#4ECDC4" filter="url(#glow09_5)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="305">D</text>
+<!-- 半径标注 - 添加发光效果 -->
+<line filter="url(#glow09_5)" stroke="#FF6B6B" stroke-width="3" x1="350" x2="500" y1="300" y2="300"></line>
+<text fill="#FF6B6B" filter="url(#glow09_5)" font-size="16" font-weight="bold" x="425" y="290">r=1</text>
+<!-- 函数值示意 - 添加发光效果 -->
+<circle cx="350" cy="300" fill="#FFE066" filter="url(#glow09_5)" r="5"></circle>
+<text fill="#FFE066" filter="url(#glow09_5)" font-size="14" font-weight="bold" x="360" y="295">(0,0): f=0</text>
+<circle cx="500" cy="300" fill="#FFE066" filter="url(#glow09_5)" r="5"></circle>
+<text fill="#FFE066" filter="url(#glow09_5)" font-size="14" font-weight="bold" x="510" y="295">(1,0): f=1</text>
+<!-- 标注 - 添加粗体和发光 -->
+<text fill="#ffffff" filter="url(#glow09_5)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="50">单位圆上的积分</text>
+<text fill="#4ECDC4" filter="url(#glow09_5)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="520">
                             0 ≤ 积分值 ≤ π
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第6页：总结 -->
-        <div class="page" id="page6">
-            <div class="left-panel">
-                <h1 class="title chalk-text">总结</h1>
-                <div class="board-content">
-                    <p class="chalk-text emphasis">核心概念</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">二重积分是一重积分的推广</li>
-                        <li class="chalk-text">几何意义：曲顶柱体的体积</li>
-                        <li class="chalk-text">定义：分割→近似→求和→取极限</li>
-                    </ul>
-                    <p class="chalk-text emphasis">重要性质</p>
-                    <ul class="chalk-list">
-                        <li class="chalk-text">线性性质</li>
-                        <li class="chalk-text">区域可加性</li>
-                        <li class="chalk-text">比较性质</li>
-                    </ul>
-                    <p class="chalk-text emphasis">下一步</p>
-                    <p class="chalk-text">学习如何计算二重积分</p>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="animation-container">
-                    <svg class="svg-animation" viewBox="0 0 700 600">
-                        <!-- 滤镜定义 -->
-                        <defs>
-                            <filter id="glow09_6">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        <!-- 知识树 - 添加发光效果 -->
-                        <circle cx="350" cy="150" r="70" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="4" filter="url(#glow09_6)">
-                            <animate attributeName="r" values="70;80;70" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="145" fill="#FFE066" font-size="18" text-anchor="middle" font-weight="bold" filter="url(#glow09_6)">二重积分</text>
-                        <text x="350" y="165" fill="#FFE066" font-size="14" font-weight="bold" text-anchor="middle" filter="url(#glow09_6)">概念</text>
-
-                        <!-- 三个分支 - 添加发光效果 -->
-                        <line x1="280" y1="200" x2="200" y2="300" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_6)"/>
-                        <circle cx="200" cy="300" r="55" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_6)">
-                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="200" y="295" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">定义</text>
-                        <text x="200" y="315" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">四步法</text>
-
-                        <line x1="350" y1="220" x2="350" y2="300" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_6)"/>
-                        <circle cx="350" cy="300" r="55" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" filter="url(#glow09_6)">
-                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="350" y="295" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">几何</text>
-                        <text x="350" y="315" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">意义</text>
-
-                        <line x1="420" y1="200" x2="500" y2="300" stroke="#9370DB" stroke-width="3" filter="url(#glow09_6)"/>
-                        <circle cx="500" cy="300" r="55" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3" filter="url(#glow09_6)">
-                            <animate attributeName="fill-opacity" values="0.3;0.6;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="500" y="295" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">性质</text>
-                        <text x="500" y="315" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">三大性质</text>
-
-                        <!-- 下一步 - 添加发光效果 -->
-                        <rect x="250" y="400" width="200" height="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10" filter="url(#glow09_6)">
-                            <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" begin="3s" repeatCount="indefinite"/>
-                        </rect>
-                        <text x="350" y="435" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle" filter="url(#glow09_6)">下一步：计算方法</text>
-
-                        <!-- 标注 - 添加粗体和发光 -->
-                        <text x="350" y="520" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle" filter="url(#glow09_6)">
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：总结 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心概念</p>
+<ul class="chalk-list">
+<li class="chalk-text">二重积分是一重积分的推广</li>
+<li class="chalk-text">几何意义：曲顶柱体的体积</li>
+<li class="chalk-text">定义：分割→近似→求和→取极限</li>
+</ul>
+<p class="chalk-text emphasis">重要性质</p>
+<ul class="chalk-list">
+<li class="chalk-text">线性性质</li>
+<li class="chalk-text">区域可加性</li>
+<li class="chalk-text">比较性质</li>
+</ul>
+<p class="chalk-text emphasis">下一步</p>
+<p class="chalk-text">学习如何计算二重积分</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<!-- 滤镜定义 -->
+<defs>
+<filter id="glow09_6">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 知识树 - 添加发光效果 -->
+<circle cx="350" cy="150" fill="rgba(255,224,102,0.3)" filter="url(#glow09_6)" r="70" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="70;80;70"></animate>
+</circle>
+<text fill="#FFE066" filter="url(#glow09_6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="145">二重积分</text>
+<text fill="#FFE066" filter="url(#glow09_6)" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="165">概念</text>
+<!-- 三个分支 - 添加发光效果 -->
+<line filter="url(#glow09_6)" stroke="#4ECDC4" stroke-width="3" x1="280" x2="200" y1="200" y2="300"></line>
+<circle cx="200" cy="300" fill="rgba(78,205,196,0.3)" filter="url(#glow09_6)" r="55" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="295">定义</text>
+<text fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle" x="200" y="315">四步法</text>
+<line filter="url(#glow09_6)" stroke="#FF6B6B" stroke-width="3" x1="350" x2="350" y1="220" y2="300"></line>
+<circle cx="350" cy="300" fill="rgba(255,107,107,0.3)" filter="url(#glow09_6)" r="55" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="fill-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="295">几何</text>
+<text fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle" x="350" y="315">意义</text>
+<line filter="url(#glow09_6)" stroke="#9370DB" stroke-width="3" x1="420" x2="500" y1="200" y2="300"></line>
+<circle cx="500" cy="300" fill="rgba(147,112,219,0.3)" filter="url(#glow09_6)" r="55" stroke="#9370DB" stroke-width="3">
+<animate attributename="fill-opacity" begin="2s" dur="3s" repeatcount="indefinite" values="0.3;0.6;0.3"></animate>
+</circle>
+<text fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle" x="500" y="295">性质</text>
+<text fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle" x="500" y="315">三大性质</text>
+<!-- 下一步 - 添加发光效果 -->
+<rect fill="rgba(255,224,102,0.3)" filter="url(#glow09_6)" height="60" rx="10" stroke="#FFE066" stroke-width="3" width="200" x="250" y="400">
+<animate attributename="fill-opacity" begin="3s" dur="3s" repeatcount="indefinite" values="0.3;0.5;0.3"></animate>
+</rect>
+<text fill="#ffffff" filter="url(#glow09_6)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="435">下一步：计算方法</text>
+<!-- 标注 - 添加粗体和发光 -->
+<text fill="#ffffff" filter="url(#glow09_6)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="520">
                             二重积分知识体系
                         </text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- 控制栏 -->
+<div class="control-bar">
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<!-- 字幕区域 -->
+<div class="subtitle-area" id="subtitleArea"></div>
 
-    <!-- 控制栏 -->
-    <div class="control-bar">
-        <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-        <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-        <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-    </div>
+<!-- 讯飞官方SDK -->
+<script type="module">
+    try {
+        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        window.AvatarPlatform = AvatarPlatform;
+        window.SDKEvents = SDKEvents;
+        window.PlayerEvents = PlayerEvents;
+        window.RecorderEvents = RecorderEvents;
+        window.UserMedia = UserMedia;
+        console.log('✅ 讯飞官方SDK模块已加载');
+    } catch (error) {
+        console.error('❌ SDK模块加载失败:', error);
+    }
+    window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
 
-    <!-- 字幕区域 -->
-    <div class="subtitle-area" id="subtitleArea"></div>
-
-    <script>
+<script>
         let currentPage = 1;
         const totalPages = 6;
         let avatarPlatform = null;
         let isConnected = false;
+        let isTeaching = false;
         let isAutoPlaying = false;
 
-        const pageContents = [
-            "二重积分是一重积分在二维的推广。一重积分求曲边梯形的面积，二重积分求曲顶柱体的体积。它可以用来计算不规则物体的体积、平面薄板的质量等实际问题。",
-            "二重积分的定义分四步：分割区域D成n个小区域，用小柱体近似每个小区域，所有小柱体体积相加，最后当分割越来越细时取极限。",
-            "二重积分的几何意义是曲顶柱体的体积。当f(x,y)大于等于0时，二重积分等于曲顶柱体的体积。特殊地，当f等于1时，积分值就是区域D的面积。",
-            "二重积分有三个重要性质：线性性质、区域可加性和比较性质。区域可加性是指整个区域的积分等于各部分区域积分之和。",
-            "例题：估计单位圆上x平方加y平方的二重积分。在单位圆内，x平方加y平方的值在0到1之间，区域面积是π，所以积分值在0到π之间。",
-            "总结：二重积分的核心是分割、近似、求和、取极限四步法。几何意义是曲顶柱体的体积。掌握了概念和性质后，下一步我们将学习如何计算二重积分。"
-        ];
+        const subtitleScript = {
+            1: `欢迎学习二重积分。二重积分是一重积分在二维的推广。一重积分求曲边梯形的面积，二重积分求曲顶柱体的体积。它可以用来计算不规则物体的体积、平面薄板的质量、重心位置等实际问题。`,
+            2: `二重积分的定义遵循经典的四步法：第一步，分割区域D成n个小区域；第二步，用小柱体近似每个小区域上的体积；第三步，所有小柱体体积相加得到近似值；第四步，当分割越来越细时取极限，得到精确值。`,
+            3: `二重积分的几何意义是曲顶柱体的体积。当被积函数f(x,y)大于等于0时，二重积分等于以区域D为底、以曲面z等于f(x,y)为顶的曲顶柱体的体积。特殊地，当f恒等于1时，积分值就是区域D的面积。`,
+            4: `二重积分有三个重要性质：第一，线性性质，常数可以提出来，和的积分等于积分的和；第二，区域可加性，整个区域的积分等于各部分区域积分之和；第三，比较性质，如果被积函数处处不大于另一个函数，则积分值也不大于。`,
+            5: `例题：估计单位圆上x平方加y平方的二重积分。在单位圆内，x平方加y平方的值在0到1之间。单位圆的面积是π。根据比较性质，积分值在0乘以π到1乘以π之间，即在0到π之间。`,
+            6: `总结一下，二重积分的核心是分割、近似、求和、取极限四步法。几何意义是曲顶柱体的体积。掌握了概念和性质后，下一步我们将学习如何用累次积分法计算二重积分。`
+        };
 
         const autoPlayDurations = {
-            1: 12000,
-            2: 12000,
-            3: 12000,
-            4: 12000,
-            5: 12000,
-            6: 10000
+            1: 18000, 2: 20000, 3: 22000, 4: 22000, 5: 20000, 6: 18000
         };
+
+        function updateStatus(message, type = 'normal') {
+            const indicator = document.getElementById('statusIndicator');
+            if (indicator) {
+                indicator.textContent = message;
+                indicator.className = 'status-indicator';
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
+            }
+        }
+
+        function updateSubtitle(text) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            if (subtitleArea) subtitleArea.textContent = text;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
 
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
@@ -776,11 +758,102 @@
         }
 
         async function startTeaching() {
-            console.log('开始讲解');
+            try {
+                await waitForSDK();
+                updateStatus('SDK已加载', 'connecting');
+                if(avatarPlatform) avatarPlatform.destroy();
+                avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
+                avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
+                    .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        if (isAutoPlaying && currentPage < totalPages) {
+                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                            setTimeout(() => {
+                                if (isAutoPlaying && currentPage < totalPages) {
+                                    currentPage++;
+                                    switchToPage(currentPage);
+                                    setTimeout(() => {
+                                        if (isAutoPlaying) {
+                                            speakContent(currentPage);
+                                        }
+                                    }, 800);
+                                }
+                            }, 1500);
+                        }
+                    });
+                avatarPlatform.setApiInfo({appId: 'f34b6995', apiKey: '11bce7d2c44157a6875476f368ceb2a0', apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy', sceneId: '233767656807862272', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
+                avatarPlatform.setGlobalParams({stream: {protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25}, avatar: {avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1}, tts: {vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100}, avatar_dispatch: {interactive_mode: 1, content_analysis: 0}});
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+            } catch (error) {
+                updateStatus('启动失败', 'error');
+                alert(`启动失败：${error.message}`);
+            }
         }
 
-        async function startAutoPlay() {
-            console.log('自动播放');
+        async function speakContent(pageNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) return;
+            const content = subtitleScript[pageNum];
+            if (!content) return;
+            try {
+                await avatarPlatform.writeText(content, {nlp: false});
+                updateSubtitle(content);
+            } catch (error) {}
+        }
+
+                async function startAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            try {
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！', 'recording');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+                console.log('📹 进入录制模式，隐藏UI元素');
+
+                if (!isConnected) {
+                    console.log('🎬 连接虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
+                currentPage = 1;
+                switchToPage(1);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (isConnected && isTeaching) {
+                    speakContent(1);
+                    console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
+                } else {
+                    console.error('❌ 虚拟人未连接，自动播放失败');
+                    stopAutoPlay();
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.body.classList.remove('recording-mode');
+                const btn = document.getElementById('autoPlayBtn');
+                btn.textContent = '🎬 自动播放';
+                btn.style.background = '';
+            }
         }
 
         document.addEventListener('keydown', (e) => {
@@ -808,7 +881,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
         });
+
+        window.addEventListener('beforeunload', function() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform && isConnected) avatarPlatform.stop();
+        });
     </script>
 </body>
 </html>
-
