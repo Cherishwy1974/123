@@ -704,6 +704,12 @@
         // 初始化
         document.getElementById('totalSlides').textContent = totalSlides;
         showSlide(0);
+
+        // 🚀 自动启动播放 - 延迟3秒后自动开始
+        setTimeout(() => {
+            console.log('🚀 自动启动播放...');
+            startAutoPlay();
+        }, 3000);
     </script>
 </body>
 </html>
