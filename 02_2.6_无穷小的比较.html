@@ -2252,11 +2252,10 @@
                 document.body.classList.add('recording-mode');
 
                 // 如果虚拟人未连接，在后台尝试连接
-                if (!isConnected) {
-                    console.log('🎬 后台尝试连接虚拟人...');
-                    startTeaching().catch(error => {
-                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
-                    });
+                if (!avatarPlatform || !isConnected) {
+                    console.log('🎬 启动虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                 }
 
                 // 逐页播放

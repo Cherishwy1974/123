@@ -1110,11 +1110,10 @@
                 updateStatus('🎬 自动播放开始！', 'connected');
                 document.body.classList.add('recording-mode');
 
-                if (!isConnected) {
-                    console.log('🎬 后台尝试连接虚拟人...');
-                    startTeaching().catch(error => {
-                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
-                    });
+                if (!avatarPlatform || !isConnected) {
+                    console.log('🎬 启动虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                 }
 
                 for (let page = 1; page <= totalPages; page++) {
