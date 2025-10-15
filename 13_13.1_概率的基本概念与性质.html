@@ -411,6 +411,9 @@
 <div class="subtitle-area" id="subtitleArea"></div>
 <!-- 讯飞官方SDK -->
 <script type="module">
+        // 播放完成标记（供OBS检测）
+        window.playbackFinished = false;
+
     try {
         const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
         window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
@@ -548,7 +551,10 @@
 
         function stopAutoPlay() {
             if (isAutoPlaying) {
-                isAutoPlaying = false; document.body.classList.remove('recording-mode');
+                isAutoPlaying = false;
+                window.playbackFinished = true;
+                document.title = "PLAYBACK_FINISHED";
+                console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED'); document.body.classList.remove('recording-mode');
                 const btn = document.getElementById('autoPlayBtn');
                 btn.textContent = '🎬 自动播放'; btn.style.background = '';
             }

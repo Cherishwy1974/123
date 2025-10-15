@@ -253,6 +253,9 @@
 <div class="subtitle-area" id="subtitleArea">欢迎学习第六章知识点回顾与习题精讲！</div>
 <!-- 讯飞官方SDK -->
 <script type="module">
+        // 播放完成标记（供OBS检测）
+        window.playbackFinished = false;
+
         try {
             const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
             window.AvatarPlatform = AvatarPlatform;

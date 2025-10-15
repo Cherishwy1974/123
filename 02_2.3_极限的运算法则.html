@@ -363,6 +363,9 @@
 </script>
 <!-- 讯飞官方SDK - 按照成功案例的加载方式 -->
 <script type="module">
+        // 播放完成标记（供OBS检测）
+        window.playbackFinished = false;
+
    try {
                     // 根据成功案例,导入讯飞官方SDK
         const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
@@ -1072,6 +1075,9 @@
         function stopAutoPlay() {
             if (isAutoPlaying) {
                 isAutoPlaying = false;
+                window.playbackFinished = true;
+                document.title = "PLAYBACK_FINISHED";
+                console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
                 document.body.classList.remove('recording-mode');
 
                 const autoPlayBtn = document.getElementById('autoPlayBtn');

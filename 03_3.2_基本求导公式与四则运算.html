@@ -821,6 +821,9 @@
    </button>
   </div>
   <script type="module">
+        // 播放完成标记（供OBS检测）
+        window.playbackFinished = false;
+
    try {
             const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
             window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
@@ -1033,6 +1036,9 @@
 
             isAutoPlaying = false;
             document.getElementById('autoPlayBtn').disabled = false;
+            window.playbackFinished = true;
+            document.title = "PLAYBACK_FINISHED";
+            console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
         }
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); } else if (e.key === 'Enter') { e.preventDefault(); speakContent(currentSlide + 1); } });
         document.getElementById('totalSlides').textContent = totalSlides; showSlide(0);
