@@ -926,6 +926,11 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1);
+            // 🚀 自动启动播放 - 延迟3秒后自动开始
+            setTimeout(() => {
+                console.log('🚀 自动启动播放...');
+                startAutoPlay();
+            }, 3000);
         });
 
         window.addEventListener('beforeunload', function() {
