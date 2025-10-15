@@ -703,6 +703,13 @@
                 console.log('🎬 开始自动播放完整课程...');
                 isAutoPlaying = true;
 
+                // 首先启动虚拟人
+                if (!avatarPlatform || !isConnected) {
+                    console.log('🎬 启动虚拟人...');
+                    await startTeaching();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+
                 const autoPlayBtn = document.getElementById('autoPlayBtn');
                 autoPlayBtn.textContent = '⏹️ 停止播放';
                 autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
