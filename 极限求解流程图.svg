@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="1600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1600">
+<svg width="800" height="1080" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1080">
     <defs>
         <!-- 定义箭头标记 -->
         <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
@@ -155,40 +155,13 @@
     <text x="670" y="475" text-anchor="middle" font-size="14" font-weight="bold" fill="#059669" class="node-text">化简后代入</text>
     <text x="670" y="492" text-anchor="middle" font-size="12" fill="#059669" class="node-subtext">得到极限值</text>
     
-    <!-- 图例说明 (底部) -->
-    <g transform="translate(50, 900)">
-        <text x="0" y="0" font-size="16" font-weight="bold" fill="#333" class="node-text">核心方法总结：</text>
-        
-        <rect x="0" y="15" width="700" height="2" fill="#ccc"/>
-        
-        <!-- 第一列 -->
-        <circle cx="10" cy="35" r="5" fill="#10b981"/>
-        <text x="25" y="40" font-size="13" fill="#333" class="node-subtext">绿色：起始步骤与最终结果</text>
-        
-        <circle cx="10" cy="60" r="5" fill="#dc2626"/>
-        <text x="25" y="65" font-size="13" fill="#333" class="node-subtext">红色：未定式类型识别</text>
-        
-        <circle cx="10" cy="85" r="5" fill="#2563eb"/>
-        <text x="25" y="90" font-size="13" fill="#333" class="node-subtext">蓝色：具体求解方法</text>
-        
-        <!-- 第二列 -->
-        <circle cx="300" cy="35" r="5" fill="#0ea5e9"/>
-        <text x="315" y="40" font-size="13" fill="#333" class="node-subtext">天蓝：因式分解法</text>
-        
-        <circle cx="300" cy="60" r="5" fill="#f472b6"/>
-        <text x="315" y="65" font-size="13" fill="#333" class="node-subtext">粉色：有理化法</text>
-        
-        <circle cx="300" cy="85" r="5" fill="#8b5cf6"/>
-        <text x="315" y="90" font-size="13" fill="#333" class="node-subtext">紫色：重要极限法</text>
-    </g>
-    
     <!-- 底部说明框 -->
-    <rect x="50" y="1030" width="700" height="120" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
-    <text x="400" y="1055" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" class="node-text">关键提示</text>
-    <text x="400" y="1078" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">① 代入前先化简，遇到未定式要变形</text>
-    <text x="400" y="1098" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">② 0/0型：多项式用因式分解，根式用有理化，三角函数用重要极限</text>
-    <text x="400" y="1118" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">③ ∞/∞型：分子分母同除最高次幂</text>
-    <text x="400" y="1138" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">④ B/0型：极限不存在或为无穷大</text>
+    <rect x="50" y="920" width="700" height="120" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+    <text x="400" y="945" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" class="node-text">关键提示</text>
+    <text x="400" y="968" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">① 代入前先化简，遇到未定式要变形</text>
+    <text x="400" y="988" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">② 0/0型：多项式用因式分解，根式用有理化，三角函数用重要极限</text>
+    <text x="400" y="1008" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">③ ∞/∞型：分子分母同除最高次幂</text>
+    <text x="400" y="1028" text-anchor="middle" font-size="12" fill="#334155" class="node-subtext">④ B/0型：极限不存在或为无穷大</text>
     
 </svg>
 
