@@ -1,0 +1,8 @@
+[16812:16472:1014/130850.490:INFO:components\enterprise\browser\controller\chrome_browser_cloud_management_controller.cc:206] No machine level policy manager exists.
+[26088:21184:1014/130850.623:INFO:third_party\webrtc\rtc_base\cpu_info.cc:75] Available number of cores: 16
+[25996:28080:1014/130850.623:INFO:third_party\webrtc\rtc_base\cpu_info.cc:75] Available number of cores: 16
+[22692:20648:1014/130850.858:VERBOSE1:components\viz\service\main\viz_main_impl.cc:86] VizNullHypothesis is disabled (not a warning)
+[1912:13308:1014/130851.103:INFO:third_party\webrtc\rtc_base\cpu_info.cc:75] Available number of cores: 16
+[16812:22884:1014/130855.034:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[16812:22884:1014/130855.069:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
+[16812:22884:1014/130915.851:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT

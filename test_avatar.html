@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>虚拟人测试页面</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-info {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .avatar-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 975px;
+            height: 1105px;
+            background: rgba(255,0,0,0.1);
+            border: 2px dashed #ff0;
+        }
+        .wrapper {
+            width: 100%;
+            height: 100%;
+        }
+        #log {
+            background: #000;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-line {
+            margin: 2px 0;
+        }
+        .log-error { color: #f44336; }
+        .log-success { color: #4caf50; }
+        .log-info { color: #2196f3; }
+    </style>
+</head>
+<body>
+    <h1>虚拟人显示测试</h1>
+
+    <div class="test-info">
+        <h2>测试状态</h2>
+        <div id="status">正在检查...</div>
+    </div>
+
+    <div class="test-info">
+        <h2>控制台日志</h2>
+        <div id="log"></div>
+    </div>
+
+    <button onclick="testAvatar()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+        🧪 测试虚拟人连接
+    </button>
+
+    <!-- 虚拟人容器 -->
+    <div class="avatar-container">
+        <div class="wrapper" id="avatarWrapper"></div>
+    </div>
+
+    <!-- SDK加载 -->
+    <script type="module">
+        const log = (msg, type = 'info') => {
+            const logDiv = document.getElementById('log');
+            const line = document.createElement('div');
+            line.className = `log-line log-${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logDiv.appendChild(line);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(msg);
+        };
+
+        const updateStatus = (msg) => {
+            document.getElementById('status').textContent = msg;
+            log(msg, 'info');
+        };
+
+        updateStatus('开始加载SDK...');
+
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+            log('✅ SDK模块加载成功', 'success');
+            log(`SDK版本: ${AvatarPlatform.getVersion()}`, 'success');
+            updateStatus('✅ SDK加载成功');
+        } catch (error) {
+            log('❌ SDK加载失败: ' + error.message, 'error');
+            log('错误详情: ' + error.stack, 'error');
+            updateStatus('❌ SDK加载失败');
+        }
+
+        window.testAvatar = async function() {
+            log('开始测试虚拟人连接...', 'info');
+
+            if (typeof AvatarPlatform === 'undefined') {
+                log('❌ AvatarPlatform 未定义,SDK未正确加载', 'error');
+                return;
+            }
+
+            try {
+                updateStatus('正在连接虚拟人...');
+
+                const avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        log('🎉 虚拟人连接成功！', 'success');
+                        log('连接响应: ' + JSON.stringify(initResp), 'success');
+                        updateStatus('✅ 虚拟人连接成功');
+                    })
+                    .on('disconnected', (err) => {
+                        log('🔌 虚拟人断开连接', 'info');
+                        if (err) log('断开原因: ' + JSON.stringify(err), 'error');
+                    })
+                    .on('error', (error) => {
+                        log('❌ 虚拟人错误: ' + error.message, 'error');
+                        log('错误详情: ' + JSON.stringify(error), 'error');
+                        updateStatus('❌ 连接失败');
+                    });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'f34b6995',
+                    apiKey: '11bce7d2c44157a6875476f368ceb2a0',
+                    apiSecret: 'NjIzNjk2ZWQ0ZGNjMGE0ODkzYjhmNzQy',
+                    sceneId: '233767656807862272',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 },
+                    avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1 },
+                    tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 },
+                    avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
+                });
+
+                log('配置已设置，开始启动...', 'info');
+                await avatarPlatform.start({wrapper: document.getElementById('avatarWrapper')});
+                log('✅ 虚拟人启动命令已执行', 'success');
+
+            } catch (error) {
+                log('❌ 测试失败: ' + error.message, 'error');
+                log('错误堆栈: ' + error.stack, 'error');
+                updateStatus('❌ 测试失败');
+            }
+        };
+
+        // 页面加载完成后的检查
+        window.addEventListener('DOMContentLoaded', () => {
+            log('页面DOM加载完成', 'info');
+            log('当前路径: ' + window.location.pathname, 'info');
+            log('avatarWrapper存在: ' + (document.getElementById('avatarWrapper') ? '是' : '否'), 'info');
+        });
+    </script>
+</body>
+</html>
