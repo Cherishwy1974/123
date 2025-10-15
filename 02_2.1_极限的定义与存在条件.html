@@ -230,6 +230,12 @@
         .recording-mode .control-bar {
             left: -9999px; transition: left 0.5s ease;
         }
+        /* 录制模式下确保虚拟人容器可见 */
+        .recording-mode .avatar-container {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
 
         /* 控制栏 */
         .control-bar {
@@ -1028,17 +1034,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             updatePageInfo();
             console.log('✨ 系统初始化完成');
-            
+
             // 渲染第1页的MathJax公式 - 使用改进的渲染函数
             const firstPage = document.querySelector('[data-page="1"]');
             if (firstPage) {
                 renderMathJax(firstPage, 1);
             }
-            
+
             // 延迟绘制图形，确保Plotly已加载
             setTimeout(() => {
                 drawPageGraph(1);
             }, 1000);
+
+            // 🚀 自动启动播放 - 延迟3秒后自动开始
+            setTimeout(() => {
+                console.log('🚀 自动启动播放...');
+                startAutoPlay();
+            }, 3000);
         });
 
         // 绘图函数 - 使用Plotly.js
