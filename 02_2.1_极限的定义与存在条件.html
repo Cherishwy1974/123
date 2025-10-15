@@ -982,8 +982,8 @@
                 console.log('📹 进入录制模式，隐藏UI元素');
 
                 // 确保虚拟人已连接
-                if (!isConnected) {
-                    console.log('🎬 连接虚拟人...');
+                if (!avatarPlatform || !isConnected) {
+                    console.log('🎬 启动虚拟人...');
                     await startTeaching();
                     // 等待连接完成
                     await new Promise(resolve => setTimeout(resolve, 2000));
