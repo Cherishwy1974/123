@@ -632,6 +632,12 @@
             document.getElementById('totalPages').textContent = totalPages + 1;
             switchToPage(1, false);
             console.log('✨ 极限教学系统初始化完成');
+
+            // 🚀 自动启动播放 - 延迟3秒后自动开始
+            setTimeout(() => {
+                console.log('🚀 自动启动播放...');
+                startAutoPlay();
+            }, 3000);
         });
 
         function switchToPage(pageNum, shouldSpeak = true) {
