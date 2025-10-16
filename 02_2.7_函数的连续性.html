@@ -1079,6 +1079,7 @@
             renderMath();
             
             const canvases = document.querySelectorAll('.animationCanvas');
+            console.log('找到的canvas数量:', canvases.length);
             animationControllers = [
                 new TitleAnimation(canvases[0]),
                 new DrawingAnimation(canvases[1]),
@@ -1093,8 +1094,7 @@
                 new JumpAnimation(canvases[10]),
                 new InfiniteAnimation(canvases[11]),
                 new OscillatingAnimation(canvases[12]),
-                new FlowchartAnimation(canvases[13]),
-                new SummaryAnimation(canvases[14])
+                new FlowchartAnimation(canvases[13])
             ];
             showSlide(0);
             updateSlideInfo();
