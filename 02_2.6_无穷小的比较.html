@@ -728,6 +728,12 @@
         class AnimationEngine {
             constructor(canvas) {
                 this.canvas = canvas;
+                if (!canvas) {
+                    this.ctx = null;
+                    this.animationId = null;
+                    this.isActive = false;
+                    return;
+                }
                 this.ctx = canvas.getContext('2d');
                 this.animationId = null;
                 this.isActive = false;
@@ -738,11 +744,13 @@
             }
             
             resizeCanvas() {
+                if (!this.canvas) return;
                 this.canvas.width = this.canvas.offsetWidth;
                 this.canvas.height = this.canvas.offsetHeight;
             }
             
             start() {
+                if (!this.canvas) return;
                 this.isActive = true;
                 this.time = 0;
                 this.init();
