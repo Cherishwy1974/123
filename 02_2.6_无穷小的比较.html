@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
-    <title>02_2.4_无穷小的比较</title>
-    <!-- 本地Tailwind CSS -->
-
-
-    <!-- 本地Tailwind CSS -->
-    <script src="./tailwind.min.js"></script>
+    <title>02_2.6_无穷小的比较</title>
 
     <!-- 本地思源宋体字体文件 -->
-    <link rel="stylesheet" href="./noto-serif-sc.css">
+    <link rel="stylesheet" href="./assets/noto-serif-sc.css">
 
     <!-- MathJax配置 - 必须在脚本加载前 -->
     <script>
@@ -1982,12 +1977,12 @@
                         isTeaching = false;
                     });
 
-                // 设置API配置 - 请替换为您的真实配置
+                // 设置API配置 - 使用正确的凭证（数学讲解场景）
                 avatarPlatform.setApiInfo({
-                    appId: '92a38947',                                    // 您的AppID
-                    apiKey: '575827c4807d37d26a84cdea7b7a1716',             // 您的API密钥
-                    apiSecret: 'MDBlMDA4OWY3NzE1ZTcyNjUzZDNkYTJj',       // 您的API密钥
-                    sceneId: '236895676045332480',                       // 您的场景ID
+                    appId: '92a38947',                                    // 数学讲解 AppID
+                    apiKey: '575827c4807d37d26a84cdea7b7a1716',             // 数学讲解 API密钥
+                    apiSecret: 'MDBlMDA4OWY3NzE1ZTcyNjUzZDNkYTJj',       // 数学讲解 API密钥
+                    sceneId: '236895676045332480',                       // 数学讲解 场景ID
                     serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
                 });
 
@@ -2000,7 +1995,7 @@
                         fps: 25
                     },
                     avatar: {
-                        avatar_id: '110332016',    // 沐沐形象ID（序号13）
+                        avatar_id: '110332017',    // 沐沐形象ID
                         width: 1920,
                         height: 1080,
                         scale: 1,
