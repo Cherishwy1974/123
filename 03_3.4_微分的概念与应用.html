@@ -46,35 +46,26 @@
     <div class="status-indicator" id="statusIndicator">等待连接</div>
     <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
     <div class="slide-container">
-        <!-- 第1页:课程引入 -->
+        <!-- 第1页:课程引入 - 导数回顾 -->
         <div class="slide active">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>欢迎来到微分的世界</h2>
-                    <p>同学们好!今天我们要学习一个新的概念——<strong>微分</strong>。</p>
-
-                    <h3>回顾:导数</h3>
-                    <p>我们已经学习了<strong>导数</strong>的概念:</p>
+                    <h2>回顾：导数的概念</h2>
+                    <p>我们已经学习了<strong>导数</strong>的概念：</p>
                     <div class="math-formula">
-                        $$f'(x) = \\lim_{\\Delta x \\to 0} \\frac{\\Delta y}{\\Delta x}$$
+                        $$f'(x) = \\lim\\limits_{\\Delta x \\to 0} \\frac{\\Delta y}{\\Delta x}$$
                     </div>
                     <p>导数描述了函数的<strong>变化率</strong>。</p>
-
-                    <p style="margin-top: 20px; color: #95a5a6;">那么,微分和导数有什么关系呢?</p>
-                    <p style="color: #95a5a6;">让我们一起来探索!</p>
+                    <p style="margin-top: 20px; color: #95a5a6;">今天我们要学习一个新概念——<strong>微分</strong>。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
                         <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">微分的概念与应用</text>
-
-                        <!-- 导数圆圈 -->
                         <circle cx="300" cy="250" r="100" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="4">
                             <animate attributeName="r" dur="2s" values="100;110;100" repeatCount="indefinite"/>
                         </circle>
                         <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="245">导数</text>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="275">f'(x)</text>
-
-                        <!-- 问号 -->
                         <text fill="#f39c12" font-size="60" text-anchor="middle" x="300" y="400">?</text>
                         <text fill="#1abc9c" font-size="24" text-anchor="middle" x="300" y="450">微分是什么?</text>
                     </svg>
@@ -86,42 +77,26 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>从导数到微分</h2>
-                    <h3>一个新问题</h3>
-                    <p>当自变量 $x$ 有一个<strong>微小变化</strong> $\\Delta x$ 时,</p>
-                    <p>函数 $y$ 会变化多少?</p>
-
-                    <p style="margin-top: 25px;">从导数的定义,我们知道:</p>
+                    <h2>一个新问题</h2>
+                    <p>当自变量 $x$ 有一个<strong>微小变化</strong> $\\Delta x$ 时，</p>
+                    <p>函数 $y$ 会变化多少？</p>
+                    <p style="margin-top: 25px;">从导数的定义，当 $\\Delta x$ 很小时：</p>
                     <div class="math-formula">
-                        $$f'(x) = \\lim_{\\Delta x \\to 0} \\frac{\\Delta y}{\\Delta x}$$
-                    </div>
-
-                    <p>当 $\\Delta x$ 很小时,可以近似认为:</p>
-                    <div class="math-formula">
-                        $$\\frac{\\Delta y}{\\Delta x} \\approx f'(x)$$
+                        $$\\Delta y \\approx f'(x) \\cdot \\Delta x$$
                     </div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
                         <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">变化量的关系</text>
-
-                        <!-- Δx -->
                         <rect x="100" y="150" width="150" height="80" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="10"/>
                         <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="175" y="200">Δx</text>
-
-                        <!-- 箭头 -->
                         <line x1="250" y1="190" x2="350" y2="190" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrowhead)"/>
                         <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="170">×f'(x)</text>
-
-                        <!-- Δy -->
                         <rect x="350" y="150" width="150" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
                         <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="425" y="200">Δy</text>
-
-                        <!-- 关系式 -->
                         <rect x="150" y="300" width="300" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="340">近似关系</text>
                         <text fill="#1abc9c" font-size="24" text-anchor="middle" x="300" y="375">Δy ≈ f'(x) · Δx</text>
-
                         <defs>
                             <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
                                 <path d="M0,0 L0,6 L9,3 z" fill="#e74c3c"/>
@@ -137,45 +112,28 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>微分的引入</h2>
-                    <p>从上一页的近似关系:</p>
-                    <div class="math-formula">
-                        $$\\Delta y \\approx f'(x) \\cdot \\Delta x$$
-                    </div>
-
-                    <p style="margin-top: 20px;">我们可以看到:</p>
-                    <p>• 当 $\\Delta x$ 很小时,这个近似非常准确</p>
-                    <p>• $f'(x) \\cdot \\Delta x$ 可以用来<strong>估计</strong> $\\Delta y$</p>
-
-                    <p style="margin-top: 25px; color: #e74c3c;"><strong>微分</strong>就是研究这个近似关系的工具!</p>
-                    <p style="color: #1abc9c;">它让我们能够用简单的线性关系代替复杂的函数变化。</p>
+                    <p><strong>微分</strong>专门研究函数增量的线性近似关系。</p>
+                    <p style="margin-top: 20px; color: #e74c3c;">它是导数概念的延伸和应用！</p>
+                    <p style="color: #1abc9c;">用简单的线性关系代替复杂的函数变化。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
                         <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="50">导数 → 微分</text>
-
-                        <!-- 导数圆圈 -->
                         <circle cx="150" cy="200" r="70" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3">
                             <animate attributeName="r" dur="2s" values="70;80;70" repeatCount="indefinite"/>
                         </circle>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="150" y="195">导数</text>
                         <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="215">f'(x)</text>
-
-                        <!-- 箭头 -->
                         <line x1="220" y1="200" x2="380" y2="200" stroke="#f39c12" stroke-width="4" marker-end="url(#arrowhead2)"/>
                         <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="180">应用</text>
-
-                        <!-- 微分圆圈 -->
                         <circle cx="450" cy="200" r="70" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3">
                             <animate attributeName="r" dur="2s" values="70;80;70" repeatCount="indefinite" begin="0.5s"/>
                         </circle>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="450" y="195">微分</text>
                         <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="215">dy</text>
-
-                        <!-- 说明 -->
                         <rect x="100" y="320" width="400" height="100" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3" rx="10"/>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="360">微分是导数的延伸</text>
                         <text fill="#1abc9c" font-size="18" text-anchor="middle" x="300" y="390">用于估计函数的变化量</text>
-
                         <defs>
                             <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
                                 <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
@@ -191,52 +149,21 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>微分的定义</h2>
-                    <h3>核心定义</h3>
-                    <p>设函数 $y = f(x)$ 在点 $x$ 可导,则:</p>
+                    <p>设函数 $y = f(x)$ 在点 $x$ 可导，则：</p>
                     <div class="math-formula">
                         $$dy = f'(x) \\cdot dx$$
                     </div>
-
-                    <h3>符号说明</h3>
-                    <p>• $dx = \\Delta x$ 是自变量的微小增量</p>
-                    <p>• $dy$ 称为函数 $y$ 的<strong>微分</strong></p>
-                    <p>• $f'(x)$ 是函数在点 $x$ 处的导数</p>
-
-                    <p style="margin-top: 20px; color: #e74c3c;">这个公式简洁而优美!</p>
+                    <p style="margin-top: 15px;">其中：</p>
+                    <p>• $dx = \\Delta x$ 是自变量的微分</p>
+                    <p>• $dy$ 是函数 $y$ 的微分</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
                         <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">微分的定义</text>
-
-                        <!-- dy = f'(x) · dx -->
-                        <rect x="100" y="120" width="400" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="170">dy = f'(x) · dx</text>
-
-                        <!-- 各部分标注 -->
-                        <g opacity="0">
-                            <circle cx="180" cy="160" r="25" fill="none" stroke="#e74c3c" stroke-width="2"/>
-                            <text fill="#e74c3c" font-size="16" x="80" y="240">← dy</text>
-                            <text fill="#e74c3c" font-size="14" x="80" y="260">函数微分</text>
-                            <animate attributeName="opacity" dur="6s" values="0;0;1;1" repeatCount="indefinite"/>
-                        </g>
-
-                        <g opacity="0">
-                            <circle cx="300" cy="160" r="30" fill="none" stroke="#2ecc71" stroke-width="2"/>
-                            <text fill="#2ecc71" font-size="16" text-anchor="middle" x="300" y="270">↑ f'(x)</text>
-                            <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="290">导数</text>
-                            <animate attributeName="opacity" dur="6s" values="0;0;0;1" repeatCount="indefinite"/>
-                        </g>
-
-                        <g opacity="0">
-                            <circle cx="440" cy="160" r="25" fill="none" stroke="#9b59b6" stroke-width="2"/>
-                            <text fill="#9b59b6" font-size="16" x="420" y="240">dx →</text>
-                            <text fill="#9b59b6" font-size="14" x="390" y="260">自变量微分</text>
-                            <animate attributeName="opacity" dur="6s" values="0;0;0;1" repeatCount="indefinite"/>
-                        </g>
-
-                        <!-- 底部说明 -->
-                        <rect x="100" y="350" width="400" height="80" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="390">微分 = 导数 × 自变量增量</text>
+                        <rect x="100" y="150" width="400" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="200">dy = f'(x) · dx</text>
+                        <rect x="100" y="300" width="400" height="80" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="350">微分 = 导数 × 自变量增量</text>
                     </svg>
                 </div>
             </div>
@@ -247,103 +174,64 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>微分与导数的关系</h2>
-                    <p>从微分的定义 $dy = f'(x) \\cdot dx$ 可以得到:</p>
+                    <p>从 $dy = f'(x) \\cdot dx$ 可得：</p>
                     <div class="math-formula">
                         $$f'(x) = \\frac{dy}{dx}$$
                     </div>
-
-                    <h3>重要理解</h3>
-                    <p><strong>导数 = 微分之商!</strong></p>
-
-                    <p style="margin-top: 20px;">以前我们把 $\\frac{dy}{dx}$ 看作一个<strong>整体符号</strong>,</p>
-                    <p>现在有了微分的概念,</p>
-                    <p>它可以真正理解为 $dy$ <strong>除以</strong> $dx$!</p>
-
-                    <p style="margin-top: 20px; color: #95a5a6;">这是微分记号的巧妙之处。</p>
+                    <p style="margin-top: 20px;"><strong>导数是微分之商！</strong></p>
+                    <p style="color: #95a5a6;">$\\frac{dy}{dx}$ 可以真正理解为 $dy$ 除以 $dx$。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
                         <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">导数与微分</text>
-
-                        <!-- 微分公式 -->
                         <rect x="100" y="120" width="400" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
                         <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="170">dy = f'(x) · dx</text>
-
-                        <!-- 双向箭头 -->
                         <text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="250">⇅</text>
-
-                        <!-- 导数公式 -->
                         <rect x="100" y="280" width="400" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
                         <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="330">f'(x) = dy/dx</text>
-
-                        <!-- 说明 -->
                         <rect x="100" y="400" width="400" height="60" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="2" rx="8"/>
-                        <text fill="#1abc9c" font-size="18" text-anchor="middle" x="300" y="440">两种表达,同一个概念!</text>
+                        <text fill="#1abc9c" font-size="18" text-anchor="middle" x="300" y="440">两种表达，同一个概念！</text>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- 第6页:微分的几何意义(1) -->
+        <!-- 第6页:两种增量 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>微分的几何意义(一)</h2>
-                    <p>考虑曲线 $y = f(x)$ 在点 $(x, f(x))$ 处。</p>
-
-                    <h3>两种增量</h3>
-                    <p>当自变量从 $x$ 变到 $x + \\Delta x$ 时:</p>
-
-                    <p style="margin-top: 15px;"><strong>1. 曲线上的实际增量 $\\Delta y$:</strong></p>
+                    <h2>两种增量</h2>
+                    <p>当自变量从 $x$ 变到 $x + \\Delta x$ 时：</p>
+                    <p style="margin-top: 15px;"><strong>1. 曲线实际增量 $\\Delta y$：</strong></p>
                     <div class="math-formula">
                         $$\\Delta y = f(x + \\Delta x) - f(x)$$
                     </div>
-
-                    <p><strong>2. 切线上的增量 $dy$:</strong></p>
+                    <p><strong>2. 切线增量 $dy$：</strong></p>
                     <div class="math-formula">
                         $$dy = f'(x) \\cdot \\Delta x$$
                     </div>
-
-                    <p style="margin-top: 15px; color: #95a5a6;">这两个增量有什么关系呢?</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
                         <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="40">两种增量</text>
-
-                        <!-- 坐标系 -->
                         <line x1="100" y1="400" x2="550" y2="400" stroke="#ecf0f1" stroke-width="2"/>
                         <line x1="100" y1="100" x2="100" y2="400" stroke="#ecf0f1" stroke-width="2"/>
                         <text fill="#ecf0f1" font-size="14" x="560" y="405">x</text>
                         <text fill="#ecf0f1" font-size="14" x="105" y="90">y</text>
-
-                        <!-- 曲线 -->
-                        <path d="M 150 350 Q 250 200 350 250 Q 450 300 500 200"
-                              fill="none" stroke="#3498db" stroke-width="3"/>
+                        <path d="M 150 350 Q 250 200 350 250 Q 450 300 500 200" fill="none" stroke="#3498db" stroke-width="3"/>
                         <text fill="#3498db" font-size="16" x="450" y="180">y = f(x)</text>
-
-                        <!-- 点 (x, f(x)) -->
                         <circle cx="250" cy="230" r="5" fill="#e74c3c"/>
                         <text fill="#e74c3c" font-size="14" x="215" y="220">(x, f(x))</text>
-
-                        <!-- 切线 -->
                         <line x1="150" y1="290" x2="400" y2="170" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"/>
                         <text fill="#2ecc71" font-size="14" x="380" y="160">切线</text>
-
-                        <!-- Δx -->
                         <line x1="250" y1="405" x2="350" y2="405" stroke="#f39c12" stroke-width="3"/>
                         <line x1="250" y1="400" x2="250" y2="410" stroke="#f39c12" stroke-width="2"/>
                         <line x1="350" y1="400" x2="350" y2="410" stroke="#f39c12" stroke-width="2"/>
                         <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="430">Δx</text>
-
-                        <!-- dy (切线增量) -->
                         <line x1="355" y1="200" x2="355" y2="250" stroke="#2ecc71" stroke-width="3"/>
                         <text fill="#2ecc71" font-size="16" x="365" y="230">dy</text>
-
-                        <!-- Δy (曲线增量) -->
                         <line x1="345" y1="230" x2="345" y2="250" stroke="#e74c3c" stroke-width="3"/>
                         <text fill="#e74c3c" font-size="16" x="320" y="245">Δy</text>
-
-                        <!-- 点 (x+Δx, f(x+Δx)) -->
                         <circle cx="350" cy="250" r="5" fill="#e74c3c"/>
                     </svg>
                 </div>
@@ -695,7 +583,7 @@
     </div>
     <div class="subtitle-area" id="subtitleArea">欢迎学习微分的概念与应用!</div>
     <div class="control-bar">
-        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">11</span> 页</div>
+        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">17</span> 页</div>
         <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
         <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
         <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
@@ -707,20 +595,69 @@
         try { const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
     </script>
     <script>
-        const subtitleScript = { "1": "同学们好!我们已经学习了导数的概念。导数f撇x等于当delta x趋于0时,delta y除以delta x的极限,它描述了函数的变化率。今天我们要学习一个新概念:微分。当自变量x有一个微小的变化delta x时,函数y会变化多少?从导数的定义可以看出,delta y约等于f撇x乘以delta x,当delta x很小的时候。微分就是专门研究这个近似关系的!它是导数概念的延伸和应用,在实际计算中非常有用。", "2": "微分的核心定义是这样的:设函数y等于f括号x在点x可导,那么dy等于f撇x乘以dx。这里,dx等于delta x,是自变量的微小增量,我们称它为自变量x的微分。dy称为函数y的微分。微分和导数有什么关系呢?从定义式dy等于f撇x乘以dx可以看出,f撇x等于dy除以dx。这说明导数就是微分之商!以前我们把dy除以dx看作一个整体符号,但现在有了微分的概念后,这个符号可以真正理解为dy除以dx。这是微分记号的一个巧妙之处,它把导数和微分联系了起来。", "3": "微分有清晰的几何意义。考虑曲线y等于f括号x在点括号x逗号f括号x处,当自变量从x变到x加delta x时,有两种增量:第一种是delta y,它是曲线上的实际增量,等于f括号x加delta x减f括号x。第二种是dy,它是切线上的增量,等于f撇x乘以delta x。从图像上看,当delta x很小时,曲线的这一小段几乎可以用切线来代替!dy就是切线的竖直增量,delta y是曲线的竖直增量。当delta x越来越小时,dy越来越接近delta y。这就是微分的几何意义:用切线代替曲线。这个思想在微积分中非常重要,它体现了以直代曲、以简代繁的数学思想。", "4": "微分的计算其实非常简单,因为由dy等于f撇x乘以dx可以看出,微分计算就是导数计算!所有的基本微分公式都可以从导数公式得到。比如x的n次方的微分,等于n乘以x的n减1次方乘以dx。sin x的微分等于cos x乘以dx。e的x次方的微分等于e的x次方乘以dx。ln x的微分等于1除以x乘以dx。微分的运算法则也和导数运算法则完全一致!u加减v的微分等于du加减dv。u乘以v的微分等于u乘以dv加v乘以du。这和乘法求导法则形式完全对应。所以掌握了导数,就等于掌握了微分,只需在结果后面乘以dx就行了!", "5": "微分有一个非常重要的性质,叫做形式不变性。这个性质说的是:无论u是自变量还是中间变量,d括号f括号u的形式总是f撇u乘以du,这个形式保持不变!让我们看两个例子。第一个,如果u等于x是自变量,那么d括号sin x等于cos x乘以dx,这是基本公式。第二个,如果u等于x平方是中间变量,那么d括号sin x平方,仍然可以写成cos x平方乘以d括号x平方,再把d括号x平方算出来等于2x dx,所以最终结果是cos x平方乘以2x dx。看到了吗?中间那一步的形式和基本公式完全一样!这就是形式不变性。它使得微分计算变得非常简单,不需要每次都从头推导,只需要套用公式,最后再把dx换成相应的微分就行了。形式不变性是微分最重要的性质之一!", "6": "微分的第一个重要应用是近似计算。根据微分的定义,f括号x加delta x约等于f括号x加f撇x乘以delta x,当delta x很小时。我们可以用这个公式进行近似计算。来看一个例题:计算根号4点02的近似值。我们令f括号x等于根号x,取x等于4,delta x等于0点02。首先求导数:f撇x等于1除以2倍根号x,所以f撇4等于1除以2倍根号4等于四分之一。代入近似公式:根号4点02约等于根号4加四分之一乘以0点02,等于2加0点005,等于2点005。用计算器验证,实际值是2点00499点点点,误差极小!这个方法比直接计算要简单得多,在没有计算器的年代,微分近似计算是非常实用的工具。即使在今天,它在理论分析中仍然很重要。", "7": "微分的第二个应用是误差估计。在实际测量中,总会有误差。如果测量x时有误差delta x,那么通过计算得到的y等于f括号x会有多大误差呢?根据微分,delta y约等于dy,也就是delta y的绝对值约等于f撇x的绝对值乘以delta x的绝对值。这就是绝对误差的估计。相对误差则是绝对误差除以量的大小。让我们看一个例题:测量圆的半径r等于10厘米,误差不超过0点05厘米,问面积S等于π乘以r平方的误差有多大?首先求导数:S撇等于2π乘以r。当r等于10时,delta S的绝对值约等于2π乘以10乘以0点05,等于π,约等于3点14平方厘米。这说明半径的微小误差会通过公式放大,导致面积的误差是3点多平方厘米。微分帮助我们定量分析了误差是如何传播的,这在工程和科学计算中非常重要!", "8": "好,今天的课程就讲到这里。让我们总结一下微分的核心内容。第一,微分的定义是dy等于f撇x乘以dx,它和导数的关系是f撇x等于dy除以dx,导数是微分之商。第二,微分的几何意义是切线的增量,体现了用直线代替曲线的思想。第三,微分有重要的形式不变性,使得计算非常方便。第四,微分有两大应用:一是近似计算,f括号x加delta x约等于f括号x加f撇x乘以delta x;二是误差估计,delta y的绝对值约等于f撇x的绝对值乘以delta x的绝对值。微分的核心思想就是以直代曲、以简化繁,这是微积分最重要的思想之一。掌握了微分,我们就多了一个强大的数学工具!今天的课就到这里,同学们再见!" };
-        const actionMap = { "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O", "5": "A_LH_introduced_O", "6": "A_RH_point_O", "7": "A_RH_point_O", "8": "A_RLH_welcome_O" };
-        let currentSlide = 0; const totalSlides = 11; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; let speechFinishedResolve = null; const slides = document.querySelectorAll('.slide');
+        // 字幕文本（专业规范）
+        const subtitleScript = {
+            "1": "导数 f'(x) 描述函数变化率 | 微分研究函数增量的线性近似",
+            "2": "当 Δx 很小时，Δy ≈ f'(x)·Δx | 微分专门研究这一近似关系",
+            "3": "微分是导数概念的延伸 | 用于估计函数变化量",
+            "4": "定义：dy = f'(x)·dx | dx = Δx 为自变量微分，dy 为函数微分",
+            "5": "导数 f'(x) = dy/dx | 导数是微分之商",
+            "6": "Δy：曲线实际增量 = f(x+Δx) - f(x) | dy：切线增量 = f'(x)·Δx",
+            "7": "几何意义：当 Δx→0 时，dy ≈ Δy | 用切线代替曲线",
+            "8": "基本公式：d(x^n) = nx^(n-1)dx | d(sin x) = cos x dx",
+            "9": "运算法则：d(u±v) = du±dv | d(uv) = udv + vdu",
+            "10": "形式不变性：d[f(u)] = f'(u)du | 无论 u 是自变量还是中间变量",
+            "11": "示例：d(sin x²) = cos(x²)·d(x²) = cos(x²)·2x dx",
+            "12": "近似计算：f(x+Δx) ≈ f(x) + f'(x)Δx",
+            "13": "例：√4.02 ≈ √4 + (1/4)×0.02 = 2.005",
+            "14": "误差估计：|Δy| ≈ |f'(x)|·|Δx|",
+            "15": "例：圆半径 r=10cm，误差 ±0.05cm | 面积误差 ≈ π cm²",
+            "16": "微分核心：dy = f'(x)dx | 几何意义：切线增量 | 形式不变性",
+            "17": "应用：近似计算与误差估计 | 核心思想：以直代曲"
+        };
+
+        // 发音文本（口语化）
+        const speechScript = {
+            "1": "同学们好!我们已经学过导数了。导数f撇x描述的是函数的变化率。今天我们要学习一个新概念,叫做微分。",
+            "2": "先来看一个问题:当自变量x有一个很小的变化delta x时,函数y会变化多少呢?从导数的定义我们知道,当delta x很小的时候,delta y大约等于f撇x乘以delta x。微分就是专门研究这个近似关系的!",
+            "3": "微分是导数概念的延伸和应用。它可以帮助我们估计函数的变化量,在实际计算中非常有用。",
+            "4": "微分的定义是这样的:设函数y等于f括号x在点x可导,那么dy等于f撇x乘以dx。这里,dx等于delta x,是自变量的微小增量,我们叫它自变量的微分。dy呢,就叫做函数y的微分。",
+            "5": "微分和导数有什么关系呢?从定义式dy等于f撇x乘以dx可以看出,f撇x等于dy除以dx。这说明导数就是微分之商!以前我们把dy除以dx看作一个整体符号,现在有了微分的概念,它可以真正理解为dy除以dx了。",
+            "6": "微分有清晰的几何意义。考虑曲线y等于f括号x,当自变量从x变到x加delta x时,有两种增量。第一种是delta y,它是曲线上的实际增量,等于f括号x加delta x减f括号x。第二种是dy,它是切线上的增量,等于f撇x乘以delta x。",
+            "7": "从图像上看,当delta x很小时,曲线的这一小段几乎可以用切线来代替!dy就是切线的竖直增量,delta y是曲线的竖直增量。当delta x越来越小时,dy越来越接近delta y。这就是微分的几何意义:用切线代替曲线。",
+            "8": "微分的计算其实很简单,因为微分计算就是导数计算!所有的基本微分公式都可以从导数公式得到。比如x的n次方的微分,等于n乘以x的n减1次方乘以dx。sin x的微分等于cos x乘以dx。",
+            "9": "微分的运算法则和导数运算法则完全一致!u加减v的微分等于du加减dv。u乘以v的微分等于u乘以dv加v乘以du。所以掌握了导数,就等于掌握了微分,只需在结果后面乘以dx就行了!",
+            "10": "微分有一个非常重要的性质,叫做形式不变性。这个性质说的是:无论u是自变量还是中间变量,d括号f括号u的形式总是f撇u乘以du,这个形式保持不变!",
+            "11": "让我们看一个例子。如果u等于x平方是中间变量,那么d括号sin x平方,仍然可以写成cos x平方乘以d括号x平方,再把d括号x平方算出来等于2x dx,所以最终结果是cos x平方乘以2x dx。看到了吗?形式不变性使得微分计算变得非常简单!",
+            "12": "微分的第一个重要应用是近似计算。根据微分的定义,f括号x加delta x约等于f括号x加f撇x乘以delta x,当delta x很小时。我们可以用这个公式进行近似计算。",
+            "13": "来看一个例题:计算根号4点02的近似值。我们令f括号x等于根号x,取x等于4,delta x等于0点02。首先求导数:f撇x等于1除以2倍根号x,所以f撇4等于四分之一。代入公式:根号4点02约等于2加0点005,等于2点005。用计算器验证,实际值是2点00499,误差极小!",
+            "14": "微分的第二个应用是误差估计。在实际测量中,总会有误差。如果测量x时有误差delta x,那么通过计算得到的y会有多大误差呢?根据微分,delta y的绝对值约等于f撇x的绝对值乘以delta x的绝对值。",
+            "15": "让我们看一个例题:测量圆的半径r等于10厘米,误差不超过0点05厘米,问面积的误差有多大?首先求导数:S撇等于2π乘以r。当r等于10时,delta S的绝对值约等于π,约等于3点14平方厘米。这说明半径的微小误差会通过公式放大。",
+            "16": "好,让我们总结一下微分的核心内容。第一,微分的定义是dy等于f撇x乘以dx。第二,微分的几何意义是切线的增量。第三,微分有重要的形式不变性。",
+            "17": "第四,微分有两大应用:一是近似计算,二是误差估计。微分的核心思想就是以直代曲、以简化繁。掌握了微分,我们就多了一个强大的数学工具!今天的课就到这里,同学们再见!"
+        };
+
+        const actionMap = {
+            "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O",
+            "4": "A_RH_point_O", "5": "A_LH_introduced_O", "6": "A_RH_point_O",
+            "7": "A_RH_point_O", "8": "A_LH_introduced_O", "9": "A_RH_point_O",
+            "10": "A_LH_introduced_O", "11": "A_RH_point_O", "12": "A_LH_introduced_O",
+            "13": "A_RH_point_O", "14": "A_LH_introduced_O", "15": "A_RH_point_O",
+            "16": "A_LH_introduced_O", "17": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0; const totalSlides = 17; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; let speechFinishedResolve = null; const slides = document.querySelectorAll('.slide');
         function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); currentSlide = index; document.getElementById('currentSlide').textContent = index + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err)); } document.getElementById('prevBtn').disabled = index === 0; document.getElementById('nextBtn').disabled = index === totalSlides - 1; updateSubtitle(index + 1); }
         function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
         function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
         function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; }
         function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
-        async function speakContent(slideNum) { if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; } const content = subtitleScript[slideNum]; if (!content) return; try { const action = actionMap[slideNum]; if (action) { await avatarPlatform.writeCmd("action", action); } await avatarPlatform.writeText(content, { nlp: false }); updateSubtitle(slideNum); } catch (error) { console.error('❌ 讲解失败:', error); } }
+        async function speakContent(slideNum) { if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; } const content = speechScript[slideNum]; if (!content) return; try { const action = actionMap[slideNum]; if (action) { await avatarPlatform.writeCmd("action", action); } await avatarPlatform.writeText(content, { nlp: false }); updateSubtitle(slideNum); } catch (error) { console.error('❌ 讲解失败:', error); } }
         // 计算单页播放时长（用于超时fallback）
         function getSlideDuration(slideNum) {
-            const subtitle = subtitleScript[slideNum];
-            if (!subtitle) return 5000;
-            return subtitle.length * 120 + 2000;
+            const speech = speechScript[slideNum];
+            if (!speech) return 5000;
+            return speech.length * 120 + 2000;
         }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
         function waitForSDK() { return new Promise((resolve, reject) => { if (typeof AvatarPlatform !== 'undefined') { resolve(); return; } const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
@@ -732,4 +669,4 @@
     </script>
 </body>
 </html>
-<!-- End of Selection -->
+

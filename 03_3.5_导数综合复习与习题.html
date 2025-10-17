@@ -46,15 +46,47 @@
     <div class="status-indicator" id="statusIndicator">等待连接</div>
     <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
     <div class="slide-container">
-        <!-- 第1页:引入 - 导数知识框架 -->
+        <!-- 第1页:课程引入 -->
         <div class="slide active">
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>导数综合复习</h2>
-                    <p>前面我们学习了导数的全部内容,</p>
-                    <p>今天进行<strong>系统复习</strong>和<strong>综合练习</strong>!</p>
+                    <p>同学们好!</p>
+                    <p>前面几节课我们系统学习了</p>
+                    <p><strong>第3章导数</strong>的全部内容</p>
 
-                    <h3>第3章知识结构</h3>
+                    <h3>今天的任务</h3>
+                    <ul style="margin-left: 30px;">
+                        <li>系统复习知识点</li>
+                        <li>梳理知识结构</li>
+                        <li>综合练习提升</li>
+                    </ul>
+
+                    <p style="margin-top: 20px;">让我们把零散的知识点</p>
+                    <p>串联成<strong>完整的知识体系</strong>!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">第3章 导数</text>
+                        
+                        <circle cx="300" cy="250" r="100" fill="rgba(241,196,15,0.3)" stroke="#f39c12" stroke-width="4">
+                            <animate attributeName="r" dur="3s" values="100;110;100" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="260">综合复习</text>
+
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="420">系统梳理 · 融会贯通</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页:知识结构总览 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第3章知识结构</h2>
+                    
+                    <h3>四大核心模块</h3>
                     <ul style="margin-left: 30px;">
                         <li><strong>3.1</strong> 导数的概念与几何意义</li>
                         <li><strong>3.2</strong> 基本求导公式与四则运算</li>
@@ -62,241 +94,392 @@
                         <li><strong>3.4</strong> 微分的概念与应用</li>
                     </ul>
 
-                    <p style="margin-top: 20px;"><strong>核心思想:</strong></p>
+                    <p style="margin-top: 25px;"><strong>核心思想:</strong></p>
                     <p>导数 = <strong>瞬时变化率</strong></p>
                     <p>几何意义 = <strong>切线斜率</strong></p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="60">导数知识体系</text>
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">知识体系</text>
 
-                        <!-- 中心圆 -->
                         <circle cx="300" cy="250" r="80" fill="rgba(241,196,15,0.3)" stroke="#f39c12" stroke-width="4">
                             <animate attributeName="r" dur="3s" values="80;90;80" repeatCount="indefinite"/>
                         </circle>
-                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="245">导数</text>
-                        <text fill="#f1c40f" font-size="20" text-anchor="middle" x="300" y="270">f'(x)</text>
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="255">导数</text>
 
-                        <!-- 概念 -->
                         <circle cx="150" cy="150" r="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3">
                             <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="0.5s"/>
                         </circle>
-                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="145">概念</text>
-                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="150" y="165">3.1</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="155">概念 3.1</text>
                         <line x1="210" y1="190" x2="260" y2="220" stroke="#f39c12" stroke-width="2"/>
 
-                        <!-- 公式 -->
                         <circle cx="450" cy="150" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3">
                             <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="1s"/>
                         </circle>
-                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="145">公式</text>
-                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="450" y="165">3.2</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="155">公式 3.2</text>
                         <line x1="390" y1="190" x2="340" y2="220" stroke="#f39c12" stroke-width="2"/>
 
-                        <!-- 链式 -->
                         <circle cx="150" cy="380" r="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3">
                             <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="1.5s"/>
                         </circle>
-                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="375">链式</text>
-                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="150" y="395">3.3</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="385">链式 3.3</text>
                         <line x1="210" y1="340" x2="260" y2="300" stroke="#f39c12" stroke-width="2"/>
 
-                        <!-- 微分 -->
                         <circle cx="450" cy="380" r="60" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3">
                             <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="2s"/>
                         </circle>
-                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="375">微分</text>
-                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="450" y="395">3.4</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="385">微分 3.4</text>
                         <line x1="390" y1="340" x2="340" y2="300" stroke="#f39c12" stroke-width="2"/>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- 第2页:基本公式回顾 -->
+        <!-- 第3页:幂函数与常数求导 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>基本求导公式回顾</h2>
-                    <p>这些公式<strong>必须熟记</strong>!</p>
+                    <h2>基本公式(一):幂函数</h2>
+                    
+                    <h3>幂函数求导公式</h3>
+                    <div class="math-formula">
+                        $$(x^n)' = nx^{n-1}$$
+                    </div>
+                    <p>指数降一次,系数变成原指数</p>
 
-                    <h3>幂函数与常数</h3>
+                    <h3>常数求导</h3>
                     <div class="math-formula">
-                        $$(x^n)' = nx^{n-1}, \quad (C)' = 0$$
+                        $$(C)' = 0$$
                     </div>
+                    <p>常数的导数永远是0</p>
 
-                    <h3>指数与对数</h3>
-                    <div class="math-formula">
-                        $$(e^x)' = e^x, \quad (a^x)' = a^x \ln a$$
-                    </div>
-                    <div class="math-formula">
-                        $$(\ln x)' = \frac{1}{x}, \quad (\log_a x)' = \frac{1}{x \ln a}$$
-                    </div>
-
-                    <h3>三角函数</h3>
-                    <div class="math-formula">
-                        $$(\sin x)' = \cos x, \quad (\cos x)' = -\sin x$$
-                    </div>
-                    <div class="math-formula">
-                        $$(\tan x)' = \sec^2 x = \frac{1}{\cos^2 x}$$
-                    </div>
+                    <h3>典型例子</h3>
+                    <p>$(x^3)' = 3x^2$</p>
+                    <p>$(x^{-2})' = -2x^{-3}$</p>
+                    <p>$(\sqrt{x})' = (x^{1/2})' = \frac{1}{2}x^{-1/2}$</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">公式速查表</text>
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">幂函数求导</text>
 
-                        <!-- 幂函数 -->
+                        <rect x="100" y="120" width="400" height="80" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="170">(x^n)' = nx^(n-1)</text>
+
                         <g opacity="0">
-                            <rect x="80" y="100" width="440" height="60" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="138">(x^n)' = nx^(n-1)</text>
-                            <animate attributeName="opacity" dur="8s" values="0;1;1;1;1" repeatCount="indefinite"/>
+                            <rect x="100" y="230" width="400" height="60" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="268">(x³)' = 3x²</text>
+                            <animate attributeName="opacity" dur="6s" values="0;1;1" repeatCount="indefinite"/>
                         </g>
 
-                        <!-- 指数 -->
                         <g opacity="0">
-                            <rect x="80" y="180" width="440" height="60" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="218">(e^x)' = e^x</text>
-                            <animate attributeName="opacity" dur="8s" values="0;0;1;1;1" repeatCount="indefinite"/>
+                            <rect x="100" y="310" width="400" height="60" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="348">(√x)' = 1/(2√x)</text>
+                            <animate attributeName="opacity" dur="6s" values="0;0;1" repeatCount="indefinite"/>
                         </g>
 
-                        <!-- 对数 -->
-                        <g opacity="0">
-                            <rect x="80" y="260" width="440" height="60" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="298">(ln x)' = 1/x</text>
-                            <animate attributeName="opacity" dur="8s" values="0;0;0;1;1" repeatCount="indefinite"/>
-                        </g>
-
-                        <!-- 三角 -->
-                        <g opacity="0">
-                            <rect x="80" y="340" width="440" height="60" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="378">(sin x)' = cos x</text>
-                            <animate attributeName="opacity" dur="8s" values="0;0;0;0;1" repeatCount="indefinite"/>
-                        </g>
-
-                        <!-- 强调 -->
-                        <text fill="#f39c12" font-size="22" text-anchor="middle" x="300" y="450">必须背熟!</text>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="430">必须熟记!</text>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- 第3页:运算法则回顾 -->
+        <!-- 第4页:指数函数求导 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>运算法则回顾</h2>
-
-                    <h3>1. 线性性质</h3>
+                    <h2>基本公式(二):指数函数</h2>
+                    
+                    <h3>自然指数函数</h3>
                     <div class="math-formula">
-                        $$(af \pm bg)' = af' \pm bg'$$
+                        $$(e^x)' = e^x$$
                     </div>
-                    <p>常数可以提出,和差分别求导</p>
+                    <p>e的x次方求导还是它自己!</p>
+                    <p>这是e的<strong>特殊性质</strong></p>
 
-                    <h3>2. 乘法法则</h3>
+                    <h3>一般指数函数</h3>
+                    <div class="math-formula">
+                        $$(a^x)' = a^x \\ln a$$
+                    </div>
+                    <p>要乘以ln a</p>
+
+                    <h3>例子</h3>
+                    <p>$(2^x)' = 2^x \\ln 2$</p>
+                    <p>$(10^x)' = 10^x \\ln 10$</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">指数函数求导</text>
+
+                        <rect x="100" y="130" width="400" height="90" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="165">(e^x)' = e^x</text>
+                        <text fill="#3498db" font-size="16" text-anchor="middle" x="300" y="200">自然指数的特殊性</text>
+
+                        <rect x="100" y="250" width="400" height="90" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="285">(a^x)' = a^x · ln a</text>
+                        <text fill="#2ecc71" font-size="16" text-anchor="middle" x="300" y="320">一般指数函数</text>
+
+                        <circle cx="300" cy="400" r="50" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="50;60;50" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#f1c40f" font-size="18" text-anchor="middle" x="300" y="408">记住!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5页:对数函数求导 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基本公式(三):对数函数</h2>
+                    
+                    <h3>自然对数</h3>
+                    <div class="math-formula">
+                        $$(\\ln x)' = \\frac{1}{x}$$
+                    </div>
+                    <p>ln x的导数是1/x</p>
+
+                    <h3>一般对数</h3>
+                    <div class="math-formula">
+                        $$(\\log_a x)' = \\frac{1}{x \\ln a}$$
+                    </div>
+                    <p>要除以ln a</p>
+
+                    <h3>注意</h3>
+                    <p><strong>易错点:</strong></p>
+                    <p>$(\\log_2 x)' = \\frac{1}{x \\ln 2}$ ✓</p>
+                    <p>不是 $\\frac{1}{x}$ ❌</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">对数函数求导</text>
+
+                        <rect x="100" y="130" width="400" height="90" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="165">(ln x)' = 1/x</text>
+                        <text fill="#2ecc71" font-size="16" text-anchor="middle" x="300" y="200">自然对数</text>
+
+                        <rect x="100" y="250" width="400" height="90" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="285">(log_a x)' = 1/(x·ln a)</text>
+                        <text fill="#9b59b6" font-size="16" text-anchor="middle" x="300" y="320">一般对数</text>
+
+                        <rect x="100" y="370" width="400" height="60" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#e74c3c" font-size="16" text-anchor="middle" x="300" y="408">非e底要除以ln a!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第6页:三角函数求导 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基本公式(四):三角函数</h2>
+                    
+                    <h3>正弦与余弦</h3>
+                    <div class="math-formula">
+                        $$(\\sin x)' = \\cos x$$
+                    </div>
+                    <div class="math-formula">
+                        $$(\\cos x)' = -\\sin x$$
+                    </div>
+                    <p>注意余弦求导有<strong>负号</strong>!</p>
+
+                    <h3>正切函数</h3>
+                    <div class="math-formula">
+                        $$(\\tan x)' = \\sec^2 x = \\frac{1}{\\cos^2 x}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">三角函数求导</text>
+
+                        <rect x="100" y="120" width="400" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="163">(sin x)' = cos x</text>
+
+                        <rect x="100" y="210" width="400" height="70" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="253">(cos x)' = -sin x</text>
+
+                        <rect x="100" y="300" width="400" height="70" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="343">(tan x)' = sec²x</text>
+
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="420">余弦求导有负号!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第7页:线性法则 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>运算法则(一):线性法则</h2>
+                    
+                    <h3>和差法则</h3>
+                    <div class="math-formula">
+                        $$(af \\pm bg)' = af' \\pm bg'$$
+                    </div>
+
+                    <h3>两个要点</h3>
+                    <p>1. <strong>常数可以提出</strong></p>
+                    <p>2. <strong>和差分别求导</strong></p>
+
+                    <h3>例子</h3>
+                    <p>$(3x^2 + 5x)' = 3(x^2)' + 5(x)'$</p>
+                    <p>$= 3 \\cdot 2x + 5 \\cdot 1 = 6x + 5$</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">线性法则</text>
+
+                        <rect x="100" y="140" width="400" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="180">(af ± bg)'</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="220">= af' ± bg'</text>
+
+                        <circle cx="200" cy="330" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="200" y="335">常数提出</text>
+
+                        <circle cx="400" cy="330" r="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="400" y="335">和差分开</text>
+
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="440">最简单的法则!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第8页:乘法法则 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>运算法则(二):乘法法则</h2>
+                    
+                    <h3>乘法求导公式</h3>
                     <div class="math-formula">
                         $$(fg)' = f'g + fg'$$
                     </div>
-                    <p><strong>口诀:</strong> 前导后不导 + 前不导后导</p>
 
-                    <h3>3. 除法法则</h3>
-                    <div class="math-formula">
-                        $$\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$$
-                    </div>
-                    <p><strong>口诀:</strong> 上导下 - 上下导,除以下平方</p>
+                    <h3>记忆口诀</h3>
+                    <p><strong>前导后不导</strong></p>
+                    <p>+</p>
+                    <p><strong>前不导后导</strong></p>
 
-                    <h3>4. 链式法则</h3>
-                    <div class="math-formula">
-                        $$(f(g(x)))' = f'(g(x)) \cdot g'(x)$$
-                    </div>
-                    <p>从外到内,<strong>逐层求导</strong>!</p>
+                    <h3>注意</h3>
+                    <p>是<strong>两项相加</strong>,不要漏项!</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">四大法则</text>
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">乘法法则</text>
 
-                        <!-- 线性 -->
-                        <rect x="100" y="100" width="180" height="150" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="190" y="130">线性</text>
-                        <text fill="#e74c3c" font-size="16" text-anchor="middle" x="190" y="160">af' ± bg'</text>
+                        <rect x="100" y="130" width="400" height="90" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="165">(fg)' = f'g + fg'</text>
+                        <text fill="#3498db" font-size="16" text-anchor="middle" x="300" y="200">两项相加</text>
 
-                        <!-- 乘法 -->
-                        <rect x="320" y="100" width="180" height="150" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="410" y="130">乘法</text>
-                        <text fill="#3498db" font-size="16" text-anchor="middle" x="410" y="160">f'g + fg'</text>
+                        <rect x="100" y="250" width="180" height="120" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="190" y="290">第一项</text>
+                        <text fill="#e74c3c" font-size="16" text-anchor="middle" x="190" y="320">f'g</text>
+                        <text fill="#95a5a6" font-size="14" text-anchor="middle" x="190" y="350">前导后不导</text>
 
-                        <!-- 除法 -->
-                        <rect x="100" y="280" width="180" height="150" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="190" y="310">除法</text>
-                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="190" y="340">(f'g-fg')/g²</text>
+                        <rect x="320" y="250" width="180" height="120" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="410" y="290">第二项</text>
+                        <text fill="#2ecc71" font-size="16" text-anchor="middle" x="410" y="320">fg'</text>
+                        <text fill="#95a5a6" font-size="14" text-anchor="middle" x="410" y="350">前不导后导</text>
 
-                        <!-- 链式 -->
-                        <rect x="320" y="280" width="180" height="150" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="410" y="310">链式</text>
-                        <text fill="#9b59b6" font-size="16" text-anchor="middle" x="410" y="340">f'(g)·g'(x)</text>
-
-                        <!-- 中心连接 -->
-                        <circle cx="300" cy="260" r="40" fill="rgba(241,196,15,0.3)" stroke="#f39c12" stroke-width="3">
-                            <animate attributeName="r" dur="2s" values="40;50;40" repeatCount="indefinite"/>
-                        </circle>
-                        <text fill="#f1c40f" font-size="18" text-anchor="middle" x="300" y="268">求导</text>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="430">记住口诀!</text>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- 第4页:综合题1 - 链式法则 -->
+        <!-- 第9页:除法法则 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>综合练习1:链式法则</h2>
-                    <h3>例题</h3>
-                    <p>求 $y = \ln(\sin(x^2 + 1))$ 的导数</p>
-
-                    <p><strong>解题步骤:</strong></p>
-                    <p style="margin-left: 30px;">1. 识别复合层次:</p>
-                    <p style="margin-left: 50px;">外层: $\ln u$, 其中 $u = \sin(x^2+1)$</p>
-                    <p style="margin-left: 50px;">中层: $\sin v$, 其中 $v = x^2+1$</p>
-                    <p style="margin-left: 50px;">内层: $v = x^2+1$</p>
-
-                    <p style="margin-left: 30px;">2. 逐层求导:</p>
+                    <h2>运算法则(三):除法法则</h2>
+                    
+                    <h3>除法求导公式</h3>
                     <div class="math-formula">
-                        $$y' = \frac{1}{\sin(x^2+1)} \cdot \cos(x^2+1) \cdot 2x$$
+                        $$\\left(\\frac{f}{g}\\right)' = \\frac{f'g - fg'}{g^2}$$
                     </div>
 
-                    <p style="margin-left: 30px;">3. 化简:</p>
-                    <div class="math-formula">
-                        $$y' = 2x \cot(x^2+1)$$
-                    </div>
+                    <h3>记忆口诀</h3>
+                    <p><strong>上导下 - 上下导</strong></p>
+                    <p><strong>除以下平方</strong></p>
+
+                    <h3>两个易错点</h3>
+                    <p>1. 是<strong>减号</strong>,不是加号!</p>
+                    <p>2. 分母要<strong>平方</strong>!</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">复合函数分解</text>
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">除法法则</text>
 
-                        <!-- 外层 ln -->
-                        <circle cx="300" cy="120" r="70" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="125">ln</text>
-                        <text fill="#f39c12" font-size="14" x="380" y="125">→ 1/u</text>
+                        <rect x="100" y="130" width="400" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="165">(f/g)' =</text>
+                        <text fill="#2ecc71" font-size="18" text-anchor="middle" x="300" y="200">(f'g - fg') / g²</text>
 
-                        <line x1="300" y1="190" x2="300" y2="230" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow4)"/>
+                        <rect x="100" y="260" width="180" height="80" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="190" y="295">易错点1</text>
+                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="190" y="320">是减号!</text>
 
-                        <!-- 中层 sin -->
-                        <circle cx="300" cy="270" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="275">sin</text>
-                        <text fill="#3498db" font-size="14" x="380" y="275">→ cos</text>
+                        <rect x="320" y="260" width="180" height="80" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="410" y="295">易错点2</text>
+                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="410" y="320">分母平方!</text>
 
-                        <line x1="300" y1="330" x2="300" y2="360" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow4)"/>
+                        <circle cx="300" cy="400" r="40" fill="none" stroke="#e74c3c" stroke-width="4">
+                            <animate attributeName="r" dur="2s" values="40;50;40" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#e74c3c" font-size="30" text-anchor="middle" x="300" y="415">!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-                        <!-- 内层 x²+1 -->
-                        <circle cx="300" cy="400" r="50" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="405">x²+1</text>
-                        <text fill="#e74c3c" font-size="14" x="380" y="405">→ 2x</text>
+        <!-- 第10页:链式法则 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>运算法则(四):链式法则</h2>
+                    
+                    <h3>复合函数求导</h3>
+                    <div class="math-formula">
+                        $$(f(g(x)))' = f'(g(x)) \\cdot g'(x)$$
+                    </div>
 
-                        <!-- 结果框 -->
-                        <rect x="50" y="450" width="500" height="40" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="5"/>
-                        <text fill="#1abc9c" font-size="16" text-anchor="middle" x="300" y="475">y' = (1/sin)·cos·2x = 2x cot(x²+1)</text>
+                    <h3>核心思想</h3>
+                    <p><strong>从外到内,逐层求导</strong></p>
+
+                    <h3>最易错的法则!</h3>
+                    <p>常见错误:</p>
+                    <p>$(\\sin(2x))' = \\cos(2x)$ ❌</p>
+                    <p>正确答案:</p>
+                    <p>$(\\sin(2x))' = \\cos(2x) \\cdot 2$ ✓</p>
+                    <p style="color: #e74c3c;">不要忘记内层导数!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">链式法则</text>
+
+                        <rect x="100" y="120" width="400" height="90" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="155">(f(g(x)))'</text>
+                        <text fill="#9b59b6" font-size="18" text-anchor="middle" x="300" y="185">= f'(g(x)) · g'(x)</text>
+
+                        <circle cx="200" cy="280" r="50" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="50;60;50" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="200" y="288">外层导数</text>
+
+                        <line x1="250" y1="280" x2="350" y2="280" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow10)"/>
+
+                        <circle cx="400" cy="280" r="50" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="50;60;50" repeatCount="indefinite" begin="0.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="400" y="288">内层导数</text>
+
+                        <rect x="100" y="370" width="400" height="60" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#e74c3c" font-size="16" text-anchor="middle" x="300" y="408">别忘了内层导数!</text>
 
                         <defs>
-                            <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <marker id="arrow10" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
                                 <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
                             </marker>
                         </defs>
@@ -305,188 +488,463 @@
             </div>
         </div>
 
-        <!-- 第5页:综合题2 - 乘除混合 -->
+        <!-- 第11页:综合题1-识别结构 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>综合练习2:乘除混合</h2>
+                    <h2>综合练习1:链式法则应用</h2>
+                    
                     <h3>例题</h3>
-                    <p>求 $y = \frac{x^2 e^x}{\ln x}$ 的导数</p>
+                    <p>求 $y = \\ln(\\sin(x^2 + 1))$ 的导数</p>
 
-                    <p><strong>分析:</strong> 先用<strong>除法法则</strong>,分子再用<strong>乘法法则</strong></p>
+                    <h3>第一步:识别复合层次</h3>
+                    <p>这是一个<strong>三层复合函数</strong></p>
+                    <ul style="margin-left: 30px;">
+                        <li>外层: $\\ln u$</li>
+                        <li>中层: $\\sin v$</li>
+                        <li>内层: $v = x^2+1$</li>
+                    </ul>
 
-                    <p><strong>解:</strong></p>
-                    <p style="margin-left: 30px;">令 $u = x^2 e^x$, $v = \ln x$</p>
-
-                    <p style="margin-left: 30px;">先求 $u'$:</p>
-                    <div class="math-formula">
-                        $$u' = (x^2)' e^x + x^2 (e^x)' = 2x e^x + x^2 e^x$$
-                    </div>
-
-                    <p style="margin-left: 30px;">再求 $v'$:</p>
-                    <div class="math-formula">
-                        $$v' = \frac{1}{x}$$
-                    </div>
-
-                    <p style="margin-left: 30px;">最后用除法法则:</p>
-                    <div class="math-formula">
-                        $$y' = \frac{u'v - uv'}{v^2} = \frac{(2x+x^2)e^x \ln x - x^2 e^x \cdot \frac{1}{x}}{(\ln x)^2}$$
-                    </div>
+                    <p style="margin-top: 20px;">理清层次是关键!</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">解题步骤拆解</text>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">复合函数分解</text>
 
-                        <!-- 步骤1:识别结构 -->
-                        <g opacity="0">
-                            <rect x="80" y="100" width="440" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="18" x="100" y="130">步骤1: 识别结构</text>
-                            <text fill="#3498db" font-size="16" x="100" y="155">除法 → (x²e^x) / (ln x)</text>
-                            <animate attributeName="opacity" dur="12s" values="0;1;1;1;1;1" repeatCount="indefinite"/>
-                        </g>
+                        <circle cx="300" cy="140" r="70" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="145">外层: ln</text>
 
-                        <!-- 步骤2:分子求导 -->
-                        <g opacity="0">
-                            <rect x="80" y="190" width="440" height="70" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="18" x="100" y="220">步骤2: 分子求导(乘法)</text>
-                            <text fill="#2ecc71" font-size="16" x="100" y="245">(x²e^x)' = 2xe^x + x²e^x</text>
-                            <animate attributeName="opacity" dur="12s" values="0;0;1;1;1;1" repeatCount="indefinite"/>
-                        </g>
+                        <line x1="300" y1="210" x2="300" y2="250" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow11)"/>
 
-                        <!-- 步骤3:分母求导 -->
-                        <g opacity="0">
-                            <rect x="80" y="280" width="440" height="70" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="18" x="100" y="310">步骤3: 分母求导</text>
-                            <text fill="#9b59b6" font-size="16" x="100" y="335">(ln x)' = 1/x</text>
-                            <animate attributeName="opacity" dur="12s" values="0;0;0;1;1;1" repeatCount="indefinite"/>
-                        </g>
+                        <circle cx="300" cy="300" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="305">中层: sin</text>
 
-                        <!-- 步骤4:除法法则 -->
-                        <g opacity="0">
-                            <rect x="80" y="370" width="440" height="70" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
-                            <text fill="#ecf0f1" font-size="18" x="100" y="400">步骤4: 除法法则</text>
-                            <text fill="#e74c3c" font-size="14" x="100" y="425">(u'v - uv') / v²</text>
-                            <animate attributeName="opacity" dur="12s" values="0;0;0;0;1;1" repeatCount="indefinite"/>
-                        </g>
+                        <line x1="300" y1="360" x2="300" y2="390" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow11)"/>
+
+                        <circle cx="300" cy="430" r="50" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="435">内层: x²+1</text>
+
+                        <defs>
+                            <marker id="arrow11" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                            </marker>
+                        </defs>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- 第6页:微分应用 -->
+        <!-- 第12页:综合题1-逐层求导 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>微分的应用</h2>
-                    <h3>例题:近似计算</h3>
-                    <p>用微分估算 $\sqrt{1.05}$ 的近似值</p>
-
-                    <p><strong>解:</strong></p>
-                    <p style="margin-left: 30px;">设 $f(x) = \sqrt{x}$, 在 $x = 1$ 附近</p>
-                    <p style="margin-left: 30px;">$f'(x) = \frac{1}{2\sqrt{x}}$, $f'(1) = \frac{1}{2}$</p>
-
-                    <p style="margin-left: 30px;">取 $x_0 = 1$, $\Delta x = 0.05$</p>
-
+                    <h2>综合练习1:逐层求导</h2>
+                    
+                    <h3>第二步:从外到内求导</h3>
+                    
+                    <p>外层 $\\ln$ 的导数:</p>
                     <div class="math-formula">
-                        $$f(1.05) \approx f(1) + f'(1) \cdot 0.05$$
-                    </div>
-                    <div class="math-formula">
-                        $$= 1 + \frac{1}{2} \times 0.05 = 1.025$$
+                        $$\\frac{1}{\\sin(x^2+1)}$$
                     </div>
 
-                    <p style="margin-top: 20px; color: #95a5a6;">实际值: $\sqrt{1.05} = 1.024695...$</p>
-                    <p style="color: #95a5a6;">误差很小!</p>
+                    <p>中层 $\\sin$ 的导数:</p>
+                    <div class="math-formula">
+                        $$\\cos(x^2+1)$$
+                    </div>
+
+                    <p>内层 $x^2+1$ 的导数:</p>
+                    <div class="math-formula">
+                        $$2x$$
+                    </div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">微分近似原理</text>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">逐层求导</text>
+
+                        <rect x="80" y="100" width="440" height="70" fill="rgba(241,196,15,0.1)" stroke="#f39c12" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" x="100" y="130">外层 ln → 1/u</text>
+                        <text fill="#f39c12" font-size="14" x="100" y="155">1/sin(x²+1)</text>
+
+                        <rect x="80" y="190" width="440" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" x="100" y="220">中层 sin → cos</text>
+                        <text fill="#3498db" font-size="14" x="100" y="245">cos(x²+1)</text>
+
+                        <rect x="80" y="280" width="440" height="70" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" x="100" y="310">内层 x²+1 → 2x</text>
+                        <text fill="#e74c3c" font-size="14" x="100" y="335">2x</text>
+
+                        <text fill="#2ecc71" font-size="18" text-anchor="middle" x="300" y="400">三层导数都求出来了!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第13页:综合题1-最终答案 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合练习1:最终答案</h2>
+                    
+                    <h3>第三步:相乘并化简</h3>
+                    
+                    <p>根据链式法则,三层导数相乘:</p>
+                    <div class="math-formula">
+                        $$y' = \\frac{1}{\\sin(x^2+1)} \\cdot \\cos(x^2+1) \\cdot 2x$$
+                    </div>
+
+                    <p>化简:</p>
+                    <div class="math-formula">
+                        $$y' = 2x \\cdot \\frac{\\cos(x^2+1)}{\\sin(x^2+1)}$$
+                    </div>
+
+                    <p>最终答案:</p>
+                    <div class="math-formula">
+                        $$y' = 2x \\cot(x^2+1)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">最终答案</text>
+
+                        <rect x="80" y="120" width="440" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="155">y' = (1/sin)·cos·2x</text>
+                        <text fill="#2ecc71" font-size="16" text-anchor="middle" x="300" y="185">三层相乘</text>
+
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="260">↓ 化简</text>
+
+                        <rect x="80" y="300" width="440" height="80" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="4" rx="10">
+                            <animate attributeName="stroke-width" dur="2s" values="4;6;4" repeatCount="indefinite"/>
+                        </rect>
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="350">y' = 2x cot(x²+1)</text>
+
+                        <text fill="#2ecc71" font-size="18" text-anchor="middle" x="300" y="430">完成!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第14页:综合题2-题目分析 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合练习2:乘除混合</h2>
+                    
+                    <h3>例题</h3>
+                    <p>求 $y = \\frac{x^2 e^x}{\\ln x}$ 的导数</p>
+
+                    <h3>分析结构</h3>
+                    <p>这是一个<strong>除法</strong></p>
+                    <p>分子: $x^2 e^x$ (乘法)</p>
+                    <p>分母: $\\ln x$</p>
+
+                    <h3>解题策略</h3>
+                    <p>1. 先用<strong>除法法则</strong></p>
+                    <p>2. 分子再用<strong>乘法法则</strong></p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">结构分析</text>
+
+                        <rect x="150" y="140" width="300" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="170">分子: x²e^x</text>
+                        <text fill="#3498db" font-size="14" text-anchor="middle" x="300" y="200">(乘法)</text>
+
+                        <line x1="200" y1="220" x2="400" y2="220" stroke="#f39c12" stroke-width="4"/>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="450" y="230">除法</text>
+
+                        <rect x="150" y="240" width="300" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="270">分母: ln x</text>
+                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="300">(简单)</text>
+
+                        <rect x="100" y="360" width="400" height="80" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="395">先除法,后乘法</text>
+                        <text fill="#9b59b6" font-size="14" text-anchor="middle" x="300" y="420">分步处理</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第15页:综合题2-分子求导 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合练习2:分子求导</h2>
+                    
+                    <h3>第一步:求分子的导数</h3>
+                    <p>令 $u = x^2 e^x$</p>
+                    
+                    <p>用<strong>乘法法则</strong>:</p>
+                    <div class="math-formula">
+                        $$u' = (x^2)' e^x + x^2 (e^x)'$$
+                    </div>
+
+                    <p>计算:</p>
+                    <div class="math-formula">
+                        $$u' = 2x e^x + x^2 e^x$$
+                    </div>
+
+                    <p>提取公因子:</p>
+                    <div class="math-formula">
+                        $$u' = (2x + x^2)e^x$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">分子求导(乘法)</text>
+
+                        <rect x="100" y="120" width="400" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="160">(x²e^x)' = (x²)'e^x + x²(e^x)'</text>
+
+                        <text fill="#f39c12" font-size="22" text-anchor="middle" x="300" y="230">↓</text>
+
+                        <rect x="100" y="260" width="400" height="70" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="300">= 2xe^x + x²e^x</text>
+
+                        <text fill="#f39c12" font-size="22" text-anchor="middle" x="300" y="360">↓ 提取公因子</text>
+
+                        <rect x="100" y="390" width="400" height="70" fill="rgba(241,196,15,0.1)" stroke="#f39c12" stroke-width="3" rx="8"/>
+                        <text fill="#f1c40f" font-size="18" text-anchor="middle" x="300" y="430">= (2x + x²)e^x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第16页:综合题2-除法法则 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合练习2:应用除法法则</h2>
+                    
+                    <h3>第二步:求分母的导数</h3>
+                    <p>令 $v = \\ln x$</p>
+                    <div class="math-formula">
+                        $$v' = \\frac{1}{x}$$
+                    </div>
+
+                    <h3>第三步:用除法法则</h3>
+                    <div class="math-formula">
+                        $$y' = \\frac{u'v - uv'}{v^2}$$
+                    </div>
+
+                    <p>代入:</p>
+                    <div class="math-formula">
+                        $$y' = \\frac{(2x+x^2)e^x \\ln x - x^2 e^x \\cdot \\frac{1}{x}}{(\\ln x)^2}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">除法法则</text>
+
+                        <rect x="100" y="120" width="400" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="150">分子导数: u' = (2x+x²)e^x</text>
+                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="180">已求出</text>
+
+                        <rect x="100" y="220" width="400" height="80" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="250">分母导数: v' = 1/x</text>
+                        <text fill="#9b59b6" font-size="14" text-anchor="middle" x="300" y="280">简单</text>
+
+                        <rect x="80" y="330" width="440" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="365">除法法则:</text>
+                        <text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="395">y' = (u'v - uv') / v²</text>
+                        <text fill="#95a5a6" font-size="12" text-anchor="middle" x="300" y="415">代入计算</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第17页:微分概念 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>微分的概念</h2>
+                    
+                    <h3>微分定义</h3>
+                    <div class="math-formula">
+                        $$dy = f'(x)dx$$
+                    </div>
+
+                    <h3>几何意义</h3>
+                    <p>微分 = 切线上的增量</p>
+                    <p>导数 = 切线的斜率</p>
+
+                    <h3>近似公式</h3>
+                    <div class="math-formula">
+                        $$f(x + \\Delta x) \\approx f(x) + f'(x)\\Delta x$$
+                    </div>
+                    <p>当$\\Delta x$很小时</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">微分的几何意义</text>
 
                         <!-- 坐标系 -->
                         <line x1="100" y1="350" x2="550" y2="350" stroke="#ecf0f1" stroke-width="2"/>
                         <line x1="200" y1="100" x2="200" y2="400" stroke="#ecf0f1" stroke-width="2"/>
 
-                        <!-- 曲线 y = √x -->
-                        <path d="M 200 350 Q 300 180 450 120"
+                        <!-- 曲线 -->
+                        <path d="M 200 350 Q 300 200 450 150"
                               fill="none" stroke="#3498db" stroke-width="3"/>
-                        <text fill="#3498db" font-size="16" x="460" y="120">y = √x</text>
+                        <text fill="#3498db" font-size="14" x="460" y="150">y=f(x)</text>
 
-                        <!-- 点 (1, 1) -->
-                        <circle cx="300" cy="250" r="6" fill="#e74c3c"/>
-                        <text fill="#e74c3c" font-size="14" x="260" y="235">(1, 1)</text>
-                        <line x1="300" y1="350" x2="300" y2="355" stroke="#e74c3c" stroke-width="2"/>
-                        <text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="375">1</text>
+                        <!-- 点和切线 -->
+                        <circle cx="300" cy="260" r="5" fill="#e74c3c"/>
+                        <line x1="250" y1="285" x2="400" y2="210" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text fill="#2ecc71" font-size="14" x="380" y="200">切线</text>
 
-                        <!-- 切线 -->
-                        <line x1="250" y1="275" x2="400" y2="200" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"/>
-                        <text fill="#2ecc71" font-size="14" x="380" y="190">切线</text>
+                        <!-- dy标注 -->
+                        <line x1="330" y1="260" x2="330" y2="240" stroke="#f39c12" stroke-width="3"/>
+                        <text fill="#f39c12" font-size="14" x="340" y="250">dy</text>
 
-                        <!-- Δx -->
-                        <line x1="300" y1="355" x2="330" y2="355" stroke="#f39c12" stroke-width="3"/>
-                        <text fill="#f39c12" font-size="14" text-anchor="middle" x="315" y="375">Δx=0.05</text>
-
-                        <!-- 近似点 -->
-                        <circle cx="330" cy="235" r="6" fill="#2ecc71"/>
-                        <text fill="#2ecc71" font-size="14" x="340" y="235">≈ 1.025</text>
-
-                        <!-- 说明 -->
-                        <rect x="100" y="420" width="400" height="60" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="450">切线近似曲线</text>
-                        <text fill="#1abc9c" font-size="16" text-anchor="middle" x="300" y="470">f(x+Δx) ≈ f(x) + f'(x)·Δx</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="450">切线增量 ≈ 函数增量</text>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- 第7页:常见易错点 -->
+        <!-- 第18页:微分应用-近似计算 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>常见易错点总结</h2>
+                    <h2>微分应用:近似计算</h2>
+                    
+                    <h3>例题</h3>
+                    <p>用微分估算 $\\sqrt{1.05}$ 的近似值</p>
 
-                    <h3>1. 链式法则遗漏</h3>
-                    <p><strong>错误:</strong> $(\sin(2x))' = \cos(2x)$ ❌</p>
-                    <p><strong>正确:</strong> $(\sin(2x))' = \cos(2x) \cdot 2 = 2\cos(2x)$ ✓</p>
-                    <p style="color: #e74c3c;">不要忘记内层函数的导数!</p>
+                    <h3>解题步骤</h3>
+                    <p>设 $f(x) = \\sqrt{x}$</p>
+                    <p>在 $x = 1$ 附近计算</p>
 
-                    <h3>2. 除法法则符号</h3>
-                    <p><strong>错误:</strong> $\left(\frac{f}{g}\right)' = \frac{f'g + fg'}{g^2}$ ❌</p>
-                    <p><strong>正确:</strong> $\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$ ✓</p>
-                    <p style="color: #e74c3c;">是减号,不是加号!</p>
+                    <p>1. 求导数:</p>
+                    <div class="math-formula">
+                        $$f'(x) = \\frac{1}{2\\sqrt{x}}$$
+                    </div>
 
-                    <h3>3. 对数底数</h3>
-                    <p><strong>错误:</strong> $(\log_2 x)' = \frac{1}{x}$ ❌</p>
-                    <p><strong>正确:</strong> $(\log_2 x)' = \frac{1}{x \ln 2}$ ✓</p>
-                    <p style="color: #e74c3c;">不是自然对数时要除以 $\ln a$!</p>
+                    <p>2. 在$x=1$处:</p>
+                    <div class="math-formula">
+                        $$f'(1) = \\frac{1}{2}$$
+                    </div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">易错点警示</text>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">近似计算步骤</text>
 
-                        <!-- 错误1 -->
-                        <g>
-                            <rect x="80" y="100" width="440" height="90" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                            <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="130">❌</text>
-                            <text fill="#ecf0f1" font-size="16" x="100" y="160">链式法则</text>
-                            <text fill="#e74c3c" font-size="14" x="100" y="180">别忘了内层导数!</text>
-                        </g>
+                        <rect x="100" y="120" width="400" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="150">函数: f(x) = √x</text>
+                        <text fill="#3498db" font-size="14" text-anchor="middle" x="300" y="180">在x=1附近</text>
 
-                        <!-- 错误2 -->
-                        <g>
-                            <rect x="80" y="210" width="440" height="90" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                            <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="240">❌</text>
-                            <text fill="#ecf0f1" font-size="16" x="100" y="270">除法法则</text>
-                            <text fill="#e74c3c" font-size="14" x="100" y="290">是减号不是加号!</text>
-                        </g>
+                        <rect x="100" y="220" width="400" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="250">导数: f'(x) = 1/(2√x)</text>
+                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="280">f'(1) = 1/2</text>
 
-                        <!-- 错误3 -->
-                        <g>
-                            <rect x="80" y="320" width="440" height="90" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                            <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="350">❌</text>
-                            <text fill="#ecf0f1" font-size="16" x="100" y="380">对数底数</text>
-                            <text fill="#e74c3c" font-size="14" x="100" y="400">非e底要除ln a!</text>
-                        </g>
+                        <rect x="100" y="320" width="400" height="80" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="350">增量: Δx = 0.05</text>
+                        <text fill="#9b59b6" font-size="14" text-anchor="middle" x="300" y="380">很小的增量</text>
 
-                        <!-- 警告标志 -->
+                        <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="440">准备应用近似公式</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第19页:微分应用-计算结果 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>微分应用:计算结果</h2>
+                    
+                    <h3>应用近似公式</h3>
+                    <p>取 $x_0 = 1$, $\\Delta x = 0.05$</p>
+
+                    <div class="math-formula">
+                        $$f(1.05) \\approx f(1) + f'(1) \\cdot 0.05$$
+                    </div>
+
+                    <p>代入数值:</p>
+                    <div class="math-formula">
+                        $$\\sqrt{1.05} \\approx 1 + \\frac{1}{2} \\times 0.05$$
+                    </div>
+
+                    <div class="math-formula">
+                        $$= 1 + 0.025 = 1.025$$
+                    </div>
+
+                    <p style="margin-top: 20px; color: #2ecc71;">近似值: <strong>1.025</strong></p>
+                    <p style="color: #95a5a6;">实际值: 1.024695...</p>
+                    <p style="color: #95a5a6;">误差非常小!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="50">计算过程</text>
+
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="350" x2="550" y2="350" stroke="#ecf0f1" stroke-width="2"/>
+                        <line x1="200" y1="150" x2="200" y2="400" stroke="#ecf0f1" stroke-width="2"/>
+
+                        <!-- 曲线 -->
+                        <path d="M 200 350 Q 300 200 450 140"
+                              fill="none" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#3498db" font-size="14" x="460" y="140">y=√x</text>
+
+                        <!-- 点(1,1) -->
+                        <circle cx="300" cy="250" r="6" fill="#e74c3c"/>
+                        <text fill="#e74c3c" font-size="14" x="260" y="235">(1, 1)</text>
+
+                        <!-- 切线 -->
+                        <line x1="250" y1="275" x2="400" y2="200" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"/>
+
+                        <!-- Δx -->
+                        <line x1="300" y1="355" x2="330" y2="355" stroke="#f39c12" stroke-width="3"/>
+                        <text fill="#f39c12" font-size="14" text-anchor="middle" x="315" y="375">0.05</text>
+
+                        <!-- 近似点 -->
+                        <circle cx="330" cy="235" r="6" fill="#2ecc71"/>
+                        <text fill="#2ecc71" font-size="14" x="340" y="235">≈1.025</text>
+
+                        <text fill="#2ecc71" font-size="16" text-anchor="middle" x="300" y="440">切线近似效果很好!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第20页:易错点1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>易错点1:链式法则遗漏</h2>
+                    
+                    <h3>常见错误</h3>
+                    <p><strong>错误:</strong></p>
+                    <div class="math-formula">
+                        $$(\\sin(2x))' = \\cos(2x)$$
+                    </div>
+                    <p style="color: #e74c3c;">❌ 忘记了内层导数!</p>
+
+                    <h3>正确做法</h3>
+                    <p><strong>正确:</strong></p>
+                    <div class="math-formula">
+                        $$(\\sin(2x))' = \\cos(2x) \\cdot 2$$
+                    </div>
+                    <p style="color: #2ecc71;">✓ 不要忘记内层的2!</p>
+
+                    <p style="margin-top: 20px;"><strong>记住:</strong></p>
+                    <p>复合函数求导,<strong>内层导数不能忘</strong>!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">易错点1</text>
+
+                        <rect x="100" y="130" width="400" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="4" rx="10"/>
+                        <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="170">❌</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="200">(sin 2x)' = cos 2x</text>
+                        <text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="220">忘记内层导数</text>
+
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="270">↓</text>
+
+                        <rect x="100" y="300" width="400" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="4" rx="10"/>
+                        <text fill="#2ecc71" font-size="28" text-anchor="middle" x="300" y="340">✓</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="370">(sin 2x)' = cos 2x · 2</text>
+                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="390">别忘了2!</text>
+
                         <circle cx="550" cy="250" r="35" fill="none" stroke="#e74c3c" stroke-width="4">
                             <animate attributeName="r" dur="2s" values="35;45;35" repeatCount="indefinite"/>
                         </circle>
@@ -496,10 +954,105 @@
             </div>
         </div>
 
-        <!-- 第8页:总结 -->
+        <!-- 第21页:易错点2 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
+                    <h2>易错点2:除法法则符号</h2>
+                    
+                    <h3>常见错误</h3>
+                    <p><strong>错误:</strong></p>
+                    <div class="math-formula">
+                        $$\\left(\\frac{f}{g}\\right)' = \\frac{f'g + fg'}{g^2}$$
+                    </div>
+                    <p style="color: #e74c3c;">❌ 用了加号!</p>
+
+                    <h3>正确做法</h3>
+                    <p><strong>正确:</strong></p>
+                    <div class="math-formula">
+                        $$\\left(\\frac{f}{g}\\right)' = \\frac{f'g - fg'}{g^2}$$
+                    </div>
+                    <p style="color: #2ecc71;">✓ 是减号!</p>
+
+                    <p style="margin-top: 20px;"><strong>记住:</strong></p>
+                    <p>除法法则是<strong>减号</strong>,不是加号!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">易错点2</text>
+
+                        <rect x="100" y="130" width="400" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="4" rx="10"/>
+                        <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="170">❌</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="200">(f/g)' = (f'g + fg')/g²</text>
+                        <text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="220">用了加号</text>
+
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="270">↓</text>
+
+                        <rect x="100" y="300" width="400" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="4" rx="10"/>
+                        <text fill="#2ecc71" font-size="28" text-anchor="middle" x="300" y="340">✓</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="370">(f/g)' = (f'g - fg')/g²</text>
+                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="390">是减号!</text>
+
+                        <text fill="#e74c3c" font-size="32" text-anchor="middle" x="550" y="250">-</text>
+                        <circle cx="550" cy="235" r="40" fill="none" stroke="#e74c3c" stroke-width="4">
+                            <animate attributeName="r" dur="2s" values="40;50;40" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第22页:易错点3 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>易错点3:对数底数</h2>
+                    
+                    <h3>常见错误</h3>
+                    <p><strong>错误:</strong></p>
+                    <div class="math-formula">
+                        $$(\\log_2 x)' = \\frac{1}{x}$$
+                    </div>
+                    <p style="color: #e74c3c;">❌ 忘记了底数!</p>
+
+                    <h3>正确做法</h3>
+                    <p><strong>正确:</strong></p>
+                    <div class="math-formula">
+                        $$(\\log_2 x)' = \\frac{1}{x \\ln 2}$$
+                    </div>
+                    <p style="color: #2ecc71;">✓ 要除以ln 2!</p>
+
+                    <p style="margin-top: 20px;"><strong>记住:</strong></p>
+                    <p>不是自然对数时,要<strong>除以ln a</strong>!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">易错点3</text>
+
+                        <rect x="100" y="130" width="400" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="4" rx="10"/>
+                        <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="170">❌</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="200">(log₂ x)' = 1/x</text>
+                        <text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="220">忘记底数</text>
+
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="270">↓</text>
+
+                        <rect x="100" y="300" width="400" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="4" rx="10"/>
+                        <text fill="#2ecc71" font-size="28" text-anchor="middle" x="300" y="340">✓</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="370">(log₂ x)' = 1/(x·ln 2)</text>
+                        <text fill="#2ecc71" font-size="14" text-anchor="middle" x="300" y="390">除以ln 2!</text>
+
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="550" y="250">ln a</text>
+                        <circle cx="550" cy="235" r="40" fill="none" stroke="#e74c3c" stroke-width="4">
+                            <animate attributeName="r" dur="2s" values="40;50;40" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第23页:知识总结 -->
+        <div class="slide">
+            <div class="slide-content">
                     <h2>第3章总结</h2>
                     <h3>核心知识点</h3>
                     <ul style="margin-left: 30px;">
