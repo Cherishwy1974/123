@@ -1006,9 +1006,10 @@
                             await new Promise(resolve => setTimeout(resolve, getSlideDuration(slide)));
                         }
 
-                        // 页面切换间隔
-                        const waitTime = slide === totalSlides ? 1500 : 200;
-                        await new Promise(resolve => setTimeout(resolve, waitTime));
+                        // 页面间等待时间
+                        if (slide < totalSlides) {
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                        }
 
                     } catch (error) {
                         console.error(`❌ 第${slide}页播放过程出错:`, error);
