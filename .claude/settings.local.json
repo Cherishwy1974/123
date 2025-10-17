@@ -34,7 +34,8 @@
       "Bash(then if grep -q \"async function startAutoPlay\" \"$file\")",
       "Bash(then if ! grep -A 20 \"async function startAutoPlay\" \"$file\")",
       "Bash(then echo \"$file\")",
-      "Bash(do [ -f \"$file\" ])"
+      "Bash(do [ -f \"$file\" ])",
+      "Bash(do if [[ \"$file\" != \"index.html\" ]])"
     ],
     "deny": [],
     "ask": []
