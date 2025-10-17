@@ -1,83 +1,145 @@
-﻿
 <!DOCTYPE html>
 <html lang="zh-CN">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   03_3.2_基本求导公式与四则运算
-  </title>
-  <!-- CDN资源 -->
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-  <script>
-   window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
-            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'], ignoreHtmlClass: 'tex2jax_ignore', processHtmlClass: 'tex2jax_process' },
-            startup: { ready: () => { console.log('✅ MathJax已加载并配置完成'); MathJax.startup.defaultReady(); } }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>03_3.2_基本求导公式与四则运算</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            svg: { fontCache: 'global' },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('✅ MathJax已加载');
+                    });
+                }
+            }
         };
-  </script>
-  <script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
-  <style>
-   * { margin: 0; padding: 0; box-sizing: border-box; }
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
-        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+
+        .avatar-container {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 975px;
+            height: 1105px;
+            overflow: hidden;
+            z-index: 50;
+            pointer-events: none;
+            background: transparent;
+        }
+
         .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+
         .slide-container { width: 100%; height: 100%; position: relative; }
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: transparent;
+        }
         .slide.active { opacity: 1; visibility: visible; }
-        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; width: 100%; height: 95%; }
-        .blackboard-text { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN', 'Songti SC', 'SimSun', '宋体', serif; color: #e0e0e0; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
-        .blackboard-text h1 { color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
-        .blackboard-text h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; }
-        .blackboard-text h3 { color: #1abc9c; }
-        .blackboard-text strong { color: #e74c3c; }
-        .blackboard-text .math-formula { background-color: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f39c12; font-size: 20px; }
-        .animation-pane { position: relative; overflow: hidden; background: transparent; }
+
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+
+        .chalkboard {
+            flex: 0 0 45%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .chalkboard h2 {
+            color: #f1c40f;
+            border-bottom: 2px solid #f39c12;
+            font-size: 28px;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .chalkboard h3 {
+            color: #1abc9c;
+            font-size: 22px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .chalkboard p, .chalkboard li {
+            color: #e0e0e0;
+            font-size: 18px;
+            line-height: 1.8;
+            margin: 8px 0;
+        }
+
+        .chalkboard strong { color: #e74c3c; }
+
+        .math-formula {
+            background-color: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #f39c12;
+            font-size: 20px;
+            color: #1abc9c;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .visualization {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
         .control-bar {
             position: fixed;
             left: -9999px;
             top: 50%;
             transform: translateY(-50%);
             width: 270px;
-            height: auto;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(15px);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             gap: 12px;
             z-index: 200;
             border-radius: 0 20px 20px 0;
             padding: 25px 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .control-bar:hover { 
-            left: -9999px; 
-            box-shadow: 0 12px 40px rgba(0,0,0,0.3); 
-        }
-        .control-bar::before {
-            content: '▶️';
-            position: absolute;
-            top: 50%;
-            right: -30px;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 12px 8px;
-            border-radius: 0 15px 15px 0;
-            font-size: 0.9rem;
-            writing-mode: vertical-lr;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #333;
-        }
+
         .btn {
             padding: 14px 22px;
             background: rgba(255, 255, 255, 0.25);
@@ -87,764 +149,636 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
             text-align: center;
-            backdrop-filter: blur(5px);
-            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
         }
-        .btn:hover { 
-            background: rgba(255, 255, 255, 0.35); 
-            transform: translateY(-3px); 
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+
+        .btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
         }
-        .btn.primary { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            color: #fff; 
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+
+        .subtitle-area {
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+            right: 50px;
+            min-height: 50px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            color: white;
+            font-size: 23px;
+            text-align: center;
+            padding: 15px 20px;
+            line-height: 1.4;
         }
-        .btn.primary:hover { 
-            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); 
-            box-shadow: 0 8px 25px rgba(102,126,234,0.4); 
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 100;
+            display: none;
         }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 0 20px; line-height: 1.4; }
-        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; transition: opacity 0.3s ease; display: none; }
+
         .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
-        .status-indicator.recording { background: rgba(244, 67, 54, 0.8); animation: pulse 1.5s infinite; display: block; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
         .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
-        .recording-mode .status-indicator { opacity: 0; pointer-events: none; }
-        .recording-mode .control-bar { left: -9999px; transition: left 0.5s ease; }
-        .nav-btn { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
-        .nav-btn:hover { background-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
-        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  </style>
- </head>
- <body class="blackboard">
-  <div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-  <div class="avatar-container">
-   <div class="wrapper" id="avatarWrapper">
-   </div>
-  </div>
-  <div class="slide-container flex-grow" id="slide-container">
-   <div class="slide active">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       基本求导公式与四则运算
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第3章 视频 3.2
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 常函数与幂函数求导
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 三角函数求导公式
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 指数与对数函数求导
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 导数的四则运算法则
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad3" x1="0%" x2="100%" y1="0%" y2="0%">
-         <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#f39c12;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <path d="M 50 400 Q 200 100 550 350" fill="none" stroke="url(#grad3)" stroke-width="4">
-       </path>
-       <line stroke="#3498db" stroke-width="3" x1="150" x2="450" y1="450" y2="50">
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.3;1;0.3">
-        </animate>
-       </line>
-       <circle cx="300" cy="180" fill="#2ecc71" r="10">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="8;15;8">
-        </animate>
-       </circle>
-       <text fill="#f39c12" font-family="serif" font-size="48" text-anchor="middle" x="300" y="50">
-        f'(x)
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6">
-        </animate>
-       </text>
-      </svg>
-     </div>
+    </style>
+</head>
+<body class="blackboard">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+
+    <div class="avatar-container">
+        <div class="wrapper" id="avatarWrapper"></div>
     </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       基本求导公式与四则运算
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第03章 视频 3.2
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 基本导数公式
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 四则运算法则
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 常见函数求导
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 公式综合应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#e67e22;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#d35400;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        f'
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#e67e22" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#d35400" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        求导
-       </text>
-      </svg>
-     </div>
+
+    <div class="slide-container">
+        <!-- 第1页：引入 - 为什么需要求导公式 -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>为什么需要求导公式?</h2>
+                    <p>上节课我们学习了导数的<strong>定义</strong>:</p>
+                    <div class="math-formula">
+                        $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+                    </div>
+                    <p>但是,如果每次都用定义来求导...</p>
+                    <h3>问题来了!</h3>
+                    <p>对于 $f(x) = x^{100}$,用定义求导需要展开:</p>
+                    <div class="math-formula">
+                        $(x+h)^{100} = x^{100} + 100x^{99}h + \cdots$
+                    </div>
+                    <p><strong>太慢了!</strong> 我们需要更高效的方法 — 求导公式!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#f39c12;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- 复杂计算示意 -->
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">用定义太慢...</text>
+
+                        <circle cx="150" cy="200" r="40" fill="none" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="40;50;40" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="210">(x+h)^100</text>
+
+                        <text fill="#f39c12" font-size="60" text-anchor="middle" x="300" y="220">→</text>
+
+                        <circle cx="450" cy="200" r="40" fill="none" stroke="#2ecc71" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="40;50;40" repeatCount="indefinite" begin="0.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="450" y="210">公式</text>
+
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="300" y="350">需要更高效的工具!</text>
+
+                        <path d="M 100 400 Q 200 350 500 400" fill="none" stroke="url(#grad1)" stroke-width="4">
+                            <animate attributeName="d" dur="3s"
+                                values="M 100 400 Q 200 350 500 400;
+                                        M 100 400 Q 200 420 500 400;
+                                        M 100 400 Q 200 350 500 400"
+                                repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页:幂函数求导公式 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基础公式一:幂函数</h2>
+                    <h3>核心公式</h3>
+                    <div class="math-formula">
+                        $$(x^n)' = nx^{n-1}$$
+                    </div>
+                    <p><strong>记忆方法:</strong> 指数变成系数,指数减1</p>
+
+                    <h3>特殊情况</h3>
+                    <ul style="margin-left: 30px;">
+                        <li>常数: $(C)' = 0$ (不变的东西导数为0)</li>
+                        <li>$x$: $(x)' = 1$</li>
+                        <li>$x^2$: $(x^2)' = 2x$</li>
+                        <li>$x^3$: $(x^3)' = 3x^2$</li>
+                        <li>$\frac{1}{x} = x^{-1}$: $(\frac{1}{x})' = -\frac{1}{x^2}$</li>
+                    </ul>
+
+                    <p style="margin-top: 20px;"><strong>推广:</strong> 对所有实数 $n$ 都成立!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">幂函数求导规律</text>
+
+                        <!-- 动画演示 x^3 的导数 -->
+                        <g opacity="0">
+                            <rect x="100" y="100" width="400" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="10"/>
+                            <text fill="#ecf0f1" font-size="24" x="150" y="145">x³ → 3x²</text>
+                            <animate attributeName="opacity" dur="8s" values="0;1;1;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <g opacity="0">
+                            <circle cx="200" cy="140" r="15" fill="#e74c3c"/>
+                            <text fill="#fff" font-size="14" text-anchor="middle" x="200" y="145">3</text>
+                            <text fill="#f39c12" font-size="16" x="220" y="145">指数下来</text>
+                            <animate attributeName="opacity" dur="8s" values="0;0;1;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <g opacity="0">
+                            <rect x="100" y="220" width="400" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="10"/>
+                            <text fill="#ecf0f1" font-size="24" x="150" y="265">x⁴ → 4x³</text>
+                            <animate attributeName="opacity" dur="8s" values="0;0;0;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <g opacity="0">
+                            <rect x="100" y="340" width="400" height="80" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="10"/>
+                            <text fill="#ecf0f1" font-size="24" x="150" y="385">1/x → -1/x²</text>
+                            <animate attributeName="opacity" dur="8s" values="0;0;0;0;1" repeatCount="indefinite"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3页:指数与对数函数 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基础公式二:指数与对数</h2>
+                    <h3>指数函数</h3>
+                    <div class="math-formula">
+                        $$(e^x)' = e^x$$
+                    </div>
+                    <p><strong>惊人的性质:</strong> $e^x$ 的导数还是自己!</p>
+                    <div class="math-formula">
+                        $$(a^x)' = a^x \ln a$$
+                    </div>
+
+                    <h3>对数函数</h3>
+                    <div class="math-formula">
+                        $$(\ln x)' = \frac{1}{x}$$
+                    </div>
+                    <p><strong>几何意义:</strong> $\ln x$ 的切线斜率 = $\frac{1}{x}$</p>
+                    <div class="math-formula">
+                        $$(\log_a x)' = \frac{1}{x \ln a}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#2ecc71;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">e^x 的神奇性质</text>
+
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="350" x2="500" y2="350" stroke="#ecf0f1" stroke-width="2"/>
+                        <line x1="150" y1="100" x2="150" y2="400" stroke="#ecf0f1" stroke-width="2"/>
+
+                        <!-- e^x 曲线 -->
+                        <path d="M 150 350 Q 250 250 350 150 Q 400 100 450 80"
+                              fill="none" stroke="url(#grad2)" stroke-width="3">
+                            <animate attributeName="opacity" dur="2s" values="0;1;1" repeatCount="indefinite"/>
+                        </path>
+
+                        <!-- 标注 -->
+                        <text fill="#3498db" font-size="18" x="380" y="120">y = e^x</text>
+                        <text fill="#2ecc71" font-size="18" x="380" y="150">y' = e^x</text>
+
+                        <circle cx="300" cy="200" r="8" fill="#e74c3c">
+                            <animate attributeName="r" dur="2s" values="8;12;8" repeatCount="indefinite"/>
+                        </circle>
+
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="450">导数 = 原函数!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4页:三角函数求导 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基础公式三:三角函数</h2>
+                    <h3>核心公式</h3>
+                    <div class="math-formula">
+                        $$(\sin x)' = \cos x$$
+                    </div>
+                    <div class="math-formula">
+                        $$(\cos x)' = -\sin x$$
+                    </div>
+                    <p><strong>记忆技巧:</strong> sin → cos (正变余)</p>
+                    <p style="margin-left: 30px;">cos → -sin (余变负正)</p>
+
+                    <h3>其他三角函数</h3>
+                    <div class="math-formula">
+                        $$(\tan x)' = \sec^2 x = \frac{1}{\cos^2 x}$$
+                    </div>
+                    <p style="color: #95a5a6; font-size: 16px;">提示: tan = sin/cos,用除法法则可推导</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">三角函数导数关系</text>
+
+                        <!-- sin x 和 cos x 的关系 -->
+                        <circle cx="200" cy="200" r="70" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="200" y="205">sin x</text>
+
+                        <line x1="270" y1="200" x2="330" y2="200" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="180">求导</text>
+
+                        <circle cx="400" cy="200" r="70" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="400" y="205">cos x</text>
+
+                        <!-- cos x 到 -sin x -->
+                        <line x1="400" y1="270" x2="400" y2="330" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
+                        <text fill="#f39c12" font-size="18" x="410" y="305">求导</text>
+
+                        <circle cx="400" cy="400" r="70" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="400" y="405">-sin x</text>
+
+                        <!-- -sin x 到 -cos x -->
+                        <line x1="330" y1="400" x2="270" y2="400" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="420">求导</text>
+
+                        <circle cx="200" cy="400" r="70" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="200" y="405">-cos x</text>
+
+                        <!-- -cos x 回到 sin x -->
+                        <line x1="200" y1="330" x2="200" y2="270" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
+                        <text fill="#f39c12" font-size="18" x="210" y="305">求导</text>
+
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5页:四则运算法则 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>求导的四则运算法则</h2>
+                    <h3>1. 线性性质(和差法则)</h3>
+                    <div class="math-formula">
+                        $$(af(x) \pm bg(x))' = af'(x) \pm bg'(x)$$
+                    </div>
+                    <p>常数可以提取,和差分别求导</p>
+
+                    <h3>2. 乘法法则</h3>
+                    <div class="math-formula">
+                        $$(f \cdot g)' = f' \cdot g + f \cdot g'$$
+                    </div>
+                    <p><strong>口诀:</strong> "前导后不导 + 前不导后导"</p>
+
+                    <h3>3. 除法法则</h3>
+                    <div class="math-formula">
+                        $$\left(\frac{f}{g}\right)' = \frac{f' \cdot g - f \cdot g'}{g^2}$$
+                    </div>
+                    <p><strong>注意:</strong> 分母要平方! 分子是"上导下 - 上下导"</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">乘法法则图解</text>
+
+                        <!-- f 和 g -->
+                        <rect x="100" y="100" width="150" height="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="175" y="135">f</text>
+
+                        <rect x="350" y="100" width="150" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="425" y="135">g</text>
+
+                        <text fill="#f39c12" font-size="30" text-anchor="middle" x="300" y="140">×</text>
+
+                        <!-- 求导箭头 -->
+                        <line x1="175" y1="160" x2="175" y2="220" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow2)"/>
+                        <line x1="425" y1="160" x2="425" y2="220" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow2)"/>
+
+                        <!-- 结果 -->
+                        <rect x="75" y="240" width="200" height="70" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="175" y="280">f' · g</text>
+
+                        <text fill="#f39c12" font-size="30" text-anchor="middle" x="300" y="280">+</text>
+
+                        <rect x="325" y="240" width="200" height="70" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="425" y="280">f · g'</text>
+
+                        <!-- 最终结果 -->
+                        <rect x="150" y="350" width="300" height="80" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="395">(f · g)' = f'g + fg'</text>
+
+                        <defs>
+                            <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第6页:综合练习1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合练习 1</h2>
+                    <h3>例题1: 乘法法则</h3>
+                    <p>求 $y = x^2 \cdot e^x$ 的导数</p>
+
+                    <p style="margin-top: 15px;"><strong>解:</strong> 使用乘法法则 $(fg)' = f'g + fg'$</p>
+                    <p style="margin-left: 30px;">令 $f = x^2$, $g = e^x$</p>
+                    <p style="margin-left: 30px;">则 $f' = 2x$, $g' = e^x$</p>
+
+                    <div class="math-formula">
+                        $$y' = 2x \cdot e^x + x^2 \cdot e^x = (2x + x^2)e^x$$
+                    </div>
+
+                    <h3 style="margin-top: 25px;">例题2: 除法法则</h3>
+                    <p>求 $y = \frac{\sin x}{x}$ 的导数</p>
+
+                    <p style="margin-top: 15px;"><strong>解:</strong> 使用除法法则</p>
+                    <div class="math-formula">
+                        $$y' = \frac{\cos x \cdot x - \sin x \cdot 1}{x^2} = \frac{x\cos x - \sin x}{x^2}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">例题1 演算过程</text>
+
+                        <!-- 步骤展示 -->
+                        <g opacity="0">
+                            <rect x="80" y="100" width="440" height="60" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="20" x="100" y="135">y = x² · e^x</text>
+                            <animate attributeName="opacity" dur="10s" values="0;1;1;1;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <g opacity="0">
+                            <rect x="80" y="180" width="440" height="60" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="20" x="100" y="215">f' · g = 2x · e^x</text>
+                            <animate attributeName="opacity" dur="10s" values="0;0;1;1;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <text fill="#f39c12" font-size="30" text-anchor="middle" x="300" y="275" opacity="0">
+                            +
+                            <animate attributeName="opacity" dur="10s" values="0;0;0;1;1;1" repeatCount="indefinite"/>
+                        </text>
+
+                        <g opacity="0">
+                            <rect x="80" y="290" width="440" height="60" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="20" x="100" y="325">f · g' = x² · e^x</text>
+                            <animate attributeName="opacity" dur="10s" values="0;0;0;1;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <line x1="100" y1="370" x2="500" y2="370" stroke="#f39c12" stroke-width="2" opacity="0">
+                            <animate attributeName="opacity" dur="10s" values="0;0;0;0;1;1" repeatCount="indefinite"/>
+                        </line>
+
+                        <g opacity="0">
+                            <rect x="80" y="390" width="440" height="70" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="8"/>
+                            <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="435">y' = (2x + x²)e^x</text>
+                            <animate attributeName="opacity" dur="10s" values="0;0;0;0;0;1" repeatCount="indefinite"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第7页:综合练习2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合练习 2</h2>
+                    <h3>例题3: 综合应用</h3>
+                    <p>求 $y = \frac{\ln x}{x^2}$ 的导数</p>
+
+                    <p style="margin-top: 15px;"><strong>解:</strong> 使用除法法则</p>
+                    <p style="margin-left: 30px;">$f = \ln x$, $f' = \frac{1}{x}$</p>
+                    <p style="margin-left: 30px;">$g = x^2$, $g' = 2x$</p>
+
+                    <div class="math-formula">
+                        $$y' = \frac{\frac{1}{x} \cdot x^2 - \ln x \cdot 2x}{(x^2)^2} = \frac{x - 2x\ln x}{x^4}$$
+                    </div>
+
+                    <div class="math-formula">
+                        $$= \frac{1 - 2\ln x}{x^3}$$
+                    </div>
+
+                    <p style="margin-top: 20px; color: #95a5a6;"><strong>技巧:</strong> 化简时约掉公因子 $x$</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">除法法则记忆</text>
+
+                        <rect x="150" y="100" width="300" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="150">
+                            <tspan x="300">f</tspan>
+                            <tspan dy="-10" font-size="18">─</tspan>
+                        </text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="170">g</text>
+
+                        <line x1="300" y1="180" x2="300" y2="240" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow3)"/>
+                        <text fill="#f39c12" font-size="18" x="310" y="215">求导</text>
+
+                        <rect x="100" y="260" width="400" height="150" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="300">
+                            <tspan x="300">f'g - fg'</tspan>
+                            <tspan dy="-8" font-size="18">─────</tspan>
+                        </text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="330">g²</text>
+
+                        <text fill="#e74c3c" font-size="18" x="120" y="370">↑</text>
+                        <text fill="#e74c3c" font-size="16" x="135" y="370">上导下</text>
+
+                        <text fill="#e74c3c" font-size="18" x="220" y="370">-</text>
+
+                        <text fill="#e74c3c" font-size="18" x="250" y="370">↑</text>
+                        <text fill="#e74c3c" font-size="16" x="265" y="370">上下导</text>
+
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="395">分母平方!</text>
+
+                        <defs>
+                            <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第8页:总结 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>本节总结</h2>
+                    <h3>基本公式(必须记住!)</h3>
+                    <ul style="margin-left: 30px;">
+                        <li>$(x^n)' = nx^{n-1}$</li>
+                        <li>$(e^x)' = e^x$, $(a^x)' = a^x \ln a$</li>
+                        <li>$(\ln x)' = \frac{1}{x}$</li>
+                        <li>$(\sin x)' = \cos x$, $(\cos x)' = -\sin x$</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px;">四则运算法则</h3>
+                    <ul style="margin-left: 30px;">
+                        <li>$(af \pm bg)' = af' \pm bg'$ (线性)</li>
+                        <li>$(fg)' = f'g + fg'$ (乘法)</li>
+                        <li>$(\frac{f}{g})' = \frac{f'g - fg'}{g^2}$ (除法)</li>
+                    </ul>
+
+                    <p style="margin-top: 25px; color: #f39c12;"><strong>下节预告:</strong></p>
+                    <p>链式法则 — 复合函数求导的利器!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">公式全家福</text>
+
+                        <circle cx="150" cy="200" r="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="205">幂函数</text>
+
+                        <circle cx="450" cy="200" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="0.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="450" y="205">指对数</text>
+
+                        <circle cx="150" cy="380" r="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="1s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="385">三角</text>
+
+                        <circle cx="450" cy="380" r="60" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="1.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="450" y="385">四则</text>
+
+                        <circle cx="300" cy="290" r="80" fill="rgba(241,196,15,0.3)" stroke="#f39c12" stroke-width="4">
+                            <animate attributeName="r" dur="3s" values="80;90;80" repeatCount="indefinite" begin="2s"/>
+                        </circle>
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="295">导数</text>
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="320">工具箱</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       基本求导公式与四则运算
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第03章 视频 3.2
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 基本导数公式
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 四则运算法则
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 常见函数求导
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 公式综合应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#e67e22;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#d35400;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        f'
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#e67e22" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#d35400" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        求导
-       </text>
-      </svg>
-     </div>
+
+    <div class="subtitle-area" id="subtitleArea">
+        欢迎学习基本求导公式与四则运算!点击开始讲课启动虚拟人讲师。
     </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-center">
-      <h1 class="text-6xl font-bold">
-       基本求导公式与四则运算法则
-      </h1>
-      <p class="text-2xl mt-4 text-gray-300">
-       第3章 视频 3.2
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-family="serif" font-size="60" text-anchor="middle" x="300" y="200">
-        d/dx
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
-        </animate>
-       </text>
-       <g transform="translate(300,300)">
-        <circle cx="-100" cy="0" fill="none" r="50" stroke="#3498db" stroke-width="3">
-         <animate attributename="r" dur="3s" repeatcount="indefinite" values="50;60;50">
-         </animate>
-        </circle>
-        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="-100" y="5">
-         x^n
-        </text>
-        <circle cx="100" cy="0" fill="none" r="50" stroke="#e74c3c" stroke-width="3">
-         <animate attributename="r" begin="1s" dur="3s" repeatcount="indefinite" values="50;60;50">
-         </animate>
-        </circle>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="100" y="5">
-         e^x
-        </text>
-       </g>
-      </svg>
-     </div>
+
+    <div class="control-bar">
+        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">
+            第 <span id="currentSlide">1</span> / <span id="totalSlides">8</span> 页
+        </div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
     </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       基本公式
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       <strong>
-        常见导数公式：
-       </strong>
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-3">
-       <li>
-        常数 $c$ → $0$
-       </li>
-       <li>
-        $x^n$ → $nx^{n-1}$
-       </li>
-       <li>
-        $e^x$ → $e^x$
-       </li>
-       <li>
-        $a^x$ → $a^x \ln a$
-       </li>
-       <li>
-        $\sin x$ → $\cos x$，$\cos x$ → $-\sin x$
-       </li>
-       <li>
-        $\ln x$ → $\frac{1}{x}$
-       </li>
-      </ul>
-      <p class="mt-8 text-gray-400">
-       这些导数公式是工具箱的基础，建议熟读并理解它们的来源。
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <rect fill="rgba(52,152,219,0.1)" height="400" stroke="#3498db" stroke-width="2" width="500" x="50" y="50">
-       </rect>
-       <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="100">
-        导数公式表
-       </text>
-       <g opacity="0">
-        <text fill="#ecf0f1" font-size="18" x="100" y="150">
-         x^2 →
-        </text>
-        <text fill="#2ecc71" font-size="18" x="250" y="150">
-         2x
-        </text>
-        <animate attributename="opacity" dur="7s" repeatcount="indefinite" values="0;1;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#ecf0f1" font-size="18" x="100" y="200">
-         e^x →
-        </text>
-        <text fill="#2ecc71" font-size="18" x="250" y="200">
-         e^x
-        </text>
-        <animate attributename="opacity" dur="7s" repeatcount="indefinite" values="0;0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#ecf0f1" font-size="18" x="100" y="250">
-         sin x →
-        </text>
-        <text fill="#2ecc71" font-size="18" x="250" y="250">
-         cos x
-        </text>
-        <animate attributename="opacity" dur="7s" repeatcount="indefinite" values="0;0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#ecf0f1" font-size="18" x="100" y="300">
-         ln x →
-        </text>
-        <text fill="#2ecc71" font-size="18" x="250" y="300">
-         1/x
-        </text>
-        <animate attributename="opacity" dur="7s" repeatcount="indefinite" values="0;0;0;0;1;1">
-        </animate>
-       </g>
-       <circle cx="480" cy="400" fill="none" r="30" stroke="#f39c12" stroke-width="2">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;40;30">
-        </animate>
-       </circle>
-       <text fill="#f39c12" font-size="16" text-anchor="middle" x="480" y="410">
-        背诵
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       四则求导法则
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       四则法则帮助我们处理复杂函数，只要遵循公式就不会出错。
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        <strong>
-         线性性：
-        </strong>
-        $(af+bg)'=af'+bg'$
-       </li>
-       <li>
-        <strong>
-         乘法：
-        </strong>
-        $(fg)'=f'g+fg'$
-       </li>
-       <li>
-        <strong>
-         除法：
-        </strong>
-        $\left(\frac{f}{g}\right)'=\frac{f'g-fg'}{g^2}$
-       </li>
-       <li>
-        <strong>
-         例：
-        </strong>
-        求 $y=(x^2+1)(e^x)$
-       </li>
-      </ul>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="2" width="200" x="80" y="80">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="180" y="125">
-        f
-       </text>
-       <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="2" width="200" x="320" y="80">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="420" y="125">
-        g
-       </text>
-       <line marker-end="url(#arrowGold)" stroke="#f39c12" stroke-width="3" x1="180" x2="180" y1="160" y2="220">
-       </line>
-       <line marker-end="url(#arrowGold)" stroke="#f39c12" stroke-width="3" x1="420" x2="420" y1="160" y2="220">
-       </line>
-       <text fill="#2ecc71" font-size="18" x="210" y="195">
-        f'
-       </text>
-       <text fill="#2ecc71" font-size="18" x="450" y="195">
-        g'
-       </text>
-       <rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="2" width="200" x="200" y="250">
-       </rect>
-       <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="295">
-        f'g + fg'
-       </text>
-       <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="380">
-        (fg)' 乘法法则
-       </text>
-       <defs>
-        <marker id="arrowGold" markerheight="10" markerunits="strokeWidth" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       典型练习
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       做题时要留意符号与分母，尤其是除法法则中的 $g^2$。
-      </p>
-      <div class="mt-6 space-y-4">
-       <p>
-        <strong>
-         练习 1：
-        </strong>
-        $y=\frac{\ln x}{x}$
-       </p>
-       <p class="text-gray-400">
-        答案：$y'=\frac{1-\ln x}{x^2}$
-       </p>
-       <p class="mt-4">
-        <strong>
-         练习 2：
-        </strong>
-        $y=\sin x \cdot \cos x$
-       </p>
-       <p class="text-gray-400">
-        答案：$y'=\cos^2 x - \sin^2 x$
-       </p>
-      </div>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="100">
-        练习1演算过程
-       </text>
-       <g opacity="0">
-        <text fill="#ecf0f1" font-size="18" x="120" y="160">
-         y = ln x / x
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#3498db" font-size="18" x="120" y="210">
-         分子: (ln x)' = 1/x
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#e74c3c" font-size="18" x="120" y="260">
-         分母: x' = 1
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <line stroke="#f39c12" stroke-width="2" x1="100" x2="500" y1="290" y2="290">
-        </line>
-        <text fill="#2ecc71" font-size="20" x="120" y="330">
-         y' = (1/x·x - ln x·1) / x²
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#f39c12" font-size="22" text-anchor="middle" x="300" y="390">
-         = (1 - ln x) / x²
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </g>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       链式法则预备
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       记住：链式法则等于"先外后内"，这是连接本节与下一节的桥梁。
-      </p>
-      <div class="text-center mt-10 math-formula">
-       $\frac{d}{dx}f(g(x))=f'(g(x))\cdot g'(x)$
-      </div>
-      <p class="mt-8 leading-relaxed">
-       <strong>
-        结构图：
-       </strong>
-       $x \to g(x) \to f(g(x))$
-      </p>
-      <p class="mt-4 text-gray-400">
-       例：$y=(3x^2+1)^4$
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <circle cx="150" cy="250" fill="rgba(52,152,219,0.2)" r="60" stroke="#3498db" stroke-width="3">
-       </circle>
-       <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="255">
-        x
-       </text>
-       <line marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="210" x2="290" y1="250" y2="250">
-       </line>
-       <text fill="#f39c12" font-size="16" text-anchor="middle" x="250" y="230">
-        g
-       </text>
-       <circle cx="350" cy="250" fill="rgba(231,76,60,0.2)" r="60" stroke="#e74c3c" stroke-width="3">
-       </circle>
-       <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="350" y="255">
-        g(x)
-       </text>
-       <line marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="350" x2="350" y1="310" y2="370">
-       </line>
-       <text fill="#f39c12" font-size="16" x="380" y="340">
-        f
-       </text>
-       <circle cx="350" cy="430" fill="rgba(46,204,113,0.2)" r="70" stroke="#2ecc71" stroke-width="3">
-       </circle>
-       <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="350" y="435">
-        f(g(x))
-       </text>
-       <text fill="#2ecc71" font-size="20" x="100" y="100">
-        先外层f'，再内层g'
-       </text>
-       <defs>
-        <marker id="arrow2" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       易错点与自检
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       <strong>
-        易错提醒：
-       </strong>
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        漏乘内层导数
-       </li>
-       <li>
-        把 $a^x$ 写成 $x^a$
-       </li>
-       <li>
-        对数求导忘记乘以 $x$ 的导数
-       </li>
-      </ul>
-      <p class="mt-8 leading-relaxed">
-       <strong>
-        自检：
-       </strong>
-       代入 $x=0$、$x=1$，判断导数符号是否与图像一致
-      </p>
-      <p class="mt-4 text-gray-400">
-       算完导数后，用特定值验证一下结果，不合理就回到步骤检查。
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="80">
-        ❌ 常见错误
-       </text>
-       <rect fill="rgba(231,76,60,0.1)" height="280" rx="10" stroke="#e74c3c" stroke-width="2" width="400" x="100" y="120">
-       </rect>
-       <g opacity="0">
-        <text fill="#ecf0f1" font-size="18" x="120" y="160">
-         错误: (x²+1)² → 2(x²+1)
-        </text>
-        <line stroke="#e74c3c" stroke-width="2" x1="120" x2="400" y1="170" y2="170">
-        </line>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#2ecc71" font-size="18" x="120" y="220">
-         正确: (x²+1)² → 2(x²+1)·2x
-        </text>
-        <text fill="#f39c12" font-size="16" x="200" y="250">
-         ↑ 内层导数
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <circle cx="300" cy="320" fill="rgba(241,196,15,0.2)" r="50" stroke="#f39c12" stroke-width="3">
-        </circle>
-        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="330">
-         记得
-        </text>
-        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="355">
-         检查
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       小结与作业
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       <strong>
-        今日 checklist：
-       </strong>
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        熟记公式
-       </li>
-       <li>
-        完成 3 道综合题
-       </li>
-      </ul>
-      <p class="mt-8 leading-relaxed">
-       <strong>
-        下节预告：
-       </strong>
-       链式法则实战 + 习题讲解
-      </p>
-      <p class="mt-4 text-gray-400">
-       把公式表随身带，下节课我们直接把它们用到更复杂的复合函数中。
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="100">
-        ✓ 今日任务
-       </text>
-       <g opacity="0">
-        <rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="2" width="300" x="150" y="140">
-        </rect>
-        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="180">
-         背诵基本公式
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="2" width="300" x="150" y="220">
-        </rect>
-        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="260">
-         练习四则法则
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(155,89,182,0.2)" height="60" rx="10" stroke="#9b59b6" stroke-width="2" width="300" x="150" y="300">
-        </rect>
-        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="340">
-         预习链式法则
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-       <text fill="#f39c12" font-size="24" opacity="0" text-anchor="middle" x="300" y="420">
-        → 下节课见！
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-  </div>
-  <div class="subtitle-area" id="subtitleArea">
-   欢迎学习基本求导公式与四则运算法则！点击开始讲课启动虚拟人讲师。
-  </div>
-  <div class="control-bar">
-   <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     7
-    </span>
-    页
-   </div>
-   <button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-   <button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-   <button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-   <button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-   <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-  </div>
-  <script type="module">
-        // 播放完成标记（供OBS检测）
+
+    <script type="module">
         window.playbackFinished = false;
 
-   try {
+        try {
             const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
-            window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia;
-            console.log('✅ 讯飞官方SDK模块已加载'); console.log('SDK版本:', AvatarPlatform.getVersion());
-        } catch (error) { console.error('❌ SDK模块加载失败:', error); }
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+            console.log('✅ 讯飞SDK模块已加载');
+        } catch (error) {
+            console.error('❌ SDK加载失败:', error);
+        }
         window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-  <script>
-   const lessonTitle = "基本求导公式与四则运算法则";
-        const subtitleScript = { "1": "欢迎学习基本求导公式与四则运算法则！", "2": "这些导数公式是工具箱的基础，建议熟读并理解它们的来源。", "3": "四则法则帮助我们处理复杂函数，只要遵循公式就不会出错。", "4": "做题时要留意符号与分母，尤其是除法法则中的 g²。", "5": "记住：链式法则等于'先外后内'，这是连接本节与下一节的桥梁。", "6": "算完导数后，用特定值验证一下结果，不合理就回到步骤检查。", "7": "把公式表随身带，下节课我们直接把它们用到更复杂的复合函数中。" };
-        const actionMap = { "1": "A_RLH_welcome_O", "2": "A_RLH_welcome_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O", "5": "A_RH_point_O", "6": "A_LH_introduced_O", "7": "A_RLH_welcome_O" };
-        let currentSlide = 1;
-        const totalSlides = 7;
+    </script>
+
+    <script>
+        const lessonTitle = "基本求导公式与四则运算";
+
+        const subtitleScript = {
+            "1": "上节课我们学习了导数的定义,但每次用定义求导太复杂了。今天我们学习高效的求导公式,就像拥有了一个导数计算器!",
+            "2": "幂函数求导有一个简单的规律:指数变成系数,指数减一。比如x的三次方,导数就是3x的平方。这个公式对所有实数指数都成立,包括负数和分数!",
+            "3": "指数函数中,e的x次方非常特殊,它的导数还是它自己!这就是为什么e在数学中如此重要。对数函数ln x的导数是1/x,从图像上看,就是切线斜率等于1除以x。",
+            "4": "三角函数的导数有一定规律。sin x求导变成cos x,cos x求导变成负的sin x。记住这个规律:正弦变余弦,余弦变负的正弦。如果再求一次导,又回到原来的函数了!",
+            "5": "四则运算法则帮助我们处理复杂函数。乘法法则的口诀是:前导后不导,加上前不导后导。除法法则要记住:分子是上导下减上下导,分母是g的平方。分母一定要平方!",
+            "6": "让我们看两道综合练习。第一题用乘法法则,x平方乘以e的x次方,结果是2x加x平方,然后乘以e的x次方。第二题用除法法则,注意分母要平方,最后要化简。",
+            "7": "再看一道除法法则的例题。ln x除以x平方,用除法法则计算。注意化简技巧:约掉公因子x,最终答案是1减2倍ln x,全部除以x的三次方。做题时一定要细心,检查符号和分母!",
+            "8": "今天我们学习了基本求导公式和四则运算法则。幂函数、指对数、三角函数的公式一定要记牢!四则法则是工具,熟练掌握后,求导就像做算术一样简单。下节课我们学习链式法则,那是处理复合函数的利器!"
+        };
+
+        const actionMap = {
+            "1": "A_RLH_welcome_O",
+            "2": "A_RH_point_O",
+            "3": "A_LH_introduced_O",
+            "4": "A_RH_point_O",
+            "5": "A_LH_introduced_O",
+            "6": "A_RH_point_O",
+            "7": "A_RH_point_O",
+            "8": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 8;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+
         const slides = document.querySelectorAll('.slide');
-        function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); currentSlide = index; document.getElementById('currentSlide').textContent = index + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err)); } document.getElementById('prevBtn').disabled = index === 0; document.getElementById('nextBtn').disabled = index === totalSlides - 1; updateSubtitle(index + 1); }
-        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err));
+            }
+
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+                if (!isAutoPlaying) speakContent(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+                if (!isAutoPlaying) speakContent(currentSlide + 1);
+            }
+        }
+
         function restart() {
             showSlide(0);
             if (avatarPlatform) {
@@ -854,6 +788,7 @@
             isTeaching = false;
             isAutoPlaying = false;
         }
+
         function updateSubtitle(slideNum) {
             const subtitleArea = document.getElementById('subtitleArea');
             subtitleArea.textContent = subtitleScript[slideNum] || '';
@@ -861,7 +796,7 @@
 
         async function speakContent(slideNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) {
-                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
+                console.log('⚠️ 虚拟人未连接');
                 return;
             }
 
@@ -872,17 +807,12 @@
                 const action = actionMap[slideNum];
                 if (action) {
                     await avatarPlatform.writeCmd("action", action);
-                    console.log(`✅ 执行动作: ${action}`);
                 }
 
-                await avatarPlatform.writeText(content, {
-                    nlp: false
-                });
-                
-                console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);
+                await avatarPlatform.writeText(content, { nlp: false });
                 updateSubtitle(slideNum);
             } catch (error) {
-                console.error('❌ 虚拟人讲解失败:', error);
+                console.error('❌ 讲解失败:', error);
             }
         }
 
@@ -891,13 +821,9 @@
             if (indicator) {
                 indicator.textContent = message;
                 indicator.className = 'status-indicator';
-                if (type === 'connected') {
-                    indicator.classList.add('connected');
-                } else if (type === 'error') {
-                    indicator.classList.add('error');
-                } else if (type === 'connecting') {
-                    indicator.classList.add('connecting');
-                }
+                if (type === 'connected') indicator.classList.add('connected');
+                else if (type === 'error') indicator.classList.add('error');
+                else if (type === 'connecting') indicator.classList.add('connecting');
             }
         }
 
@@ -907,11 +833,11 @@
                     resolve();
                     return;
                 }
-                
+
                 const timeout = setTimeout(() => {
-                    reject(new Error('SDK加载超时，请刷新页面重试'));
+                    reject(new Error('SDK加载超时'));
                 }, 10000);
-                
+
                 window.addEventListener('sdkReady', function handler() {
                     clearTimeout(timeout);
                     window.removeEventListener('sdkReady', handler);
@@ -919,104 +845,70 @@
                 });
             });
         }
+
         async function startTeaching() {
             const startBtn = document.getElementById('startBtn');
             startBtn.textContent = '🔄 启动中...';
             startBtn.disabled = true;
 
             try {
-                console.log('⏳ 等待SDK模块加载...');
-                updateStatus('等待SDK加载...', 'connecting');
+                updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
-                
-                console.log('✅ 讯飞官方SDK已加载');
-                updateStatus('SDK已加载', 'connecting');
-                
+
                 if(avatarPlatform) {
                     avatarPlatform.destroy();
                 }
 
-                avatarPlatform = new AvatarPlatform({
-                    useInlinePlayer: true
-                });
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
 
                 avatarPlatform
                     .on('connected', (initResp) => {
-                        console.log('🎉 虚拟人连接成功！', initResp);
+                        console.log('🎉 连接成功');
                         isConnected = true;
                         isTeaching = true;
                         updateStatus('已连接', 'connected');
                         startBtn.textContent = '💖 虚拟人已就绪';
-                        
+
                         setTimeout(() => {
                             speakContent(currentSlide + 1);
                         }, 1000);
                     })
                     .on('disconnected', (err) => {
-                        console.log('🔌 虚拟人连接断开');
                         isConnected = false;
                         updateStatus('连接断开', 'error');
-                        if (err) {
-                            console.error('❌ 连接异常断开:', err);
-                        }
                     })
                     .on('error', (error) => {
-                        console.error('❌ 虚拟人错误:', error);
-                        updateStatus('错误: ' + error.message, 'error');
+                        console.error('❌ 错误:', error);
+                        updateStatus('错误', 'error');
                         startBtn.textContent = '❌ 连接失败';
                         startBtn.disabled = false;
                         isTeaching = false;
                     });
 
                 avatarPlatform.setApiInfo({
-                    appId: '92a38947',                                    // 数学讲解 AppID
-                    apiKey: '575827c4807d37d26a84cdea7b7a1716',             // 数学讲解 API密钥
-                    apiSecret: 'MDBlMDA4OWY3NzE1ZTcyNjUzZDNkYTJj',       // 数学讲解 API密钥
-                    sceneId: '236895676045332480',                       // 数学讲解 场景ID
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
                     serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
                 });
 
                 avatarPlatform.setGlobalParams({
-                    stream: {
-                        protocol: 'xrtc',
-                        alpha: 1,
-                        bitrate: 1000000,
-                        fps: 25
-                    },
-                    avatar: {
-                        avatar_id: '110332017',
-                        width: 1920,
-                        height: 1080,
-                        scale: 1,
-                        move_h: 0,
-                        move_v: 0,
-                        audio_format: 1
-                    },
-                    tts: {
-                        vcn: 'x4_yiting',
-                        speed: 50,
-                        pitch: 50,
-                        volume: 100
-                    },
-                    avatar_dispatch: {
-                        interactive_mode: 1,
-                        content_analysis: 0
-                    }
+                    stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 },
+                    avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 },
+                    tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 },
+                    avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
                 });
 
-                await avatarPlatform.start({
-                    wrapper: document.getElementById('avatarWrapper')
-                });
-
-                console.log('🎓 虚拟人教学系统启动完成');
-
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error);
-                updateStatus('启动失败: ' + error.message, 'error');
+                updateStatus('启动失败', 'error');
                 startBtn.textContent = '🎀 开始讲课';
                 startBtn.disabled = false;
             }
         }
+
         async function startAutoPlay() {
             if (!avatarPlatform || !isConnected) {
                 await startTeaching();
@@ -1028,9 +920,9 @@
 
             for (let i = currentSlide; i < totalSlides; i++) {
                 showSlide(i);
-                speakContent(i + 1);
+                await speakContent(i + 1);
 
-                const duration = (subtitleScript[i + 1].length / 5) * 1000 + 2000;
+                const duration = (subtitleScript[i + 1].length / 4) * 1000 + 3000;
                 await new Promise(resolve => setTimeout(resolve, duration));
             }
 
@@ -1038,16 +930,29 @@
             document.getElementById('autoPlayBtn').disabled = false;
             window.playbackFinished = true;
             document.title = "PLAYBACK_FINISHED";
-            console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
+            console.log('🎉 播放完成');
         }
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); } else if (e.key === 'Enter') { e.preventDefault(); speakContent(currentSlide + 1); } });
-        document.getElementById('totalSlides').textContent = totalSlides; showSlide(0);
 
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                speakContent(currentSlide + 1);
+            }
+        });
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
+
         setTimeout(() => {
             console.log('🚀 自动启动播放...');
             startAutoPlay();
         }, 3000);
-  </script>
- </body>
+    </script>
+</body>
 </html>
