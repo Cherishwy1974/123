@@ -8,12 +8,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true, 
+                processEnvironments: true 
+            },
             svg: { fontCache: 'global' },
-            startup: { pageReady: () => { return MathJax.startup.defaultPageReady().then(() => { console.log('✅ MathJax已加载'); }); } }
+            startup: { 
+                pageReady: () => { 
+                    return MathJax.startup.defaultPageReady().then(() => { 
+                        console.log('✅ MathJax已加载'); 
+                    }); 
+                } 
+            }
         };
     </script>
-    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
@@ -53,7 +64,7 @@
                     <h2>回顾：导数的概念</h2>
                     <p>我们已经学习了<strong>导数</strong>的概念：</p>
                     <div class="math-formula">
-                        $$f'(x) = \\lim\\limits_{\\Delta x \\to 0} \\frac{\\Delta y}{\\Delta x}$$
+                        \[f'(x) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}\]
                     </div>
                     <p>导数描述了函数的<strong>变化率</strong>。</p>
                     <p style="margin-top: 20px; color: #95a5a6;">今天我们要学习一个新概念——<strong>微分</strong>。</p>
@@ -78,11 +89,11 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>一个新问题</h2>
-                    <p>当自变量 $x$ 有一个<strong>微小变化</strong> $\\Delta x$ 时，</p>
-                    <p>函数 $y$ 会变化多少？</p>
-                    <p style="margin-top: 25px;">从导数的定义，当 $\\Delta x$ 很小时：</p>
+                    <p>当自变量 \(x\) 有一个<strong>微小变化</strong> \(\Delta x\) 时，</p>
+                    <p>函数 \(y\) 会变化多少？</p>
+                    <p style="margin-top: 25px;">从导数的定义，当 \(\Delta x\) 很小时：</p>
                     <div class="math-formula">
-                        $$\\Delta y \\approx f'(x) \\cdot \\Delta x$$
+                        \[\Delta y \approx f'(x) \cdot \Delta x\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -149,13 +160,13 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>微分的定义</h2>
-                    <p>设函数 $y = f(x)$ 在点 $x$ 可导，则：</p>
+                    <p>设函数 \(y = f(x)\) 在点 \(x\) 可导，则：</p>
                     <div class="math-formula">
-                        $$dy = f'(x) \\cdot dx$$
+                        \[dy = f'(x) \cdot dx\]
                     </div>
                     <p style="margin-top: 15px;">其中：</p>
-                    <p>• $dx = \\Delta x$ 是自变量的微分</p>
-                    <p>• $dy$ 是函数 $y$ 的微分</p>
+                    <p>• \(dx = \Delta x\) 是自变量的微分</p>
+                    <p>• \(dy\) 是函数 \(y\) 的微分</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -174,12 +185,12 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>微分与导数的关系</h2>
-                    <p>从 $dy = f'(x) \\cdot dx$ 可得：</p>
+                    <p>从 \(dy = f'(x) \cdot dx\) 可得：</p>
                     <div class="math-formula">
-                        $$f'(x) = \\frac{dy}{dx}$$
+                        \[f'(x) = \frac{dy}{dx}\]
                     </div>
                     <p style="margin-top: 20px;"><strong>导数是微分之商！</strong></p>
-                    <p style="color: #95a5a6;">$\\frac{dy}{dx}$ 可以真正理解为 $dy$ 除以 $dx$。</p>
+                    <p style="color: #95a5a6;">\(\frac{dy}{dx}\) 可以真正理解为 \(dy\) 除以 \(dx\)。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -201,14 +212,14 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>两种增量</h2>
-                    <p>当自变量从 $x$ 变到 $x + \\Delta x$ 时：</p>
-                    <p style="margin-top: 15px;"><strong>1. 曲线实际增量 $\\Delta y$：</strong></p>
+                    <p>当自变量从 \(x\) 变到 \(x + \Delta x\) 时：</p>
+                    <p style="margin-top: 15px;"><strong>1. 曲线实际增量 \(\Delta y\)：</strong></p>
                     <div class="math-formula">
-                        $$\\Delta y = f(x + \\Delta x) - f(x)$$
+                        \[\Delta y = f(x + \Delta x) - f(x)\]
                     </div>
-                    <p><strong>2. 切线增量 $dy$：</strong></p>
+                    <p><strong>2. 切线增量 \(dy\)：</strong></p>
                     <div class="math-formula">
-                        $$dy = f'(x) \\cdot \\Delta x$$
+                        \[dy = f'(x) \cdot \Delta x\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -243,30 +254,30 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>微分的计算</h2>
-                    <p>由于 $dy = f'(x) \\cdot dx$,</p>
+                    <p>由于 \(dy = f'(x) \cdot dx\),</p>
                     <p><strong>微分计算 = 导数计算!</strong></p>
 
                     <h3>基本微分公式</h3>
                     <div class="math-formula">
-                        $$d(x^n) = nx^{n-1}dx$$
+                        \[d(x^n) = nx^{n-1}dx\]
                     </div>
                     <div class="math-formula">
-                        $$d(\\sin x) = \\cos x \\, dx$$
+                        \[d(\sin x) = \cos x \, dx\]
                     </div>
                     <div class="math-formula">
-                        $$d(e^x) = e^x dx$$
+                        \[d(e^x) = e^x dx\]
                     </div>
                     <div class="math-formula">
-                        $$d(\\ln x) = \\frac{1}{x} dx$$
+                        \[d(\ln x) = \frac{1}{x} dx\]
                     </div>
 
                     <h3>微分运算法则</h3>
                     <p>和导数运算法则<strong>完全一致</strong>!</p>
                     <div class="math-formula">
-                        $$d(u \\pm v) = du \\pm dv$$
+                        \[d(u \pm v) = du \pm dv\]
                     </div>
                     <div class="math-formula">
-                        $$d(uv) = u \\, dv + v \\, du$$
+                        \[d(uv) = u \, dv + v \, du\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -321,23 +332,23 @@
                     <p>这是微分的<strong>重要性质</strong>!</p>
 
                     <h3>定理</h3>
-                    <p>无论 $u$ 是<strong>自变量</strong>还是<strong>中间变量</strong>,</p>
+                    <p>无论 \(u\) 是<strong>自变量</strong>还是<strong>中间变量</strong>,</p>
                     <div class="math-formula">
-                        $$d(f(u)) = f'(u) \\, du$$
+                        \[d(f(u)) = f'(u) \, du\]
                     </div>
                     <p>这个形式<strong>保持不变</strong>!</p>
 
                     <h3>例子</h3>
-                    <p>1. 若 $u = x$ (自变量):</p>
+                    <p>1. 若 \(u = x\) (自变量):</p>
                     <div class="math-formula">
-                        $$d(\\sin x) = \\cos x \\, dx$$
+                        \[d(\sin x) = \cos x \, dx\]
                     </div>
 
-                    <p>2. 若 $u = x^2$ (中间变量):</p>
+                    <p>2. 若 \(u = x^2\) (中间变量):</p>
                     <div class="math-formula">
-                        $$d(\\sin x^2) = \\cos(x^2) \\, d(x^2)$$
+                        \[d(\sin x^2) = \cos(x^2) \, d(x^2)\]
                     </div>
-                    <p style="margin-left: 30px;">$= \\cos(x^2) \\cdot 2x \\, dx$</p>
+                    <p style="margin-left: 30px;">\(= \cos(x^2) \cdot 2x \, dx\)</p>
 
                     <p style="margin-top: 20px; color: #e74c3c;"><strong>形式不变!</strong> 这让计算更简单!</p>
                 </div>
@@ -377,21 +388,21 @@
                     <h2>应用一:近似计算</h2>
                     <p>利用微分可以进行<strong>近似计算</strong>:</p>
                     <div class="math-formula">
-                        $$f(x + \\Delta x) \\approx f(x) + f'(x) \\Delta x$$
+                        \[f(x + \Delta x) \approx f(x) + f'(x) \Delta x\]
                     </div>
 
                     <h3>例题</h3>
-                    <p>计算 $\\sqrt{4.02}$ 的近似值</p>
+                    <p>计算 \(\sqrt{4.02}\) 的近似值</p>
 
-                    <p><strong>解:</strong> 令 $f(x) = \\sqrt{x}$, $x = 4$, $\\Delta x = 0.02$</p>
-                    <p style="margin-left: 30px;">$f'(x) = \\frac{1}{2\\sqrt{x}}$</p>
-                    <p style="margin-left: 30px;">$f'(4) = \\frac{1}{2\\sqrt{4}} = \\frac{1}{4}$</p>
+                    <p><strong>解:</strong> 令 \(f(x) = \sqrt{x}\), \(x = 4\), \(\Delta x = 0.02\)</p>
+                    <p style="margin-left: 30px;">\(f'(x) = \frac{1}{2\sqrt{x}}\)</p>
+                    <p style="margin-left: 30px;">\(f'(4) = \frac{1}{2\sqrt{4}} = \frac{1}{4}\)</p>
 
                     <div class="math-formula">
-                        $$\\sqrt{4.02} \\approx \\sqrt{4} + \\frac{1}{4} \\times 0.02$$
+                        \[\sqrt{4.02} \approx \sqrt{4} + \frac{1}{4} \times 0.02\]
                     </div>
                     <div class="math-formula">
-                        $$= 2 + 0.005 = 2.005$$
+                        \[= 2 + 0.005 = 2.005\]
                     </div>
 
                     <p style="margin-top: 15px; color: #95a5a6;">实际值: 2.00499... (误差极小!)</p>
@@ -448,24 +459,24 @@
                     <p>测量存在误差时,可用微分估计结果误差</p>
 
                     <h3>原理</h3>
-                    <p>若 $y = f(x)$,测量 $x$ 时误差为 $\\Delta x$,</p>
-                    <p>则 $y$ 的<strong>绝对误差</strong>约为:</p>
+                    <p>若 \(y = f(x)\),测量 \(x\) 时误差为 \(\Delta x\),</p>
+                    <p>则 \(y\) 的<strong>绝对误差</strong>约为:</p>
                     <div class="math-formula">
-                        $$|\\Delta y| \\approx |dy| = |f'(x)| \\cdot |\\Delta x|$$
+                        \[|\Delta y| \approx |dy| = |f'(x)| \cdot |\Delta x|\]
                     </div>
 
                     <p><strong>相对误差</strong>约为:</p>
                     <div class="math-formula">
-                        $$\\frac{|\\Delta y|}{|y|} \\approx \\frac{|f'(x)| \\cdot |\\Delta x|}{|f(x)|}$$
+                        \[\frac{|\Delta y|}{|y|} \approx \frac{|f'(x)| \cdot |\Delta x|}{|f(x)|}\]
                     </div>
 
                     <h3>例题</h3>
-                    <p>测量圆的半径 $r = 10$cm,误差不超过 0.05cm,</p>
-                    <p>估计面积 $S = \\pi r^2$ 的误差。</p>
+                    <p>测量圆的半径 \(r = 10\)cm,误差不超过 0.05cm,</p>
+                    <p>估计面积 \(S = \pi r^2\) 的误差。</p>
 
-                    <p><strong>解:</strong> $S' = 2\\pi r$, 当 $r = 10$ 时:</p>
+                    <p><strong>解:</strong> \(S' = 2\pi r\), 当 \(r = 10\) 时:</p>
                     <div class="math-formula">
-                        $$|\\Delta S| \\approx 2\\pi \\times 10 \\times 0.05 = \\pi \\approx 3.14 \\text{ cm}^2$$
+                        \[|\Delta S| \approx 2\pi \times 10 \times 0.05 = \pi \approx 3.14 \text{ cm}^2\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -514,9 +525,9 @@
                     <h2>本节总结</h2>
                     <h3>微分的核心概念</h3>
                     <ul style="margin-left: 30px;">
-                        <li><strong>定义:</strong> $dy = f'(x) \\cdot dx$</li>
+                        <li><strong>定义:</strong> \(dy = f'(x) \cdot dx\)</li>
                         <li><strong>几何意义:</strong> 切线的增量</li>
-                        <li><strong>与导数的关系:</strong> $f'(x) = \\frac{dy}{dx}$</li>
+                        <li><strong>与导数的关系:</strong> \(f'(x) = \frac{dy}{dx}\)</li>
                     </ul>
 
                     <h3 style="margin-top: 20px;">重要性质</h3>
@@ -527,8 +538,8 @@
 
                     <h3 style="margin-top: 20px;">两大应用</h3>
                     <ul style="margin-left: 30px;">
-                        <li><strong>近似计算:</strong> $f(x+\\Delta x) \\approx f(x) + f'(x)\\Delta x$</li>
-                        <li><strong>误差估计:</strong> $|\\Delta y| \\approx |f'(x)| \\cdot |\\Delta x|$</li>
+                        <li><strong>近似计算:</strong> \(f(x+\Delta x) \approx f(x) + f'(x)\Delta x\)</li>
+                        <li><strong>误差估计:</strong> \(|\Delta y| \approx |f'(x)| \cdot |\Delta x|\)</li>
                     </ul>
 
                     <p style="margin-top: 25px; color: #f39c12;"><strong>核心思想:</strong></p>
@@ -583,7 +594,7 @@
     </div>
     <div class="subtitle-area" id="subtitleArea">欢迎学习微分的概念与应用!</div>
     <div class="control-bar">
-        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">17</span> 页</div>
+        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">11</span> 页</div>
         <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
         <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
         <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
@@ -603,17 +614,11 @@
             "4": "定义：dy = f'(x)·dx | dx = Δx 为自变量微分，dy 为函数微分",
             "5": "导数 f'(x) = dy/dx | 导数是微分之商",
             "6": "Δy：曲线实际增量 = f(x+Δx) - f(x) | dy：切线增量 = f'(x)·Δx",
-            "7": "几何意义：当 Δx→0 时，dy ≈ Δy | 用切线代替曲线",
-            "8": "基本公式：d(x^n) = nx^(n-1)dx | d(sin x) = cos x dx",
-            "9": "运算法则：d(u±v) = du±dv | d(uv) = udv + vdu",
-            "10": "形式不变性：d[f(u)] = f'(u)du | 无论 u 是自变量还是中间变量",
-            "11": "示例：d(sin x²) = cos(x²)·d(x²) = cos(x²)·2x dx",
-            "12": "近似计算：f(x+Δx) ≈ f(x) + f'(x)Δx",
-            "13": "例：√4.02 ≈ √4 + (1/4)×0.02 = 2.005",
-            "14": "误差估计：|Δy| ≈ |f'(x)|·|Δx|",
-            "15": "例：圆半径 r=10cm，误差 ±0.05cm | 面积误差 ≈ π cm²",
-            "16": "微分核心：dy = f'(x)dx | 几何意义：切线增量 | 形式不变性",
-            "17": "应用：近似计算与误差估计 | 核心思想：以直代曲"
+            "7": "基本公式：d(x^n) = nx^(n-1)dx | d(sin x) = cos x dx | 运算法则：d(u±v) = du±dv",
+            "8": "形式不变性：d[f(u)] = f'(u)du | 无论 u 是自变量还是中间变量",
+            "9": "近似计算：f(x+Δx) ≈ f(x) + f'(x)Δx | 例：√4.02 ≈ 2.005",
+            "10": "误差估计：|Δy| ≈ |f'(x)|·|Δx| | 例：圆半径误差 ±0.05cm → 面积误差 ≈ π cm²",
+            "11": "微分核心：dy = f'(x)dx | 应用：近似计算与误差估计 | 核心思想：以直代曲"
         };
 
         // 发音文本（口语化）
@@ -623,30 +628,22 @@
             "3": "微分是导数概念的延伸和应用。它可以帮助我们估计函数的变化量,在实际计算中非常有用。",
             "4": "微分的定义是这样的:设函数y等于f括号x在点x可导,那么dy等于f撇x乘以dx。这里,dx等于delta x,是自变量的微小增量,我们叫它自变量的微分。dy呢,就叫做函数y的微分。",
             "5": "微分和导数有什么关系呢?从定义式dy等于f撇x乘以dx可以看出,f撇x等于dy除以dx。这说明导数就是微分之商!以前我们把dy除以dx看作一个整体符号,现在有了微分的概念,它可以真正理解为dy除以dx了。",
-            "6": "微分有清晰的几何意义。考虑曲线y等于f括号x,当自变量从x变到x加delta x时,有两种增量。第一种是delta y,它是曲线上的实际增量,等于f括号x加delta x减f括号x。第二种是dy,它是切线上的增量,等于f撇x乘以delta x。",
-            "7": "从图像上看,当delta x很小时,曲线的这一小段几乎可以用切线来代替!dy就是切线的竖直增量,delta y是曲线的竖直增量。当delta x越来越小时,dy越来越接近delta y。这就是微分的几何意义:用切线代替曲线。",
-            "8": "微分的计算其实很简单,因为微分计算就是导数计算!所有的基本微分公式都可以从导数公式得到。比如x的n次方的微分,等于n乘以x的n减1次方乘以dx。sin x的微分等于cos x乘以dx。",
-            "9": "微分的运算法则和导数运算法则完全一致!u加减v的微分等于du加减dv。u乘以v的微分等于u乘以dv加v乘以du。所以掌握了导数,就等于掌握了微分,只需在结果后面乘以dx就行了!",
-            "10": "微分有一个非常重要的性质,叫做形式不变性。这个性质说的是:无论u是自变量还是中间变量,d括号f括号u的形式总是f撇u乘以du,这个形式保持不变!",
-            "11": "让我们看一个例子。如果u等于x平方是中间变量,那么d括号sin x平方,仍然可以写成cos x平方乘以d括号x平方,再把d括号x平方算出来等于2x dx,所以最终结果是cos x平方乘以2x dx。看到了吗?形式不变性使得微分计算变得非常简单!",
-            "12": "微分的第一个重要应用是近似计算。根据微分的定义,f括号x加delta x约等于f括号x加f撇x乘以delta x,当delta x很小时。我们可以用这个公式进行近似计算。",
-            "13": "来看一个例题:计算根号4点02的近似值。我们令f括号x等于根号x,取x等于4,delta x等于0点02。首先求导数:f撇x等于1除以2倍根号x,所以f撇4等于四分之一。代入公式:根号4点02约等于2加0点005,等于2点005。用计算器验证,实际值是2点00499,误差极小!",
-            "14": "微分的第二个应用是误差估计。在实际测量中,总会有误差。如果测量x时有误差delta x,那么通过计算得到的y会有多大误差呢?根据微分,delta y的绝对值约等于f撇x的绝对值乘以delta x的绝对值。",
-            "15": "让我们看一个例题:测量圆的半径r等于10厘米,误差不超过0点05厘米,问面积的误差有多大?首先求导数:S撇等于2π乘以r。当r等于10时,delta S的绝对值约等于π,约等于3点14平方厘米。这说明半径的微小误差会通过公式放大。",
-            "16": "好,让我们总结一下微分的核心内容。第一,微分的定义是dy等于f撇x乘以dx。第二,微分的几何意义是切线的增量。第三,微分有重要的形式不变性。",
-            "17": "第四,微分有两大应用:一是近似计算,二是误差估计。微分的核心思想就是以直代曲、以简化繁。掌握了微分,我们就多了一个强大的数学工具!今天的课就到这里,同学们再见!"
+            "6": "微分有清晰的几何意义。考虑曲线y等于f括号x,当自变量从x变到x加delta x时,有两种增量。第一种是delta y,它是曲线上的实际增量,等于f括号x加delta x减f括号x。第二种是dy,它是切线上的增量,等于f撇x乘以delta x。从图像上看,当delta x很小时,曲线的这一小段几乎可以用切线来代替!dy就是切线的竖直增量,delta y是曲线的竖直增量。当delta x越来越小时,dy越来越接近delta y。这就是微分的几何意义:用切线代替曲线。",
+            "7": "微分的计算其实很简单,因为微分计算就是导数计算!所有的基本微分公式都可以从导数公式得到。比如x的n次方的微分,等于n乘以x的n减1次方乘以dx。sin x的微分等于cos x乘以dx。微分的运算法则和导数运算法则完全一致!u加减v的微分等于du加减dv。u乘以v的微分等于u乘以dv加v乘以du。所以掌握了导数,就等于掌握了微分,只需在结果后面乘以dx就行了!",
+            "8": "微分有一个非常重要的性质,叫做形式不变性。这个性质说的是:无论u是自变量还是中间变量,d括号f括号u的形式总是f撇u乘以du,这个形式保持不变!让我们看一个例子。如果u等于x平方是中间变量,那么d括号sin x平方,仍然可以写成cos x平方乘以d括号x平方,再把d括号x平方算出来等于2x dx,所以最终结果是cos x平方乘以2x dx。看到了吗?形式不变性使得微分计算变得非常简单!",
+            "9": "微分的第一个重要应用是近似计算。根据微分的定义,f括号x加delta x约等于f括号x加f撇x乘以delta x,当delta x很小时。我们可以用这个公式进行近似计算。来看一个例题:计算根号4点02的近似值。我们令f括号x等于根号x,取x等于4,delta x等于0点02。首先求导数:f撇x等于1除以2倍根号x,所以f撇4等于四分之一。代入公式:根号4点02约等于2加0点005,等于2点005。用计算器验证,实际值是2点00499,误差极小!",
+            "10": "微分的第二个应用是误差估计。在实际测量中,总会有误差。如果测量x时有误差delta x,那么通过计算得到的y会有多大误差呢?根据微分,delta y的绝对值约等于f撇x的绝对值乘以delta x的绝对值。让我们看一个例题:测量圆的半径r等于10厘米,误差不超过0点05厘米,问面积的误差有多大?首先求导数:S撇等于2π乘以r。当r等于10时,delta S的绝对值约等于π,约等于3点14平方厘米。这说明半径的微小误差会通过公式放大。",
+            "11": "好,让我们总结一下微分的核心内容。第一,微分的定义是dy等于f撇x乘以dx。第二,微分的几何意义是切线的增量。第三,微分有重要的形式不变性。第四,微分有两大应用:一是近似计算,二是误差估计。微分的核心思想就是以直代曲、以简化繁。掌握了微分,我们就多了一个强大的数学工具!今天的课就到这里,同学们再见!"
         };
 
         const actionMap = {
             "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O",
             "4": "A_RH_point_O", "5": "A_LH_introduced_O", "6": "A_RH_point_O",
-            "7": "A_RH_point_O", "8": "A_LH_introduced_O", "9": "A_RH_point_O",
-            "10": "A_LH_introduced_O", "11": "A_RH_point_O", "12": "A_LH_introduced_O",
-            "13": "A_RH_point_O", "14": "A_LH_introduced_O", "15": "A_RH_point_O",
-            "16": "A_LH_introduced_O", "17": "A_RLH_welcome_O"
+            "7": "A_LH_introduced_O", "8": "A_RH_point_O", "9": "A_LH_introduced_O",
+            "10": "A_RH_point_O", "11": "A_RLH_welcome_O"
         };
 
-        let currentSlide = 0; const totalSlides = 17; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; let speechFinishedResolve = null; const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0; const totalSlides = 11; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; let speechFinishedResolve = null; const slides = document.querySelectorAll('.slide');
         function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); currentSlide = index; document.getElementById('currentSlide').textContent = index + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err)); } document.getElementById('prevBtn').disabled = index === 0; document.getElementById('nextBtn').disabled = index === totalSlides - 1; updateSubtitle(index + 1); }
         function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
         function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
@@ -669,4 +666,3 @@
     </script>
 </body>
 </html>
-
