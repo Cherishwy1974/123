@@ -1948,10 +1948,12 @@
                 });
 
                 // 【调试】监听所有SDK事件
+                console.log('🔧 开始注册SDK事件监听器，所有可用事件:', Object.values(SDKEvents));
                 Object.values(SDKEvents).forEach(eventName => {
                     avatarPlatform.on(eventName, (...args) => {
                         console.log(`🎯 SDK事件触发: ${eventName}`, args);
                     });
+                    console.log(`✅ 已注册事件监听: ${eventName}`);
                 });
 
                 // 设置事件监听
