@@ -906,24 +906,11 @@
         }
 
         function getSlideDuration(slideNum) {
-            const durations = {
-                1: 18000,  
-                2: 24000,  
-                3: 24000,  
-                4: 19000,  
-                5: 20000,  
-                6: 20000,  
-                7: 18000,  
-                8: 14000,  
-                9: 18000,  
-                10: 20000, 
-                11: 18000, 
-                12: 16000, 
-                13: 18000, 
-                14: 20000, 
-                15: 22000  
-            };
-            return durations[slideNum] || 18000;
+            const subtitle = subtitleScript[slideNum];
+            if (!subtitle) return 15000;
+            // 根据字符数计算时长：每个字约0.3秒朗读(包含停顿和语气) + 8秒缓冲
+            const duration = (subtitle.length * 300) + 8000;
+            return Math.max(duration, 15000); // 最少15秒
         }
 
         function switchToSlideSilent(slideNum) {

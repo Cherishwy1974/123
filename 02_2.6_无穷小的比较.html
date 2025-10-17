@@ -2204,8 +2204,8 @@
             const subtitle = subtitleScript[slideNum];
             if (!subtitle) return 15000;
 
-            // 根据字符数计算时长：每个字约0.2秒朗读 + 3秒缓冲
-            const duration = (subtitle.length * 200) + 3000;
+            // 根据字符数计算时长：每个字约0.28秒朗读(教学语速220字/分) + 3秒页面切换缓冲
+            const duration = (subtitle.length * 280) + 3000;
             return Math.max(duration, 10000); // 最少10秒
         }
 
