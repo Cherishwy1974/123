@@ -27,7 +27,7 @@
     },
     "deinterlace_mode": 0,
     "deinterlace_field_order": 0,
-    "monitoring_type": 2,
+    "monitoring_type": 1,
     "private_settings": {}
   },
   "AuxAudioDevice1": {
@@ -255,7 +255,7 @@
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
-      "monitoring_type": 2,
+      "monitoring_type": 1,
       "private_settings": {}
     }
   ],

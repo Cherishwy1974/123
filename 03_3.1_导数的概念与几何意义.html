@@ -453,6 +453,7 @@
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+        let speechFinishedResolve = null;
 
         const slides = document.querySelectorAll('.slide');
 
@@ -522,12 +523,19 @@
                 await avatarPlatform.writeText(content, {
                     nlp: false
                 });
-                
+
                 console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);
                 updateSubtitle(slideNum);
             } catch (error) {
                 console.error('❌ 虚拟人讲解失败:', error);
             }
+        }
+
+        // 计算单页播放时长（用于超时fallback）
+        function getSlideDuration(slideNum) {
+            const subtitle = subtitleScript[slideNum];
+            if (!subtitle) return 5000;
+            return subtitle.length * 120 + 2000;
         }
 
         function updateStatus(message, type = 'normal') {
@@ -592,7 +600,7 @@
                         isTeaching = true;
                         updateStatus('已连接', 'connected');
                         startBtn.textContent = '💖 虚拟人已就绪';
-                        
+
                         setTimeout(() => {
                             speakContent(currentSlide + 1);
                         }, 1000);
@@ -611,6 +619,15 @@
                         startBtn.textContent = '❌ 连接失败';
                         startBtn.disabled = false;
                         isTeaching = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        // 在自动播放模式下，通知等待中的Promise
+                        if (isAutoPlaying && speechFinishedResolve) {
+                            console.log('🎬 通知自动播放：虚拟人讲解完成');
+                            speechFinishedResolve();
+                            speechFinishedResolve = null;
+                        }
                     });
 
                 avatarPlatform.setApiInfo({
@@ -672,19 +689,66 @@
             isAutoPlaying = true;
             document.getElementById('autoPlayBtn').disabled = true;
 
-            for (let i = currentSlide; i < totalSlides; i++) {
-                showSlide(i);
-                speakContent(i + 1);
+            try {
+                for (let i = currentSlide; i < totalSlides; i++) {
+                    if (!isAutoPlaying) {
+                        console.log('🛑 自动播放被停止');
+                        break;
+                    }
 
-                const duration = (subtitleScript[i + 1].length / 5) * 1000 + 2000;
-                await new Promise(resolve => setTimeout(resolve, duration));
+                    console.log(`\n🎬 === 开始播放第${i + 1}页/${totalSlides}页 ===`);
+                    showSlide(i);
+
+                    // 如果虚拟人已连接，等待frame_stop事件
+                    if (isConnected && isTeaching && avatarPlatform) {
+                        try {
+                            // 创建Promise等待虚拟人讲解完成
+                            const speechPromise = new Promise(resolve => {
+                                speechFinishedResolve = resolve;
+                            });
+
+                            await speakContent(i + 1);
+                            console.log(`⏳ 等待虚拟人讲解第${i + 1}页完成...`);
+
+                            // 等待虚拟人讲解完成，或超时（防止卡住）
+                            const timeoutPromise = new Promise(resolve =>
+                                setTimeout(() => {
+                                    console.log(`⚠️ 第${i + 1}页讲解超时，继续下一页`);
+                                    resolve();
+                                }, getSlideDuration(i + 1) + 5000)
+                            );
+
+                            await Promise.race([speechPromise, timeoutPromise]);
+                            console.log(`✅ 第${i + 1}页讲解完成`);
+
+                        } catch (error) {
+                            console.error(`❌ 第${i + 1}页讲解异常:`, error);
+                        }
+                    } else {
+                        // 虚拟人未连接，使用固定延时
+                        console.log('⚠️ 虚拟人未连接，使用固定延时');
+                        await new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                    }
+
+                    // 页面切换间隔
+                    const waitTime = i === totalSlides - 1 ? 1500 : 200;
+                    await new Promise(resolve => setTimeout(resolve, waitTime));
+                }
+
+                // 播放完成
+                if (isAutoPlaying) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                }
+
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+            } finally {
+                isAutoPlaying = false;
+                document.getElementById('autoPlayBtn').disabled = false;
+                window.playbackFinished = true;
+                document.title = "PLAYBACK_FINISHED";
+                console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
             }
-
-            isAutoPlaying = false;
-            document.getElementById('autoPlayBtn').disabled = false;
-            window.playbackFinished = true;
-            document.title = "PLAYBACK_FINISHED";
-            console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
         }
 
         // 键盘控制

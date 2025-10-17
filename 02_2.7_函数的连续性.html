@@ -483,6 +483,7 @@
         let isTeaching = false;
         let currentSlide = 0;
         let isAutoPlaying = false;
+        let speechFinishedResolve = null;
         const totalSlides = 15;
 
         // 每页的讲稿内容 - 使用模板字符串避免引号冲突
@@ -693,7 +694,7 @@
                         isTeaching = true;
                         updateStatus('已连接', 'connected');
                         startBtn.textContent = '💖 虚拟人已就绪';
-                        
+
                         setTimeout(() => {
                             speakContent(currentSlide + 1);
                         }, 1000);
@@ -712,6 +713,15 @@
                         startBtn.textContent = '❌ 连接失败';
                         startBtn.disabled = false;
                         isTeaching = false;
+                    })
+                    .on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                        // 在自动播放模式下，通知等待中的Promise
+                        if (isAutoPlaying && speechFinishedResolve) {
+                            console.log('🎬 通知自动播放：虚拟人讲解完成');
+                            speechFinishedResolve();
+                            speechFinishedResolve = null;
+                        }
                     });
 
                 avatarPlatform.setApiInfo({
@@ -812,36 +822,24 @@
             try {
                 const actions = getActionsForPage(slideNum);
 
-                // 【修改核心】返回一个Promise，在动作结束时resolve
-                await new Promise(async (resolve) => {
-                    // 定义一个一次性的回调函数
-                    const onActionStop = () => {
-                        console.log(`✅ 沐沐完成讲解第${slideNum}页`);
-                        avatarPlatform.off(SDKEvents.action_stop, onActionStop); // 移除监听，避免重复触发
-                        // 额外等待500ms让虚拟人自然过渡
-                        setTimeout(resolve, 500);
-                    };
+                // 先执行动作
+                if (actions && actions[0]) {
+                    await performVirtualAction(actions[0].value);
+                }
 
-                    // 监听动作结束事件
-                    avatarPlatform.on(SDKEvents.action_stop, onActionStop);
-
-                    // 执行动作
-                    if (actions && actions[0]) {
-                        await performVirtualAction(actions[0].value);
-                    }
-
-                    // 播放语音内容
-                    await avatarPlatform.writeText(content, { nlp: false });
-                    console.log(`✅ 沐沐开始讲解第${slideNum}页`);
-
-                    // 更新字幕
-                    if (isAutoPlaying) {
-                        updateAutoPlaySubtitle(slideNum, content);
-                    } else {
-                        updateSubtitle(content);
-                    }
+                // 播放语音内容
+                await avatarPlatform.writeText(content, {
+                    nlp: false
                 });
 
+                console.log(`✅ 正在讲解第${slideNum}页`);
+
+                // 更新字幕
+                if (isAutoPlaying) {
+                    updateAutoPlaySubtitle(slideNum, content);
+                } else {
+                    updateSubtitle(content);
+                }
             } catch (error) {
                 console.error('❌ 虚拟人讲解失败:', error);
             }
@@ -930,6 +928,13 @@
             console.log(`✅ 成功切换到第${slideNum}页`);
         }
 
+        // 计算单页播放时长（用于超时fallback）
+        function getSlideDuration(slideNum) {
+            const subtitle = subtitleScript[slideNum];
+            if (!subtitle) return 5000;
+            return subtitle.length * 120 + 2000;
+        }
+
         async function startAutoPlay() {
             if (isAutoPlaying) {
                 stopAutoPlay();
@@ -967,8 +972,36 @@
                         switchToSlideSilent(slide);
                         updateStatus(`📖 第${slide}页/${totalSlides}页 - ${getSlideTitle(slide)}`, 'recording');
 
-                        // speakContent内部已经等待播报完成，不需要再额外等待
-                        await speakContent(slide);
+                        // 如果虚拟人已连接，等待frame_stop事件
+                        if (isConnected && isTeaching && avatarPlatform) {
+                            try {
+                                // 创建Promise等待虚拟人讲解完成
+                                const speechPromise = new Promise(resolve => {
+                                    speechFinishedResolve = resolve;
+                                });
+
+                                await speakContent(slide);
+                                console.log(`⏳ 等待虚拟人讲解第${slide}页完成...`);
+
+                                // 等待虚拟人讲解完成，或超时（防止卡住）
+                                const timeoutPromise = new Promise(resolve =>
+                                    setTimeout(() => {
+                                        console.log(`⚠️ 第${slide}页讲解超时，继续下一页`);
+                                        resolve();
+                                    }, getSlideDuration(slide) + 5000)
+                                );
+
+                                await Promise.race([speechPromise, timeoutPromise]);
+                                console.log(`✅ 第${slide}页讲解完成`);
+
+                            } catch (error) {
+                                console.error(`❌ 第${slide}页讲解异常:`, error);
+                            }
+                        } else {
+                            // 虚拟人未连接，使用固定延时
+                            console.log('⚠️ 虚拟人未连接，使用固定延时');
+                            await new Promise(resolve => setTimeout(resolve, getSlideDuration(slide)));
+                        }
 
                         // 页面切换间隔
                         const waitTime = slide === totalSlides ? 1500 : 200;
