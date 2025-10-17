@@ -2088,30 +2088,38 @@
             if (!content) return;
 
             try {
-                // 先执行动作
                 const actions = getActionsForPage(slideNum);
-                if (actions && actions[0]) {
-                    await performVirtualAction(actions[0].value);
-                }
 
-                // 然后播放语音内容
-                await avatarPlatform.writeText(content, {
-                    nlp: false
+                // 【修改核心】返回一个Promise，在动作结束时resolve
+                await new Promise(async (resolve) => {
+                    // 定义一个一次性的回调函数
+                    const onActionStop = () => {
+                        console.log(`✅ 沐沐完成讲解第${slideNum}页`);
+                        avatarPlatform.off(SDKEvents.action_stop, onActionStop); // 移除监听，避免重复触发
+                        // 额外等待500ms让虚拟人自然过渡
+                        setTimeout(resolve, 500);
+                    };
+
+                    // 监听动作结束事件
+                    avatarPlatform.on(SDKEvents.action_stop, onActionStop);
+
+                    // 执行动作
+                    if (actions && actions[0]) {
+                        await performVirtualAction(actions[0].value);
+                    }
+
+                    // 播放语音内容
+                    await avatarPlatform.writeText(content, { nlp: false });
+                    console.log(`✅ 沐沐开始讲解第${slideNum}页，动作: ${actions[0]?.value}`);
+
+                    // 更新字幕
+                    if (isAutoPlaying) {
+                        updateAutoPlaySubtitle(slideNum, content);
+                    } else {
+                        updateSubtitle(content);
+                    }
                 });
 
-                console.log(`✅ 沐沐开始讲解第${slideNum}页，动作: ${actions[0]?.value}`);
-
-                // 更新字幕显示
-                if (isAutoPlaying) {
-                    updateAutoPlaySubtitle(slideNum, content);
-                } else {
-                    updateSubtitle(content);
-                }
-
-                // 等待虚拟人播报完成
-                const duration = getSlideDuration(slideNum);
-                await new Promise(resolve => setTimeout(resolve, duration));
-                console.log(`✅ 沐沐完成讲解第${slideNum}页`);
             } catch (error) {
                 console.error('❌ 虚拟人讲解失败:', error);
             }
@@ -2204,15 +2212,6 @@
             return titles[slideNum] || `第${slideNum}页`;
         }
 
-        // 获取每页的播放时长（根据字幕长度动态计算）
-        function getSlideDuration(slideNum) {
-            const subtitle = subtitleScript[slideNum];
-            if (!subtitle) return 0;
-
-            // 纯字符数计算：每个字约0.25秒朗读
-            return subtitle.length * 250;
-        }
-
         // 静默页面切换
         function switchToSlideSilent(slideNum) {
             if (slideNum < 1 || slideNum > totalSlides) {
@@ -2270,32 +2269,14 @@
                         }
 
                         console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);
-
-                        // 切换到指定页面
                         switchToSlideSilent(slide);
                         updateStatus(`📖 第${slide}页/${totalSlides}页 - ${getSlideTitle(slide)}`, 'recording');
 
-                        // 等待页面渲染
-                        await new Promise(resolve => setTimeout(resolve, 800));
+                        // speakContent内部已经等待播报完成，不需要再额外等待
+                        await speakContent(slide);
 
-                        // 播放语音
-                        if (isConnected && isTeaching && avatarPlatform) {
-                            try {
-                                await speakContent(slide);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            } catch (error) {
-                                console.error(`❌ 第${slide}页语音播放失败:`, error);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            }
-                        } else {
-                            const slideTime = getSlideDuration(slide);
-                            await new Promise(resolve => setTimeout(resolve, slideTime));
-                        }
-
-                        // 页面间隔
-                        const waitTime = slide === totalSlides ? 2000 : 1000;
+                        // 页面切换间隔
+                        const waitTime = slide === totalSlides ? 1500 : 200;
                         await new Promise(resolve => setTimeout(resolve, waitTime));
 
                     } catch (error) {
