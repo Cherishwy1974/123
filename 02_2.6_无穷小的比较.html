@@ -2288,6 +2288,9 @@
                         // 如果虚拟人已连接，等待frame_stop事件
                         if (isConnected && isTeaching && avatarPlatform) {
                             try {
+                                // 先稍作等待确保状态稳定
+                                await new Promise(resolve => setTimeout(resolve, 800));
+
                                 // 创建Promise等待虚拟人讲解完成
                                 const speechPromise = new Promise(resolve => {
                                     speechFinishedResolve = resolve;
