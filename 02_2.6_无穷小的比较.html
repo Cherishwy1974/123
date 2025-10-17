@@ -1947,6 +1947,13 @@
                     useInlinePlayer: true
                 });
 
+                // 【调试】监听所有SDK事件
+                Object.values(SDKEvents).forEach(eventName => {
+                    avatarPlatform.on(eventName, (...args) => {
+                        console.log(`🎯 SDK事件触发: ${eventName}`, args);
+                    });
+                });
+
                 // 设置事件监听
                 avatarPlatform
                     .on('connected', (initResp) => {
@@ -1955,7 +1962,7 @@
                         isTeaching = true;
                         updateStatus('已连接', 'connected');
                         startBtn.textContent = '💖 虚拟人已就绪';
-                        
+
                         // 连接成功后开始讲解第一页
                         setTimeout(() => {
                             speakContent(1);
