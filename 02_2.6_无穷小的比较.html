@@ -2307,6 +2307,11 @@
                                 await Promise.race([speechPromise, timeoutPromise]);
                                 console.log(`✅ 第${slide}页讲解完成`);
 
+                                // 页面间等待时间
+                                if (slide < totalSlides) {
+                                    await new Promise(resolve => setTimeout(resolve, 1500));
+                                }
+
                             } catch (error) {
                                 console.error(`❌ 第${slide}页讲解异常:`, error);
                             }
