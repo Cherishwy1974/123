@@ -908,11 +908,10 @@
         // 获取每页的播放时长（根据字幕长度动态计算）
         function getSlideDuration(slideNum) {
             const subtitle = subtitleScript[slideNum];
-            if (!subtitle) return 15000;
+            if (!subtitle) return 0;
 
-            // 根据字符数计算时长：每个字约0.28秒朗读(教学语速220字/分) + 3秒页面切换缓冲
-            const duration = (subtitle.length * 280) + 3000;
-            return Math.max(duration, 10000); // 最少10秒
+            // 纯字符数计算：每个字约0.25秒朗读
+            return subtitle.length * 250;
         }
 
         function switchToSlideSilent(slideNum) {
