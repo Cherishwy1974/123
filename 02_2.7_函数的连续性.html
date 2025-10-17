@@ -818,14 +818,19 @@
                 await avatarPlatform.writeText(content, {
                     nlp: false
                 });
-                
-                console.log(`✅ 沐沐讲解第${slideNum}页`);
+
+                console.log(`✅ 沐沐开始讲解第${slideNum}页`);
 
                 if (isAutoPlaying) {
                     updateAutoPlaySubtitle(slideNum, content);
                 } else {
                     updateSubtitle(content);
                 }
+
+                // 等待虚拟人播报完成
+                const duration = getSlideDuration(slideNum);
+                await new Promise(resolve => setTimeout(resolve, duration));
+                console.log(`✅ 沐沐完成讲解第${slideNum}页`);
             } catch (error) {
                 console.error('❌ 虚拟人讲解失败:', error);
             }
@@ -960,24 +965,11 @@
                         switchToSlideSilent(slide);
                         updateStatus(`📖 第${slide}页/${totalSlides}页 - ${getSlideTitle(slide)}`, 'recording');
 
-                        await new Promise(resolve => setTimeout(resolve, 800));
+                        // speakContent内部已经等待播报完成，不需要再额外等待
+                        await speakContent(slide);
 
-                        if (isConnected && isTeaching && avatarPlatform) {
-                            try {
-                                await speakContent(slide);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            } catch (error) {
-                                console.error(`❌ 第${slide}页语音播放失败:`, error);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            }
-                        } else {
-                            const slideTime = getSlideDuration(slide);
-                            await new Promise(resolve => setTimeout(resolve, slideTime));
-                        }
-
-                        const waitTime = slide === totalSlides ? 2000 : 1000;
+                        // 页面切换间隔
+                        const waitTime = slide === totalSlides ? 1500 : 200;
                         await new Promise(resolve => setTimeout(resolve, waitTime));
 
                     } catch (error) {

@@ -2078,7 +2078,7 @@
         // 语音播报
         async function speakContent(slideNum) {
             console.log(`🔍 检查播放条件: isTeaching=${isTeaching}, isConnected=${isConnected}, avatarPlatform=${!!avatarPlatform}`);
-            
+
             if (!isTeaching || !isConnected || !avatarPlatform) {
                 console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
                 return;
@@ -2098,8 +2098,8 @@
                 await avatarPlatform.writeText(content, {
                     nlp: false
                 });
-                
-                console.log(`✅ 沐沐讲解第${slideNum}页，动作: ${actions[0]?.value}`);
+
+                console.log(`✅ 沐沐开始讲解第${slideNum}页，动作: ${actions[0]?.value}`);
 
                 // 更新字幕显示
                 if (isAutoPlaying) {
@@ -2107,6 +2107,11 @@
                 } else {
                     updateSubtitle(content);
                 }
+
+                // 等待虚拟人播报完成
+                const duration = getSlideDuration(slideNum);
+                await new Promise(resolve => setTimeout(resolve, duration));
+                console.log(`✅ 沐沐完成讲解第${slideNum}页`);
             } catch (error) {
                 console.error('❌ 虚拟人讲解失败:', error);
             }
