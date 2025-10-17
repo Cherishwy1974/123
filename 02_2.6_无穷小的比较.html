@@ -2199,18 +2199,14 @@
             return titles[slideNum] || `第${slideNum}页`;
         }
 
-        // 获取每页的固定播放时长
+        // 获取每页的播放时长（根据字幕长度动态计算）
         function getSlideDuration(slideNum) {
-            const durations = {
-                1: 37000,  // 184字，概念介绍
-                2: 32000,  // 160字，核心思想
-                3: 34000,  // 171字，评判标准
-                4: 39000,  // 195字，三种结果
-                5: 42000,  // 208字，等价无穷小
-                6: 59000,  // 296字，核心应用
-                7: 46000   // 229字，总结
-            };
-            return durations[slideNum] || 30000;
+            const subtitle = subtitleScript[slideNum];
+            if (!subtitle) return 15000;
+
+            // 根据字符数计算时长：每个字约0.2秒朗读 + 3秒缓冲
+            const duration = (subtitle.length * 200) + 3000;
+            return Math.max(duration, 10000); // 最少10秒
         }
 
         // 静默页面切换
