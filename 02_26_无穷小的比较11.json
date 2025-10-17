@@ -61,7 +61,14 @@
         "monitoring_type": 0,
         "private_settings": {}
     },
-    "name": "01_1.2_对数的概念与运算",
+    "current_scene": "02_2.6_无穷小的比较",
+    "current_program_scene": "02_2.6_无穷小的比较",
+    "scene_order": [
+        {
+            "name": "02_2.6_无穷小的比较"
+        }
+    ],
+    "name": "02_2.6_无穷小的比较",
     "groups": [],
     "quick_transitions": [
         {
@@ -100,18 +107,6 @@
         "type2": 3
     },
     "modules": {
-        "scripts-tool": [],
-        "output-timer": {
-            "streamTimerHours": 0,
-            "streamTimerMinutes": 0,
-            "streamTimerSeconds": 30,
-            "recordTimerHours": 0,
-            "recordTimerMinutes": 0,
-            "recordTimerSeconds": 30,
-            "autoStartStreamTimer": false,
-            "autoStartRecordTimer": false,
-            "pauseRecordTimer": true
-        },
         "auto-scene-switcher": {
             "interval": 300,
             "non_matching_scene": "",
@@ -125,6 +120,18 @@
             "lang_id": 2052,
             "provider": "mssapi"
         },
+        "output-timer": {
+            "streamTimerHours": 0,
+            "streamTimerMinutes": 0,
+            "streamTimerSeconds": 30,
+            "recordTimerHours": 0,
+            "recordTimerMinutes": 0,
+            "recordTimerSeconds": 30,
+            "autoStartStreamTimer": false,
+            "autoStartRecordTimer": false,
+            "pauseRecordTimer": true
+        },
+        "scripts-tool": [],
         "advanced-scene-switcher": {
             "sceneGroups": [],
             "macros": [],
@@ -319,17 +326,54 @@
     "sources": [
         {
             "prev_ver": 536870913,
-            "name": "01_1.2_对数的概念与运算",
-            "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+            "name": "浏览器",
+            "uuid": "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e",
+            "id": "browser_source",
+            "versioned_id": "browser_source",
+            "settings": {
+                "url": "https://cherishwy1974.github.io/123/02_2.6_无穷小的比较.html",
+                "width": 1536,
+                "height": 864,
+                "shutdown": false,
+                "restart_when_active": true,
+                "reroute_audio": true
+            },
+            "mixers": 255,
+            "sync": 0,
+            "flags": 0,
+            "volume": 1.0,
+            "balance": 0.5,
+            "enabled": true,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "hotkeys": {
+                "libobs.mute": [],
+                "libobs.unmute": [],
+                "libobs.push-to-mute": [],
+                "libobs.push-to-talk": [],
+                "ObsBrowser.Refresh": []
+            },
+            "deinterlace_mode": 0,
+            "deinterlace_field_order": 0,
+            "monitoring_type": 2,
+            "private_settings": {}
+        },
+        {
+            "prev_ver": 536870913,
+            "name": "02_2.6_无穷小的比较",
+            "uuid": "a6b7c8d9-e0f1-4a2b-3c4d-5e6f7a8b9c0d",
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 10,
                 "custom_size": false,
+                "id_counter": 16,
                 "items": [
                     {
                         "name": "浏览器",
-                        "source_uuid": "d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a",
+                        "source_uuid": "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e",
                         "visible": true,
                         "locked": false,
                         "rot": 0.0,
@@ -345,7 +389,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 10,
+                        "id": 16,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -397,58 +441,14 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.10": [],
-                "libobs.hide_scene_item.10": []
+                "libobs.show_scene_item.16": [],
+                "libobs.hide_scene_item.16": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
             "monitoring_type": 0,
             "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
             "private_settings": {}
-        },
-        {
-            "prev_ver": 536870913,
-            "name": "浏览器",
-            "uuid": "d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://cherishwy1974.github.io/123/01_1.2_对数的概念与运算.html",
-                "width": 1536,
-                "height": 864,
-                "reroute_audio": true,
-                "restart_when_active": true,
-                "shutdown": false
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 2,
-            "private_settings": {}
         }
-    ],
-    "scene_order": [
-        {
-            "name": "01_1.2_对数的概念与运算"
-        }
-    ],
-    "current_scene": "01_1.2_对数的概念与运算",
-    "current_program_scene": "01_1.2_对数的概念与运算"
+    ]
 }
