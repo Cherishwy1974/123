@@ -35,7 +35,9 @@
       "Bash(then if ! grep -A 20 \"async function startAutoPlay\" \"$file\")",
       "Bash(then echo \"$file\")",
       "Bash(do [ -f \"$file\" ])",
-      "Bash(do if [[ \"$file\" != \"index.html\" ]])"
+      "Bash(do if [[ \"$file\" != \"index.html\" ]])",
+      "Bash(node -c:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []
