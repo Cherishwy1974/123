@@ -1,20 +1,247 @@
 {
-    "DesktopAudioDevice1": {
+  "DesktopAudioDevice1": {
+    "prev_ver": 536870913,
+    "name": "桌面音频",
+    "uuid": "f204e417-4f17-44ed-8d5b-fc21aef86d7e",
+    "id": "wasapi_output_capture",
+    "versioned_id": "wasapi_output_capture",
+    "settings": {
+      "device_id": "default"
+    },
+    "mixers": 255,
+    "sync": 0,
+    "flags": 0,
+    "volume": 1.0,
+    "balance": 0.5,
+    "enabled": true,
+    "muted": false,
+    "push-to-mute": false,
+    "push-to-mute-delay": 0,
+    "push-to-talk": false,
+    "push-to-talk-delay": 0,
+    "hotkeys": {
+      "libobs.mute": [],
+      "libobs.unmute": [],
+      "libobs.push-to-mute": [],
+      "libobs.push-to-talk": []
+    },
+    "deinterlace_mode": 0,
+    "deinterlace_field_order": 0,
+    "monitoring_type": 2,
+    "private_settings": {}
+  },
+  "AuxAudioDevice1": {
+    "prev_ver": 536870913,
+    "name": "麦克风/Aux",
+    "uuid": "c0131ef1-394a-4e3a-af0c-9bb8fd427613",
+    "id": "wasapi_input_capture",
+    "versioned_id": "wasapi_input_capture",
+    "settings": {
+      "device_id": "default"
+    },
+    "mixers": 255,
+    "sync": 0,
+    "flags": 0,
+    "volume": 1.0,
+    "balance": 0.5,
+    "enabled": false,
+    "muted": true,
+    "push-to-mute": false,
+    "push-to-mute-delay": 0,
+    "push-to-talk": false,
+    "push-to-talk-delay": 0,
+    "hotkeys": {
+      "libobs.mute": [],
+      "libobs.unmute": [],
+      "libobs.push-to-mute": [],
+      "libobs.push-to-talk": []
+    },
+    "deinterlace_mode": 0,
+    "deinterlace_field_order": 0,
+    "monitoring_type": 0,
+    "private_settings": {}
+  },
+  "name": "03_3.2_基本求导公式与四则运算",
+  "groups": [],
+  "quick_transitions": [
+    {
+      "name": "直接切换",
+      "duration": 300,
+      "hotkeys": [],
+      "id": 1,
+      "fade_to_black": false
+    },
+    {
+      "name": "淡入淡出",
+      "duration": 300,
+      "hotkeys": [],
+      "id": 2,
+      "fade_to_black": false
+    },
+    {
+      "name": "淡入淡出",
+      "duration": 300,
+      "hotkeys": [],
+      "id": 3,
+      "fade_to_black": true
+    }
+  ],
+  "transitions": [],
+  "saved_projectors": [],
+  "canvases": [],
+  "current_transition": "淡入淡出",
+  "transition_duration": 300,
+  "preview_locked": false,
+  "scaling_enabled": true,
+  "scaling_level": 0,
+  "scaling_off_x": 0.0,
+  "scaling_off_y": 0.0,
+  "virtual-camera": {
+    "type2": 3
+  },
+  "modules": {
+    "scripts-tool": [],
+    "output-timer": {
+      "streamTimerHours": 0,
+      "streamTimerMinutes": 0,
+      "streamTimerSeconds": 30,
+      "recordTimerHours": 0,
+      "recordTimerMinutes": 0,
+      "recordTimerSeconds": 30,
+      "autoStartStreamTimer": false,
+      "autoStartRecordTimer": false,
+      "pauseRecordTimer": true
+    },
+    "auto-scene-switcher": {
+      "interval": 300,
+      "non_matching_scene": "",
+      "switch_if_not_matching": false,
+      "active": false,
+      "switches": []
+    },
+    "captions": {
+      "source": "",
+      "enabled": false,
+      "lang_id": 2052,
+      "provider": "mssapi"
+    }
+  },
+  "resolution": {
+    "x": 1536,
+    "y": 864
+  },
+  "version": 2,
+  "sources": [
+    {
       "prev_ver": 536870913,
-      "name": "桌面音频",
-      "uuid": "f204e417-4f17-44ed-8d5b-fc21aef86d7e",
-      "id": "wasapi_output_capture",
-      "versioned_id": "wasapi_output_capture",
+      "name": "03_3.2_基本求导公式与四则运算",
+      "uuid": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "id": "scene",
+      "versioned_id": "scene",
       "settings": {
-        "device_id": "default"
+        "id_counter": 13,
+        "custom_size": false,
+        "items": [
+          {
+            "name": "浏览器",
+            "source_uuid": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+            "visible": true,
+            "locked": false,
+            "rot": 0.0,
+            "scale_ref": {
+              "x": 1536.0,
+              "y": 864.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 13,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1.0
+            },
+            "scale": {
+              "x": 0.800000011920929,
+              "y": 0.800000011920929
+            },
+            "scale_rel": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "bounds_rel": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          }
+        ]
+      },
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {
+        "OBSBasic.SelectScene": [],
+        "libobs.show_scene_item.13": [],
+        "libobs.hide_scene_item.13": []
+      },
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 536870913,
+      "name": "浏览器",
+      "uuid": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "https://cherishwy1974.github.io/123/03_3.2_基本求导公式与四则运算.html",
+        "width": 1536,
+        "height": 864,
+        "reroute_audio": true,
+        "restart_when_active": true,
+        "shutdown": false
       },
       "mixers": 255,
       "sync": 0,
       "flags": 0,
       "volume": 1.0,
       "balance": 0.5,
-      "enabled": false,
-      "muted": true,
+      "enabled": true,
+      "muted": false,
       "push-to-mute": false,
       "push-to-mute-delay": 0,
       "push-to-talk": false,
@@ -23,248 +250,20 @@
         "libobs.mute": [],
         "libobs.unmute": [],
         "libobs.push-to-mute": [],
-        "libobs.push-to-talk": []
+        "libobs.push-to-talk": [],
+        "ObsBrowser.Refresh": []
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
-      "monitoring_type": 0,
+      "monitoring_type": 2,
       "private_settings": {}
-    },
-    "AuxAudioDevice1": {
-      "prev_ver": 536870913,
-      "name": "麦克风/Aux",
-      "uuid": "c0131ef1-394a-4e3a-af0c-9bb8fd427613",
-      "id": "wasapi_input_capture",
-      "versioned_id": "wasapi_input_capture",
-      "settings": {
-        "device_id": "default"
-      },
-      "mixers": 255,
-      "sync": 0,
-      "flags": 0,
-      "volume": 1.0,
-      "balance": 0.5,
-      "enabled": false,
-      "muted": true,
-      "push-to-mute": false,
-      "push-to-mute-delay": 0,
-      "push-to-talk": false,
-      "push-to-talk-delay": 0,
-      "hotkeys": {
-        "libobs.mute": [],
-        "libobs.unmute": [],
-        "libobs.push-to-mute": [],
-        "libobs.push-to-talk": []
-      },
-      "deinterlace_mode": 0,
-      "deinterlace_field_order": 0,
-      "monitoring_type": 0,
-      "private_settings": {}
-    },
-    "name": "03_3.2_基本求导公式与四则运算",
-    "groups": [],
-    "quick_transitions": [
-      {
-        "name": "直接切换",
-        "duration": 300,
-        "hotkeys": [],
-        "id": 1,
-        "fade_to_black": false
-      },
-      {
-        "name": "淡入淡出",
-        "duration": 300,
-        "hotkeys": [],
-        "id": 2,
-        "fade_to_black": false
-      },
-      {
-        "name": "淡入淡出",
-        "duration": 300,
-        "hotkeys": [],
-        "id": 3,
-        "fade_to_black": true
-      }
-    ],
-    "transitions": [],
-    "saved_projectors": [],
-    "canvases": [],
-    "current_transition": "淡入淡出",
-    "transition_duration": 300,
-    "preview_locked": false,
-    "scaling_enabled": true,
-    "scaling_level": 0,
-    "scaling_off_x": 0.0,
-    "scaling_off_y": 0.0,
-    "virtual-camera": {
-      "type2": 3
-    },
-    "modules": {
-      "scripts-tool": [],
-      "output-timer": {
-        "streamTimerHours": 0,
-        "streamTimerMinutes": 0,
-        "streamTimerSeconds": 30,
-        "recordTimerHours": 0,
-        "recordTimerMinutes": 0,
-        "recordTimerSeconds": 30,
-        "autoStartStreamTimer": false,
-        "autoStartRecordTimer": false,
-        "pauseRecordTimer": true
-      },
-      "auto-scene-switcher": {
-        "interval": 300,
-        "non_matching_scene": "",
-        "switch_if_not_matching": false,
-        "active": false,
-        "switches": []
-      },
-      "captions": {
-        "source": "",
-        "enabled": false,
-        "lang_id": 2052,
-        "provider": "mssapi"
-      }
-    },
-    "resolution": {
-      "x": 1536,
-      "y": 864
-    },
-    "version": 2,
-    "sources": [
-      {
-        "prev_ver": 536870913,
-        "name": "03_3.2_基本求导公式与四则运算",
-        "uuid": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
-        "id": "scene",
-        "versioned_id": "scene",
-        "settings": {
-          "id_counter": 13,
-          "custom_size": false,
-          "items": [
-            {
-              "name": "浏览器",
-              "source_uuid": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
-              "visible": true,
-              "locked": false,
-              "rot": 0.0,
-              "scale_ref": {
-                "x": 1536.0,
-                "y": 864.0
-              },
-              "align": 5,
-              "bounds_type": 0,
-              "bounds_align": 0,
-              "bounds_crop": false,
-              "crop_left": 0,
-              "crop_top": 0,
-              "crop_right": 0,
-              "crop_bottom": 0,
-              "id": 13,
-              "group_item_backup": false,
-              "pos": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "pos_rel": {
-                "x": -1.7777777910232544,
-                "y": -1.0
-              },
-              "scale": {
-                "x": 0.800000011920929,
-                "y": 0.800000011920929
-              },
-              "scale_rel": {
-                "x": 1.0,
-                "y": 1.0
-              },
-              "bounds": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "bounds_rel": {
-                "x": 0.0,
-                "y": 0.0
-              },
-              "scale_filter": "disable",
-              "blend_method": "default",
-              "blend_type": "normal",
-              "show_transition": {
-                "duration": 0
-              },
-              "hide_transition": {
-                "duration": 0
-              },
-              "private_settings": {}
-            }
-          ]
-        },
-        "mixers": 0,
-        "sync": 0,
-        "flags": 0,
-        "volume": 1.0,
-        "balance": 0.5,
-        "enabled": true,
-        "muted": false,
-        "push-to-mute": false,
-        "push-to-mute-delay": 0,
-        "push-to-talk": false,
-        "push-to-talk-delay": 0,
-        "hotkeys": {
-          "OBSBasic.SelectScene": [],
-          "libobs.show_scene_item.13": [],
-          "libobs.hide_scene_item.13": []
-        },
-        "deinterlace_mode": 0,
-        "deinterlace_field_order": 0,
-        "monitoring_type": 0,
-        "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-        "private_settings": {}
-      },
-      {
-        "prev_ver": 536870913,
-        "name": "浏览器",
-        "uuid": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
-        "id": "browser_source",
-        "versioned_id": "browser_source",
-        "settings": {
-          "url": "https://cherishwy1974.github.io/123/03_3.2_基本求导公式与四则运算.html",
-          "width": 1536,
-          "height": 864,
-          "reroute_audio": true,
-          "restart_when_active": true,
-          "shutdown": false
-        },
-        "mixers": 255,
-        "sync": 0,
-        "flags": 0,
-        "volume": 1.0,
-        "balance": 0.5,
-        "enabled": true,
-        "muted": false,
-        "push-to-mute": false,
-        "push-to-mute-delay": 0,
-        "push-to-talk": false,
-        "push-to-talk-delay": 0,
-        "hotkeys": {
-          "libobs.mute": [],
-          "libobs.unmute": [],
-          "libobs.push-to-mute": [],
-          "libobs.push-to-talk": [],
-          "ObsBrowser.Refresh": []
-        },
-        "deinterlace_mode": 0,
-        "deinterlace_field_order": 0,
-        "monitoring_type": 0,
-        "private_settings": {}
-      }
-    ],
-    "scene_order": [
-      {
-        "name": "03_3.2_基本求导公式与四则运算"
-      }
-    ],
-    "current_scene": "03_3.2_基本求导公式与四则运算",
-    "current_program_scene": "03_3.2_基本求导公式与四则运算"
-  }
-  
+    }
+  ],
+  "scene_order": [
+    {
+      "name": "03_3.2_基本求导公式与四则运算"
+    }
+  ],
+  "current_scene": "03_3.2_基本求导公式与四则运算",
+  "current_program_scene": "03_3.2_基本求导公式与四则运算"
+}

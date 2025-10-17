@@ -1,660 +1,621 @@
-﻿
 <!DOCTYPE html>
 <html lang="zh-CN">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   03_3.4_微分的概念与应用
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-  <script>
-   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
-  </script>
-  <script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
-  <style>
-   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:975px;height:1105px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;width: 100%;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-9999px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left: -9999px;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:23px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-9999px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  </style>
- </head>
- <body class="blackboard">
-  <div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-  <div class="avatar-container">
-   <div class="wrapper" id="avatarWrapper">
-   </div>
-  </div>
-  <div class="slide-container flex-grow" id="slide-container">
-   <div class="slide active">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       微分的概念与应用
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第3章 视频 3.4
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的定义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的几何意义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分公式与运算
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分在近似计算中应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad3" x1="0%" x2="100%" y1="0%" y2="0%">
-         <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#f39c12;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <path d="M 50 400 Q 200 100 550 350" fill="none" stroke="url(#grad3)" stroke-width="4">
-       </path>
-       <line stroke="#3498db" stroke-width="3" x1="150" x2="450" y1="450" y2="50">
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.3;1;0.3">
-        </animate>
-       </line>
-       <circle cx="300" cy="180" fill="#2ecc71" r="10">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="8;15;8">
-        </animate>
-       </circle>
-       <text fill="#f39c12" font-family="serif" font-size="48" text-anchor="middle" x="300" y="50">
-        f'(x)
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.6;1;0.6">
-        </animate>
-       </text>
-      </svg>
-     </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>03_3.4_微分的概念与应用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            svg: { fontCache: 'global' },
+            startup: { pageReady: () => { return MathJax.startup.defaultPageReady().then(() => { console.log('✅ MathJax已加载'); }); } }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+        .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
+        .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
+        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
+        .chalkboard strong { color: #e74c3c; }
+        .math-formula { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
+        .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
+</head>
+<body class="blackboard">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
+        <!-- 第1页:引入 - 从导数到微分 -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>从导数到微分</h2>
+                    <p>我们已经学习了<strong>导数</strong>的概念:</p>
+                    <div class="math-formula">
+                        $$f'(x) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
+                    </div>
+                    <p>导数描述了函数的<strong>变化率</strong>。</p>
+
+                    <h3>新问题</h3>
+                    <p>当自变量 $x$ 有一个<strong>微小变化</strong> $\Delta x$ 时,</p>
+                    <p>函数 $y$ 会变化多少?</p>
+
+                    <p style="margin-top: 20px;">从导数公式可以看出:</p>
+                    <div class="math-formula">
+                        $$\Delta y \approx f'(x) \cdot \Delta x \quad (\Delta x \text{很小时})$$
+                    </div>
+
+                    <p><strong>微分</strong>就是研究这个近似关系!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%=" y2="100%">
+                                <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#f39c12;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="50">导数 → 微分</text>
+
+                        <!-- 导数圆圈 -->
+                        <circle cx="150" cy="200" r="70" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="70;80;70" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="150" y="195">导数</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="215">f'(x)</text>
+
+                        <!-- 箭头 -->
+                        <line x1="220" y1="200" x2="380" y2="200" stroke="#f39c12" stroke-width="4" marker-end="url(#arrowhead)"/>
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="180">变化量</text>
+
+                        <!-- 微分圆圈 -->
+                        <circle cx="450" cy="200" r="70" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="70;80;70" repeatCount="indefinite" begin="0.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="450" y="195">微分</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="215">dy</text>
+
+                        <!-- 关系式 -->
+                        <rect x="150" y="320" width="300" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="365">Δy ≈ f'(x) · Δx</text>
+
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2页:微分的定义 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>微分的定义</h2>
+                    <h3>核心定义</h3>
+                    <p>设函数 $y = f(x)$ 在点 $x$ 可导,则:</p>
+                    <div class="math-formula">
+                        $$dy = f'(x) \cdot dx$$
+                    </div>
+                    <p>其中 $dx = \Delta x$ 是自变量的微小增量</p>
+                    <p>$dy$ 称为函数 $y$ 的<strong>微分</strong></p>
+
+                    <h3>微分与导数的关系</h3>
+                    <div class="math-formula">
+                        $$f'(x) = \frac{dy}{dx}$$
+                    </div>
+                    <p><strong>导数 = 微分之商!</strong></p>
+
+                    <p style="margin-top: 20px; color: #95a5a6;">注意: $\frac{dy}{dx}$ 本来是一个整体符号,</p>
+                    <p style="color: #95a5a6;">但现在可以理解为 $dy$ 除以 $dx$</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">微分的定义</text>
+
+                        <!-- dy = f'(x) · dx 拆解 -->
+                        <g opacity="0">
+                            <rect x="100" y="100" width="400" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="10"/>
+                            <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="145">dy = f'(x) · dx</text>
+                            <animate attributeName="opacity" dur="6s" values="0;1;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <!-- 各部分标注 -->
+                        <g opacity="0">
+                            <circle cx="200" cy="135" r="20" fill="none" stroke="#e74c3c" stroke-width="2"/>
+                            <text fill="#e74c3c" font-size="16" x="100" y="200">← dy: 函数微分</text>
+                            <animate attributeName="opacity" dur="6s" values="0;0;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <g opacity="0">
+                            <circle cx="300" cy="135" r="25" fill="none" stroke="#2ecc71" stroke-width="2"/>
+                            <text fill="#2ecc71" font-size="16" text-anchor="middle" x="300" y="230">↑ f'(x): 导数</text>
+                            <animate attributeName="opacity" dur="6s" values="0;0;0;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <g opacity="0">
+                            <circle cx="430" cy="135" r="20" fill="none" stroke="#9b59b6" stroke-width="2"/>
+                            <text fill="#9b59b6" font-size="16" x="390" y="200">dx: 自变量微分 →</text>
+                            <animate attributeName="opacity" dur="6s" values="0;0;0;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <!-- 导数公式 -->
+                        <rect x="150" y="300" width="300" height="100" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="340">导数公式</text>
+                        <text fill="#1abc9c" font-size="24" text-anchor="middle" x="300" y="380">f'(x) = dy/dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3页:微分的几何意义 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>微分的几何意义</h2>
+                    <p>考虑曲线 $y = f(x)$ 在点 $(x, f(x))$ 处:</p>
+
+                    <h3>两种增量</h3>
+                    <ul style="margin-left: 30px;">
+                        <li><strong>$\Delta y$</strong>: 曲线上的实际增量</li>
+                        <li><strong>$dy$</strong>: 切线上的增量</li>
+                    </ul>
+
+                    <div class="math-formula">
+                        $$\Delta y = f(x + \Delta x) - f(x)$$
+                    </div>
+                    <div class="math-formula">
+                        $$dy = f'(x) \cdot \Delta x$$
+                    </div>
+
+                    <h3>几何解释</h3>
+                    <p>当 $\Delta x$ 很小时:</p>
+                    <p><strong>用切线代替曲线!</strong></p>
+                    <p>$dy$ 就是切线的竖直增量</p>
+                    <p>$\Delta y$ 就是曲线的竖直增量</p>
+                    <p style="margin-top: 15px; color: #e74c3c;">当 $\Delta x \to 0$ 时, $dy \approx \Delta y$</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="40">微分的几何意义</text>
+
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="400" x2="550" y2="400" stroke="#ecf0f1" stroke-width="2"/>
+                        <line x1="100" y1="100" x2="100" y2="400" stroke="#ecf0f1" stroke-width="2"/>
+                        <text fill="#ecf0f1" font-size="14" x="560" y="405">x</text>
+                        <text fill="#ecf0f1" font-size="14" x="105" y="90">y</text>
+
+                        <!-- 曲线 -->
+                        <path d="M 150 350 Q 250 200 350 250 Q 450 300 500 200"
+                              fill="none" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#3498db" font-size="16" x="450" y="180">y = f(x)</text>
+
+                        <!-- 点 (x, f(x)) -->
+                        <circle cx="250" cy="230" r="5" fill="#e74c3c"/>
+                        <text fill="#e74c3c" font-size="14" x="215" y="220">(x, f(x))</text>
+
+                        <!-- 切线 -->
+                        <line x1="150" y1="290" x2="400" y2="170" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text fill="#2ecc71" font-size="14" x="380" y="160">切线</text>
+
+                        <!-- Δx -->
+                        <line x1="250" y1="405" x2="350" y2="405" stroke="#f39c12" stroke-width="3"/>
+                        <line x1="250" y1="400" x2="250" y2="410" stroke="#f39c12" stroke-width="2"/>
+                        <line x1="350" y1="400" x2="350" y2="410" stroke="#f39c12" stroke-width="2"/>
+                        <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="430">Δx</text>
+
+                        <!-- dy (切线增量) -->
+                        <line x1="355" y1="200" x2="355" y2="250" stroke="#2ecc71" stroke-width="3"/>
+                        <text fill="#2ecc71" font-size="16" x="365" y="230">dy</text>
+
+                        <!-- Δy (曲线增量) -->
+                        <line x1="345" y1="230" x2="345" y2="250" stroke="#e74c3c" stroke-width="3"/>
+                        <text fill="#e74c3c" font-size="16" x="320" y="245">Δy</text>
+
+                        <!-- 点 (x+Δx, f(x+Δx)) -->
+                        <circle cx="350" cy="250" r="5" fill="#e74c3c"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4页:微分的计算 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>微分的计算</h2>
+                    <p>由于 $dy = f'(x) \cdot dx$,</p>
+                    <p><strong>微分计算 = 导数计算!</strong></p>
+
+                    <h3>基本微分公式</h3>
+                    <div class="math-formula">
+                        $$d(x^n) = nx^{n-1}dx$$
+                    </div>
+                    <div class="math-formula">
+                        $$d(\sin x) = \cos x \, dx$$
+                    </div>
+                    <div class="math-formula">
+                        $$d(e^x) = e^x dx$$
+                    </div>
+                    <div class="math-formula">
+                        $$d(\ln x) = \frac{1}{x} dx$$
+                    </div>
+
+                    <h3>微分运算法则</h3>
+                    <p>和导数运算法则<strong>完全一致</strong>!</p>
+                    <div class="math-formula">
+                        $$d(u \pm v) = du \pm dv$$
+                    </div>
+                    <div class="math-formula">
+                        $$d(uv) = u \, dv + v \, du$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">微分 ↔ 导数</text>
+
+                        <!-- 对应关系展示 -->
+                        <g>
+                            <rect x="80" y="100" width="200" height="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="180" y="138">(x²)' = 2x</text>
+                        </g>
+
+                        <line x1="280" y1="130" x2="320" y2="130" stroke="#f39c12" stroke-width="3"/>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="125">↔</text>
+
+                        <g>
+                            <rect x="320" y="100" width="200" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="420" y="138">d(x²) = 2x dx</text>
+                        </g>
+
+                        <!-- 第二组 -->
+                        <g opacity="0">
+                            <rect x="80" y="200" width="200" height="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="180" y="238">(sin x)' = cos x</text>
+                            <animate attributeName="opacity" dur="8s" values="0;0;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <line x1="280" y1="230" x2="320" y2="230" stroke="#f39c12" stroke-width="3" opacity="0">
+                            <animate attributeName="opacity" dur="8s" values="0;0;1;1" repeatCount="indefinite"/>
+                        </line>
+
+                        <g opacity="0">
+                            <rect x="320" y="200" width="200" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="8"/>
+                            <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="420" y="238">d(sin x) = cos x dx</text>
+                            <animate attributeName="opacity" dur="8s" values="0;0;1;1" repeatCount="indefinite"/>
+                        </g>
+
+                        <!-- 结论 -->
+                        <rect x="100" y="320" width="400" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="360">微分公式 = 导数公式 × dx</text>
+                        <text fill="#1abc9c" font-size="18" text-anchor="middle" x="300" y="395">形式上完全一致!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5页:微分的形式不变性 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>微分的形式不变性</h2>
+                    <p>这是微分的<strong>重要性质</strong>!</p>
+
+                    <h3>定理</h3>
+                    <p>无论 $u$ 是<strong>自变量</strong>还是<strong>中间变量</strong>,</p>
+                    <div class="math-formula">
+                        $$d(f(u)) = f'(u) \, du$$
+                    </div>
+                    <p>这个形式<strong>保持不变</strong>!</p>
+
+                    <h3>例子</h3>
+                    <p>1. 若 $u = x$ (自变量):</p>
+                    <div class="math-formula">
+                        $$d(\sin x) = \cos x \, dx$$
+                    </div>
+
+                    <p>2. 若 $u = x^2$ (中间变量):</p>
+                    <div class="math-formula">
+                        $$d(\sin x^2) = \cos(x^2) \, d(x^2)$$
+                    </div>
+                    <p style="margin-left: 30px;">$= \cos(x^2) \cdot 2x \, dx$</p>
+
+                    <p style="margin-top: 20px; color: #e74c3c;"><strong>形式不变!</strong> 这让计算更简单!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="50">形式不变性</text>
+
+                        <!-- 自变量情况 -->
+                        <rect x="100" y="100" width="400" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="130">u = x (自变量)</text>
+                        <text fill="#1abc9c" font-size="22" text-anchor="middle" x="300" y="165">d(sin u) = cos u · du</text>
+
+                        <text fill="#f39c12" font-size="30" text-anchor="middle" x="300" y="220">↓</text>
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="250">形式不变</text>
+                        <text fill="#f39c12" font-size="30" text-anchor="middle" x="300" y="280">↓</text>
+
+                        <!-- 中间变量情况 -->
+                        <rect x="100" y="300" width="400" height="120" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="330">u = x² (中间变量)</text>
+                        <text fill="#1abc9c" font-size="22" text-anchor="middle" x="300" y="365">d(sin u) = cos u · du</text>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="300" y="395">= cos(x²) · 2x dx</text>
+
+                        <!-- 强调 -->
+                        <circle cx="550" cy="140" r="30" fill="none" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="r" dur="2s" values="30;35;30" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="550" y="150">!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第6页:微分的应用1 - 近似计算 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>应用一:近似计算</h2>
+                    <p>利用微分可以进行<strong>近似计算</strong>:</p>
+                    <div class="math-formula">
+                        $$f(x + \Delta x) \approx f(x) + f'(x) \Delta x$$
+                    </div>
+
+                    <h3>例题</h3>
+                    <p>计算 $\sqrt{4.02}$ 的近似值</p>
+
+                    <p><strong>解:</strong> 令 $f(x) = \sqrt{x}$, $x = 4$, $\Delta x = 0.02$</p>
+                    <p style="margin-left: 30px;">$f'(x) = \frac{1}{2\sqrt{x}}$</p>
+                    <p style="margin-left: 30px;">$f'(4) = \frac{1}{2\sqrt{4}} = \frac{1}{4}$</p>
+
+                    <div class="math-formula">
+                        $$\sqrt{4.02} \approx \sqrt{4} + \frac{1}{4} \times 0.02$$
+                    </div>
+                    <div class="math-formula">
+                        $$= 2 + 0.005 = 2.005$$
+                    </div>
+
+                    <p style="margin-top: 15px; color: #95a5a6;">实际值: 2.00499... (误差极小!)</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="40">近似计算原理</text>
+
+                        <!-- 坐标系 -->
+                        <line x1="100" y1="350" x2="550" y2="350" stroke="#ecf0f1" stroke-width="2"/>
+                        <line x1="150" y1="100" x2="150" y2="400" stroke="#ecf0f1" stroke-width="2"/>
+
+                        <!-- 曲线 y = √x -->
+                        <path d="M 150 350 Q 250 200 350 150 Q 450 120 520 100"
+                              fill="none" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#3498db" font-size="16" x="480" y="85">y = √x</text>
+
+                        <!-- 点 (4, 2) -->
+                        <circle cx="300" cy="200" r="6" fill="#e74c3c"/>
+                        <text fill="#e74c3c" font-size="14" x="260" y="190">(4, 2)</text>
+                        <line x1="300" y1="350" x2="300" y2="355" stroke="#e74c3c" stroke-width="2"/>
+                        <text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="375">4</text>
+
+                        <!-- 切线 -->
+                        <line x1="250" y1="212.5" x2="400" y2="187.5" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text fill="#2ecc71" font-size="14" x="380" y="180">切线</text>
+
+                        <!-- Δx -->
+                        <line x1="300" y1="355" x2="350" y2="355" stroke="#f39c12" stroke-width="3"/>
+                        <text fill="#f39c12" font-size="14" text-anchor="middle" x="325" y="375">Δx=0.02</text>
+
+                        <!-- 近似点 -->
+                        <circle cx="350" cy="195" r="6" fill="#2ecc71"/>
+                        <text fill="#2ecc71" font-size="14" x="360" y="195">≈ 2.005</text>
+
+                        <!-- 实际点 -->
+                        <circle cx="350" cy="175" r="6" fill="#3498db"/>
+                        <text fill="#3498db" font-size="14" x="360" y="170">实际值</text>
+
+                        <!-- 说明 -->
+                        <rect x="100" y="420" width="400" height="60" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="450">用切线近似曲线</text>
+                        <text fill="#1abc9c" font-size="16" text-anchor="middle" x="300" y="470">Δx 越小,越准确!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第7页:微分的应用2 - 误差估计 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>应用二:误差估计</h2>
+                    <p>测量存在误差时,可用微分估计结果误差</p>
+
+                    <h3>原理</h3>
+                    <p>若 $y = f(x)$,测量 $x$ 时误差为 $\Delta x$,</p>
+                    <p>则 $y$ 的<strong>绝对误差</strong>约为:</p>
+                    <div class="math-formula">
+                        $$|\Delta y| \approx |dy| = |f'(x)| \cdot |\Delta x|$$
+                    </div>
+
+                    <p><strong>相对误差</strong>约为:</p>
+                    <div class="math-formula">
+                        $$\frac{|\Delta y|}{|y|} \approx \frac{|f'(x)| \cdot |\Delta x|}{|f(x)|}$$
+                    </div>
+
+                    <h3>例题</h3>
+                    <p>测量圆的半径 $r = 10$cm,误差不超过 0.05cm,</p>
+                    <p>估计面积 $S = \pi r^2$ 的误差。</p>
+
+                    <p><strong>解:</strong> $S' = 2\pi r$, 当 $r = 10$ 时:</p>
+                    <div class="math-formula">
+                        $$|\Delta S| \approx 2\pi \times 10 \times 0.05 = \pi \approx 3.14 \text{ cm}^2$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="40">误差传播</text>
+
+                        <!-- 圆的示意图 -->
+                        <circle cx="200" cy="220" r="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
+                        <circle cx="200" cy="220" r="85" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5"/>
+
+                        <!-- 半径 -->
+                        <line x1="200" y1="220" x2="280" y2="220" stroke="#2ecc71" stroke-width="3"/>
+                        <text fill="#2ecc71" font-size="16" text-anchor="middle" x="240" y="210">r</text>
+
+                        <!-- 误差标注 -->
+                        <line x1="280" y1="220" x2="285" y2="220" stroke="#e74c3c" stroke-width="3"/>
+                        <text fill="#e74c3c" font-size="14" x="290" y="220">Δr</text>
+
+                        <!-- 误差公式框 -->
+                        <rect x="320" y="100" width="250" height="250" fill="rgba(0,0,0,0.3)" stroke="#f39c12" stroke-width="2" rx="10"/>
+
+                        <text fill="#f1c40f" font-size="20" text-anchor="middle" x="445" y="135">误差估计</text>
+
+                        <text fill="#ecf0f1" font-size="16" x="340" y="170">输入误差:</text>
+                        <text fill="#e74c3c" font-size="18" x="340" y="195">|Δr| ≤ 0.05 cm</text>
+
+                        <line x1="340" y1="210" x2="550" y2="210" stroke="#f39c12" stroke-width="1"/>
+
+                        <text fill="#ecf0f1" font-size="16" x="340" y="235">输出误差:</text>
+                        <text fill="#2ecc71" font-size="18" x="340" y="260">|ΔS| ≈ |S'| · |Δr|</text>
+                        <text fill="#2ecc71" font-size="18" x="340" y="285">= 2πr · |Δr|</text>
+                        <text fill="#1abc9c" font-size="18" x="340" y="310">≈ 3.14 cm²</text>
+
+                        <!-- 底部说明 -->
+                        <rect x="100" y="400" width="400" height="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="435">微分帮助我们估计误差传播!</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第8页:总结 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>本节总结</h2>
+                    <h3>微分的核心概念</h3>
+                    <ul style="margin-left: 30px;">
+                        <li><strong>定义:</strong> $dy = f'(x) \cdot dx$</li>
+                        <li><strong>几何意义:</strong> 切线的增量</li>
+                        <li><strong>与导数的关系:</strong> $f'(x) = \frac{dy}{dx}$</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px;">重要性质</h3>
+                    <ul style="margin-left: 30px;">
+                        <li>形式不变性</li>
+                        <li>运算法则与导数一致</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px;">两大应用</h3>
+                    <ul style="margin-left: 30px;">
+                        <li><strong>近似计算:</strong> $f(x+\Delta x) \approx f(x) + f'(x)\Delta x$</li>
+                        <li><strong>误差估计:</strong> $|\Delta y| \approx |f'(x)| \cdot |\Delta x|$</li>
+                    </ul>
+
+                    <p style="margin-top: 25px; color: #f39c12;"><strong>核心思想:</strong></p>
+                    <p>微分 = 用<strong>直线代替曲线</strong>的艺术!</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="60">微分知识体系</text>
+
+                        <!-- 中心圆 -->
+                        <circle cx="300" cy="250" r="80" fill="rgba(241,196,15,0.3)" stroke="#f39c12" stroke-width="4">
+                            <animate attributeName="r" dur="3s" values="80;90;80" repeatCount="indefinite"/>
+                        </circle>
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="245">微分</text>
+                        <text fill="#f1c40f" font-size="20" text-anchor="middle" x="300" y="270">dy = f'dx</text>
+
+                        <!-- 定义 -->
+                        <circle cx="150" cy="150" r="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="0.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="145">定义</text>
+                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="150" y="165">dy=f'dx</text>
+                        <line x1="210" y1="190" x2="260" y2="220" stroke="#f39c12" stroke-width="2"/>
+
+                        <!-- 几何意义 -->
+                        <circle cx="450" cy="150" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="1s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="145">几何</text>
+                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="450" y="165">切线增量</text>
+                        <line x1="390" y1="190" x2="340" y2="220" stroke="#f39c12" stroke-width="2"/>
+
+                        <!-- 近似计算 -->
+                        <circle cx="150" cy="380" r="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="1.5s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="375">近似</text>
+                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="150" y="395">计算</text>
+                        <line x1="210" y1="340" x2="260" y2="300" stroke="#f39c12" stroke-width="2"/>
+
+                        <!-- 误差估计 -->
+                        <circle cx="450" cy="380" r="60" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3">
+                            <animate attributeName="r" dur="3s" values="60;70;60" repeatCount="indefinite" begin="2s"/>
+                        </circle>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="450" y="375">误差</text>
+                        <text fill="#ecf0f1" font-size="14" text-anchor="middle" x="450" y="395">估计</text>
+                        <line x1="390" y1="340" x2="340" y2="300" stroke="#f39c12" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       微分的概念与应用
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第03章 视频 3.4
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的定义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的几何意义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的计算
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        Δ
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#9b59b6" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#8e44ad" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        微分
-       </text>
-      </svg>
-     </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习微分的概念与应用!</div>
+    <div class="control-bar">
+        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">8</span> 页</div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
     </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       微分的概念与应用
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第03章 视频 3.4
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的定义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的几何意义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的计算
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 微分的应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        Δ
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#9b59b6" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#8e44ad" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        微分
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-center">
-      <h1 class="text-6xl font-bold">
-       微分的概念与应用
-      </h1>
-      <p class="text-2xl mt-4 text-gray-300">
-       第3章 视频 3.4
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="70" text-anchor="middle" x="300" y="180">
-        dy
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
-        </animate>
-       </text>
-       <line stroke="#3498db" stroke-width="4" x1="200" x2="400" y1="300" y2="300">
-       </line>
-       <line stroke="#e74c3c" stroke-width="4" x1="300" x2="300" y1="250" y2="350">
-       </line>
-       <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="380">
-        微小变化
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       微分的定义
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       微分把导数转成线性近似工具，方便我们估算函数的微小变化。
-      </p>
-      <div class="text-center mt-10 math-formula">
-       $dy = f'(x)dx$
-      </div>
-      <p class="mt-8 leading-relaxed">
-       <strong>
-        理解：
-       </strong>
-       微分 = 导数 × 自变量增量
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="400" y2="400">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="400" y2="100">
-       </line>
-       <path d="M 100 350 Q 300 150, 500 250" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <circle cx="300" cy="200" fill="#f39c12" r="6">
-       </circle>
-       <line stroke="#2ecc71" stroke-width="3" x1="250" x2="350" y1="250" y2="150">
-       </line>
-       <text fill="#2ecc71" font-size="18" x="360" y="150">
-        切线
-       </text>
-       <g opacity="0">
-        <line stroke="#e74c3c" stroke-width="3" x1="300" x2="350" y1="200" y2="200">
-        </line>
-        <line stroke="#e74c3c" stroke-width="3" x1="350" x2="350" y1="200" y2="175">
-        </line>
-        <text fill="#e74c3c" font-size="16" x="320" y="190">
-         dx
-        </text>
-        <text fill="#e74c3c" font-size="16" x="360" y="190">
-         dy
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-        </animate>
-       </g>
-       <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="450">
-        dy ≈ Δy (当dx很小)
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       微分计算
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       微分计算几乎与求导同步，只是在最后乘上 $dx$。
-      </p>
-      <div class="mt-6 space-y-4">
-       <p>
-        <strong>
-         例：
-        </strong>
-        $y=x^3$
-       </p>
-       <p class="text-gray-400">
-        导数：$y'=3x^2$
-       </p>
-       <p class="text-gray-400">
-        微分：$dy=3x^2dx$
-       </p>
-      </div>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="180" x="100" y="100">
-       </rect>
-       <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="190" y="145">
-        y = x³
-       </text>
-       <line marker-end="url(#arrow6)" stroke="#f39c12" stroke-width="3" x1="280" x2="320" y1="140" y2="140">
-       </line>
-       <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="120">
-        求导
-       </text>
-       <rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="3" width="180" x="320" y="100">
-       </rect>
-       <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="410" y="145">
-        y' = 3x²
-       </text>
-       <line marker-end="url(#arrow6)" stroke="#e74c3c" stroke-width="3" x1="410" x2="410" y1="180" y2="220">
-       </line>
-       <text fill="#e74c3c" font-size="16" x="450" y="205">
-        × dx
-       </text>
-       <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="180" x="320" y="220">
-       </rect>
-       <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="410" y="265">
-        dy = 3x²dx
-       </text>
-       <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="360">
-        微分 = 导数 × dx
-       </text>
-       <defs>
-        <marker id="arrow6" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       线性近似
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       微分的线性近似能快速估算难算的数值，误差与 $dx$ 的大小相关。
-      </p>
-      <div class="mt-6 space-y-4">
-       <p>
-        <strong>
-         例：
-        </strong>
-        估算 $\sqrt{101}$
-       </p>
-       <p class="text-gray-400">
-        设 $f(x)=\sqrt{x}$，在 $x=100$ 处
-       </p>
-       <p class="text-gray-400">
-        $f'(x)=\frac{1}{2\sqrt{x}}$，$f'(100)=\frac{1}{20}$
-       </p>
-       <p class="text-gray-400">
-        $\sqrt{101} \approx 10 + \frac{1}{20} \times 1 = 10.05$
-       </p>
-      </div>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="350" y2="350">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="350" y2="100">
-       </line>
-       <path d="M 100 300 Q 300 150, 500 200" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <text fill="#3498db" font-size="18" x="520" y="200">
-        √x
-       </text>
-       <circle cx="300" cy="200" fill="#f39c12" r="6">
-       </circle>
-       <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="380">
-        x=100
-       </text>
-       <line stroke="#2ecc71" stroke-dasharray="5,5" stroke-width="3" x1="200" x2="400" y1="250" y2="150">
-       </line>
-       <text fill="#2ecc71" font-size="18" x="420" y="150">
-        切线近似
-       </text>
-       <circle cx="350" cy="175" fill="#e74c3c" r="6">
-       </circle>
-       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="350" y="400">
-        x=101
-       </text>
-       <g opacity="0">
-        <line stroke="#9b59b6" stroke-dasharray="3,3" stroke-width="2" x1="300" x2="350" y1="200" y2="200">
-        </line>
-        <line stroke="#9b59b6" stroke-dasharray="3,3" stroke-width="2" x1="350" x2="350" y1="200" y2="175">
-        </line>
-        <text fill="#9b59b6" font-size="14" x="320" y="190">
-         Δx=1
-        </text>
-        <text fill="#9b59b6" font-size="14" x="360" y="188">
-         dy
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-        </animate>
-       </g>
-       <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="450">
-        10.05 ≈ √101 (真值10.0498)
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       高阶小量
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       微分只保留了第一阶主项，高阶小量在 $\Delta x$ 很小时可以忽略，但请记住它们确实存在。
-      </p>
-      <div class="mt-6 space-y-4">
-       <p>
-        $\Delta y = f'(x)\Delta x + o(\Delta x)$
-       </p>
-       <p class="text-gray-400">
-        其中 $o(\Delta x)$ 是高阶无穷小
-       </p>
-      </div>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">
-        真实变化 vs 线性近似
-       </text>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="400" y2="400">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="400" y2="150">
-       </line>
-       <path d="M 100 350 Q 250 200, 400 280" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <text fill="#3498db" font-size="18" x="420" y="280">
-        实际曲线
-       </text>
-       <line stroke="#2ecc71" stroke-dasharray="5,5" stroke-width="3" x1="150" x2="350" y1="320" y2="240">
-       </line>
-       <text fill="#2ecc71" font-size="18" x="360" y="240">
-        线性近似
-       </text>
-       <g opacity="0">
-        <path d="M 300 270 L 300 260 L 310 260 L 310 270 Z" fill="rgba(231,76,60,0.3)" stroke="#e74c3c" stroke-width="2">
-        </path>
-        <text fill="#e74c3c" font-size="16" x="320" y="265">
-         误差
-        </text>
-        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="450">
-         o(Δx) = 高阶小量
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-        </animate>
-       </g>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       实际应用
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       请结合自己的专业背景写下至少一个微分应用，这会让概念真正"落地"。
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        误差估算
-       </li>
-       <li>
-        物理量的微小变化
-       </li>
-       <li>
-        工程近似计算
-       </li>
-      </ul>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <circle cx="300" cy="250" fill="rgba(241,196,15,0.1)" r="140" stroke="#f39c12" stroke-width="3">
-       </circle>
-       <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="260">
-        微分应用
-       </text>
-       <g opacity="0">
-        <rect fill="rgba(52,152,219,0.2)" height="60" rx="8" stroke="#3498db" stroke-width="2" width="140" x="120" y="120">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="190" y="155">
-         误差分析
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(46,204,113,0.2)" height="60" rx="8" stroke="#2ecc71" stroke-width="2" width="140" x="340" y="120">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="410" y="155">
-         近似计算
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(231,76,60,0.2)" height="60" rx="8" stroke="#e74c3c" stroke-width="2" width="140" x="230" y="320">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="355">
-         物理变化
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-       <text fill="#2ecc71" font-size="20" opacity="0" text-anchor="middle" x="300" y="450">
-        实用工具
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       小结与作业
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       <strong>
-        本节要点：
-       </strong>
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        微分 = 导数 × $dx$
-       </li>
-       <li>
-        线性近似用于快速估算
-       </li>
-      </ul>
-      <p class="mt-8 leading-relaxed">
-       <strong>
-        作业：
-       </strong>
-       用微分估算3个实际问题
-      </p>
-      <p class="mt-4 text-gray-400">
-       掌握微分后，我们就能把导数应用到实际估算和误差控制中。
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="100">
-        📝 总结
-       </text>
-       <rect fill="rgba(52,152,219,0.1)" height="280" rx="10" stroke="#3498db" stroke-width="2" width="400" x="100" y="140">
-       </rect>
-       <g opacity="0">
-        <text fill="#2ecc71" font-size="20" x="130" y="190">
-         ✓ dy = f'(x)dx
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#e74c3c" font-size="20" x="130" y="240">
-         ✓ 线性近似
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <text fill="#9b59b6" font-size="20" x="130" y="290">
-         ✓ 误差估算
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-       <rect fill="rgba(241,196,15,0.2)" height="60" opacity="0" rx="8" stroke="#f39c12" stroke-width="2" width="300" x="150" y="330">
-        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="365">
-         作业：3道练习题
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </rect>
-      </svg>
-     </div>
-    </div>
-   </div>
-  </div>
-  <div class="subtitle-area" id="subtitleArea">
-   欢迎学习微分的概念与应用！点击开始讲课启动虚拟人讲师。
-  </div>
-  <div class="control-bar">
-   <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     7
-    </span>
-    页
-   </div>
-   <button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-   <button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-   <button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-   <button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-   <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-  </div>
-  <script type="module">
-        // 播放完成标记（供OBS检测）
+    <script type="module">
         window.playbackFinished = false;
-
-   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-  <script>
-   const lessonTitle="微分的概念与应用";const subtitleScript={"1":"欢迎学习微分的概念与应用！","2":"微分把导数转成线性近似工具，方便我们估算函数的微小变化。","3":"微分计算几乎与求导同步，只是在最后乘上 dx。","4":"微分的线性近似能快速估算难算的数值，误差与 dx 的大小相关。","5":"微分只保留了第一阶主项,高阶小量在 Δx 很小时可以忽略,但请记住它们确实存在。","6":"请结合自己的专业背景写下至少一个微分应用,这会让概念真正'落地'。","7":"掌握微分后,我们就能把导数应用到实际估算和误差控制中。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RH_point_O","6":"A_LH_introduced_O","7":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=7;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;});avatarPlatform.setApiInfo({
-                    appId: '92a38947',                                    // 数学讲解 AppID
-                    apiKey: '575827c4807d37d26a84cdea7b7a1716',             // 数学讲解 API密钥
-                    apiSecret: 'MDBlMDA4OWY3NzE1ZTcyNjUzZDNkYTJj',       // 数学讲解 API密钥
-                    sceneId: '236895676045332480',                       // 数学讲解 场景ID
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}async function startAutoPlay(){if(!avatarPlatform||!isConnected){await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}isAutoPlaying=true;document.getElementById('autoPlayBtn').disabled=true;for(let i=currentSlide;i<totalSlides;i++){showSlide(i);speakContent(i+1);const duration=(subtitleScript[i+1].length/5)*1000+2000;await new Promise(resolve=>setTimeout(resolve,duration));}isAutoPlaying=false;document.getElementById('autoPlayBtn').disabled=false;window.playbackFinished=true;document.title="PLAYBACK_FINISHED";console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
-
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
-        setTimeout(() => {
-            console.log('🚀 自动启动播放...');
-            startAutoPlay();
-        }, 3000);
-  </script>
- </body>
+        try { const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; window.SDKEvents = SDKEvents; window.PlayerEvents = PlayerEvents; window.RecorderEvents = RecorderEvents; window.UserMedia = UserMedia; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = { "1": "我们已经学习了导数,今天学习微分。当自变量x变化一个微小量时,函数y会变化多少?这就是微分要解决的问题。", "2": "微分的定义:dy等于f撇x乘以dx。微分和导数密切相关:导数就是微分之商!", "3": "微分的几何意义:delta y是曲线上的实际增量,dy是切线上的增量。当dx很小时,用直线代替曲线!", "4": "微分计算和导数完全对应。运算法则也一样。形式上完全一致!", "5": "微分的形式不变性:无论x是自变量还是中间变量,dy等于f撇乘以d的形式都保持不变!", "6": "微分的第一个应用:近似计算。我们可以用微分来近似实际增量,比直接计算简单得多!", "7": "微分的第二个应用:误差估计。测量有误差时,可以用微分来估算结果的误差!", "8": "今天学习了微分的概念和应用。记住:微分就是用直线代替曲线的艺术!" };
+        const actionMap = { "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O", "5": "A_LH_introduced_O", "6": "A_RH_point_O", "7": "A_RH_point_O", "8": "A_RLH_welcome_O" };
+        let currentSlide = 0; const totalSlides = 8; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; const slides = document.querySelectorAll('.slide');
+        function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); currentSlide = index; document.getElementById('currentSlide').textContent = index + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err)); } document.getElementById('prevBtn').disabled = index === 0; document.getElementById('nextBtn').disabled = index === totalSlides - 1; updateSubtitle(index + 1); }
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; }
+        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
+        async function speakContent(slideNum) { if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; } const content = subtitleScript[slideNum]; if (!content) return; try { const action = actionMap[slideNum]; if (action) { await avatarPlatform.writeCmd("action", action); } await avatarPlatform.writeText(content, { nlp: false }); updateSubtitle(slideNum); } catch (error) { console.error('❌ 讲解失败:', error); } }
+        function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
+        function waitForSDK() { return new Promise((resolve, reject) => { if (typeof AvatarPlatform !== 'undefined') { resolve(); return; } const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
+        async function startTeaching() { const startBtn = document.getElementById('startBtn'); startBtn.textContent = '🔄 启动中...'; startBtn.disabled = true; try { updateStatus('等待SDK...', 'connecting'); await waitForSDK(); if(avatarPlatform) { avatarPlatform.destroy(); } avatarPlatform = new AvatarPlatform({ useInlinePlayer: true }); avatarPlatform.on('connected', (initResp) => { console.log('🎉 连接成功'); isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); startBtn.textContent = '💖 虚拟人已就绪'; setTimeout(() => { speakContent(currentSlide + 1); }, 1000); }).on('disconnected', (err) => { isConnected = false; updateStatus('连接断开', 'error'); }).on('error', (error) => { console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false; }); avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' }); avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } }); await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') }); } catch (error) { console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false; } }
+        async function startAutoPlay() { if (!avatarPlatform || !isConnected) { await startTeaching(); await new Promise(resolve => setTimeout(resolve, 2000)); } isAutoPlaying = true; document.getElementById('autoPlayBtn').disabled = true; for (let i = currentSlide; i < totalSlides; i++) { showSlide(i); await speakContent(i + 1); const duration = (subtitleScript[i + 1].length / 4) * 1000 + 3000; await new Promise(resolve => setTimeout(resolve, duration)); } isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; window.playbackFinished = true; document.title = "PLAYBACK_FINISHED"; console.log('🎉 播放完成'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); } else if (e.key === 'Enter') { e.preventDefault(); speakContent(currentSlide + 1); } });
+        document.getElementById('totalSlides').textContent = totalSlides; showSlide(0);
+        setTimeout(() => { console.log('🚀 自动启动播放...'); startAutoPlay(); }, 3000);
+    </script>
+</body>
 </html>

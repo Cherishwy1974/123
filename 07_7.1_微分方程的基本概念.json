@@ -13,8 +13,8 @@
     "flags": 0,
     "volume": 1.0,
     "balance": 0.5,
-    "enabled": false,
-    "muted": true,
+    "enabled": true,
+    "muted": false,
     "push-to-mute": false,
     "push-to-mute-delay": 0,
     "push-to-talk": false,
@@ -27,7 +27,7 @@
     },
     "deinterlace_mode": 0,
     "deinterlace_field_order": 0,
-    "monitoring_type": 0,
+    "monitoring_type": 2,
     "private_settings": {}
   },
   "AuxAudioDevice1": {
@@ -255,7 +255,7 @@
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
-      "monitoring_type": 0,
+      "monitoring_type": 2,
       "private_settings": {}
     }
   ],
@@ -267,4 +267,3 @@
   "current_scene": "07_7.1_微分方程的基本概念",
   "current_program_scene": "07_7.1_微分方程的基本概念"
 }
-

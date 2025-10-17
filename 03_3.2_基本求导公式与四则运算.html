@@ -210,7 +210,7 @@
                     <h2>为什么需要求导公式?</h2>
                     <p>上节课我们学习了导数的<strong>定义</strong>:</p>
                     <div class="math-formula">
-                        $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+                        $$f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
                     </div>
                     <p>但是,如果每次都用定义来求导...</p>
                     <h3>问题来了!</h3>
@@ -325,16 +325,16 @@
                     </div>
                     <p><strong>惊人的性质:</strong> $e^x$ 的导数还是自己!</p>
                     <div class="math-formula">
-                        $$(a^x)' = a^x \ln a$$
+                        $$(a^x)' = a^x \\ln a$$
                     </div>
 
                     <h3>对数函数</h3>
                     <div class="math-formula">
-                        $$(\ln x)' = \frac{1}{x}$$
+                        $$(\\ln x)' = \\frac{1}{x}$$
                     </div>
-                    <p><strong>几何意义:</strong> $\ln x$ 的切线斜率 = $\frac{1}{x}$</p>
+                    <p><strong>几何意义:</strong> $\\ln x$ 的切线斜率 = $\\frac{1}{x}$</p>
                     <div class="math-formula">
-                        $$(\log_a x)' = \frac{1}{x \ln a}$$
+                        $$(\\log_a x)' = \\frac{1}{x \\ln a}$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -379,17 +379,17 @@
                     <h2>基础公式三:三角函数</h2>
                     <h3>核心公式</h3>
                     <div class="math-formula">
-                        $$(\sin x)' = \cos x$$
+                        $$(\\sin x)' = \\cos x$$
                     </div>
                     <div class="math-formula">
-                        $$(\cos x)' = -\sin x$$
+                        $$(\\cos x)' = -\\sin x$$
                     </div>
                     <p><strong>记忆技巧:</strong> sin → cos (正变余)</p>
                     <p style="margin-left: 30px;">cos → -sin (余变负正)</p>
 
                     <h3>其他三角函数</h3>
                     <div class="math-formula">
-                        $$(\tan x)' = \sec^2 x = \frac{1}{\cos^2 x}$$
+                        $$(\\tan x)' = \\sec^2 x = \\frac{1}{\\cos^2 x}$$
                     </div>
                     <p style="color: #95a5a6; font-size: 16px;">提示: tan = sin/cos,用除法法则可推导</p>
                 </div>
@@ -442,19 +442,19 @@
                     <h2>求导的四则运算法则</h2>
                     <h3>1. 线性性质(和差法则)</h3>
                     <div class="math-formula">
-                        $$(af(x) \pm bg(x))' = af'(x) \pm bg'(x)$$
+                        $$(af(x) \\pm bg(x))' = af'(x) \\pm bg'(x)$$
                     </div>
                     <p>常数可以提取,和差分别求导</p>
 
                     <h3>2. 乘法法则</h3>
                     <div class="math-formula">
-                        $$(f \cdot g)' = f' \cdot g + f \cdot g'$$
+                        $$(f \\cdot g)' = f' \\cdot g + f \\cdot g'$$
                     </div>
                     <p><strong>口诀:</strong> "前导后不导 + 前不导后导"</p>
 
                     <h3>3. 除法法则</h3>
                     <div class="math-formula">
-                        $$\left(\frac{f}{g}\right)' = \frac{f' \cdot g - f \cdot g'}{g^2}$$
+                        $$\\left(\\frac{f}{g}\\right)' = \\frac{f' \\cdot g - f \\cdot g'}{g^2}$$
                     </div>
                     <p><strong>注意:</strong> 分母要平方! 分子是"上导下 - 上下导"</p>
                 </div>
@@ -511,15 +511,15 @@
                     <p style="margin-left: 30px;">则 $f' = 2x$, $g' = e^x$</p>
 
                     <div class="math-formula">
-                        $$y' = 2x \cdot e^x + x^2 \cdot e^x = (2x + x^2)e^x$$
+                        $$y' = 2x \\cdot e^x + x^2 \\cdot e^x = (2x + x^2)e^x$$
                     </div>
 
                     <h3 style="margin-top: 25px;">例题2: 除法法则</h3>
-                    <p>求 $y = \frac{\sin x}{x}$ 的导数</p>
+                    <p>求 $y = \\frac{\\sin x}{x}$ 的导数</p>
 
                     <p style="margin-top: 15px;"><strong>解:</strong> 使用除法法则</p>
                     <div class="math-formula">
-                        $$y' = \frac{\cos x \cdot x - \sin x \cdot 1}{x^2} = \frac{x\cos x - \sin x}{x^2}$$
+                        $$y' = \\frac{\\cos x \\cdot x - \\sin x \\cdot 1}{x^2} = \\frac{x\\cos x - \\sin x}{x^2}$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -570,18 +570,18 @@
                 <div class="chalkboard">
                     <h2>综合练习 2</h2>
                     <h3>例题3: 综合应用</h3>
-                    <p>求 $y = \frac{\ln x}{x^2}$ 的导数</p>
+                    <p>求 $y = \\frac{\\ln x}{x^2}$ 的导数</p>
 
                     <p style="margin-top: 15px;"><strong>解:</strong> 使用除法法则</p>
-                    <p style="margin-left: 30px;">$f = \ln x$, $f' = \frac{1}{x}$</p>
+                    <p style="margin-left: 30px;">$f = \\ln x$, $f' = \\frac{1}{x}$</p>
                     <p style="margin-left: 30px;">$g = x^2$, $g' = 2x$</p>
 
                     <div class="math-formula">
-                        $$y' = \frac{\frac{1}{x} \cdot x^2 - \ln x \cdot 2x}{(x^2)^2} = \frac{x - 2x\ln x}{x^4}$$
+                        $$y' = \\frac{\\frac{1}{x} \\cdot x^2 - \\ln x \\cdot 2x}{(x^2)^2} = \\frac{x - 2x\\ln x}{x^4}$$
                     </div>
 
                     <div class="math-formula">
-                        $$= \frac{1 - 2\ln x}{x^3}$$
+                        $$= \\frac{1 - 2\\ln x}{x^3}$$
                     </div>
 
                     <p style="margin-top: 20px; color: #95a5a6;"><strong>技巧:</strong> 化简时约掉公因子 $x$</p>
@@ -635,16 +635,16 @@
                     <h3>基本公式(必须记住!)</h3>
                     <ul style="margin-left: 30px;">
                         <li>$(x^n)' = nx^{n-1}$</li>
-                        <li>$(e^x)' = e^x$, $(a^x)' = a^x \ln a$</li>
-                        <li>$(\ln x)' = \frac{1}{x}$</li>
-                        <li>$(\sin x)' = \cos x$, $(\cos x)' = -\sin x$</li>
+                        <li>$(e^x)' = e^x$, $(a^x)' = a^x \\ln a$</li>
+                        <li>$(\\ln x)' = \\frac{1}{x}$</li>
+                        <li>$(\\sin x)' = \\cos x$, $(\\cos x)' = -\\sin x$</li>
                     </ul>
 
                     <h3 style="margin-top: 20px;">四则运算法则</h3>
                     <ul style="margin-left: 30px;">
-                        <li>$(af \pm bg)' = af' \pm bg'$ (线性)</li>
+                        <li>$(af \\pm bg)' = af' \\pm bg'$ (线性)</li>
                         <li>$(fg)' = f'g + fg'$ (乘法)</li>
-                        <li>$(\frac{f}{g})' = \frac{f'g - fg'}{g^2}$ (除法)</li>
+                        <li>$(\\frac{f}{g})' = \\frac{f'g - fg'}{g^2}$ (除法)</li>
                     </ul>
 
                     <p style="margin-top: 25px; color: #f39c12;"><strong>下节预告:</strong></p>
@@ -721,14 +721,14 @@
         const lessonTitle = "基本求导公式与四则运算";
 
         const subtitleScript = {
-            "1": "上节课我们学习了导数的定义,但每次用定义求导太复杂了。今天我们学习高效的求导公式,就像拥有了一个导数计算器!",
-            "2": "幂函数求导有一个简单的规律:指数变成系数,指数减一。比如x的三次方,导数就是3x的平方。这个公式对所有实数指数都成立,包括负数和分数!",
-            "3": "指数函数中,e的x次方非常特殊,它的导数还是它自己!这就是为什么e在数学中如此重要。对数函数ln x的导数是1/x,从图像上看,就是切线斜率等于1除以x。",
-            "4": "三角函数的导数有一定规律。sin x求导变成cos x,cos x求导变成负的sin x。记住这个规律:正弦变余弦,余弦变负的正弦。如果再求一次导,又回到原来的函数了!",
-            "5": "四则运算法则帮助我们处理复杂函数。乘法法则的口诀是:前导后不导,加上前不导后导。除法法则要记住:分子是上导下减上下导,分母是g的平方。分母一定要平方!",
-            "6": "让我们看两道综合练习。第一题用乘法法则,x平方乘以e的x次方,结果是2x加x平方,然后乘以e的x次方。第二题用除法法则,注意分母要平方,最后要化简。",
-            "7": "再看一道除法法则的例题。ln x除以x平方,用除法法则计算。注意化简技巧:约掉公因子x,最终答案是1减2倍ln x,全部除以x的三次方。做题时一定要细心,检查符号和分母!",
-            "8": "今天我们学习了基本求导公式和四则运算法则。幂函数、指对数、三角函数的公式一定要记牢!四则法则是工具,熟练掌握后,求导就像做算术一样简单。下节课我们学习链式法则,那是处理复合函数的利器!"
+            "1": "同学们好!上节课我们学习了导数的定义:f撇x等于当h趋于0时,f括号x加h减f括号x,全部除以h的极限。但是如果每次都用定义来求导,会非常复杂!比如要求x的100次方的导数,就要展开括号x加h的100次方,这需要用二项式定理,计算量巨大!所以我们迫切需要更高效的方法,这就是今天要学习的基本求导公式。有了这些公式,求导就像查表一样简单快捷!",
+            "2": "首先来看幂函数的求导公式。这是最基础也是最重要的公式:x的n次方求导,等于n乘以x的n减1次方。记忆方法很简单:把指数n拿下来作为系数,然后指数减1。让我们看几个例子。常数C的导数是0,因为常数不变化。x的导数是1,可以看作x的1次方,指数1下来,x的0次方等于1。x平方的导数是2x,x立方的导数是3x平方。特别注意,这个公式对所有实数n都成立!比如1除以x可以写成x的负1次方,导数就是负1乘以x的负2次方,也就是负的1除以x平方。根号x是x的二分之一次方,导数是二分之一乘以x的负二分之一次方。",
+            "3": "接下来看指数函数和对数函数的求导公式。指数函数中,e的x次方最为特殊,它有一个神奇的性质:e的x次方求导还是e的x次方!这个性质使得e成为自然对数的底,在微积分中有极其重要的地位。如果底数不是e,而是一般的a,那么a的x次方求导等于a的x次方乘以ln a。对数函数方面,自然对数ln x的导数等于1除以x。从几何意义理解,ln x图像在x处的切线斜率就是1除以x。x越大,切线越平缓。一般对数log以a为底x的导数,等于1除以括号x乘以ln a。记住这些公式的关键是理解e和ln的特殊关系。",
+            "4": "三角函数的求导公式也有规律可循。正弦函数sin x的导数是cos x,余弦函数cos x的导数是负的sin x。记忆口诀是:正弦变余弦,余弦变负正弦。为什么会有这个规律呢?从图像上看,sin x的切线斜率变化恰好对应cos x的值。在x等于0处,sin x的切线斜率最大,而cos 0等于1。再看tan x,它的导数是sec平方x,也就是1除以cos平方x。这可以用除法法则从tan x等于sin x除以cos x推导出来。如果你连续对sin x求导,会发现:sin求导得cos,cos求导得负sin,负sin求导得负cos,负cos求导又回到sin,形成了一个循环!",
+            "5": "掌握了基本公式后,我们需要学习四则运算法则,这样才能处理更复杂的函数。首先是线性性质,也叫和差法则:a倍的f加减b倍的g,求导等于a倍的f撇加减b倍的g撇。这说明常数可以提取出来,和差可以分别求导。乘法法则稍微复杂一点:f乘以g的导数,等于f撇乘以g,加上f乘以g撇。口诀是"前导后不导,加上前不导后导"。注意有两项!除法法则是:f除以g的导数,等于括号f撇乘以g减去f乘以g撇,全部除以g的平方。分子是"上导下减上下导",分母是g的平方。一定要记住分母要平方!这个很容易忘记。",
+            "6": "让我们通过具体例题来练习乘法法则和除法法则。例题1:求y等于x平方乘以e的x次方的导数。这是两个函数相乘,用乘法法则。设f等于x平方,g等于e的x次方,那么f撇等于2x,g撇等于e的x次方。根据乘法法则,y撇等于2x乘以e的x次方,加上x平方乘以e的x次方。可以提取公因子e的x次方,得到括号2x加x平方乘以e的x次方。例题2:求y等于sin x除以x的导数。这是除法,用除法法则。f等于sin x,f撇等于cos x;g等于x,g撇等于1。代入公式:y撇等于括号cos x乘以x减去sin x乘以1,全部除以x平方,结果是x cos x减sin x,除以x平方。",
+            "7": "再看一道综合性更强的例题。例题3:求y等于ln x除以x平方的导数。这也是除法法则的应用。f等于ln x,f撇等于1除以x;g等于x平方,g撇等于2x。根据除法法则,y撇等于1除以x乘以x平方,减去ln x乘以2x,全部除以x平方的平方,也就是x的四次方。分子是x减去2x ln x,分母是x的四次方。现在注意化简技巧:分子分母同时约去一个x,得到1减2 ln x,全部除以x的三次方。这就是最终答案。做除法法则的题目时,一定要注意:第一,分子的符号,是减号不是加号;第二,分母要平方;第三,最后要化简到最简形式。",
+            "8": "好,今天的课程我们就讲到这里。让我们回顾一下学习的内容。基本求导公式有三类:第一类是幂函数,x的n次方导数等于nx的n减1次方;第二类是指数对数,e的x次方导数是e的x次方,ln x导数是1除以x;第三类是三角函数,sin x导数是cos x,cos x导数是负sin x。四则运算法则包括:和差法则可以分别求导,乘法法则是前导后不导加前不导后导,除法法则是上导下减上下导除以g平方。这些公式一定要熟记于心,因为它们是后续学习的基础!熟练掌握后,求导就会变得像四则运算一样简单。下节课我们要学习链式法则,那是处理复合函数求导的强大工具,比如e的x平方、sin的2x这类函数都要用链式法则。今天的课就到这里,同学们课后一定要多做练习,把公式记牢!再见!"
         };
 
         const actionMap = {

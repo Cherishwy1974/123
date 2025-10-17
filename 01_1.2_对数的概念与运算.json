@@ -6,15 +6,15 @@
     "id": "wasapi_output_capture",
     "versioned_id": "wasapi_output_capture",
     "settings": {
-      "device_id": "default"
+      "device_id": "{0.0.0.00000000}.{e4870d2a-0d9e-4a8e-b7a8-6e32e3e5c1f7}"
     },
     "mixers": 255,
     "sync": 0,
     "flags": 0,
     "volume": 1.0,
     "balance": 0.5,
-    "enabled": false,
-    "muted": true,
+    "enabled": true,
+    "muted": false,
     "push-to-mute": false,
     "push-to-mute-delay": 0,
     "push-to-talk": false,
@@ -27,7 +27,7 @@
     },
     "deinterlace_mode": 0,
     "deinterlace_field_order": 0,
-    "monitoring_type": 0,
+    "monitoring_type": 2,
     "private_settings": {}
   },
   "AuxAudioDevice1": {
@@ -255,7 +255,7 @@
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
-      "monitoring_type": 0,
+      "monitoring_type": 2,
       "private_settings": {}
     }
   ],
@@ -267,4 +267,3 @@
   "current_scene": "01_1.2_对数的概念与运算",
   "current_program_scene": "01_1.2_对数的概念与运算"
 }
-
