@@ -359,51 +359,12 @@
                         <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 无穷与震荡间断点</p>
                     </div>
                 </div>
-                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
-<defs>
-                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <text x="300" y="120" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
-                            f(x)
-                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
-                        </text>
-                        <path d="M 100 400 Q 200 200 300 250 T 500 300" stroke="#3498db" stroke-width="4" fill="none">
-                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <circle cx="200" cy="250" r="8" fill="#e74c3c">
-                            <animate attributeName="cy" values="250;200;250" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                    </svg>
+                <div class="animation-pane" style="flex: 1;">
+                    <canvas class="animationCanvas"></canvas>
                 </div>
             </div>
         </div>
-                </div>
-                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                    <svg style="width: 100%; max-width: 500px; height: 400px;" viewBox="0 0 600 500">
-<defs>
-                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <text x="300" y="120" font-size="60" fill="url(#grad1)" text-anchor="middle" font-family="serif">
-                            f(x)
-                            <animate attributeName="opacity" values="0;1;1;0.7" dur="3s" repeatCount="indefinite"/>
-                        </text>
-                        <path d="M 100 400 Q 200 200 300 250 T 500 300" stroke="#3498db" stroke-width="4" fill="none">
-                            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
-                        </path>
-                        <circle cx="200" cy="250" r="8" fill="#e74c3c">
-                            <animate attributeName="cy" values="250;200;250" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                    </svg>
-                </div>
-            </div>
-        </div><div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">直观理解：什么是连续？</h2><p class="mt-4 leading-relaxed">在图像上，一个函数是<strong>连续</strong>的，就意味着它的图线是<strong>没有断开</strong>的，我们可用一支笔<strong>一笔画</strong>出来。</p><p class="mt-8 leading-relaxed">如果画图时，笔被迫抬起，那么抬笔的那个点就是<strong>间断点</strong>。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
+        <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">直观理解：什么是连续？</h2><p class="mt-4 leading-relaxed">在图像上，一个函数是<strong>连续</strong>的，就意味着它的图线是<strong>没有断开</strong>的，我们可用一支笔<strong>一笔画</strong>出来。</p><p class="mt-8 leading-relaxed">如果画图时，笔被迫抬起，那么抬笔的那个点就是<strong>间断点</strong>。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">从增量开始</h2><p class="mt-4 leading-relaxed">在讨论连续之前，我们先理解<strong>增量</strong>的概念，即变化量。</p><p class="mt-6 leading-relaxed">当自变量 $x$ 从 $x₀$ 变化了 $Δx$ 时，函数值 $y$ 也会跟着变化 $Δy$。这个 $Δy$ 就是函数的增量。</p><div class="text-center mt-10 math-formula">$Δy = f(x₀ + Δx) - f(x₀)$</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">连续的严格定义</h2><p class="mt-4 leading-relaxed">直观的一笔画需要用严格的数学语言来定义。函数 $f(x)$ 在点 $x_0$ 处连续，必须<strong>同时满足</strong>三个条件。</p><p class="mt-8 leading-relaxed">接下来，我们将逐一剖析这三个条件。</p></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
         <div class="slide"><div class="slide-content"><div class="blackboard-text w-1/2 text-xl p-8"><h2 class="text-4xl font-bold mb-8 pb-2">条件一：点有定义</h2><p class="mt-4 leading-relaxed">函数在 $x_0$ 这一点必须有意义，不能是一个无底洞。</p><p class="mt-8 leading-relaxed">也就是说，当我们把 $x_0$ 代入函数时，必须能得到一个确定的函数值 $f(x_0)$。</p><div class="text-center mt-10 math-formula">$f(x_0)$ 必须存在</div></div><div class="animation-pane w-1/2"><canvas class="animationCanvas"></canvas></div></div></div>
