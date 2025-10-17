@@ -746,6 +746,7 @@
         let currentSlide = 0;
         let isAutoPlaying = false;
         const totalSlides = 5;
+        let speechFinishedResolve = null;  // 用于同步虚拟人讲解完成
 
         // === 自动播放时间设置 ===
         const getSlideDuration = (slideNum) => {
@@ -922,20 +923,11 @@
                     })
                     .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成 frame_stop:', data);
-                        if (isAutoPlaying && currentSlide < totalSlides - 1) {
-                            console.log(`🎬 自动播放: 第${currentSlide+1}页讲解完成，准备翻页到第${currentSlide+2}页`);
-                            setTimeout(() => {
-                                if (isAutoPlaying) {
-                                    currentSlide++;
-                                    showSlide(currentSlide);
-                                    updateSlideInfo();
-                                    setTimeout(() => {
-                                        if (isAutoPlaying) {
-                                            speakContent(currentSlide + 1);
-                                        }
-                                    }, 800);
-                                }
-                            }, 1500);
+                        // 在自动播放模式下，通知等待中的Promise
+                        if (isAutoPlaying && speechFinishedResolve) {
+                            console.log('🎬 通知自动播放：虚拟人讲解完成');
+                            speechFinishedResolve();
+                            speechFinishedResolve = null;
                         }
                     });
 
@@ -1135,9 +1127,29 @@
 
                         if (isConnected && isTeaching && avatarPlatform) {
                             try {
+                                // 创建Promise等待虚拟人讲解完成
+                                const speechPromise = new Promise(resolve => {
+                                    speechFinishedResolve = resolve;
+                                });
+                                
                                 await speakContent(slide);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
+                                console.log(`⏳ 等待虚拟人讲解第${slide}页完成...`);
+                                
+                                // 等待虚拟人讲解完成，或超时（防止卡住）
+                                const timeoutPromise = new Promise(resolve => 
+                                    setTimeout(() => {
+                                        console.log(`⚠️ 第${slide}页讲解超时，继续下一页`);
+                                        resolve();
+                                    }, getSlideDuration(slide) + 5000)  // 设定时间+5秒作为超时
+                                );
+                                
+                                await Promise.race([speechPromise, timeoutPromise]);
+                                console.log(`✅ 第${slide}页讲解完成`);
+                                
+                                // 页面间等待时间
+                                if (slide < totalSlides) {
+                                    await new Promise(resolve => setTimeout(resolve, 1500));
+                                }
                             } catch (error) {
                                 console.error(`❌ 第${slide}页语音播放失败:`, error);
                                 const slideTime = getSlideDuration(slide);
@@ -1146,10 +1158,11 @@
                         } else {
                             const slideTime = getSlideDuration(slide);
                             await new Promise(resolve => setTimeout(resolve, slideTime));
+                            // 页面间等待时间
+                            if (slide < totalSlides) {
+                                await new Promise(resolve => setTimeout(resolve, 1500));
+                            }
                         }
-
-                        const waitTime = slide === totalSlides ? 2000 : 1000;
-                        await new Promise(resolve => setTimeout(resolve, waitTime));
 
                     } catch (error) {
                         console.error(`❌ 第${slide}页播放过程出错:`, error);
@@ -1172,6 +1185,13 @@
         function stopAutoPlay() {
             if (isAutoPlaying) {
                 isAutoPlaying = false;
+                
+                // 清理等待中的Promise
+                if (speechFinishedResolve) {
+                    speechFinishedResolve();
+                    speechFinishedResolve = null;
+                }
+                
                 window.playbackFinished = true;
                 document.title = "PLAYBACK_FINISHED";
                 console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
