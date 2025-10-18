@@ -718,7 +718,7 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
-        // 自动翻页函数
+        // 自动翻页函数（立即翻页，无延迟）
         function startAutoPageTurn() {
             if (autoPageTimer) {
                 clearInterval(autoPageTimer);
@@ -734,7 +734,7 @@
                     window.playbackFinished = true;
                     document.title = "PLAYBACK_FINISHED";
                 }
-            }, getSlideDuration(currentSlide + 1)); // 根据当前页语音时长自动翻页
+            }, 100); // 每100毫秒翻一页
         }
 
         document.getElementById('totalSlides').textContent = totalSlides;
@@ -743,15 +743,13 @@
         // 自动启动虚拟人并开始播放
         setTimeout(() => {
             startTeaching().then(() => {
-                // 等待虚拟人连接成功后，自动开始播放和翻页
+                // 等待虚拟人连接成功后，立即开始播放和翻页
                 const checkConnection = setInterval(() => {
                     if (isConnected && isTeaching) {
                         clearInterval(checkConnection);
-                        console.log('✅ 虚拟人已连接，3秒后自动开始播放和翻页...');
-                        setTimeout(() => {
-                            startAutoPlay();
-                            startAutoPageTurn(); // 启动自动翻页
-                        }, 3000);
+                        console.log('✅ 虚拟人已连接，立即开始播放和翻页...');
+                        startAutoPlay();
+                        startAutoPageTurn(); // 启动自动翻页
                     }
                 }, 500);
             });

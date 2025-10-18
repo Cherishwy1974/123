@@ -169,7 +169,7 @@
                     <h2 class="font-bold">驻点</h2>
                     <p class="mt-4">使导数为零的点称为<strong>驻点</strong>。</p>
                     <div class="math-formula mt-6">
-                        $$f'(x_0) = 0 \\implies x_0 \\text{ 是驻点}$$
+                        $$f'(x_0) = 0 \implies x_0 \text{ 是驻点}$$
                     </div>
                     <p class="mt-6">在驻点处，函数的切线是<strong>水平</strong>的，这是寻找极值的重要线索。</p>
                 </div>
@@ -275,8 +275,8 @@
                     <p class="mt-4">利用<strong>二阶导数</strong>判断极值，更加简便。</p>
                     <p class="mt-6">前提条件：$f'(x_0) = 0$ 且 $f''(x_0)$ 存在</p>
                     <div class="math-formula mt-6">
-                        <p>$f''(x_0) < 0 \\implies$ 极大值</p>
-                        <p class="mt-4">$f''(x_0) > 0 \\implies$ 极小值</p>
+                        <p>$$f''(x_0) < 0 \implies \text{极大值}$$</p>
+                        <p class="mt-4">$$f''(x_0) > 0 \implies \text{极小值}$$</p>
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
@@ -523,6 +523,7 @@
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+        let autoPageTimer = null; // 自动翻页定时器
         const slides = document.querySelectorAll('.slide');
 
         function showSlide(index) {
@@ -650,6 +651,25 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
+        // 自动翻页函数（立即翻页，无延迟）
+        function startAutoPageTurn() {
+            if (autoPageTimer) {
+                clearInterval(autoPageTimer);
+            }
+
+            autoPageTimer = setInterval(() => {
+                if (currentSlide < totalSlides - 1) {
+                    nextSlide();
+                    console.log(`📄 自动翻页到第 ${currentSlide + 1} 页`);
+                } else {
+                    clearInterval(autoPageTimer);
+                    console.log('✅ 已到达最后一页，自动翻页结束');
+                    window.playbackFinished = true;
+                    document.title = "PLAYBACK_FINISHED";
+                }
+            }, 100); // 每100毫秒翻一页
+        }
+
         // 页面加载后的启动逻辑
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('totalSlides').textContent = totalSlides;
@@ -661,11 +681,10 @@
 
             // 2. 监听虚拟人就绪事件
             window.addEventListener('teacherReady', () => {
-                console.log('🚀 虚拟人已就绪或连接失败，3秒后启动自动播放...');
-                // 3. 延迟后自动启动播放
-                setTimeout(() => {
-                    startAutoPlay();
-                }, 3000);
+                console.log('🚀 虚拟人已就绪，立即启动自动播放和翻页...');
+                // 3. 立即启动播放和翻页
+                startAutoPlay();
+                startAutoPageTurn(); // 启动自动翻页
             });
         });
 
