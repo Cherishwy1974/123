@@ -899,8 +899,10 @@
             try {
                 const action = actionMap[slideNum];
                 if (action) { await avatarPlatform.writeCmd("action", action); }
+                console.log(`🎤 虚拟人开始讲解第${slideNum}页...`);
                 await avatarPlatform.writeText(content, { nlp: false });
                 updateSubtitle(slideNum);
+                console.log(`✅ 第${slideNum}页语音已发送，等待frame_stop事件...`);
             } catch (error) { console.error('❌ 讲解失败:', error); }
         }
 
@@ -931,7 +933,12 @@
                 }).on('error', (error) => {
                     console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
                 }).on('frame_stop', (data) => {
-                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
+                    console.log('🎬 frame_stop事件触发');
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('✅ 语音播放完成，触发Promise解析');
+                        speechFinishedResolve();
+                        speechFinishedResolve = null;
+                    }
                 });
                 avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
                 avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1 }, avatar: { avatar_id: '110332017' }, tts: { vcn: 'x4_yiting' } });
@@ -955,15 +962,45 @@
             if (!isConnected) { alert("虚拟人未连接，无法自动播放。"); return; }
             isAutoPlaying = true;
             document.getElementById('autoPlayBtn').disabled = true;
+
             for (let i = currentSlide; i < totalSlides; i++) {
                 if (!isAutoPlaying) break;
+
+                const slideNum = i + 1;
+                const estimatedDuration = getSlideDuration(slideNum);
+                console.log(`\n🎬 === 开始播放第${slideNum}页/${totalSlides}页 ===`);
+                console.log(`📊 第${slideNum}页预计时长: ${estimatedDuration}ms (${speechScript[slideNum]?.length || 0}字)`);
+
                 showSlide(i);
+                await new Promise(resolve => setTimeout(resolve, 800));
+
                 const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
-                await speakContent(i + 1);
-                const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                await speakContent(slideNum);
+                console.log(`⏳ 等待frame_stop事件（超时时间: ${estimatedDuration + 10000}ms）...`);
+
+                const timeoutPromise = new Promise(resolve =>
+                    setTimeout(() => {
+                        console.log(`⚠️ 第${slideNum}页讲解超时（${estimatedDuration + 10000}ms），继续下一页`);
+                        if (speechFinishedResolve) {
+                            speechFinishedResolve = null;
+                        }
+                        resolve();
+                    }, estimatedDuration + 10000)
+                );
+
                 await Promise.race([speechPromise, timeoutPromise]);
+                console.log(`✅ 第${slideNum}页讲解完成，准备翻页`);
+
+                if (i < totalSlides - 1) {
+                    console.log(`⏸️ 翻页前等待1.5秒...`);
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
             }
+
             isAutoPlaying = false;
+            window.playbackFinished = true;
+            document.title = "PLAYBACK_FINISHED";
+            console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
             document.getElementById('autoPlayBtn').disabled = false;
         }
 

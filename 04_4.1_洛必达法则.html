@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
-    <title>04_4.1_洛必达法则 (修正同步版)</title>
+    <title>04_4.1_洛必达法则 (最终修正版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
@@ -39,7 +39,7 @@
         .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
         .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
         .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
-        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
+        .chalkboard p, .chalkboard li, .chalkboard ul { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
         .chalkboard strong { color: #e74c3c; }
         .math-formula { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
         .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
@@ -89,12 +89,9 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>第一种困境：\(\frac{0}{0}\) 型</h2>
-                    <p>考虑这个极限：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0} \frac{\sin x}{x}\]
-                    </div>
-                    <p style="margin-top:20px;">如果直接代入 \(x=0\) 会发生什么？ 我们得到了 \(\frac{0}{0}\) 的形式！这在数学上叫做不定式，它的结果是不确定的。</p>
+                    <h2>第一种困境：$\frac{0}{0}$ 型</h2>
+                    <p>考虑这个极限：$\lim\limits_{x \to 0} \frac{\sin x}{x}$</p>
+                    <p style="margin-top:20px;">如果直接代入 $x=0$ 会发生什么？ 我们得到了 $\frac{0}{0}$ 的形式！这在数学上叫做不定式，它的结果是不确定的。</p>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -115,12 +112,9 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>第二种困境：\(\frac{\infty}{\infty}\) 型</h2>
-                     <p>考虑这个例子：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{e^x}{x^2}\]
-                    </div>
-                    <p style="margin-top:20px;">当x趋于正无穷时，分子和分母都冲向了无穷大。我们得到的就是 \(\frac{\infty}{\infty}\) 的形式。它的结果同样是不确定的。</p>
+                    <h2>第二种困境：$\frac{\infty}{\infty}$ 型</h2>
+                     <p>考虑这个例子：$\lim\limits_{x \to +\infty} \frac{e^x}{x^2}$</p>
+                    <p style="margin-top:20px;">当x趋于正无穷时，分子和分母都冲向了无穷大。我们得到的就是 $\frac{\infty}{\infty}$ 的形式。它的结果同样是不确定的。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -142,8 +136,8 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>如何解决不定式？ -> 洛必达法则</h2>
-                    <p>面对 \(\frac{0}{0}\) 和 \(\frac{\infty}{\infty}\) 这两种不定式，我们引入一个强大的武器：<strong>洛必达法则</strong>。</p>
-                    <p style="margin-top:30px; font-size:22px; color:#f39c12;">核心思想：当求 \(\frac{f(x)}{g(x)}\) 的极限困难时，尝试求它们<strong>导数的比值</strong>的极限！</p>
+                    <p>面对 $\frac{0}{0}$ 和 $\frac{\infty}{\infty}$ 这两种不定式，我们引入一个强大的武器：<strong>洛必达法则</strong>。</p>
+                    <p style="margin-top:30px; font-size:22px; color:#f39c12;">核心思想：当求 $\frac{f(x)}{g(x)}$ 的极限困难时，尝试求它们<strong>导数的比值</strong>的极限！</p>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -162,15 +156,12 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>洛必达法则 (\(\frac{0}{0}\) 型)</h2>
-                    <p>当满足以下条件时，公式成立：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to a} \frac{f(x)}{g(x)} = \lim\limits_{x \to a} \frac{f'(x)}{g'(x)}\]
-                    </div>
+                    <h2>洛必达法则 ($\frac{0}{0}$ 型)</h2>
+                    <p>当满足以下条件时，公式成立：$\lim\limits_{x \to a} \frac{f(x)}{g(x)} = \lim\limits_{x \to a} \frac{f'(x)}{g'(x)}$</p>
                     <p><strong>使用条件:</strong></p>
-                    <p>1. 极限是 \(\frac{0}{0}\) 型。</p>
-                    <p>2. 在点 \(a\) 的邻域内, \(f(x)\) 和 \(g(x)\) 可导, 且 \(g'(x) \neq 0\)。</p>
-                    <p>3. \(\lim\limits_{x \to a} \frac{f'(x)}{g'(x)}\) 存在（或为 \(\infty\)）。</p>
+                    <p>1. 极限是 $\frac{0}{0}$ 型。</p>
+                    <p>2. 在点 $a$ 的邻域内, $f(x)$ 和 $g(x)$ 可导, 且 $g'(x) \neq 0$。</p>
+                    <p>3. $\lim\limits_{x \to a} \frac{f'(x)}{g'(x)}$ 存在（或为 $\infty$）。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -190,10 +181,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>洛必达法则 (\(\frac{\infty}{\infty}\) 型)</h2>
-                    <p>该法则同样适用于 \(\frac{\infty}{\infty}\) 型！</p>
+                    <h2>洛必达法则 ($\frac{\infty}{\infty}$ 型)</h2>
+                    <p>该法则同样适用于 $\frac{\infty}{\infty}$ 型！</p>
                     <p style="margin-top:20px;">只需将条件1改为：</p>
-                    <p style="margin-left:20px; margin-top:15px;">\(\lim\limits_{x \to a} f(x) = \infty\) 且 \(\lim\limits_{x \to a} g(x) = \infty\)</p>
+                    <p style="margin-left:20px; margin-top:15px;">$\lim\limits_{x \to a} f(x) = \infty$ 且 $\lim\limits_{x \to a} g(x) = \infty$</p>
                     <p style="margin-top:20px;">其他条件和结论完全相同。</p>
                 </div>
                 <div class="visualization">
@@ -211,16 +202,12 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题1：求解 \(\lim\limits_{x \to 0} \frac{\sin x}{x}\)</h2>
-                    <p><strong>步骤1：检查类型</strong> → 是 \(\frac{0}{0}\) 型。</p>
+                    <h2>例题1：求解 $\lim\limits_{x \to 0} \frac{\sin x}{x}$</h2>
+                    <p><strong>步骤1：检查类型</strong> → 是 $\frac{0}{0}$ 型。</p>
                     <p><strong>步骤2：应用法则</strong> (分子分母分别求导)</p>
-                     <div class="math-formula">
-                        \[\lim\limits_{x \to 0} \frac{(\sin x)'}{(x)'} = \lim\limits_{x \to 0} \frac{\cos x}{1}\]
-                    </div>
+                     <p>$\lim\limits_{x \to 0} \frac{(\sin x)'}{(x)'} = \lim\limits_{x \to 0} \frac{\cos x}{1}$</p>
                     <p><strong>步骤3：计算新极限</strong></p>
-                    <div class="math-formula">
-                        \[\frac{\cos 0}{1} = \frac{1}{1} = 1\]
-                    </div>
+                    <p>$\frac{\cos 0}{1} = \frac{1}{1} = 1$</p>
                      <p style="margin-top:30px; color:#2ecc71; font-size:26px;"><strong>答案：1</strong></p>
                 </div>
                 <div class="visualization">
@@ -238,13 +225,13 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题2：求解 \(\lim\limits_{x \to +\infty} \frac{e^x}{x^2}\)</h2>
-                    <p><strong>步骤1：检查类型</strong> → 是 \(\frac{\infty}{\infty}\) 型。</p>
+                    <h2>例题2：求解 $\lim\limits_{x \to +\infty} \frac{e^x}{x^2}$</h2>
+                    <p><strong>步骤1：检查类型</strong> → 是 $\frac{\infty}{\infty}$ 型。</p>
                     <p><strong>步骤2：第一次应用法则</strong></p>
                      <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{(e^x)'}{(x^2)'} = \lim\limits_{x \to +\infty} \frac{e^x}{2x}\]
+                        $\lim\limits_{x \to +\infty} \frac{(e^x)'}{(x^2)'} = \lim\limits_{x \to +\infty} \frac{e^x}{2x}$
                     </div>
-                     <p style="margin-top:20px; color:#e74c3c;">问题：新极限仍然是 \(\frac{\infty}{\infty}\) 型！</p>
+                     <p style="margin-top:20px; color:#e74c3c;">问题：新极限仍然是 $\frac{\infty}{\infty}$ 型！</p>
                 </div>
                  <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -268,13 +255,13 @@
                     <p style="color:#2ecc71; font-size:22px;">好消息：只要条件满足,可以<strong>连续使用</strong>洛必达法则！</p>
                     <p><strong>步骤3：第二次应用法则</strong></p>
                     <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{(e^x)'}{(2x)'} = \lim\limits_{x \to +\infty} \frac{e^x}{2}\]
+                        $\lim\limits_{x \to +\infty} \frac{(e^x)'}{(2x)'} = \lim\limits_{x \to +\infty} \frac{e^x}{2}$
                     </div>
                     <p><strong>步骤4：计算最终结果</strong></p>
                      <div class="math-formula">
-                        \[\frac{+\infty}{2} = +\infty\]
+                        $\frac{+\infty}{2} = +\infty$
                     </div>
-                    <p style="margin-top:30px; color:#f1c40f; font-size:26px;"><strong>答案：\(+\infty\)</strong></p>
+                    <p style="margin-top:30px; color:#f1c40f; font-size:26px;"><strong>答案：$+\infty$</strong></p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -294,11 +281,11 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>\(0 \cdot \infty\) 型不定式</h2>
-                    <p>形式：\(\lim f(x)g(x)\), 其中 \(\lim f(x) = 0, \lim g(x) = \infty\)</p>
+                    <h2>$0 \cdot \infty$ 型不定式</h2>
+                    <p>形式：$\lim f(x)g(x)$, 其中 $\lim f(x) = 0, \lim g(x) = \infty$</p>
                     <p style="margin-top:30px; color:#e74c3c;">需要先<strong>转化</strong>为分式形式！</p>
                     <div class="math-formula">
-                        \[f \cdot g = \frac{f}{\frac{1}{g}} \; (\text{化为 } \frac{0}{0}) \quad \text{或} \quad f \cdot g = \frac{g}{\frac{1}{f}} \; (\text{化为 } \frac{\infty}{\infty})\]
+                        $f \cdot g = \frac{f}{\frac{1}{g}}$ (化为 $\frac{0}{0}$) 或 $f \cdot g = \frac{g}{\frac{1}{f}}$ (化为 $\frac{\infty}{\infty}$)
                     </div>
                 </div>
                 <div class="visualization">
@@ -321,12 +308,12 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>\(\infty - \infty\) 型不定式</h2>
-                    <p>形式：\(\lim [f(x)-g(x)]\), 其中 \(\lim f(x) = \infty, \lim g(x) = \infty\)</p>
+                    <h2>$\infty - \infty$ 型不定式</h2>
+                    <p>形式：$\lim [f(x)-g(x)]$, 其中 $\lim f(x) = \infty, \lim g(x) = \infty$</p>
                     <p style="margin-top:30px; color:#3498db;">转化策略：<strong>通分</strong>或<strong>有理化</strong>, 将其合并为一个分式。</p>
                     <p style="margin-top:20px;">例如：</p>
                     <div class="math-formula">
-                        \[\frac{1}{x-1} - \frac{1}{\ln x} = \frac{\ln x - (x-1)}{(x-1)\ln x}\]
+                        $\frac{1}{x-1} - \frac{1}{\ln x} = \frac{\ln x - (x-1)}{(x-1)\ln x}$
                     </div>
                 </div>
                 <div class="visualization">
@@ -349,10 +336,10 @@
                 <div class="chalkboard">
                     <h2>幂指函数型不定式 ($1^{\infty}, 0^0, \infty^0$)</h2>
                     <p>转化策略：<strong>取对数</strong></p>
-                    <p style="margin-top:20px;"><strong>步骤1：</strong>设 \(y = [f(x)]^{g(x)}\)</p>
-                    <p><strong>步骤2：</strong>两边取对数：\(\ln y = g(x) \ln f(x)\)</p>
-                    <p><strong>步骤3：</strong>求 \(\lim (\ln y) = L\)。(此步通常化为 \(0 \cdot \infty\) 型)</p>
-                    <p><strong>步骤4：</strong>原极限 \(= e^{L}\)</p>
+                    <p style="margin-top:20px;"><strong>步骤1：</strong>设 $y = [f(x)]^{g(x)}$</p>
+                    <p><strong>步骤2：</strong>两边取对数：$\ln y = g(x) \ln f(x)$</p>
+                    <p><strong>步骤3：</strong>求 $\lim (\ln y) = L$。(此步通常化为 $0 \cdot \infty$ 型)</p>
+                    <p><strong>步骤4：</strong>原极限 $= e^{L}$</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -374,16 +361,16 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题3：求解 \(\lim\limits_{x \to 0^+} x \ln x\)</h2>
-                    <p><strong>1. 类型：</strong> \(0 \cdot \infty\) 型。</p>
+                    <h2>例题3：求解 $\lim\limits_{x \to 0^+} x \ln x$</h2>
+                    <p><strong>1. 类型：</strong> $0 \cdot \infty$ 型。</p>
                     <p><strong>2. 转化：</strong></p>
                     <div class="math-formula">
-                        \[\lim\limits_{x \to 0^+} \frac{\ln x}{\frac{1}{x}}\]
+                        $\lim\limits_{x \to 0^+} \frac{\ln x}{\frac{1}{x}}$
                     </div>
-                     <p>现在是 \(\frac{\infty}{\infty}\) 型。</p>
+                     <p>现在是 $\frac{\infty}{\infty}$ 型。</p>
                     <p><strong>3. 应用法则并求解：</strong></p>
                     <div class="math-formula">
-                         \[\lim\limits_{x \to 0^+} \frac{(\ln x)'}{\left(\frac{1}{x}\right)'} = \lim\limits_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}} = \lim\limits_{x \to 0^+} (-x) = 0\]
+                         $\lim\limits_{x \to 0^+} \frac{(\ln x)'}{\left(\frac{1}{x}\right)'} = \lim\limits_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}} = \lim\limits_{x \to 0^+} (-x) = 0$
                     </div>
                      <p style="margin-top:30px; color:#2ecc71; font-size:26px;"><strong>答案：0</strong></p>
                 </div>
@@ -407,9 +394,9 @@
                     <h2>注意事项（一）</h2>
                     <p style="color:#e74c3c; font-size:24px;"><strong>必须先检查类型！</strong></p>
                     <p>只有当极限是不定式时,才能使用洛必达法则。滥用法则是最常见的错误！</p>
-                    <p><strong>错误示例:</strong> \(\lim\limits_{x \to 0} \frac{x+1}{x+2}\)</p>
-                    <p>这不是不定式！可以直接代入得 \(\frac{1}{2}\)。</p>
-                    <p>如果误用洛必达法则会得到 \(\lim\limits_{x \to 0} \frac{1}{1} = 1\)，这是错误的。</p>
+                    <p><strong>错误示例:</strong> $\lim\limits_{x \to 0} \frac{x+1}{x+2}$</p>
+                    <p>这不是不定式！可以直接代入得 $\frac{1}{2}$。</p>
+                    <p>如果误用洛必达法则会得到 $\lim\limits_{x \to 0} \frac{1}{1} = 1$，这是错误的。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -434,11 +421,11 @@
                     <p>洛必达法则是<strong>分子分母分别求导</strong>。</p>
                     <p><strong>✓ 洛必达法则：</strong></p>
                     <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\lim \frac{f(x)}{g(x)} = \lim \frac{f'(x)}{g'(x)}$$
+                        $\lim \frac{f(x)}{g(x)} = \lim \frac{f'(x)}{g'(x)}$
                     </div>
                     <p>不要与<strong>商的求导法则</strong>混淆：</p>
                     <div class="math-formula" style="border-color:#e74c3c;">
-                        $$\left(\frac{f(x)}{g(x)}\right)' = \frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2}$$
+                        $\left(\frac{f(x)}{g(x)}\right)' = \frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2}$
                     </div>
                 </div>
                 <div class="visualization">
@@ -462,7 +449,7 @@
                     <h2>洛必达法则总结 (一)</h2>
                     <h3>核心公式</h3>
                     <div class="math-formula">
-                        $$\lim \frac{f(x)}{g(x)} = \lim \frac{f'(x)}{g'(x)}$$
+                        $\lim \frac{f(x)}{g(x)} = \lim \frac{f'(x)}{g'(x)}$
                     </div>
                     <h3>直接适用类型</h3>
                     <p style="font-size: 22px; color:#e74c3c;">• $\frac{0}{0}$ 型</p>
@@ -591,12 +578,11 @@
         };
 
         let currentSlide = 0;
-        const totalSlides = 17; // 关键控制点：总页数现在是17
+        const totalSlides = 17;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
-        let speechFinishedResolve = null;
         const slides = document.querySelectorAll('.slide');
 
         function showSlide(index) {
@@ -611,9 +597,9 @@
             updateSubtitle(index + 1);
         }
 
-        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; }
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isTeaching || isAutoPlaying) return; speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isTeaching || isAutoPlaying) return; speakContent(currentSlide + 1); } }
+        function restart() { isAutoPlaying = false; showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } document.getElementById('autoPlayBtn').disabled = false; document.getElementById('autoPlayBtn').textContent = '🎬 自动播放'; if(isTeaching) { speakContent(1); } }
         function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
 
         async function speakContent(slideNum) {
@@ -630,9 +616,12 @@
 
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
-            if (!speech) return 10000;
-            return speech.length * 150 + 3000;
+            if (!speech) return 5000;
+            // 估算时长：每分钟约200-250字，这里取每秒3.5个字，即每个字约285ms
+            // 增加2秒的缓冲时间（用于停顿和翻页动画）
+            return speech.length * 285 + 2000;
         }
+        
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
 
         function waitForSDK() {
@@ -650,19 +639,15 @@
             try {
                 updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
-                if(typeof window.AvatarPlatform === 'undefined') {
+                if (typeof window.AvatarPlatform === 'undefined') {
                     console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
                     updateStatus('SDK未加载', 'error');
                     startBtn.textContent = '❌ SDK未加载';
-                    startBtn.disabled = false;
                     return;
                 }
-
-                if(avatarPlatform) { avatarPlatform.destroy(); }
+                if (avatarPlatform) { avatarPlatform.destroy(); }
                 avatarPlatform = new window.AvatarPlatform({ useInlinePlayer: true });
-
                 avatarPlatform.on('connected', (initResp) => {
-                    console.log('🎉 连接成功');
                     isConnected = true;
                     isTeaching = true;
                     updateStatus('已连接', 'connected');
@@ -675,16 +660,8 @@
                     console.error('❌ 错误:', error);
                     updateStatus('错误', 'error');
                     startBtn.textContent = '❌ 连接失败';
-                    startBtn.disabled = false;
                     isTeaching = false;
-                }).on('frame_stop', (data) => {
-                    console.log('✅ 虚拟人讲解完成 frame_stop:', data);
-                    if (isAutoPlaying && speechFinishedResolve) {
-                        speechFinishedResolve();
-                        speechFinishedResolve = null;
-                    }
                 });
-                
                 avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
                 avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
@@ -692,47 +669,47 @@
                 console.error('❌ 启动失败:', error);
                 updateStatus('启动失败', 'error');
                 startBtn.textContent = '🎀 开始讲课';
-                startBtn.disabled = false;
             }
         }
 
         async function startAutoPlay() {
-             if (!isTeaching) {
-                alert("请先点击开始讲课连接虚拟人。");
+            if (!isTeaching || !isConnected) {
+                alert("请先等待虚拟人连接就绪。");
                 return;
             }
-            if (!isConnected) {
-                alert("虚拟人未连接，无法自动播放。");
+
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
+
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                autoPlayBtn.textContent = '🎬 继续播放';
+                console.log('🛑 自动播放已暂停');
                 return;
             }
 
             isAutoPlaying = true;
-            document.getElementById('autoPlayBtn').disabled = true;
-            try {
-                for (let i = currentSlide; i < totalSlides; i++) {
-                    if (!isAutoPlaying) { console.log('🛑 自动播放被停止'); break; }
-                    showSlide(i);
-                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
-                    await speakContent(i + 1);
-                    const timeoutPromise = new Promise(resolve => setTimeout(() => {
-                        console.log(`⚠️ 第${i + 1}页讲解超时, 继续下一页`);
-                        if (speechFinishedResolve) {
-                            speechFinishedResolve();
-                            speechFinishedResolve = null;
-                        }
-                        resolve();
-                    }, getSlideDuration(i + 1) + 2000));
-                    await Promise.race([speechPromise, timeoutPromise]);
-                    await new Promise(resolve => setTimeout(resolve, 1500)); 
+            autoPlayBtn.textContent = '⏸️ 暂停播放';
+            console.log('▶️ 自动播放开始');
+
+            for (let i = currentSlide; i < totalSlides; i++) {
+                if (!isAutoPlaying) {
+                    return;
                 }
-            } catch (error) { console.error('❌ 自动播放失败:', error); } 
-            finally {
-                isAutoPlaying = false;
-                document.getElementById('autoPlayBtn').disabled = false;
-                window.playbackFinished = true;
-                document.title = "PLAYBACK_FINISHED";
-                console.log('🎉 播放完成');
+                
+                showSlide(i);
+                await speakContent(i + 1);
+
+                const waitTime = getSlideDuration(i + 1);
+                console.log(`第 ${i + 1} 页，语音时长估算 ${waitTime} ms.`);
+
+                await new Promise(resolve => setTimeout(resolve, waitTime));
             }
+
+            isAutoPlaying = false;
+            autoPlayBtn.textContent = '🎬 自动播放';
+            console.log('🎉 播放完成');
+            window.playbackFinished = true;
+            document.title = "PLAYBACK_FINISHED";
         }
 
         document.addEventListener('keydown', (e) => {
