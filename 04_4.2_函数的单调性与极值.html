@@ -1,558 +1,639 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   04_4.2_函数的单调性与极值
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-  <script>
-   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
-  </script>
-  <script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
-  <style>
-   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:975px;height:1105px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;width: 100%;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-9999px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left: -9999px;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:23px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-9999px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  </style>
- </head>
- <body class="blackboard">
-  <div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-  <div class="avatar-container">
-   <div class="wrapper" id="avatarWrapper">
-   </div>
-  </div>
-  <div class="slide-container flex-grow" id="slide-container">
-   <div class="slide active">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       函数的单调性与极值
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第4章 视频 4.2
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 单调性的判定定理
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 函数极值的概念
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 极值的判定方法
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 单调性与极值的应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad4" x1="0%" x2="0%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#3498db;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <path d="M 50 350 Q 150 100 300 250 T 550 300" fill="none" stroke="url(#grad4)" stroke-width="4">
-        <animate attributename="stroke-dasharray" dur="4s" repeatcount="indefinite" values="0,2000;2000,0">
-        </animate>
-       </path>
-       <circle cx="180" cy="150" fill="#e74c3c" r="12">
-        <animate attributename="cy" dur="2s" repeatcount="indefinite" values="150;170;150">
-        </animate>
-       </circle>
-       <circle cx="420" cy="280" fill="#2ecc71" r="12">
-        <animate attributename="cy" dur="2s" repeatcount="indefinite" values="280;260;280">
-        </animate>
-       </circle>
-       <text fill="#9b59b6" font-size="36" text-anchor="middle" x="300" y="450">
-        极值与拐点
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       函数的单调性与极值
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第04章 视频 4.2
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 单调性的判定
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 极值的定义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 极值点的求法
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 实际问题应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#d68910;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ↗
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#f39c12" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#d68910" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        单调
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       函数的单调性与极值
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第04章 视频 4.2
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 单调性的判定
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 极值的定义
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 极值点的求法
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 实际问题应用
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#d68910;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ↗
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#f39c12" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#d68910" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        单调
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-center">
-      <h1 class="text-6xl font-bold">
-       函数的单调性与极值
-      </h1>
-      <p class="text-2xl mt-4 text-gray-300">
-       第4章 视频 4.2
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="100" x2="500" y1="400" y2="400">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="100" x2="100" y1="400" y2="100">
-       </line>
-       <path d="M 150 350 Q 250 150, 350 200 T 450 300" fill="none" stroke="#3498db" stroke-width="5">
-        <animate attributename="stroke-dasharray" dur="3s" repeatcount="indefinite" values="0,1000;1000,0">
-        </animate>
-       </path>
-       <circle cx="250" cy="180" fill="#2ecc71" r="8">
-        <animate attributename="r" dur="1.5s" repeatcount="indefinite" values="8;12;8">
-        </animate>
-       </circle>
-       <circle cx="350" cy="250" fill="#e74c3c" r="8">
-        <animate attributename="r" begin="0.5s" dur="1.5s" repeatcount="indefinite" values="8;12;8">
-        </animate>
-       </circle>
-       <text fill="#2ecc71" font-size="16" text-anchor="middle" x="250" y="160">
-        极大
-       </text>
-       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="350" y="280">
-        极小
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       导数与单调性
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       导数的符号直接决定单调性。找到导数为零或不存在的点，就找到可能的转折位置。
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        若 $f'(x)&gt;0$ → 递增
-       </li>
-       <li>
-        若 $f'(x)&lt;0$ → 递减
-       </li>
-       <li>
-        <strong>
-         临界点：
-        </strong>
-        $f'(x)=0$ 或导数不存在
-       </li>
-      </ul>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="400" y2="400">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="400" y2="100">
-       </line>
-       <path d="M 100 350 L 250 200" fill="none" stroke="#2ecc71" stroke-width="5">
-       </path>
-       <text fill="#2ecc71" font-size="20" text-anchor="middle" x="175" y="250">
-        f' &gt; 0
-       </text>
-       <text fill="#2ecc71" font-size="18" text-anchor="middle" x="175" y="430">
-        递增 ↗
-       </text>
-       <path d="M 350 200 L 500 350" fill="none" stroke="#e74c3c" stroke-width="5">
-       </path>
-       <text fill="#e74c3c" font-size="20" text-anchor="middle" x="425" y="300">
-        f' &lt; 0
-       </text>
-       <text fill="#e74c3c" font-size="18" text-anchor="middle" x="425" y="430">
-        递减 ↘
-       </text>
-       <g opacity="0">
-        <line marker-end="url(#arrow9)" stroke="#2ecc71" stroke-width="3" x1="175" x2="195" y1="320" y2="300">
-        </line>
-        <line marker-end="url(#arrow9)" stroke="#e74c3c" stroke-width="3" x1="425" x2="445" y1="250" y2="270">
-        </line>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-        </animate>
-       </g>
-       <defs>
-        <marker id="arrow9" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       极值判定
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       一阶看符号变化，二阶看开口方向，两种方法可以互相验证。
-      </p>
-      <div class="mt-6 space-y-4">
-       <p>
-        <strong>
-         一阶判定：
-        </strong>
-        $f'(x)$ 在 $x_0$ 两侧变号
-       </p>
-       <p class="text-gray-400">
-        正→负：极大值；负→正：极小值
-       </p>
-       <p class="mt-4">
-        <strong>
-         二阶判定：
-        </strong>
-        $f'(x_0)=0$ 且 $f''(x_0)\neq 0$
-       </p>
-       <p class="text-gray-400">
-        $f''(x_0)&lt;0$：极大值；$f''(x_0)&gt;0$：极小值
-       </p>
-      </div>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="350" y2="350">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="350" y2="100">
-       </line>
-       <path d="M 100 250 Q 200 150, 300 200 Q 400 250, 500 150" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <circle cx="200" cy="160" fill="#2ecc71" r="8">
-       </circle>
-       <text fill="#2ecc71" font-size="18" text-anchor="middle" x="200" y="140">
-        极大值
-       </text>
-       <circle cx="400" cy="210" fill="#e74c3c" r="8">
-       </circle>
-       <text fill="#e74c3c" font-size="18" text-anchor="middle" x="400" y="235">
-        极小值
-       </text>
-       <g opacity="0">
-        <line stroke="#f39c12" stroke-dasharray="3,3" stroke-width="2" x1="200" x2="200" y1="160" y2="350">
-        </line>
-        <text fill="#f39c12" font-size="16" text-anchor="middle" x="200" y="380">
-         f'=0
-        </text>
-        <line stroke="#f39c12" stroke-dasharray="3,3" stroke-width="2" x1="400" x2="400" y1="210" y2="350">
-        </line>
-        <text fill="#f39c12" font-size="16" text-anchor="middle" x="400" y="380">
-         f'=0
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-        </animate>
-       </g>
-       <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="450">
-        导数为0 → 可能极值点
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       求极值步骤
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       算出导数后，别忘了回到原函数求极值对应的函数值。
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        求 $f'(x)$，找临界点
-       </li>
-       <li>
-        判断临界点两侧导数符号
-       </li>
-       <li>
-        确定极值点
-       </li>
-       <li>
-        计算极值 $f(x_0)$
-       </li>
-      </ul>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">
-        求极值流程
-       </text>
-       <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="300" x="150" y="100">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="135">
-        ① 求 f'(x)
-       </text>
-       <line marker-end="url(#arrow10)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="160" y2="190">
-       </line>
-       <rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="300" x="150" y="190">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="225">
-        ② 找临界点 f'=0
-       </text>
-       <line marker-end="url(#arrow10)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="250" y2="280">
-       </line>
-       <rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="280">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="315">
-        ③ 判断符号变化
-       </text>
-       <line marker-end="url(#arrow10)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="340" y2="370">
-       </line>
-       <rect fill="rgba(155,89,182,0.2)" height="60" rx="10" stroke="#9b59b6" stroke-width="3" width="300" x="150" y="370">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="405">
-        ④ 求 f(x₀)
-       </text>
-       <defs>
-        <marker id="arrow10" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       小结
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       <strong>
-        核心思想：
-       </strong>
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        单调性 ← 导数符号
-       </li>
-       <li>
-        极值 ← 导数变号
-       </li>
-       <li>
-        实际应用：最优化问题
-       </li>
-      </ul>
-      <p class="mt-8 text-gray-400">
-       极值问题是应用最广的导数应用之一，方法固定，熟练即可。
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="100">
-        📊 单调性与极值
-       </text>
-       <circle cx="300" cy="250" fill="rgba(241,196,15,0.1)" r="120" stroke="#f39c12" stroke-width="4">
-       </circle>
-       <g opacity="0">
-        <rect fill="rgba(46,204,113,0.2)" height="40" rx="5" stroke="#2ecc71" stroke-width="2" width="120" x="160" y="200">
-        </rect>
-        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="220" y="225">
-         f'&gt;0 递增
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(231,76,60,0.2)" height="40" rx="5" stroke="#e74c3c" stroke-width="2" width="120" x="320" y="200">
-        </rect>
-        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="380" y="225">
-         f'&lt;0 递减
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(52,152,219,0.2)" height="40" rx="5" stroke="#3498db" stroke-width="2" width="220" x="190" y="270">
-        </rect>
-        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="295">
-         符号变化 → 极值
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-       <text fill="#2ecc71" font-size="24" opacity="0" text-anchor="middle" x="300" y="420">
-        导数的几何应用
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-  </div>
-  <div class="subtitle-area" id="subtitleArea">
-   欢迎学习函数的单调性与极值！点击开始讲课启动虚拟人讲师。
-  </div>
-  <div class="control-bar">
-   <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     5
-    </span>
-    页
-   </div>
-   <button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-   <button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-   <button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-   <button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-   <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-  </div>
-  <script type="module">
-        // 播放完成标记（供OBS检测）
-        window.playbackFinished = false;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04_4.2_函数的单调性与极值</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                ready: () => {
+                    console.log('✅ MathJax已加载并配置完成');
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .blackboard-text { flex: 0 0 45%; font-family: 'Noto Serif SC', serif; color: #e0e0e0; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
+        .blackboard-text h2 { font-size: 2.5rem; color: #f1c40f; border-bottom: 2px solid #f39c12; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+        .blackboard-text h3 { font-size: 1.5rem; color: #1abc9c; margin-top: 1.5rem; margin-bottom: 1rem; }
+        .blackboard-text p, .blackboard-text li { font-size: 1.25rem; line-height: 1.8; }
+        .blackboard-text strong { color: #e74c3c; }
+        .math-formula { background-color: rgba(0,0,0,0.2); margin: 1rem 0; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f39c12; font-size: 1.25rem; text-align: center; }
+        .animation-pane { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 250px; background: rgba(30,30,30,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 200; border-radius: 0 15px 15px 0; padding: 20px 15px; }
+        .btn { padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s ease; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
+</head>
+<body class="blackboard">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
 
-   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-  <script>
-   const lessonTitle="函数的单调性与极值";const subtitleScript={"1":"欢迎学习函数的单调性与极值！","2":"导数的符号直接决定单调性。找到导数为零或不存在的点，就找到可能的转折位置。","3":"一阶看符号变化，二阶看开口方向，两种方法可以互相验证。","4":"算出导数后，别忘了回到原函数求极值对应的函数值。","5":"极值问题是应用最广的导数应用之一，方法固定，熟练即可。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;let speechFinishedResolve=null;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;}).on('frame_stop',(data)=>{console.log('✅ 虚拟人讲解完成 frame_stop:',data);if(isAutoPlaying&&speechFinishedResolve){console.log('🎬 通知自动播放：虚拟人讲解完成');speechFinishedResolve();speechFinishedResolve=null;}});avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',                                    // 数学讲解 AppID
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',             // 数学讲解 API密钥
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',       // 数学讲解 API密钥
-                    sceneId: '237415046114840576',                       // 数学讲解 场景ID
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0,enable_action_status:1}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}function getSlideDuration(slideNum){const subtitle=subtitleScript[slideNum];if(!subtitle)return 5000;return subtitle.length*120+2000;}async function startAutoPlay(){if(isAutoPlaying){stopAutoPlay();return;}try{console.log('🎬 开始自动播放完整课程...');isAutoPlaying=true;const autoPlayBtn=document.getElementById('autoPlayBtn');autoPlayBtn.textContent='⏹️ 停止播放';autoPlayBtn.style.background='linear-gradient(135deg, #f44336, #d32f2f)';updateStatus('🎬 自动播放将在 1 秒后开始，请准备录屏！','recording');await new Promise(resolve=>setTimeout(resolve,1000));updateStatus('🎬 自动播放开始！','recording');document.body.classList.add('recording-mode');if(!avatarPlatform||!isConnected){console.log('🎬 启动虚拟人...');await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}for(let slide=1;slide<=totalSlides;slide++){try{if(!isAutoPlaying){console.log('🛑 自动播放被停止');break;}console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);showSlide(slide-1);updateStatus(`📖 第${slide}页/${totalSlides}页 - 讲解中`,'recording');if(isConnected&&isTeaching&&avatarPlatform){try{const speechPromise=new Promise(resolve=>{speechFinishedResolve=resolve;});await speakContent(slide);console.log(`⏳ 等待虚拟人讲解第${slide}页完成...`);const timeoutPromise=new Promise(resolve=>setTimeout(()=>{console.log(`⚠️ 第${slide}页讲解超时，继续下一页`);resolve();},getSlideDuration(slide)+5000));await Promise.race([speechPromise,timeoutPromise]);console.log(`✅ 第${slide}页讲解完成`);}catch(error){console.error(`❌ 第${slide}页讲解异常:`,error);}}else{console.log('⚠️ 虚拟人未连接，使用固定延时');await new Promise(resolve=>setTimeout(resolve,getSlideDuration(slide)));}const waitTime=slide===totalSlides?1500:200;await new Promise(resolve=>setTimeout(resolve,waitTime));}catch(error){console.error(`❌ 第${slide}页播放过程出错:`,error);await new Promise(resolve=>setTimeout(resolve,2000));}}if(isAutoPlaying){await new Promise(resolve=>setTimeout(resolve,3000));stopAutoPlay();}}catch(error){console.error('❌ 自动播放失败:',error);updateStatus('自动播放失败: '+error.message,'error');stopAutoPlay();}}function stopAutoPlay(){if(isAutoPlaying){isAutoPlaying=false;window.playbackFinished=true;document.title="PLAYBACK_FINISHED";console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');document.body.classList.remove('recording-mode');const autoPlayBtn=document.getElementById('autoPlayBtn');autoPlayBtn.textContent='🎬 自动播放';autoPlayBtn.style.background='linear-gradient(135deg, #2196f3, #1976d2)';console.log('⏹️ 自动播放已停止');updateStatus('自动播放已停止','normal');}}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
-        setTimeout(() => {
-            console.log('🚀 自动启动播放...');
-            startAutoPlay();
-        }, 3000);
-  </script>
- </body>
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2 text-center">
+                    <h1 class="text-6xl font-bold" style="color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5);">函数的单调性与极值</h1>
+                    <p class="text-2xl mt-4 text-gray-400">第4章 导数应用</p>
+                    <div style="display: inline-block; text-align: left; margin-top: 2rem; font-size: 1.1rem;">
+                        <p style="margin: 0.8rem 0;">✓ 利用导数判断单调性</p>
+                        <p style="margin: 0.8rem 0;">✓ 极值的概念与求法</p>
+                        <p style="margin: 0.8rem 0;">✓ 解决实际优化问题</p>
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 50 350 Q 150 100 300 250 T 550 300" fill="none" stroke="#9b59b6" stroke-width="4">
+                            <animate attributeName="stroke-dasharray" dur="4s" repeatCount="indefinite" values="0,2000;2000,0"></animate>
+                        </path>
+                        <circle cx="180" cy="150" fill="#e74c3c" r="12"><animate attributeName="cy" dur="2s" repeatCount="indefinite" values="150;170;150"></animate></circle>
+                        <circle cx="420" cy="280" fill="#2ecc71" r="12"><animate attributeName="cy" dur="2s" repeatCount="indefinite" values="280;260;280"></animate></circle>
+                        <text fill="#ecf0f1" font-size="20" x="170" y="130">极大值</text>
+                        <text fill="#ecf0f1" font-size="20" x="410" y="310">极小值</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 导数与单调性的关系 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">导数与单调性</h2>
+                    <p class="mt-4">函数的单调性可以通过导数的符号来判断。这是微积分中最基本也最重要的应用之一。</p>
+                    <div class="math-formula mt-6">
+                        <p>若 $f'(x) > 0$，则函数<strong>单调递增</strong></p>
+                        <p class="mt-4">若 $f'(x) < 0$，则函数<strong>单调递减</strong></p>
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="400" y2="400"></line>
+                        <line stroke="#ecf0f1" stroke-width="2" x1="300" x2="300" y1="50" y2="450"></line>
+                        <path d="M 100 350 L 250 150" fill="none" stroke="#2ecc71" stroke-width="5"></path>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="175" y="120">f'(x) > 0</text>
+                        <path d="M 350 150 L 500 350" fill="none" stroke="#e74c3c" stroke-width="5"></path>
+                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="425" y="120">f'(x) < 0</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 单调性的几何意义 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">单调性的几何意义</h2>
+                    <p class="mt-4">导数的符号反映了切线的斜率：</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li>导数为<strong>正</strong>：切线向上倾斜，函数上升 ↗</li>
+                        <li>导数为<strong>负</strong>：切线向下倾斜，函数下降 ↘</li>
+                    </ul>
+                    <p class="mt-6 text-gray-400">这就是为什么导数能够刻画函数的变化趋势。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 100 300 Q 200 150, 300 200 T 500 350" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <line x1="150" y1="200" x2="250" y2="150" stroke="#2ecc71" stroke-width="3"></line>
+                        <text fill="#2ecc71" font-size="20" x="180" y="140">斜率 > 0</text>
+                        <line x1="400" y1="280" x2="500" y2="350" stroke="#e74c3c" stroke-width="3"></line>
+                        <text fill="#e74c3c" font-size="20" x="420" y="270">斜率 < 0</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 极值的概念 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">极值的概念</h2>
+                    <p class="mt-4">极值是函数在<strong>局部邻域</strong>内的最大值或最小值。</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li><strong>极大值</strong>：在某点附近，函数值最大</li>
+                        <li><strong>极小值</strong>：在某点附近，函数值最小</li>
+                    </ul>
+                    <p class="mt-6" style="color: #f39c12;">注意：极值是<strong>局部</strong>概念，不是全局最值。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                         <path d="M 100 300 Q 200 150, 300 300 T 500 300" fill="none" stroke="#3498db" stroke-width="4"></path>
+                         <circle cx="200" cy="187" r="10" fill="#2ecc71"></circle>
+                         <text fill="#2ecc71" font-size="22" x="160" y="160">极大值</text>
+                         <circle cx="400" cy="187" r="10" fill="#e74c3c"></circle>
+                         <text fill="#e74c3c" font-size="22" x="360" y="160">极小值</text>
+                         <line x1="200" y1="187" x2="200" y2="300" stroke="#f39c12" stroke-width="2" stroke-dasharray="4,4"></line>
+                         <line x1="400" y1="187" x2="400" y2="300" stroke="#f39c12" stroke-width="2" stroke-dasharray="4,4"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 驻点的定义 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">驻点</h2>
+                    <p class="mt-4">使导数为零的点称为<strong>驻点</strong>。</p>
+                    <div class="math-formula mt-6">
+                        $$f'(x_0) = 0 \\implies x_0 \\text{ 是驻点}$$
+                    </div>
+                    <p class="mt-6">在驻点处，函数的切线是<strong>水平</strong>的，这是寻找极值的重要线索。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                         <path d="M 100 300 Q 200 150, 300 250 Q 400 350, 500 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                         <circle cx="200" cy="187" r="8" fill="#f39c12"></circle>
+                         <line x1="150" y1="187" x2="250" y2="187" stroke="#f39c12" stroke-width="3"></line>
+                         <text fill="#f39c12" font-size="20" x="180" y="170">f'=0</text>
+                         <circle cx="400" cy="313" r="8" fill="#f39c12"></circle>
+                         <line x1="350" y1="313" x2="450" y2="313" stroke="#f39c12" stroke-width="3"></line>
+                         <text fill="#f39c12" font-size="20" x="380" y="340">f'=0</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 临界点 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">临界点</h2>
+                    <p class="mt-4"><strong>临界点</strong>包括两类：</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li>导数为零的点（驻点）</li>
+                        <li>导数不存在的点</li>
+                    </ul>
+                    <p class="mt-6" style="color: #e74c3c;"><strong>重要：</strong>临界点是极值点的候选，但不一定是极值点。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                         <path d="M 100 300 Q 200 150, 300 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                         <circle cx="200" cy="187" r="8" fill="#2ecc71"></circle>
+                         <text fill="#2ecc71" font-size="18" x="180" y="170">驻点</text>
+                         <path d="M 300 250 L 400 200 L 500 300" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                         <circle cx="400" cy="200" r="8" fill="#e74c3c"></circle>
+                         <text fill="#e74c3c" font-size="18" x="350" y="180">导数不存在</text>
+                         <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="400">这两类点都是临界点</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 第一充分条件 - 原理 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">极值判定：第一充分条件</h2>
+                    <p class="mt-4">通过观察临界点<strong>两侧导数符号的变化</strong>来判断。</p>
+                    <p class="mt-6">核心思想：</p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>导数从正变负 → 函数先增后减 → <strong>极大值</strong></li>
+                        <li>导数从负变正 → 函数先减后增 → <strong>极小值</strong></li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="80">导数符号变化</text>
+                        <path d="M 100 250 C 200 150, 200 150, 300 150" stroke="#2ecc71" stroke-width="4" fill="none"></path>
+                        <path d="M 300 150 C 400 150, 400 150, 500 250" stroke="#e74c3c" stroke-width="4" fill="none"></path>
+                        <circle cx="300" cy="150" r="10" fill="#fff"></circle>
+                        <text fill="#2ecc71" font-size="20" x="150" y="130">+</text>
+                        <text fill="#e74c3c" font-size="20" x="430" y="130">-</text>
+                        <text fill="#fff" font-size="20" x="280" y="120">极大</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 第一充分条件 - 详细 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第一充分条件（详细）</h2>
+                    <p class="mt-4">设 $x_0$ 是临界点：</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li>若 $f'(x)$ 在 $x_0$ 左侧 $>0$，右侧 $<0$ <br>则 $f(x_0)$ 是<strong>极大值</strong></li>
+                        <li>若 $f'(x)$ 在 $x_0$ 左侧 $<0$，右侧 $>0$ <br>则 $f(x_0)$ 是<strong>极小值</strong></li>
+                        <li>若两侧符号相同，则<strong>不是极值点</strong></li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="60">极大值：+ → -</text>
+                        <path d="M 100 200 C 200 120, 200 120, 300 120" stroke="#2ecc71" stroke-width="4" fill="none"></path>
+                        <path d="M 300 120 C 400 120, 400 120, 500 200" stroke="#e74c3c" stroke-width="4" fill="none"></path>
+                        <circle cx="300" cy="120" r="8" fill="#fff"></circle>
+                        
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="280">极小值：- → +</text>
+                        <path d="M 100 380 C 200 460, 200 460, 300 380" stroke="#e74c3c" stroke-width="4" fill="none"></path>
+                        <path d="M 300 380 C 400 380, 400 380, 500 300" stroke="#2ecc71" stroke-width="4" fill="none"></path>
+                        <circle cx="300" cy="380" r="8" fill="#fff"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 第二充分条件 - 原理 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">极值判定：第二充分条件</h2>
+                    <p class="mt-4">利用<strong>二阶导数</strong>判断极值，更加简便。</p>
+                    <p class="mt-6">前提条件：$f'(x_0) = 0$ 且 $f''(x_0)$ 存在</p>
+                    <div class="math-formula mt-6">
+                        <p>$f''(x_0) < 0 \\implies$ 极大值</p>
+                        <p class="mt-4">$f''(x_0) > 0 \\implies$ 极小值</p>
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="60">二阶导数的几何意义</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="150">f'' < 0 (凹)</text>
+                        <path d="M 150 250 Q 300 150, 450 250" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <circle cx="300" cy="168" r="8" fill="#fff"></circle>
+                        
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="350">f'' > 0 (凸)</text>
+                        <path d="M 150 450 Q 300 550, 450 450" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <circle cx="300" cy="468" r="8" fill="#fff"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 第二充分条件 - 详细 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第二充分条件（详细）</h2>
+                    <p class="mt-4">设 $f'(x_0) = 0$：</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li>若 $f''(x_0) < 0$<br>曲线开口向下 → <strong>极大值</strong></li>
+                        <li>若 $f''(x_0) > 0$<br>曲线开口向上 → <strong>极小值</strong></li>
+                        <li>若 $f''(x_0) = 0$<br>此方法<strong>失效</strong>，需用第一充分条件</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="22" text-anchor="middle" x="300" y="80">开口方向决定极值类型</text>
+                        <path d="M 150 250 Q 300 150, 450 250" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <circle cx="300" cy="168" r="8" fill="#fff"></circle>
+                        <text fill="#e74c3c" font-size="18" x="260" y="140">极大值</text>
+                        <text fill="#e74c3c" font-size="16" x="240" y="290">f''(x₀) < 0</text>
+
+                        <path d="M 150 450 Q 300 550, 450 450" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <circle cx="300" cy="468" r="8" fill="#fff"></circle>
+                        <text fill="#2ecc71" font-size="18" x="260" y="440">极小值</text>
+                        <text fill="#2ecc71" font-size="16" x="240" y="380">f''(x₀) > 0</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 求极值步骤 - 第一步 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">求极值步骤（一）</h2>
+                    <h3>第一步：确定定义域</h3>
+                    <p class="mt-4">明确函数的<strong>定义域</strong>，这是所有分析的前提。</p>
+                    <h3 class="mt-8">第二步：求导数</h3>
+                    <p class="mt-4">计算 $f'(x)$，这是寻找临界点的工具。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（1/2）</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="350" x="125" y="140"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="185">① 确定定义域</text>
+                        <line marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="220" y2="260"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="3" width="350" x="125" y="260"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="305">② 求导数 f'(x)</text>
+                        <defs><marker id="arrow1" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: 求极值步骤 - 第二步 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">求极值步骤（二）</h2>
+                    <h3>第三步：找临界点</h3>
+                    <p class="mt-4">解方程 $f'(x) = 0$，并找出导数不存在的点。</p>
+                    <h3 class="mt-8">第四步：判断类型</h3>
+                    <p class="mt-4">用第一或第二充分条件，判断每个临界点是否为极值点。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（2/2）</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="350" x="125" y="140"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="185">③ 找临界点</text>
+                        <line marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="220" y2="260"></line>
+                        <rect fill="rgba(155,89,182,0.2)" height="80" rx="10" stroke="#9b59b6" stroke-width="3" width="350" x="125" y="260"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="305">④ 判断极值类型</text>
+                        <defs><marker id="arrow2" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 求极值步骤 - 第三步 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">求极值步骤（三）</h2>
+                    <h3>第五步：计算极值</h3>
+                    <p class="mt-4">将极值点 $x_0$ 代入原函数 $f(x)$，计算出极值 $f(x_0)$。</p>
+                    <p class="mt-8" style="color: #2ecc71;">至此，我们就完整地求出了函数的所有极值！</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">最后一步</text>
+                        <rect fill="rgba(241,196,15,0.2)" height="100" rx="10" stroke="#f1c40f" stroke-width="3" width="350" x="125" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="225">⑤ 计算极值 f(x₀)</text>
+                        <circle cx="300" cy="380" r="60" fill="rgba(46,204,113,0.3)" stroke="#2ecc71" stroke-width="4"></circle>
+                        <text fill="#2ecc71" font-size="26" text-anchor="middle" x="300" y="395">完成！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: 实例应用 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">实际应用</h2>
+                    <p class="mt-4">极值理论在实际问题中有广泛应用：</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li><strong>经济学</strong>：利润最大化、成本最小化</li>
+                        <li><strong>工程学</strong>：材料用量最省、效率最高</li>
+                        <li><strong>物理学</strong>：能量最低状态</li>
+                    </ul>
+                    <p class="mt-8 text-gray-400">这些都是通过求函数极值来解决的。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">优化问题</text>
+                        <circle cx="300" cy="250" r="120" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="3"></circle>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="200">最大利润</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="250">最小成本</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="300">最优设计</text>
+                        <path d="M 200 400 Q 300 350, 400 400" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <circle cx="300" cy="368" r="8" fill="#e74c3c"></circle>
+                        <text fill="#e74c3c" font-size="18" x="260" y="430">极值点</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: 总结 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">本节小结</h2>
+                    <p class="mt-4"><strong>核心思想：</strong>利用导数分析函数的性质</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li><strong>单调性</strong>由导数的<strong>符号</strong>决定</li>
+                        <li><strong>极值点</strong>出现在导数<strong>变号</strong>的临界点</li>
+                        <li>两种判定方法：<strong>一阶</strong>和<strong>二阶</strong>导数</li>
+                        <li>求极值是解决<strong>优化问题</strong>的基础</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">导数应用核心</text>
+                        <circle cx="300" cy="280" fill="rgba(241,196,15,0.1)" r="150" stroke="#f39c12" stroke-width="4"></circle>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="220">f'(x) 符号</text>
+                        <text fill="#f1c40f" font-size="30" text-anchor="middle" x="300" y="260">↓</text>
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="300" y="300">单调性</text>
+                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="180" y="340">f'(x) 变号</text>
+                        <text fill="#f1c40f" font-size="30" text-anchor="middle" x="300" y="340">→</text>
+                        <text fill="#9b59b6" font-size="24" text-anchor="middle" x="420" y="340">极值</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习函数的单调性与极值！</div>
+    <div class="control-bar">
+        <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
+            第 <span id="currentSlide">1</span> / <span id="totalSlides">15</span> 页
+        </div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <script type="module">
+        // 虚拟人SDK加载逻辑
+        try {
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            console.log('✅ 讯飞SDK模块已加载');
+        } catch (error) {
+            console.error('❌ SDK模块加载失败:', error);
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = {
+            "1": "欢迎学习函数的单调性与极值！今天我们将深入探讨导数的重要应用。",
+            "2": "首先来看单调性。函数是递增还是递减，完全取决于导数的符号。",
+            "3": "导数的符号反映了切线的斜率。正斜率意味着函数上升，负斜率意味着函数下降。",
+            "4": "什么是极值呢？它是函数在局部范围内的最大值或最小值。",
+            "5": "驻点是导数为零的点。在这些点上，函数的切线是水平的。",
+            "6": "临界点包括驻点和导数不存在的点，它们是寻找极值的候选点。",
+            "7": "第一充分条件：通过观察临界点两侧导数符号的变化来判断极值。",
+            "8": "如果导数从正变负，函数先增后减，这就是极大值；反之则是极小值。",
+            "9": "第二充分条件利用二阶导数。二阶导数反映了曲线的凹凸性。",
+            "10": "二阶导数小于零，曲线开口向下，是极大值；大于零则是极小值。",
+            "11": "求极值的前两步：确定定义域，然后求导数。",
+            "12": "接下来找出所有临界点，并用判定方法检验它们是否为极值点。",
+            "13": "最后一步，将极值点代入原函数，计算出极值的大小。",
+            "14": "极值理论在实际中应用广泛，比如利润最大化、成本最小化等优化问题。",
+            "15": "总结一下：导数的符号决定单调性，导数的变号决定极值。这是解决优化问题的基础。"
+        };
+
+        const speechScript = {
+            "1": "同学们好！今天我们来学习导数的一个重要应用：如何利用导数来研究函数的单调性和极值。这是微积分中非常实用的内容。",
+            "2": "首先，我们来看单调性。一个函数是递增还是递减，完全取决于它的导数是正还是负。如果导数大于零，函数就递增；导数小于零，函数就递减。",
+            "3": "为什么导数能决定单调性呢？因为导数的符号反映了切线的斜率。正斜率意味着切线向上倾斜，函数在上升；负斜率意味着切线向下倾斜，函数在下降。非常直观！",
+            "4": "接下来是极值的概念。所谓极值，就是函数在一个小范围内的最大值或最小值。注意，这是局部概念，不是全局最值。",
+            "5": "什么是驻点呢？驻点就是导数为零的点。在驻点处，函数的切线是水平的，这是寻找极值的重要线索。",
+            "6": "临界点的概念更广，它包括两类：一类是驻点，也就是导数为零的点；另一类是导数不存在的点。这些临界点都是极值点的候选，但不一定都是极值点。",
+            "7": "那么如何判断一个临界点是不是极值点呢？第一个方法，就是观察这个点两侧导数符号的变化。",
+            "8": "如果导数从正数变成负数，说明函数先增后减，就像爬上山顶再下来，这个点就是极大值。反之，如果导数从负数变正数，函数先减后增，就是极小值。",
+            "9": "我们还有第二个更强大的工具，就是二阶导数。二阶导数反映了曲线的凹凸性，也就是开口方向。",
+            "10": "如果在一个驻点，二阶导数小于零，说明曲线在这里是向下凹的，像个倒扣的碗，那这一点就是极大值。反之，二阶导数大于零，曲线向上凹，就是极小值。",
+            "11": "现在我们来看求极值的完整步骤。第一步，确定函数的定义域，这是所有分析的前提。第二步，求导数，这是我们的分析工具。",
+            "12": "第三步，找出所有临界点，也就是解方程导数等于零，并找出导数不存在的点。第四步，用刚才讲的两种方法之一，判断每个临界点是什么类型的极值。",
+            "13": "最后一步，把极值点的坐标代入原函数，就算出了极值的大小。至此，我们就完整地求出了函数的所有极值。",
+            "14": "极值理论在实际问题中有广泛应用。比如在经济学中求利润最大化、成本最小化，在工程学中求材料用量最省、效率最高，这些都是通过求函数极值来解决的。",
+            "15": "好了，我们来总结一下。这节课的核心，就是通过分析导数的符号，来理解函数的单调性；通过分析导数符号的变化，来定位函数的极值。掌握这个思想，对解决各种优化问题非常有用！"
+        };
+        
+        const actionMap = { 
+            "1": "A_RLH_welcome_O", 
+            "2": "A_RH_point_O", 
+            "3": "A_LH_introduced_O", 
+            "4": "A_RH_point_O", 
+            "5": "A_LH_introduced_O", 
+            "6": "A_RH_point_O", 
+            "7": "A_LH_introduced_O",
+            "8": "A_RH_point_O",
+            "9": "A_LH_introduced_O",
+            "10": "A_RH_point_O",
+            "11": "A_LH_introduced_O",
+            "12": "A_RH_point_O",
+            "13": "A_LH_introduced_O",
+            "14": "A_RH_point_O",
+            "15": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 15;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+        let speechFinishedResolve = null;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err));
+            }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; }
+        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
+        
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接，跳过播报'); return; }
+            const content = speechScript[slideNum];
+            if (!content) return;
+            try {
+                const action = actionMap[slideNum];
+                if (action) { await avatarPlatform.writeCmd("action", action); }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) { console.error('❌ 讲解失败:', error); }
+        }
+
+        function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
+        
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000);
+                window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); });
+            });
+        }
+
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+            try {
+                updateStatus('等待SDK...', 'connecting');
+                await waitForSDK();
+                if (avatarPlatform) { avatarPlatform.destroy(); }
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform.on('connected', (initResp) => {
+                    console.log('🎉 连接成功'); isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => { speakContent(currentSlide + 1); }, 1000);
+                }).on('disconnected', (err) => {
+                    isConnected = false; updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
+                }).on('frame_stop', (data) => {
+                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
+                });
+                // 请将此处的讯飞开放平台API信息替换为您自己的
+                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1 }, avatar: { avatar_id: '110332017' }, tts: { vcn: 'x4_yiting' } });
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
+            }
+        }
+
+        // 计算单页播放时长（用于超时fallback）
+        // 注意：speechScript中的内容已经是公式音译后的汉字，直接计算字数即可
+        function getSlideDuration(slideNum) {
+            const speech = speechScript[slideNum];
+            if (!speech) return 10000;
+            // 每个汉字150ms（正常语速） + 3秒缓冲时间
+            return speech.length * 150 + 3000;
+        }
+        
+        async function startAutoPlay() {
+            if (!isTeaching) { await startTeaching(); await new Promise(r => setTimeout(r, 3000)); }
+            if (!isConnected) { alert("虚拟人未连接,无法自动播放。"); return; }
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
+            for (let i = currentSlide; i < totalSlides; i++) {
+                if (!isAutoPlaying) break;
+                showSlide(i);
+                const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                await speakContent(i + 1);
+                const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                await Promise.race([speechPromise, timeoutPromise]);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            }
+            isAutoPlaying = false;
+            document.getElementById('autoPlayBtn').disabled = false;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
+        });
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
+    </script>
+</body>
 </html>

@@ -1,565 +1,969 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   04_4.4_函数图像的描绘
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-  <script>
-   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
-  </script>
-  <script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
-  <style>
-   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:975px;height:1105px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;width: 100%;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-9999px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left: -9999px;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:23px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-9999px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  </style>
- </head>
- <body class="blackboard">
-  <div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-  <div class="avatar-container">
-   <div class="wrapper" id="avatarWrapper">
-   </div>
-  </div>
-  <div class="slide-container flex-grow" id="slide-container">
-   <div class="slide active">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       函数图像的描绘
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第4章 视频 4.4
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 渐近线的求法
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 函数图像的关键点
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 图像描绘的步骤
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 综合分析与作图
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad4" x1="0%" x2="0%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#3498db;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <path d="M 50 350 Q 150 100 300 250 T 550 300" fill="none" stroke="url(#grad4)" stroke-width="4">
-        <animate attributename="stroke-dasharray" dur="4s" repeatcount="indefinite" values="0,2000;2000,0">
-        </animate>
-       </path>
-       <circle cx="180" cy="150" fill="#e74c3c" r="12">
-        <animate attributename="cy" dur="2s" repeatcount="indefinite" values="150;170;150">
-        </animate>
-       </circle>
-       <circle cx="420" cy="280" fill="#2ecc71" r="12">
-        <animate attributename="cy" dur="2s" repeatcount="indefinite" values="280;260;280">
-        </animate>
-       </circle>
-       <text fill="#9b59b6" font-size="36" text-anchor="middle" x="300" y="450">
-        极值与拐点
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       函数图像的描绘
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第04章 视频 4.4
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 函数性态分析
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 渐近线的求法
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 图像绘制步骤
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 综合作图技巧
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ~
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#9b59b6" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#8e44ad" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        图像
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-     <div style="flex: 1; text-align: center; padding: 2rem;">
-      <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       函数图像的描绘
-      </h1>
-      <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第04章 视频 4.4
-      </p>
-      <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 函数性态分析
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 渐近线的求法
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 图像绘制步骤
-       </p>
-       <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 综合作图技巧
-       </p>
-      </div>
-     </div>
-     <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-       <defs>
-        <lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-         <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1">
-         </stop>
-         <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1">
-         </stop>
-        </lineargradient>
-       </defs>
-       <text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ~
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-        </animate>
-       </text>
-       <circle cx="150" cy="280" fill="none" r="30" stroke="#9b59b6" stroke-width="3">
-        <animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="300" cy="280" fill="none" r="30" stroke="#8e44ad" stroke-width="3">
-        <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-        <animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-        </animate>
-       </circle>
-       <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        图像
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-center">
-      <h1 class="text-6xl font-bold">
-       函数图像的描绘
-      </h1>
-      <p class="text-2xl mt-4 text-gray-300">
-       第4章 视频 4.4
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="100" x2="500" y1="350" y2="350">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="100" x2="100" y1="350" y2="100">
-       </line>
-       <path d="M 150 320 Q 250 180, 350 220 Q 450 260, 480 200" fill="none" stroke="#3498db" stroke-width="4">
-        <animate attributename="stroke-dasharray" dur="4s" repeatcount="indefinite" values="0,1000;1000,0;0,1000">
-        </animate>
-       </path>
-       <circle cx="250" cy="200" fill="#2ecc71" r="6">
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;0">
-        </animate>
-       </circle>
-       <circle cx="450" cy="240" fill="#e74c3c" r="6">
-        <animate attributename="opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0;1;0">
-        </animate>
-       </circle>
-       <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">
-        函数图像
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       描图步骤
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       描绘函数图像就是把所有性质整合在一张纸上，按照步骤不会遗漏。
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        定义域、值域
-       </li>
-       <li>
-        奇偶性、周期性
-       </li>
-       <li>
-        间断点、渐近线
-       </li>
-       <li>
-        单调性、极值
-       </li>
-       <li>
-        凹凸性、拐点
-       </li>
-      </ul>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">
-        描图5步骤
-       </text>
-       <g opacity="0">
-        <rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="2" width="240" x="180" y="100">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">
-         ① 定义域、值域
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(46,204,113,0.2)" height="50" rx="8" stroke="#2ecc71" stroke-width="2" width="240" x="180" y="170">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="200">
-         ② 奇偶性、周期性
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="2" width="240" x="180" y="240">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="270">
-         ③ 间断点、渐近线
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(155,89,182,0.2)" height="50" rx="8" stroke="#9b59b6" stroke-width="2" width="240" x="180" y="310">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="340">
-         ④ 单调性、极值
-        </text>
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-        </animate>
-       </g>
-       <g opacity="0">
-        <rect fill="rgba(241,196,15,0.2)" height="50" rx="8" stroke="#f39c12" stroke-width="2" width="240" x="180" y="380">
-        </rect>
-        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="410">
-         ⑤ 凹凸性、拐点
-        </text>
-        <animate attributename="opacity" dur="10s" repeatcount="indefinite" values="0;0;0;0;0;1">
-        </animate>
-       </g>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       性质表格
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       把每一项性质都写在表格里，再动笔描图，就不会手忙脚乱。
-      </p>
-      <div class="mt-6 space-y-4">
-       <p>
-        <strong>
-         示例：
-        </strong>
-        $y=\frac{x}{x^2-1}$
-       </p>
-       <p class="text-gray-400">
-        间断点：$x=\pm 1$
-       </p>
-       <p class="text-gray-400">
-        渐近线：$x=\pm 1$（垂直），$y=0$（水平）
-       </p>
-      </div>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="350" y2="350">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="350" y2="100">
-       </line>
-       <line stroke="#e74c3c" stroke-dasharray="5,5" stroke-width="3" x1="200" x2="200" y1="100" y2="400">
-       </line>
-       <line stroke="#e74c3c" stroke-dasharray="5,5" stroke-width="3" x1="400" x2="400" y1="100" y2="400">
-       </line>
-       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="200" y="90">
-        x=-1
-       </text>
-       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="400" y="90">
-        x=1
-       </text>
-       <line stroke="#2ecc71" stroke-dasharray="5,5" stroke-width="3" x1="50" x2="550" y1="350" y2="350">
-       </line>
-       <text fill="#2ecc71" font-size="16" x="520" y="340">
-        y=0
-       </text>
-       <path d="M 100 250 Q 180 150, 200 120" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <path d="M 220 580 Q 260 400, 380 360" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <path d="M 420 340 Q 480 320, 500 300" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="460">
-        渐近线示意
-       </text>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       描图要点
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       图像的重点是结构：哪里上升、哪里下降、在哪里改变弯曲方向。
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        标出关键点（极值点、拐点）
-       </li>
-       <li>
-        画出渐近线
-       </li>
-       <li>
-        注意曲线的走向
-       </li>
-      </ul>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="550" y1="350" y2="350">
-       </line>
-       <line stroke="#ecf0f1" stroke-width="2" x1="50" x2="50" y1="350" y2="100">
-       </line>
-       <path d="M 100 300 Q 200 150, 300 200 Q 400 250, 500 180" fill="none" stroke="#3498db" stroke-width="4">
-       </path>
-       <circle cx="200" cy="160" fill="#2ecc71" r="8">
-       </circle>
-       <text fill="#2ecc71" font-size="16" text-anchor="middle" x="200" y="140">
-        极大
-       </text>
-       <circle cx="400" cy="260" fill="#e74c3c" r="8">
-       </circle>
-       <text fill="#e74c3c" font-size="16" text-anchor="middle" x="400" y="285">
-        极小
-       </text>
-       <circle cx="300" cy="205" fill="#f39c12" r="8">
-       </circle>
-       <text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="190">
-        拐点
-       </text>
-       <g opacity="0">
-        <line marker-end="url(#arrow15)" stroke="#2ecc71" stroke-width="2" x1="150" x2="180" y1="280" y2="260">
-        </line>
-        <text fill="#2ecc71" font-size="14" x="140" y="295">
-         ↗
-        </text>
-        <line marker-end="url(#arrow15)" stroke="#e74c3c" stroke-width="2" x1="350" x2="380" y1="230" y2="250">
-        </line>
-        <text fill="#e74c3c" font-size="14" x="390" y="240">
-         ↘
-        </text>
-        <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-        </animate>
-       </g>
-       <defs>
-        <marker id="arrow15" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-   <div class="slide">
-    <div class="slide-content">
-     <div class="blackboard-text w-1/2 text-xl p-8">
-      <h2 class="text-4xl font-bold mb-8 pb-2">
-       小结
-      </h2>
-      <p class="mt-4 leading-relaxed">
-       <strong>
-        描图流程：
-       </strong>
-      </p>
-      <ul class="list-disc list-inside mt-6 space-y-4">
-       <li>
-        分析性质 → 列表整理
-       </li>
-       <li>
-        标注关键点 → 绘制曲线
-       </li>
-       <li>
-        检查合理性
-       </li>
-      </ul>
-      <p class="mt-8 text-gray-400">
-       描图能力是综合判断的体现，练习越多越熟练。
-      </p>
-     </div>
-     <div class="animation-pane w-1/2">
-      <svg class="w-full h-full" viewbox="0 0 600 500">
-       <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">
-        🎨 描图流程
-       </text>
-       <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="180" x="100" y="120">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="190" y="155">
-        分析性质
-       </text>
-       <line marker-end="url(#arrow16)" stroke="#f39c12" stroke-width="3" x1="280" x2="320" y1="150" y2="150">
-       </line>
-       <rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="180" x="320" y="120">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="410" y="155">
-        列表整理
-       </text>
-       <line marker-end="url(#arrow16)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="180" y2="220">
-       </line>
-       <rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="220">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="255">
-        标注关键点
-       </text>
-       <line marker-end="url(#arrow16)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="280" y2="320">
-       </line>
-       <rect fill="rgba(155,89,182,0.2)" height="60" rx="10" stroke="#9b59b6" stroke-width="3" width="200" x="200" y="320">
-       </rect>
-       <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="355">
-        绘制曲线
-       </text>
-       <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="430">
-        综合应用
-       </text>
-       <defs>
-        <marker id="arrow16" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-         <path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-         </path>
-        </marker>
-       </defs>
-      </svg>
-     </div>
-    </div>
-   </div>
-  </div>
-  <div class="subtitle-area" id="subtitleArea">
-   欢迎学习函数图像的描绘！点击开始讲课启动虚拟人讲师。
-  </div>
-  <div class="control-bar">
-   <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     5
-    </span>
-    页
-   </div>
-   <button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-   <button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-   <button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-   <button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-   <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-  </div>
-  <script type="module">
-        // 播放完成标记（供OBS检测）
-        window.playbackFinished = false;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04_4.4_函数图像的描绘</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            startup: {
+                ready: () => {
+                    console.log('✅ MathJax已加载并配置完成');
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .blackboard-text { flex: 0 0 45%; font-family: 'Noto Serif SC', serif; color: #e0e0e0; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
+        .blackboard-text h2 { font-size: 2.5rem; color: #f1c40f; border-bottom: 2px solid #f39c12; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+        .blackboard-text h3 { font-size: 1.5rem; color: #1abc9c; margin-top: 1.5rem; margin-bottom: 1rem; }
+        .blackboard-text p, .blackboard-text li { font-size: 1.25rem; line-height: 1.8; }
+        .blackboard-text strong { color: #e74c3c; }
+        .math-formula { background-color: rgba(0,0,0,0.2); margin: 1rem 0; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f39c12; font-size: 1.25rem; text-align: center; }
+        .animation-pane { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 250px; background: rgba(30,30,30,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 200; border-radius: 0 15px 15px 0; padding: 20px 15px; }
+        .btn { padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s ease; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
+</head>
+<body class="blackboard">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
 
-   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-  <script>
-   const lessonTitle="函数图像的描绘";const subtitleScript={"1":"欢迎学习函数图像的描绘！","2":"描绘函数图像就是把所有性质整合在一张纸上，按照步骤不会遗漏。","3":"把每一项性质都写在表格里，再动笔描图，就不会手忙脚乱。","4":"图像的重点是结构：哪里上升、哪里下降、在哪里改变弯曲方向。","5":"描图能力是综合判断的体现，练习越多越熟练。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;let speechFinishedResolve=null;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;}).on('frame_stop',(data)=>{console.log('✅ 虚拟人讲解完成 frame_stop:',data);if(isAutoPlaying&&speechFinishedResolve){console.log('🎬 通知自动播放：虚拟人讲解完成');speechFinishedResolve();speechFinishedResolve=null;}});avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',                                    // 数学讲解 AppID
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',             // 数学讲解 API密钥
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',       // 数学讲解 API密钥
-                    sceneId: '237415046114840576',                       // 数学讲解 场景ID
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0,enable_action_status:1}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}function getSlideDuration(slideNum){const subtitle=subtitleScript[slideNum];if(!subtitle)return 5000;return subtitle.length*120+2000;}async function startAutoPlay(){if(isAutoPlaying){stopAutoPlay();return;}try{console.log('🎬 开始自动播放完整课程...');isAutoPlaying=true;const autoPlayBtn=document.getElementById('autoPlayBtn');autoPlayBtn.textContent='⏹️ 停止播放';autoPlayBtn.style.background='linear-gradient(135deg, #f44336, #d32f2f)';updateStatus('🎬 自动播放将在 1 秒后开始，请准备录屏！','recording');await new Promise(resolve=>setTimeout(resolve,1000));updateStatus('🎬 自动播放开始！','recording');document.body.classList.add('recording-mode');if(!avatarPlatform||!isConnected){console.log('🎬 启动虚拟人...');await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}for(let slide=1;slide<=totalSlides;slide++){try{if(!isAutoPlaying){console.log('🛑 自动播放被停止');break;}console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);showSlide(slide-1);updateStatus(`📖 第${slide}页/${totalSlides}页 - 讲解中`,'recording');if(isConnected&&isTeaching&&avatarPlatform){try{const speechPromise=new Promise(resolve=>{speechFinishedResolve=resolve;});await speakContent(slide);console.log(`⏳ 等待虚拟人讲解第${slide}页完成...`);const timeoutPromise=new Promise(resolve=>setTimeout(()=>{console.log(`⚠️ 第${slide}页讲解超时，继续下一页`);resolve();},getSlideDuration(slide)+5000));await Promise.race([speechPromise,timeoutPromise]);console.log(`✅ 第${slide}页讲解完成`);}catch(error){console.error(`❌ 第${slide}页讲解异常:`,error);}}else{console.log('⚠️ 虚拟人未连接，使用固定延时');await new Promise(resolve=>setTimeout(resolve,getSlideDuration(slide)));}const waitTime=slide===totalSlides?1500:200;await new Promise(resolve=>setTimeout(resolve,waitTime));}catch(error){console.error(`❌ 第${slide}页播放过程出错:`,error);await new Promise(resolve=>setTimeout(resolve,2000));}}if(isAutoPlaying){await new Promise(resolve=>setTimeout(resolve,3000));stopAutoPlay();}}catch(error){console.error('❌ 自动播放失败:',error);updateStatus('自动播放失败: '+error.message,'error');stopAutoPlay();}}function stopAutoPlay(){if(isAutoPlaying){isAutoPlaying=false;window.playbackFinished=true;document.title="PLAYBACK_FINISHED";console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');document.body.classList.remove('recording-mode');const autoPlayBtn=document.getElementById('autoPlayBtn');autoPlayBtn.textContent='🎬 自动播放';autoPlayBtn.style.background='linear-gradient(135deg, #2196f3, #1976d2)';console.log('⏹️ 自动播放已停止');updateStatus('自动播放已停止','normal');}}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
-        setTimeout(() => {
-            console.log('🚀 自动启动播放...');
-            startAutoPlay();
-        }, 3000);
-  </script>
- </body>
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2 text-center">
+                    <h1 class="text-6xl font-bold" style="color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5);">函数图像的描绘</h1>
+                    <p class="text-2xl mt-4 text-gray-400">导数应用的综合体现</p>
+                    <div style="display: inline-block; text-align: left; margin-top: 2rem; font-size: 1.1rem;">
+                        <p style="margin: 0.8rem 0;">✓ 建立系统作图步骤</p>
+                        <p style="margin: 0.8rem 0;">✓ 分析函数关键性质</p>
+                        <p style="margin: 0.8rem 0;">✓ 描绘函数准确图像</p>
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 100 350 C 150 100, 250 400, 350 200 C 450 0, 500 300, 550 250" fill="none" stroke="#9b59b6" stroke-width="4">
+                            <animate attributeName="stroke-dasharray" dur="4s" repeatCount="indefinite" values="0,2000;2000,0"></animate>
+                        </path>
+                        <text fill="#ecf0f1" font-size="28" x="180" y="420">从公式到图形的艺术</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 作图的重要性 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">为什么要描绘函数图像？</h2>
+                    <p class="mt-6">函数图像是数学与现实世界的桥梁，它能将抽象的代数表达式转化为直观的几何形态。</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li><strong>直观理解</strong>：一图胜千言，图像让函数性质一目了然。</li>
+                        <li><strong>发现规律</strong>：通过图像可以发现函数的周期性、对称性等特征。</li>
+                        <li><strong>解决问题</strong>：许多实际问题需要通过图像来分析和求解。</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="100">抽象 → 具体</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="200" x="80" y="200"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="180" y="250">$f(x)=x^2$</text>
+                        <line marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="4" x1="280" x2="320" y1="240" y2="240"></line>
+                        <path d="M 350 350 Q 420 150, 490 350" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <defs><marker id="arrow1" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 5-Step Method Overview -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">系统作图五步法</h2>
+                    <p>描绘函数图像需要遵循系统的步骤，确保分析全面、图像准确。</p>
+                    <ol class="list-decimal list-inside mt-6 space-y-3 text-xl">
+                        <li><strong>基础性质</strong>：定义域、奇偶性、周期性</li>
+                        <li><strong>关键点与线</strong>：坐标轴交点、渐近线</li>
+                        <li><strong>一阶导数</strong>：单调区间、极值点</li>
+                        <li><strong>二阶导数</strong>：凹凸区间、拐点</li>
+                        <li><strong>综合描绘</strong>：列表总结，描点连线</li>
+                    </ol>
+                </div>
+                <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">描图五步法</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="2" width="240" x="180" y="100"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">① 基础性质</text>
+                        <rect fill="rgba(46,204,113,0.2)" height="50" rx="8" stroke="#2ecc71" stroke-width="2" width="240" x="180" y="170"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="200">② 关键点与线</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="2" width="240" x="180" y="240"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="270">③ 一阶导数</text>
+                        <rect fill="rgba(155,89,182,0.2)" height="50" rx="8" stroke="#9b59b6" stroke-width="2" width="240" x="180" y="310"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="340">④ 二阶导数</text>
+                        <rect fill="rgba(241,196,15,0.2)" height="50" rx="8" stroke="#f39c12" stroke-width="2" width="240" x="180" y="380"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="410">⑤ 综合描绘</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Step 1 - Domain -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第一步：确定定义域</h2>
+                    <p>定义域是函数存在的范围，决定了图像在x轴上的活动区域。</p>
+                    <div class="math-formula mt-6">
+                        $$\\text{定义域} = \\{x \\mid f(x) \\text{有意义}\\}$$
+                    </div>
+                    <p class="mt-6"><strong>常见情况：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>分式函数：分母不为零</li>
+                        <li>根式函数：偶次根号下非负</li>
+                        <li>对数函数：真数大于零</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="2"></line>
+                        <line x1="150" y1="100" x2="150" y2="400" stroke="#fff" stroke-width="2"></line>
+                        <line x1="450" y1="100" x2="450" y2="400" stroke="#fff" stroke-width="2"></line>
+                        <path d="M 150 250 Q 300 150, 450 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <text fill="#2ecc71" font-size="22" x="250" y="450">定义域: [a, b]</text>
+                        <circle cx="150" cy="250" r="8" fill="#e74c3c"></circle>
+                        <circle cx="450" cy="250" r="8" fill="#e74c3c"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Step 1 - Parity -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第一步：判断奇偶性</h2>
+                    <p>奇偶性揭示了函数图像的对称性，可以简化作图过程。</p>
+                    <div class="math-formula mt-6">
+                        <p><strong>偶函数：</strong>$f(-x) = f(x)$</p>
+                        <p class="mt-2">图像关于 <strong>y轴</strong> 对称</p>
+                    </div>
+                    <div class="math-formula mt-4">
+                        <p><strong>奇函数：</strong>$f(-x) = -f(x)$</p>
+                        <p class="mt-2">图像关于 <strong>原点</strong> 对称</p>
+                    </div>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#3498db" font-size="22" text-anchor="middle" x="150" y="100">偶函数 (y轴对称)</text>
+                        <path d="M 50 250 Q 150 150, 250 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <line x1="150" y1="120" x2="150" y2="300" stroke="#fff" stroke-width="2" stroke-dasharray="4,4"></line>
+                        
+                        <text fill="#9b59b6" font-size="22" text-anchor="middle" x="450" y="100">奇函数 (原点对称)</text>
+                        <path d="M 350 250 Q 450 150, 550 250" fill="none" stroke="#9b59b6" stroke-width="4"></path>
+                        <path d="M 350 250 Q 250 350, 150 250" fill="none" stroke="#9b59b6" stroke-width="4" opacity="0.5"></path>
+                        <circle cx="350" cy="250" r="6" fill="#f39c12"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Step 1 - Periodicity -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第一步：识别周期性</h2>
+                    <p>周期函数的图像具有重复性，只需画出一个周期即可。</p>
+                    <div class="math-formula mt-6">
+                        $$f(x+T) = f(x), \\quad T > 0$$
+                    </div>
+                    <p class="mt-6"><strong>常见周期函数：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>$\\sin x, \\cos x$：周期为 $2\\pi$</li>
+                        <li>$\\tan x$：周期为 $\\pi$</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 50 250 Q 100 150, 150 250 T 250 250 T 350 250 T 450 250 T 550 250" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <line x1="150" y1="100" x2="150" y2="400" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5"></line>
+                        <line x1="350" y1="100" x2="350" y2="400" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5"></line>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="250" y="450">周期 T</text>
+                        <path d="M 150 420 L 350 420" stroke="#f39c12" stroke-width="3" marker-start="url(#arrow2)" marker-end="url(#arrow3)"></path>
+                        <defs>
+                            <marker id="arrow2" markerHeight="10" markerWidth="10" orient="auto" refX="0" refY="3"><path d="M9,0 L9,6 L0,3 z" fill="#f39c12"></path></marker>
+                            <marker id="arrow3" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Step 2 - Intercepts -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第二步：找坐标轴交点</h2>
+                    <p>交点是图像的关键参考点，帮助我们定位图像位置。</p>
+                    <div class="math-formula mt-6">
+                        <p><strong>y轴交点：</strong>令 $x=0$，求 $f(0)$</p>
+                    </div>
+                    <div class="math-formula mt-4">
+                        <p><strong>x轴交点：</strong>令 $f(x)=0$，解方程</p>
+                    </div>
+                    <p class="mt-6 text-gray-400">这些交点是描绘图像的基准点。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="2"></line>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-width="2"></line>
+                        <path d="M 100 350 Q 250 100, 400 200 Q 500 250, 520 280" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <circle cx="300" cy="180" r="10" fill="#2ecc71"></circle>
+                        <text fill="#2ecc71" font-size="20" x="310" y="170">y轴交点</text>
+                        <circle cx="180" cy="250" r="10" fill="#e74c3c"></circle>
+                        <text fill="#e74c3c" font-size="20" x="150" y="230">x轴交点</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Step 2 - Horizontal Asymptote -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第二步：水平渐近线</h2>
+                    <p>水平渐近线描述了函数在无穷远处的行为。</p>
+                    <div class="math-formula mt-6">
+                        $$\\lim_{x \\to \\infty} f(x) = C \\implies y = C$$
+                    </div>
+                    <p class="mt-6"><strong>意义：</strong>当 $x$ 趋于无穷大时，函数值无限接近常数 $C$。</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="200" x2="550" y2="200" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <text fill="#2ecc71" font-size="22" x="450" y="190">y = C</text>
+                        <path d="M 100 350 Q 200 250, 300 220 Q 400 205, 550 202" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="400">函数逐渐趋近水平线</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Step 2 - Vertical Asymptote -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第二步：垂直渐近线</h2>
+                    <p>垂直渐近线通常出现在函数无定义的点附近。</p>
+                    <div class="math-formula mt-6">
+                        $$\\lim_{x \\to x_0} f(x) = \\infty \\implies x = x_0$$
+                    </div>
+                    <p class="mt-6"><strong>常见情况：</strong>分式函数的分母为零的点。</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#3498db" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <text fill="#3498db" font-size="22" x="310" y="70">x = x₀</text>
+                        <path d="M 100 250 Q 250 200, 290 50" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <path d="M 310 450 Q 350 300, 500 250" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="480">函数值趋于无穷</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Step 2 - Oblique Asymptote -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第二步：斜渐近线</h2>
+                    <p>斜渐近线是函数在无穷远处趋近的斜直线。</p>
+                    <div class="math-formula mt-6">
+                        $$y = kx + b$$
+                        $$k = \\lim_{x \\to \\infty} \\frac{f(x)}{x}$$
+                        $$b = \\lim_{x \\to \\infty} (f(x) - kx)$$
+                    </div>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="100" y1="450" x2="500" y2="50" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <text fill="#e74c3c" font-size="20" x="450" y="40">y = kx + b</text>
+                        <path d="M 100 400 Q 200 300, 300 200 Q 400 100, 480 60" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="480">函数趋近斜直线</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Step 3 - First Derivative Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第三步：一阶导数分析</h2>
+                    <p>一阶导数 $f'(x)$ 是函数图像的"速度计"，告诉我们图像的升降趋势。</p>
+                    <div class="math-formula mt-6">
+                        $$f'(x) > 0 \\implies \\text{函数递增} \\, (\\nearrow)$$
+                        $$f'(x) < 0 \\implies \\text{函数递减} \\, (\\searrow)$$
+                    </div>
+                </div>
+                 <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 100 350 L 300 150" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <text fill="#2ecc71" font-size="24" x="150" y="220">↗ f' > 0</text>
+                        <path d="M 350 150 L 550 350" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <text fill="#e74c3c" font-size="24" x="400" y="280">↘ f' < 0</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Step 3 - Monotonicity -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第三步：单调区间</h2>
+                    <p>通过求解 $f'(x) = 0$ 和 $f'(x)$ 不存在的点，将定义域划分为若干区间。</p>
+                    <p class="mt-6"><strong>步骤：</strong></p>
+                    <ol class="list-decimal list-inside mt-4 space-y-3 text-xl">
+                        <li>求 $f'(x)$</li>
+                        <li>找临界点（$f'(x)=0$ 或不存在）</li>
+                        <li>判断各区间内 $f'(x)$ 的符号</li>
+                    </ol>
+                </div>
+                 <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="2"></line>
+                        <path d="M 100 350 Q 200 200, 250 180" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <text fill="#2ecc71" font-size="20" x="120" y="300">递增</text>
+                        <path d="M 250 180 Q 350 150, 450 300" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <text fill="#e74c3c" font-size="20" x="320" y="200">递减</text>
+                        <circle cx="250" cy="180" r="8" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="18" x="230" y="150">临界点</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Step 3 - Extrema -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第三步：极值点</h2>
+                    <p>极值点是函数的"山峰"和"谷底"，是图像的重要特征点。</p>
+                    <div class="math-formula mt-6">
+                        <p><strong>极大值点：</strong>$f'(x)$ 从正变负</p>
+                        <p class="mt-2"><strong>极小值点：</strong>$f'(x)$ 从负变正</p>
+                    </div>
+                    <p class="mt-6 text-gray-400">在临界点处，若导数符号改变，则该点为极值点。</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 100 300 Q 250 150, 400 300 Q 550 450, 580 400" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <circle cx="250" cy="184" r="10" fill="#2ecc71"></circle>
+                        <text fill="#2ecc71" font-size="22" x="220" y="160">极大值</text>
+                        <circle cx="400" cy="300" r="10" fill="#e74c3c"></circle>
+                        <text fill="#e74c3c" font-size="22" x="370" y="340">极小值</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Step 4 - Second Derivative Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第四步：二阶导数分析</h2>
+                    <p>二阶导数 $f''(x)$ 是函数图像的"方向盘"，告诉我们图像的弯曲方向。</p>
+                    <div class="math-formula mt-6">
+                        $$f''(x) > 0 \\implies \\text{图像凹} \\, (\\smile)$$
+                        $$f''(x) < 0 \\implies \\text{图像凸} \\, (\\frown)$$
+                    </div>
+                </div>
+                 <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 100 350 Q 250 200, 400 350" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <text fill="#2ecc71" font-size="24" x="200" y="400">凹 (f'' > 0)</text>
+                        
+                        <path d="M 200 150 Q 350 300, 500 150" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <text fill="#e74c3c" font-size="24" x="300" y="100">凸 (f'' < 0)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Step 4 - Concavity -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第四步：凹凸区间</h2>
+                    <p>凹凸性描述了曲线的弯曲形态，是图像精细刻画的关键。</p>
+                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                        <li><strong>凹区间</strong>：$f''(x) > 0$，图像开口向上 😊</li>
+                        <li><strong>凸区间</strong>：$f''(x) < 0$，图像开口向下 😟</li>
+                    </ul>
+                    <p class="mt-6 text-gray-400">记忆技巧：凹能"盛水"，凸会"流水"。</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 100 350 Q 250 200, 400 350" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <text fill="#2ecc71" font-size="22" x="180" y="400">凹区间</text>
+                        <text fill="#2ecc71" font-size="30" x="240" y="280">😊</text>
+                        
+                        <path d="M 200 150 Q 350 300, 500 150" fill="none" stroke="#e74c3c" stroke-width="4"></path>
+                        <text fill="#e74c3c" font-size="22" x="280" y="100">凸区间</text>
+                        <text fill="#e74c3c" font-size="30" x="340" y="240">😟</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Step 4 - Inflection Points -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第四步：拐点</h2>
+                    <p>拐点是凹凸性发生改变的点，是曲线形态转折的关键位置。</p>
+                    <div class="math-formula mt-6">
+                        $$f''(x_0) = 0 \\text{ 且 } f''(x) \\text{ 变号}$$
+                    </div>
+                    <p class="mt-6"><strong>意义：</strong>在拐点处，曲线从"凹"变"凸"或从"凸"变"凹"。</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <path d="M 50 200 Q 200 350, 300 200 T 550 200" fill="none" stroke="#9b59b6" stroke-width="4"></path>
+                        <circle cx="300" cy="200" r="10" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="24" x="270" y="170">拐点</text>
+                        <text fill="#2ecc71" font-size="20" x="100" y="300">凹</text>
+                        <text fill="#e74c3c" font-size="20" x="450" y="300">凸</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Step 5 - Table Summary -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第五步：列表总结</h2>
+                    <p>将前面分析的所有信息整理成表格，一目了然。</p>
+                    <p class="mt-6"><strong>表格内容：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>区间划分</li>
+                        <li>$f'(x)$ 的符号（单调性）</li>
+                        <li>$f''(x)$ 的符号（凹凸性）</li>
+                        <li>关键点的函数值</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <rect fill="rgba(255,255,255,0.1)" height="60" rx="5" stroke="#3498db" stroke-width="2" width="450" x="75" y="100"></rect>
+                        <text fill="#ecf0f1" font-size="18" x="100" y="135">区间 | f'(x) | f''(x) | 性质</text>
+                        
+                        <rect fill="rgba(46,204,113,0.1)" height="50" rx="5" stroke="#2ecc71" stroke-width="2" width="450" x="75" y="170"></rect>
+                        <text fill="#ecf0f1" font-size="16" x="100" y="200">(-∞,a) | + | + | 递增凹</text>
+                        
+                        <rect fill="rgba(231,76,60,0.1)" height="50" rx="5" stroke="#e74c3c" stroke-width="2" width="450" x="75" y="230"></rect>
+                        <text fill="#ecf0f1" font-size="16" x="100" y="260">(a,b) | - | + | 递减凹</text>
+                        
+                        <rect fill="rgba(155,89,182,0.1)" height="50" rx="5" stroke="#9b59b6" stroke-width="2" width="450" x="75" y="290"></rect>
+                        <text fill="#ecf0f1" font-size="16" x="100" y="320">(b,+∞) | + | - | 递增凸</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Step 5 - Plot Key Points -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第五步：描出关键点</h2>
+                    <p>在坐标系中标出所有关键点，为连线做准备。</p>
+                    <p class="mt-6"><strong>关键点包括：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>坐标轴交点</li>
+                        <li>极值点</li>
+                        <li>拐点</li>
+                        <li>其他特殊点</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="2"></line>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-width="2"></line>
+                        <circle cx="300" cy="200" r="8" fill="#2ecc71"></circle>
+                        <text fill="#2ecc71" font-size="18" x="310" y="195">交点</text>
+                        <circle cx="200" cy="150" r="8" fill="#e74c3c"></circle>
+                        <text fill="#e74c3c" font-size="18" x="210" y="145">极值</text>
+                        <circle cx="400" cy="300" r="8" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="18" x="410" y="295">拐点</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Step 5 - Draw Asymptotes -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第五步：画出渐近线</h2>
+                    <p>渐近线是图像的骨架，先画出来作为辅助线。</p>
+                    <p class="mt-6"><strong>作用：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>指示图像的延伸方向</li>
+                        <li>确定图像的边界</li>
+                        <li>帮助准确连线</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="300" x2="550" y2="300" stroke="#2ecc71" stroke-width="2" stroke-dasharray="5,5"></line>
+                        <text fill="#2ecc71" font-size="18" x="450" y="290">水平渐近线</text>
+                        <line x1="200" y1="50" x2="200" y2="450" stroke="#3498db" stroke-width="2" stroke-dasharray="5,5"></line>
+                        <text fill="#3498db" font-size="18" x="210" y="70">垂直渐近线</text>
+                        <line x1="100" y1="450" x2="500" y2="50" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5"></line>
+                        <text fill="#e74c3c" font-size="18" x="450" y="40">斜渐近线</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Step 5 - Connect with Curves -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">第五步：平滑连线</h2>
+                    <p>用平滑的曲线连接所有关键点，确保曲线符合分析的性质。</p>
+                    <p class="mt-6"><strong>注意事项：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>曲线要平滑，不能有尖角</li>
+                        <li>升降趋势要与单调性一致</li>
+                        <li>弯曲方向要与凹凸性一致</li>
+                        <li>接近渐近线但不相交</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="1" opacity="0.3"></line>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-width="1" opacity="0.3"></line>
+                        <path d="M 100 400 Q 200 250, 250 200 Q 300 180, 350 220 Q 450 280, 500 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <circle cx="250" cy="200" r="6" fill="#2ecc71"></circle>
+                        <circle cx="350" cy="220" r="6" fill="#e74c3c"></circle>
+                        <circle cx="300" cy="190" r="6" fill="#f39c12"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Example Introduction -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">综合示例</h2>
+                    <p>让我们通过一个具体例子，完整演示五步作图法。</p>
+                    <div class="math-formula mt-6">
+                        $$f(x) = \\frac{x^3}{x^2 - 1}$$
+                    </div>
+                    <p class="mt-6">我们将系统地分析这个函数的所有性质，并描绘出它的图像。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="36" text-anchor="middle" x="300" y="150">$f(x) = \\frac{x^3}{x^2-1}$</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="250">让我们开始分析！</text>
+                        <circle cx="300" cy="350" r="60" fill="none" stroke="#3498db" stroke-width="4">
+                            <animate attributeName="r" dur="2s" repeatCount="indefinite" values="60;70;60"></animate>
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Example - Basic Properties -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">示例：基础性质</h2>
+                    <div class="math-formula">
+                        $$f(x) = \\frac{x^3}{x^2 - 1}$$
+                    </div>
+                    <p class="mt-4"><strong>定义域：</strong>$x^2 - 1 \\neq 0$，即 $x \\neq \\pm 1$</p>
+                    <p class="mt-4"><strong>奇偶性：</strong>$f(-x) = \\frac{(-x)^3}{(-x)^2-1} = -\\frac{x^3}{x^2-1} = -f(x)$</p>
+                    <p class="mt-2">所以是<strong>奇函数</strong>，图像关于原点对称。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="2"></line>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-width="2"></line>
+                        <line x1="200" y1="100" x2="200" y2="400" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <line x1="400" y1="100" x2="400" y2="400" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <text fill="#e74c3c" font-size="20" x="180" y="90">x=-1</text>
+                        <text fill="#e74c3c" font-size="20" x="380" y="90">x=1</text>
+                        <circle cx="300" cy="250" r="8" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="18" x="310" y="240">原点对称</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Example - Asymptotes -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">示例：渐近线</h2>
+                    <p><strong>垂直渐近线：</strong>$x = -1$ 和 $x = 1$</p>
+                    <p class="mt-4"><strong>斜渐近线：</strong></p>
+                    <div class="math-formula mt-2">
+                        $$k = \\lim_{x \\to \\infty} \\frac{f(x)}{x} = \\lim_{x \\to \\infty} \\frac{x^2}{x^2-1} = 1$$
+                        $$b = \\lim_{x \\to \\infty} (f(x) - x) = 0$$
+                    </div>
+                    <p class="mt-4">所以斜渐近线为 $y = x$</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="1" opacity="0.3"></line>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-width="1" opacity="0.3"></line>
+                        <line x1="200" y1="50" x2="200" y2="450" stroke="#3498db" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <line x1="400" y1="50" x2="400" y2="450" stroke="#3498db" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <line x1="100" y1="350" x2="500" y2="150" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"></line>
+                        <text fill="#e74c3c" font-size="20" x="450" y="140">y = x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Example - First Derivative -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">示例：一阶导数</h2>
+                    <div class="math-formula">
+                        $$f'(x) = \\frac{3x^2(x^2-1) - x^3 \\cdot 2x}{(x^2-1)^2} = \\frac{x^4 - 3x^2}{(x^2-1)^2}$$
+                    </div>
+                    <p class="mt-4">令 $f'(x) = 0$：$x^4 - 3x^2 = 0$</p>
+                    <p class="mt-2">解得：$x = 0, \\pm\\sqrt{3}$</p>
+                    <p class="mt-4">分析符号可得单调性和极值点。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="2"></line>
+                        <circle cx="150" cy="250" r="8" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="18" x="130" y="230">-√3</text>
+                        <circle cx="300" cy="250" r="8" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="18" x="290" y="230">0</text>
+                        <circle cx="450" cy="250" r="8" fill="#f39c12"></circle>
+                        <text fill="#f39c12" font-size="18" x="440" y="230">√3</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Example - Complete Graph -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">示例：完整图像</h2>
+                    <p>综合所有分析结果，我们得到了函数的完整图像。</p>
+                    <p class="mt-6"><strong>关键特征：</strong></p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>关于原点对称（奇函数）</li>
+                        <li>垂直渐近线：$x = \\pm 1$</li>
+                        <li>斜渐近线：$y = x$</li>
+                        <li>极值点和拐点清晰可见</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#fff" stroke-width="1" opacity="0.3"></line>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-width="1" opacity="0.3"></line>
+                        <line x1="200" y1="50" x2="200" y2="450" stroke="#666" stroke-width="2" stroke-dasharray="3,3"></line>
+                        <line x1="400" y1="50" x2="400" y2="450" stroke="#666" stroke-width="2" stroke-dasharray="3,3"></line>
+                        <line x1="100" y1="350" x2="500" y2="150" stroke="#666" stroke-width="2" stroke-dasharray="3,3"></line>
+                        <path d="M 100 400 Q 180 280, 195 100" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <path d="M 205 100 Q 250 200, 300 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <path d="M 300 250 Q 350 300, 395 400" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <path d="M 405 400 Q 420 220, 500 100" fill="none" stroke="#3498db" stroke-width="4"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26: Summary -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">本节小结</h2>
+                    <p class="mt-4">描绘函数图像是微积分知识的<strong>综合应用</strong>，它将抽象的函数表达式转化为直观的几何图形。</p>
+                    <p class="mt-8 text-2xl text-center" style="color:#f1c40f">
+                        <strong>五步法：系统、全面、准确</strong>
+                    </p>
+                    <ol class="list-decimal list-inside mt-8 space-y-2 text-lg">
+                        <li>基础性质 → 确定框架</li>
+                        <li>关键点线 → 搭建骨架</li>
+                        <li>一阶导数 → 分析升降</li>
+                        <li>二阶导数 → 判断凹凸</li>
+                        <li>综合描绘 → 完成图像</li>
+                    </ol>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="100">从分析到图像</text>
+                        <rect fill="rgba(255,255,255,0.1)" height="80" rx="10" width="200" x="80" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="180" y="230">系统分析</text>
+                        <line marker-end="url(#arrow20)" stroke="#f39c12" stroke-width="4" x1="280" x2="320" y1="220" y2="220"></line>
+                        <rect fill="rgba(255,255,255,0.1)" height="80" rx="10" width="200" x="320" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="420" y="230">精确作图</text>
+                        <path d="M 150 350 Q 300 300, 450 350" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <defs><marker id="arrow20" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习函数图像的描绘！</div>
+    <div class="control-bar">
+        <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
+            第 <span id="currentSlide">1</span> / <span id="totalSlides">26</span> 页
+        </div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <script type="module">
+        try {
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            console.log('✅ 讯飞SDK模块已加载');
+        } catch (error) {
+            console.error('❌ SDK模块加载失败:', error);
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = {
+            "1": "欢迎学习函数图像的描绘！本节将综合运用所有导数知识。",
+            "2": "函数图像是连接抽象与具体的桥梁，让我们直观理解函数性质。",
+            "3": "描绘函数图像需要遵循系统的五步法，确保分析全面准确。",
+            "4": "第一步，确定定义域，明确函数在x轴上的存在范围。",
+            "5": "判断奇偶性，利用对称性简化作图过程。",
+            "6": "识别周期性，对于周期函数只需画出一个周期。",
+            "7": "第二步，找出与坐标轴的交点，这些是图像的基准点。",
+            "8": "寻找水平渐近线，了解函数在无穷远处的行为。",
+            "9": "找出垂直渐近线，通常出现在函数无定义的点。",
+            "10": "确定斜渐近线，描述函数趋于无穷时的斜线趋势。",
+            "11": "第三步，利用一阶导数分析函数的升降趋势。",
+            "12": "通过一阶导数确定函数的单调区间。",
+            "13": "找出极值点，即函数的山峰和谷底。",
+            "14": "第四步，利用二阶导数分析图像的弯曲方向。",
+            "15": "判断凹凸区间，了解曲线的开口方向。",
+            "16": "找出拐点，即凹凸性改变的位置。",
+            "17": "第五步，将所有分析结果整理成表格。",
+            "18": "在坐标系中描出所有关键点。",
+            "19": "画出渐近线作为图像的骨架。",
+            "20": "用平滑曲线连接关键点，完成图像描绘。",
+            "21": "让我们通过一个具体例子来演示完整的作图过程。",
+            "22": "首先分析函数的定义域和奇偶性。",
+            "23": "然后找出所有的渐近线。",
+            "24": "计算一阶导数，找出临界点。",
+            "25": "综合所有信息，描绘出完整的函数图像。",
+            "26": "总结：五步法让我们系统地将抽象函数转化为直观图形。"
+        };
+
+        const speechScript = {
+            "1": "同学们好！今天我们将学习一项非常重要的技能——函数图像的描绘。这是对前面所学导数知识的综合运用。",
+            "2": "为什么要描绘函数图像呢？因为图像是连接抽象数学与具体几何的桥梁。一图胜千言，通过图像我们可以直观地理解函数的各种性质。",
+            "3": "想要准确地画出函数图像，我们需要遵循一套系统的五步分析法。这五个步骤能帮助我们全面分析函数的所有关键特征。",
+            "4": "第一步的第一项任务是确定定义域。定义域告诉我们函数在x轴上的存在范围，是图像的左右边界。",
+            "5": "接下来判断奇偶性。如果函数是偶函数，图像关于y轴对称；如果是奇函数，图像关于原点对称。利用对称性，我们只需要画一半就够了。",
+            "6": "还要识别周期性。对于周期函数，图像会重复出现，我们只需要画出一个周期，其他部分就可以复制了。",
+            "7": "第二步开始找关键点。首先是坐标轴交点，包括与x轴和y轴的交点，这些是图像的基准参考点。",
+            "8": "然后寻找水平渐近线。当x趋于无穷大时，如果函数值趋于某个常数，那么就存在水平渐近线。",
+            "9": "接着找垂直渐近线。这通常出现在函数无定义的点，比如分式函数的分母为零的地方。",
+            "10": "还要确定斜渐近线。当函数在无穷远处趋近于某条斜直线时，这条直线就是斜渐近线。",
+            "11": "第三步，轮到一阶导数上场了。一阶导数就像函数图像的速度计，告诉我们图像是上升还是下降。",
+            "12": "通过分析一阶导数的正负，我们可以准确地划分出函数的单调区间，知道在哪段是递增的，在哪段是递减的。",
+            "13": "在一阶导数符号改变的地方，就是极值点。极大值点是山峰，极小值点是谷底，这些都是图像的重要特征点。",
+            "14": "第四步，我们请出二阶导数。二阶导数就像函数图像的方向盘，告诉我们曲线的弯曲方向。",
+            "15": "二阶导数大于零，图像是凹的，开口向上；二阶导数小于零，图像是凸的，开口向下。记住：凹能盛水，凸会流水。",
+            "16": "在二阶导数符号改变的地方，就是拐点。拐点是曲线从凹变凸或从凸变凹的转折位置。",
+            "17": "第五步的第一项工作是列表总结。把前面分析的所有信息——区间、一阶导数符号、二阶导数符号、函数性质，都整理在一个表格里，一目了然。",
+            "18": "然后在坐标系中描出所有关键点，包括交点、极值点、拐点等等。",
+            "19": "画出所有的渐近线，它们是图像的骨架，为连线提供指引。",
+            "20": "最后，用一条平滑的曲线把所有关键点连接起来。注意曲线要平滑，升降和弯曲方向要与我们的分析一致。",
+            "21": "理论讲完了，让我们通过一个具体的例子来演示完整的作图过程。我们要画的函数是x的三次方除以x平方减一。",
+            "22": "首先分析基础性质。定义域是x不等于正负1。通过计算f负x等于负f(x)，我们知道这是一个奇函数，图像关于原点对称。",
+            "23": "然后找渐近线。x等于正负1是两条垂直渐近线。通过计算极限，我们得到斜渐近线是y等于x。",
+            "24": "接下来计算一阶导数。通过求导和解方程，我们找到了临界点，可以确定单调区间和极值点。",
+            "25": "综合所有的分析结果，我们就能描绘出这个函数的完整图像了。你看，图像关于原点对称，有垂直渐近线和斜渐近线，极值点和拐点都清晰可见。",
+            "26": "让我们总结一下。描绘函数图像的五步法是：分析基础性质确定框架，找关键点线搭建骨架，用一阶导数分析升降，用二阶导数判断凹凸，最后综合描绘完成图像。这是一个系统、全面、准确的过程，希望大家多加练习，熟练掌握！"
+        };
+        
+        const actionMap = {
+            "1": "A_RLH_welcome_O",
+            "2": "A_RH_point_O",
+            "3": "A_LH_introduced_O",
+            "4": "A_RH_point_O",
+            "5": "A_LH_introduced_O",
+            "6": "A_RH_point_O",
+            "7": "A_LH_introduced_O",
+            "8": "A_RH_point_O",
+            "9": "A_LH_introduced_O",
+            "10": "A_RH_point_O",
+            "11": "A_LH_introduced_O",
+            "12": "A_RH_point_O",
+            "13": "A_LH_introduced_O",
+            "14": "A_RH_point_O",
+            "15": "A_LH_introduced_O",
+            "16": "A_RH_point_O",
+            "17": "A_LH_introduced_O",
+            "18": "A_RH_point_O",
+            "19": "A_LH_introduced_O",
+            "20": "A_RH_point_O",
+            "21": "A_LH_introduced_O",
+            "22": "A_RH_point_O",
+            "23": "A_LH_introduced_O",
+            "24": "A_RH_point_O",
+            "25": "A_LH_introduced_O",
+            "26": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 26;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+        let speechFinishedResolve = null;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err));
+            }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; }
+        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
+        
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接，跳过播报'); return; }
+            const content = speechScript[slideNum];
+            if (!content) return;
+            try {
+                const action = actionMap[slideNum];
+                if (action) { await avatarPlatform.writeCmd("action", action); }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) { console.error('❌ 讲解失败:', error); }
+        }
+
+        function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
+        
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { resolve(); return; }
+                const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000);
+                window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); });
+            });
+        }
+
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+            try {
+                updateStatus('等待SDK...', 'connecting');
+                await waitForSDK();
+                if (avatarPlatform) { avatarPlatform.destroy(); }
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform.on('connected', (initResp) => {
+                    console.log('🎉 连接成功'); isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => { speakContent(currentSlide + 1); }, 1000);
+                }).on('disconnected', (err) => {
+                    isConnected = false; updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
+                }).on('frame_stop', (data) => {
+                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
+                });
+                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1 }, avatar: { avatar_id: '110332017' }, tts: { vcn: 'x4_yiting' } });
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
+            }
+        }
+
+        // 计算单页播放时长（用于超时fallback）
+        // 注意：speechScript中的内容已经是公式音译后的汉字，直接计算字数即可
+        function getSlideDuration(slideNum) {
+            const speech = speechScript[slideNum];
+            if (!speech) return 10000;
+            // 每个汉字150ms（正常语速） + 3秒缓冲时间
+            return speech.length * 150 + 3000;
+        }
+        
+        async function startAutoPlay() {
+            if (!isTeaching) { await startTeaching(); await new Promise(r => setTimeout(r, 3000)); }
+            if (!isConnected) { alert("虚拟人未连接，无法自动播放。"); return; }
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
+            for (let i = currentSlide; i < totalSlides; i++) {
+                if (!isAutoPlaying) break;
+                showSlide(i);
+                const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                await speakContent(i + 1);
+                const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                await Promise.race([speechPromise, timeoutPromise]);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            }
+            isAutoPlaying = false;
+            document.getElementById('autoPlayBtn').disabled = false;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
+        });
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
+    </script>
+</body>
 </html>
