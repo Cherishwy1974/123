@@ -459,14 +459,24 @@
         <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
     </div>
     <script type="module">
-        // 虚拟人SDK加载逻辑
+        // 虚拟人SDK加载
+        window.playbackFinished = false;
+
         try {
-            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+
             window.AvatarPlatform = AvatarPlatform;
-            console.log('✅ 讯飞SDK模块已加载');
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
+
+            console.log('✅ 讯飞官方SDK模块已加载');
+            console.log('SDK版本:', AvatarPlatform.getVersion());
         } catch (error) {
             console.error('❌ SDK模块加载失败:', error);
         }
+
         window.dispatchEvent(new CustomEvent('sdkReady'));
     </script>
     <script>
@@ -560,14 +570,7 @@
                 console.log(`🎤 虚拟人开始讲解第${slideNum}页...`);
                 await avatarPlatform.writeText(content, { nlp: false });
                 updateSubtitle(slideNum);
-                const speech = speechScript[slideNum];
-                const duration = speech ? speech.length * 180 : 5000;
-                console.log(`⏳ 等待${duration}ms...`);
-                if (isAutoPlaying && speechFinishedResolve) {
-                    console.log('✅ 第' + slideNum + '页讲解完成');
-                    speechFinishedResolve();
-                    speechFinishedResolve = null;
-                }
+                console.log(`✅ 第${slideNum}页语音已发送，等待frame_stop事件...`);
             } catch (error) { console.error('❌ 讲解失败:', error); }
         }
 
@@ -588,21 +591,70 @@
             try {
                 updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
-                if (avatarPlatform) { avatarPlatform.destroy(); }
-                avatarPlatform = new window.AvatarPlatform();
-                avatarPlatform.on('connected', (initResp) => {
-                    console.log('🎉 连接成功'); isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); startBtn.textContent = '💖 虚拟人已就绪';
-                    setTimeout(() => { speakContent(currentSlide + 1); }, 1000);
-                }).on('disconnected', (err) => {
+                
+                if (avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+                
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform
+                    .on('connected', (initResp) => {
+                        console.log('🎉 虚拟人连接成功！', initResp);
+                        isConnected = true;
+                        isTeaching = true;
+                        updateStatus('已连接', 'connected');
+                        startBtn.textContent = '💖 虚拟人已就绪';
+                        
+                        setTimeout(() => {
+                            speakContent(currentSlide + 1);
+                        }, 1000);
+                    }).on('disconnected', (err) => {
                     isConnected = false; updateStatus('连接断开', 'error');
                 }).on('error', (error) => {
                     console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
                 }).on('frame_stop', (data) => {
-                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
+                    console.log('🎬 frame_stop事件触发');
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('✅ 语音播放完成，触发Promise解析');
+                        speechFinishedResolve();
+                        speechFinishedResolve = null;
+                    }
                 });
-                // 请将此处的讯飞开放平台API信息替换为您自己的
-                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
-                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0, enable_action_status: 1 } });
+                avatarPlatform.setApiInfo({
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+                
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
@@ -619,25 +671,103 @@
         }
         
         async function startAutoPlay() {
-            if (!isTeaching) { await startTeaching(); await new Promise(r => setTimeout(r, 3000)); }
-            if (!isConnected) { alert("虚拟人未连接,无法自动播放。"); return; }
-            isAutoPlaying = true;
-            document.getElementById('autoPlayBtn').disabled = true;
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
             try {
-                for (let i = currentSlide; i < totalSlides; i++) {
-                    if (!isAutoPlaying) break;
-                    showSlide(i);
-                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
-                    await speakContent(i + 1);
-                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
-                    await Promise.race([speechPromise, timeoutPromise]);
+                console.log('🎬 开始自动播放完整课程...');
+                isAutoPlaying = true;
+
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
+                updateStatus(`🎬 自动播放将在 1 秒后开始，请准备录屏！`, 'recording');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                updateStatus('🎬 自动播放开始！', 'recording');
+                document.body.classList.add('recording-mode');
+
+                if (!isConnected) {
+                    console.log('🎬 后台尝试连接虚拟人...');
+                    startTeaching().catch(error => {
+                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
+                    });
                 }
-            } catch (error) { console.error('❌ 自动播放失败:', error); }
-            finally {
+
+                for (let slide = 1; slide <= totalSlides; slide++) {
+                    try {
+                        if (!isAutoPlaying) {
+                            console.log('🛑 自动播放被停止');
+                            break;
+                        }
+
+                        console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);
+                        showSlide(slide - 1);
+                        updateStatus(`📖 第${slide}页/${totalSlides}页 - 讲解中`, 'recording');
+
+                        await new Promise(resolve => setTimeout(resolve, 800));
+
+                        if (isConnected && isTeaching && avatarPlatform) {
+                            try {
+                                const speechPromise = new Promise(resolve => {
+                                    speechFinishedResolve = resolve;
+                                });
+
+                                await speakContent(slide);
+                                console.log(`⏳ 等待虚拟人讲解第${slide}页完成...`);
+
+                                const timeoutPromise = new Promise(resolve =>
+                                    setTimeout(() => {
+                                        console.log(`⚠️ 第${slide}页讲解超时，继续下一页`);
+                                        resolve();
+                                    }, getSlideDuration(slide) + 5000)
+                                );
+
+                                await Promise.race([speechPromise, timeoutPromise]);
+                                console.log(`✅ 第${slide}页讲解完成`);
+
+                                if (slide < totalSlides) {
+                                    await new Promise(resolve => setTimeout(resolve, 1500));
+                                }
+                            } catch (error) {
+                                console.error(`❌ 第${slide}页语音播放失败:`, error);
+                                const slideTime = getSlideDuration(slide);
+                                await new Promise(resolve => setTimeout(resolve, slideTime));
+                            }
+                        } else {
+                            const slideTime = getSlideDuration(slide);
+                            await new Promise(resolve => setTimeout(resolve, slideTime));
+                        }
+                    } catch (error) {
+                        console.error(`❌ 第${slide}页播放过程出错:`, error);
+                    }
+                }
+
+                if (isAutoPlaying) {
+                    stopAutoPlay();
+                }
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+                updateStatus('自动播放失败: ' + error.message, 'error');
+                stopAutoPlay();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (isAutoPlaying) {
                 isAutoPlaying = false;
-                document.getElementById('autoPlayBtn').disabled = false;
                 window.playbackFinished = true;
                 document.title = "PLAYBACK_FINISHED";
+                console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
+                document.body.classList.remove('recording-mode');
+                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
+                console.log('⏹️ 自动播放已停止');
+                updateStatus('自动播放已停止', 'normal');
             }
         }
 
@@ -650,21 +780,16 @@
         showSlide(0);
 
         // 自动启动：页面加载完成后自动开始讲课和播放
-        setTimeout(() => {
-            console.log('🚀 自动启动讲课...');
-            startTeaching().then(() => {
-                // 等待虚拟人真正连接
-                const checkConnection = setInterval(() => {
-                    if (isConnected) {
-                        clearInterval(checkConnection);
-                        console.log('✅ 虚拟人已连接，开始自动播放...');
-                        startAutoPlay();
-                    }
-                }, 500);
-                // 最多等待 10 秒
-                setTimeout(() => clearInterval(checkConnection), 10000);
-            }).catch(err => console.error('❌ 启动失败:', err));
-        }, 1000);
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(0);
+            console.log('✨ 函数的单调性与极值教学系统初始化完成');
+
+            // 🚀 自动启动播放 - 延迟3秒后自动开始
+            setTimeout(() => {
+                console.log('🚀 自动启动播放...');
+                startAutoPlay();
+            }, 3000);
+        });
     </script>
 </body>
 </html>
