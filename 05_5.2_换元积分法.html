@@ -1,452 +1,1586 @@
-﻿
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>
-   05_5.2_换元积分法
-  </title>
-<script src="https://cdn.tailwindcss.com">
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<script>
-   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
-  </script>
-<script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-<style>
-   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:975px;height:1105px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;width: 100%;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-9999px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left: -9999px;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:23px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-9999px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>05_5.2_换元积分法 (扩展版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            svg: { fontCache: 'global' },
+            startup: { pageReady: () => { return MathJax.startup.defaultPageReady().then(() => { console.log('✅ MathJax已加载'); }); } }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+        .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
+        .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
+        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
+        .chalkboard strong { color: #e74c3c; }
+        .math-formula { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
+        .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
 </head>
 <body class="blackboard">
-<div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-<div class="avatar-container">
-<div class="wrapper" id="avatarWrapper">
-</div>
-</div>
-<div class="slide-container flex-grow" id="slide-container">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
+        
+        <!-- Page 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="chalkboard" style="text-align: center;">
+                    <h1 style="font-size: 2.8rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);">换元积分法</h1>
+                    <p style="font-size: 1.2rem; color: #bdc3c7; margin-top: 1rem;">第5章 - 不定积分的核心技巧</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                         <text fill="#3498db" font-size="50" text-anchor="middle" x="150" y="180">f(g(x))</text>
+                        <text fill="#f39c12" font-size="60" text-anchor="middle" x="300" y="250">→</text>
+                        <text fill="#2ecc71" font-size="50" text-anchor="middle" x="450" y="180">f(u)</text>
+                        <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="350">u = g(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
+        <!-- Page 2: Course Overview -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>课程内容概览</h2>
+                    <p style="margin-top: 1.5rem;">本节课我们将学习四个核心内容：</p>
+                    <div style="margin-top: 2rem; text-align: left;">
+                        <p style="font-size: 1.1rem; margin: 1rem 0; color: #e0e0e0;">✓ 第一类换元法 (凑微分法)</p>
+                        <p style="font-size: 1.1rem; margin: 1rem 0; color: #e0e0e0;">✓ 第二类换元法</p>
+                        <p style="font-size: 1.1rem; margin: 1rem 0; color: #e0e0e0;">✓ 三角换元技巧</p>
+                        <p style="font-size: 1.1rem; margin: 1rem 0; color: #e0e0e0;">✓ 方法选择与总结</p>
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <circle cx="300" cy="250" r="150" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"></circle>
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="260">换元积分法</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-<div class="slide">
-<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-<div style="flex: 1; text-align: center; padding: 2rem;">
-<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       换元积分法
-      </h1>
-<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第05章 视频 5.2
-      </p>
-<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 第一换元法
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 第二换元法
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 三角换元
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 换元技巧总结
-       </p>
-</div>
-</div>
-<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-<defs>
-<lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#3498db;stop-opacity:1">
-</stop>
-<stop offset="100%" style="stop-color:#2980b9;stop-opacity:1">
-</stop>
-</lineargradient>
-</defs>
-<text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ∫
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-</animate>
-</text>
-<circle cx="150" cy="280" fill="none" r="30" stroke="#3498db" stroke-width="3">
-<animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<circle cx="300" cy="280" fill="none" r="30" stroke="#2980b9" stroke-width="3">
-<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        换元
-       </text>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-center">
-<h1 class="text-6xl font-bold">
-       换元积分法
-      </h1>
-<p class="text-2xl mt-4 text-gray-300">
-       第5章 视频 5.2
-      </p>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#3498db" font-size="50" text-anchor="middle" x="150" y="180">
-        f(g(x))
-       </text>
-<text fill="#f39c12" font-size="60" text-anchor="middle" x="300" y="250">
-        →
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.3;1;0.3">
-</animate>
-</text>
-<text fill="#2ecc71" font-size="50" text-anchor="middle" x="450" y="180">
-        f(u)
-       </text>
-<text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="350">
-        u = g(x)
-       </text>
-<circle cx="150" cy="220" fill="none" r="80" stroke="#3498db" stroke-dasharray="5,5" stroke-width="3">
-</circle>
-<circle cx="450" cy="220" fill="none" r="80" stroke="#2ecc71" stroke-dasharray="5,5" stroke-width="3">
-</circle>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       方法思路
-      </h2>
-<p class="mt-4 leading-relaxed">
-       换元法就是把复杂的组合变成熟悉的形式，关键是找到内层函数及其导数。
-      </p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-<strong>
-         步骤：
-        </strong>
-        设 $u=g(x)$，求 $du=g'(x)dx$
-       </li>
-<li>
-<strong>
-         目标：
-        </strong>
-        把原式改写成 $\int f(u) du$
-       </li>
-<li>
-<strong>
-         口诀：
-        </strong>
-        先看"内层函数"，再找"外层导数"
-       </li>
-</ul>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="70">
-        换元3步骤
-       </text>
-<rect fill="rgba(52,152,219,0.2)" height="70" rx="10" stroke="#3498db" stroke-width="3" width="300" x="150" y="120">
-</rect>
-<text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="160">
-        ① 设 u=g(x)
-       </text>
-<line marker-end="url(#arrow19)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="190" y2="230">
-</line>
-<rect fill="rgba(46,204,113,0.2)" height="70" rx="10" stroke="#2ecc71" stroke-width="3" width="300" x="150" y="230">
-</rect>
-<text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="270">
-        ② du=g'(x)dx
-       </text>
-<line marker-end="url(#arrow19)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="300" y2="340">
-</line>
-<rect fill="rgba(231,76,60,0.2)" height="70" rx="10" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="340">
-</rect>
-<text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="380">
-        ③ ∫f(u)du
-       </text>
-<defs>
-<marker id="arrow19" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       凑微分示例
-      </h2>
-<p class="mt-4 leading-relaxed">
-       看到 $\cos(x^2)$ 就想到 $x^2$ 的导数 $2x$，因此可以直接凑微分。
-      </p>
-<div class="mt-6 space-y-4">
-<p>
-<strong>
-         例：
-        </strong>
-        $\int 2x\cos(x^2)dx$
-       </p>
-<p class="text-gray-400">
-        设 $u=x^2$，则 $du=2xdx$
-       </p>
-<p class="text-gray-400">
-        $=\int \cos u \, du = \sin u + C$
-       </p>
-<p class="text-gray-400">
-        $=\sin(x^2)+C$
-       </p>
-</div>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="70">
-        ∫2x·cos(x²)dx
-       </text>
-<rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="360" x="120" y="110">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="145">
-        识别：u=x², du=2xdx
-       </text>
-<line marker-end="url(#arrow20)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="170" y2="210">
-</line>
-<rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="210">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="245">
-        ∫cos(u) du
-       </text>
-<line marker-end="url(#arrow20)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="270" y2="310">
-</line>
-<rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="310">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="345">
-        sin(u) + C
-       </text>
-<line marker-end="url(#arrow20)" stroke="#2ecc71" stroke-width="3" x1="300" x2="300" y1="370" y2="410">
-</line>
-<text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="450">
-        sin(x²) + C
-       </text>
-<defs>
-<marker id="arrow20" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       第二类换元
-      </h2>
-<p class="mt-4 leading-relaxed">
-       看到 $\ln x$、$\sqrt{}$、指数等特殊结构，就试着设 $u$ 为括号内的表达式。
-      </p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        $\int \frac{1}{x\ln x}dx$：设 $u=\ln x$
-       </li>
-<li>
-        $\int \frac{1}{\sqrt{1-x^2}}dx$：设 $u=1-x^2$ 或三角换元
-       </li>
-<li>
-        $\int e^x f(e^x)dx$：设 $u=e^x$
-       </li>
-</ul>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">
-        常见换元模式
-       </text>
-<g opacity="0">
-<rect fill="rgba(52,152,219,0.2)" height="60" rx="8" stroke="#3498db" stroke-width="2" width="160" x="120" y="100">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="200" y="125">
-         1/(x ln x)
-        </text>
-<text fill="#3498db" font-size="14" text-anchor="middle" x="200" y="150">
-         → u=ln x
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(46,204,113,0.2)" height="60" rx="8" stroke="#2ecc71" stroke-width="2" width="160" x="320" y="100">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="400" y="125">
-         1/√(1-x²)
-        </text>
-<text fill="#2ecc71" font-size="14" text-anchor="middle" x="400" y="150">
-         → 三角换元
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(231,76,60,0.2)" height="60" rx="8" stroke="#e74c3c" stroke-width="2" width="160" x="220" y="200">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="225">
-         e^x·f(e^x)
-        </text>
-<text fill="#e74c3c" font-size="14" text-anchor="middle" x="300" y="250">
-         → u=e^x
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-</animate>
-</g>
-<text fill="#f39c12" font-size="24" opacity="0" text-anchor="middle" x="300" y="330">
-        关键：识别结构
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-</animate>
-</text>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       小结
-      </h2>
-<p class="mt-4 leading-relaxed">
-<strong>
-        核心技巧：
-       </strong>
-</p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        识别内层函数和外层函数
-       </li>
-<li>
-        凑出内层函数的导数
-       </li>
-<li>
-        换元后积分，最后换回
-       </li>
-<li>
-        检验：对结果求导应得原式
-       </li>
-</ul>
-<p class="mt-8 text-gray-400">
-       换元法的核心是'看一眼就知道设什么'，多做题才能培养直觉。
-      </p>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">
-        🔄 换元法
-       </text>
-<circle cx="300" cy="260" fill="rgba(241,196,15,0.1)" r="140" stroke="#f39c12" stroke-width="4">
-</circle>
-<g opacity="0">
-<rect fill="rgba(52,152,219,0.2)" height="40" rx="5" stroke="#3498db" stroke-width="2" width="120" x="160" y="180">
-</rect>
-<text fill="#ecf0f1" font-size="16" text-anchor="middle" x="220" y="205">
-         识别内层
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(46,204,113,0.2)" height="40" rx="5" stroke="#2ecc71" stroke-width="2" width="120" x="320" y="180">
-</rect>
-<text fill="#ecf0f1" font-size="16" text-anchor="middle" x="380" y="205">
-         凑微分
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(231,76,60,0.2)" height="40" rx="5" stroke="#e74c3c" stroke-width="2" width="220" x="190" y="270">
-</rect>
-<text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="295">
-         换元→积分→换回
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-</animate>
-</g>
-<text fill="#2ecc71" font-size="24" opacity="0" text-anchor="middle" x="300" y="430">
-        练习→直觉
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-</animate>
-</text>
-</svg>
-</div>
-</div>
-</div>
-</div>
-<div class="subtitle-area" id="subtitleArea">
-   欢迎学习换元积分法！点击开始讲课启动虚拟人讲师。
-  </div>
-<div class="control-bar">
-<div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     5
-    </span>
-    页
-   </div>
-<button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-<button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-<button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-<button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-</div>
-<script type="module">
-        // 播放完成标记（供OBS检测）
-        window.playbackFinished = false;
+        <!-- Page 3: Simple Integral -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>从简单积分说起</h2>
+                    <p>我们已经掌握了基本积分公式，例如：</p>
+                    <div class="math-formula">
+                        $$\\int \\cos(x) \\, dx = \\sin(x) + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="100" y="150" width="400" height="120" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"></rect>
+                        <text x="300" y="220" fill="#2ecc71" font-size="28" text-anchor="middle">∫ cos(x) dx = sin(x) + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-<script>
-   const lessonTitle="换元积分法";const subtitleScript={"1":"欢迎学习换元积分法！","2":"换元法就是把复杂的组合变成熟悉的形式，关键是找到内层函数及其导数。","3":"看到 cos(x²) 就想到 x² 的导数 2x，因此可以直接凑微分。","4":"看到 ln x、√、指数等特殊结构，就试着设 u 为括号内的表达式。","5":"换元法的核心是'看一眼就知道设什么'，多做题才能培养直觉。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;});avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',                                    // 数学讲解 AppID
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',             // 数学讲解 API密钥
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',       // 数学讲解 API密钥
-                    sceneId: '237415046114840576',                       // 数学讲解 场景ID
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}async function startAutoPlay(){if(!avatarPlatform||!isConnected){await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}isAutoPlaying=true;document.getElementById('autoPlayBtn').disabled=true;for(let i=currentSlide;i<totalSlides;i++){showSlide(i);speakContent(i+1);const duration=(subtitleScript[i+1].length/5)*1000+2000;await new Promise(resolve=>setTimeout(resolve,duration));}isAutoPlaying=false;document.getElementById('autoPlayBtn').disabled=false;}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
-        setTimeout(() => {
-            console.log('🚀 自动启动播放...');
-            startAutoPlay();
-        }, 3000);
-  </script>
+        <!-- Page 4: Simple Integral Explanation -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基本积分的特点</h2>
+                    <p>这类积分可以直接查表得到结果。</p>
+                    <p style="margin-top: 1.5rem; color: #2ecc71;">被积函数结构简单，没有复合关系。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text x="300" y="220" fill="#f39c12" font-size="24" text-anchor="middle">✓ 基本积分公式</text>
+                        <text x="300" y="280" fill="#2ecc71" font-size="22" text-anchor="middle">直接查表即可</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Complex Integral Problem -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>遇到复杂函数怎么办？</h2>
+                    <p>如果被积函数变得复杂，比如出现复合函数：</p>
+                     <div class="math-formula" style="border-color:#e74c3c;">
+                        $$\\int \\cos(x^2) \\cdot 2x \\, dx = ?$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="100" y="150" width="400" height="120" rx="10" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"></rect>
+                        <text x="300" y="220" fill="#e74c3c" font-size="26" text-anchor="middle">∫ cos(x²)·2x dx = ?</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: Problem Analysis -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>问题分析</h2>
+                    <p>基本积分表无法直接解决这个问题。</p>
+                    <p style="color: #f39c12; margin-top: 1.5rem;">我们需要一种更强大的技术！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text x="300" y="220" fill="#f39c12" font-size="24" text-anchor="middle">❌ 基本公式不够用</text>
+                        <text x="300" y="280" fill="#e74c3c" font-size="22" text-anchor="middle">需要新方法</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Chain Rule Review -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>回顾：链式法则</h2>
+                    <p>换元法的理论基础是求导的<strong>链式法则</strong>。</p>
+                    <h3>链式法则公式</h3>
+                    <div class="math-formula">
+                        $$[F(g(x))]' = F'(g(x)) \\cdot g'(x)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">链式法则</text>
+                        <rect x="100" y="150" width="400" height="100" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="210">[F(g(x))]' = F'(g(x))·g'(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: Chain Rule Explanation -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>链式法则的含义</h2>
+                    <p>复合函数的导数等于：</p>
+                    <p style="margin-top: 1rem;">外层函数的导数 × 内层函数的导数</p>
+                    <p style="color: #2ecc71; margin-top: 1.5rem;">这是求导的基本规则</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="200">外层导数</text>
+                        <text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="260">×</text>
+                        <text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="320">内层导数</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 9: Inverse of Chain Rule -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>换元法：链式法则的逆运算</h2>
+                    <p>两边同时积分，我们就得到了换元法：</p>
+                    <div class="math-formula">
+                        $$\\int F'(g(x)) \\cdot g'(x) \\, dx = F(g(x)) + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">链式法则 ↔ 换元法</text>
+                        <rect x="100" y="120" width="400" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="165">[F(g(x))]' = F'(g(x))·g'(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 10: Substitution Concept -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>换元法的核心思想</h2>
+                    <p style="color: #f39c12; font-size: 22px;">换元法就是链式法则的逆过程！</p>
+                    <p style="margin-top: 1.5rem;">通过变量替换简化积分</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="200">⇅</text>
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="170">求导</text>
+                        <text fill="#f39c12" font-size="18" text-anchor="middle" x="300" y="230">积分</text>
+                        <rect x="100" y="280" width="400" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="10"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="325">∫ F'(g(x))·g'(x) dx = F(g(x))+C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 11: First Substitution Method Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第一类换元法</h2>
+                    <p>也称为<strong>凑微分法</strong>，是最常用的换元技巧。</p>
+                </div>
+                 <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="180">第一类换元法</text>
+                        <text fill="#2ecc71" font-size="28" text-anchor="middle" x="300" y="280">凑微分法</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 12: First Method Core Idea -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>凑微分法的核心思想</h2>
+                    <p>在被积函数中找到"内层函数"和它的"微分"。</p>
+                    <p style="color: #f39c12; margin-top: 1.5rem;">关键词：<strong>凑</strong></p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">找到 u = g(x)</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="280">凑出 du = g'(x)dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: First Substitution Theorem -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第一类换元法定理</h2>
+                    <p>设 $f(u)$ 具有原函数 $F(u)$， $u=g(x)$ 可导，则：</p>
+                    <div class="math-formula">
+                         $$\\int f(g(x))g'(x) \\, dx = \\int f(u) \\, du$$
+                    </div>
+                </div>
+                 <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">第一类换元法定理</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">∫ f(<tspan fill="#e74c3c">g(x)</tspan>) · <tspan fill="#3498db">g'(x)dx</tspan></text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 14: Theorem Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定理结果</h2>
+                    <div class="math-formula">
+                         $$= F(u) + C = F(g(x)) + C$$
+                    </div>
+                    <p style="margin-top: 1.5rem;">通过换元，复杂积分变简单了</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <text fill="#e74c3c" font-size="18" x="180" y="160">令 u = g(x)</text>
+                        <text fill="#3498db" font-size="18" x="420" y="160">du = g'(x)dx</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="240">∫ f(<tspan fill="#e74c3c">u</tspan>) <tspan fill="#3498db">du</tspan></text>
+                        <defs><marker id="arrow-sub" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 15: Example Introduction -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>例题：凑微分法</h2>
+                    <p>我们通过一个具体例子来演示解题步骤：</p>
+                    <div class="math-formula" style="border-color:#f39c12;">
+                        $$\\int 2x\\cos(x^2) \\, dx$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">例题</text>
+                        <rect x="100" y="180" width="400" height="100" rx="10" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"></rect>
+                        <text x="300" y="240" fill="#ecf0f1" font-size="26" text-anchor="middle">∫ 2x·cos(x²) dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 16: Four Steps Preview -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>解题四步法</h2>
+                    <p>接下来我们将分四步完成这个积分：</p>
+                    <p style="margin-top: 1rem;">① 观察与设U</p>
+                    <p>② 求微分dU</p>
+                    <p>③ 换元积分</p>
+                    <p>④ 回代</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text x="300" y="200" fill="#2ecc71" font-size="28" text-anchor="middle">四步解题法</text>
+                        <text x="300" y="280" fill="#f39c12" font-size="22" text-anchor="middle">系统化解题</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 17: Step 1 - Set U -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第一步：观察与设U</h2>
+                    <p>观察被积函数 $\\int 2x\\cos(x^2) \\, dx$</p>
+                    <p style="margin-top: 1rem;">我们发现 $x^2$ 是复合在 $\\cos$ 函数内部的"内层函数"。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">Step 1: 观察</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">∫ 2x·cos(<tspan fill="#e74c3c">x²</tspan>)dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 18: Step 1 - Set U Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>设定变量</h2>
+                    <div class="math-formula" style="border-color:#e74c3c;">
+                        $$u = x^2$$
+                    </div>
+                    <p style="margin-top: 1.5rem;">将内层函数设为新变量u</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="150" y="220" width="300" height="80" rx="10" fill="rgba(231,76,60,0.2)" stroke="#e74c3c"></rect>
+                        <text x="300" y="270" fill="#ecf0f1" font-size="24" text-anchor="middle">u = x² (内层函数)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 19: Step 2 - Find dU -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第二步：求微分dU</h2>
+                    <p>对我们设的 $u = x^2$ 求微分：</p>
+                    <div class="math-formula" style="border-color:#3498db;">
+                        $$du = (x^2)' \\, dx = 2x \\, dx$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">Step 2: 求 du</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="180">u = x²</text>
+                        <line x1="300" y1="210" x2="300" y2="280" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 20: Step 2 - Perfect Match -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>完美匹配！</h2>
+                    <p style="color: #2ecc71; font-size: 22px;">太好了！这个 $2x \\, dx$ 部分正好存在于原被积函数中！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="150" y="180" width="300" height="80" rx="10" fill="rgba(52,152,219,0.2)" stroke="#3498db"></rect>
+                        <text x="300" y="230" fill="#ecf0f1" font-size="24" text-anchor="middle">du = 2x dx</text>
+                        <text x="300" y="350" fill="#2ecc71" font-size="22" text-anchor="middle">✓ 完美匹配</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 21: Step 3 - Substitute -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第三步：换元积分</h2>
+                    <p>将被积函数中的 $x$ 全部换成 $u$：</p>
+                    <div class="math-formula">
+                        $$\\int \\cos(\\underbrace{x^2}_{u}) \\underbrace{2x \\, dx}_{du}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">Step 3: 换元</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">∫ cos(x²)·2x dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 22: Step 3 - Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>换元结果</h2>
+                    <div class="math-formula" style="border-color:#9b59b6;">
+                        $$= \\int \\cos(u) \\, du$$
+                    </div>
+                    <p style="margin-top: 1.5rem;">积分变简单了！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="150" y="220" width="300" height="80" rx="10" fill="rgba(155,89,182,0.2)" stroke="#9b59b6"></rect>
+                        <text x="300" y="270" fill="#ecf0f1" font-size="24" text-anchor="middle">∫ cos(u) du</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 23: Step 3 - Integrate -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>积分计算</h2>
+                    <p>现在积分变成了基本形式：</p>
+                    <div class="math-formula">
+                        $$\\int \\cos(u) \\, du$$
+                    </div>
+                    <p style="margin-top: 1rem;">这是基本积分公式</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">积分计算</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">∫ cos(u) du</text>
+                        <line x1="300" y1="230" x2="300" y2="300" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 24: Step 3 - Result Formula -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>积分结果</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$\\sin(u) + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="150" y="180" width="300" height="80" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="230" fill="#2ecc71" font-size="26" text-anchor="middle">sin(u) + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 25: Step 4 - Back Substitute -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第四步：回代</h2>
+                    <p>积分完成后，必须将 $u$ 换回原来的 $x$ 表达式。</p>
+                    <p style="margin-top: 1.5rem;">因为 $u = x^2$，所以：</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">Step 4: 回代</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">sin(u) + C</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="260">u = x²</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 26: Final Answer -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>最终答案</h2>
+                     <div class="math-formula" style="border-color:#2ecc71;">
+                        $$\\sin(u) + C = \\sin(x^2) + C$$
+                    </div>
+                    <p style="color: #f39c12; margin-top: 1.5rem; font-size: 22px;"><strong>完成！</strong></p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="180" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="100" y="210" width="400" height="100" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"></rect>
+                        <text x="300" y="270" fill="#2ecc71" font-size="28" text-anchor="middle">sin(x²) + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 27: Common Pattern 1 Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>常见凑微分形式</h2>
+                    <p>熟记这些形式，可以极大地提高解题速度。</p>
+                    <p style="margin-top: 1.5rem; color: #f39c12;">我们来看三种最常见的形式</p>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="200">常见形式</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="280">提高解题速度</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 28: Common Pattern 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>常见形式（一）：分式型</h2>
+                    <div class="math-formula">
+                        $$\\int \\frac{g'(x)}{g(x)} \\, dx$$
+                    </div>
+                    <p style="margin-top: 1rem;">设 $u=g(x)$，则 $du = g'(x)dx$</p>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">分式型</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="8" stroke="#3498db" stroke-width="2" width="400" x="100" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="225">∫ g'(x)/g(x) dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 29: Common Pattern 1 Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>分式型结果</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$= \\int \\frac{1}{u} \\, du = \\ln|u| + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="8" stroke="#2ecc71" stroke-width="2" width="400" x="100" y="220"></rect>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="265">ln|u| + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 30: Common Pattern 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>常见形式（二）：指数型</h2>
+                    <div class="math-formula">
+                        $$\\int e^{g(x)} g'(x) \\, dx$$
+                    </div>
+                    <p style="margin-top: 1rem;">设 $u=g(x)$，则 $du = g'(x)dx$</p>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">指数型</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="8" stroke="#3498db" stroke-width="2" width="400" x="100" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="225">∫ e^(g(x))·g'(x) dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 31: Common Pattern 2 Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>指数型结果</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$= \\int e^u \\, du = e^u + C = e^{g(x)} + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="8" stroke="#2ecc71" stroke-width="2" width="400" x="100" y="220"></rect>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="265">e^(g(x)) + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 32: Common Pattern 3 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>常见形式（三）：幂函数型</h2>
+                    <div class="math-formula">
+                        $$\\int [g(x)]^n g'(x) \\, dx$$
+                    </div>
+                    <p style="margin-top: 1rem;">设 $u=g(x)$，则 $du = g'(x)dx$</p>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">幂函数型</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="8" stroke="#3498db" stroke-width="2" width="400" x="100" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="225">∫ [g(x)]^n·g'(x) dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 33: Common Pattern 3 Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>幂函数型结果</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$= \\int u^n \\, du = \\frac{u^{n+1}}{n+1} + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="8" stroke="#2ecc71" stroke-width="2" width="400" x="100" y="220"></rect>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="265">[g(x)]^(n+1)/(n+1) + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 34: Key Skill -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>培养"火眼金睛"</h2>
+                    <p>凑微分法的关键能力：</p>
+                    <p style="color: #f39c12; font-size: 22px; margin-top: 1.5rem;">一眼看出函数与其导数的关系</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="150">核心能力</text>
+                        <circle cx="300" cy="300" r="100" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"></circle>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="310">火眼金睛</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 35: Practice Makes Perfect -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>熟能生巧</h2>
+                    <p>这需要通过大量练习来培养直觉。</p>
+                    <p style="margin-top: 1.5rem; color: #2ecc71;">识别 g(x) 和 g'(x) 的能力</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="250">练习 → 直觉</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 36: Second Substitution Method Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第二类换元法</h2>
+                    <p>有时候，被积函数中没有明显的"内函数及其导数"结构。</p>
+                </div>
+                 <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="200">第二类换元法</text>
+                        <text fill="#e74c3c" font-size="26" text-anchor="middle" x="300" y="300">凑不出导数？</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 37: When to Use Second Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>何时使用第二类换元法</h2>
+                    <p>特别是<strong>带有根式</strong>的情况。</p>
+                    <p style="color: #f39c12; margin-top: 1.5rem;">此时需要采用另一种策略！</p>
+                </div>
+                 <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="200">含有根式？</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="280">用第二类换元法！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 38: Second Substitution Strategy -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第二类换元法策略</h2>
+                    <p>通过一个更复杂的变量代换 $x = \\phi(t)$</p>
+                    <p style="color: #f39c12; margin-top: 1.5rem;">将<strong>原函数彻底简化</strong></p>
+                </div>
+                 <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="180">策略</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="260">x = φ(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 39: Second Method Theorem -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第二类换元法定理</h2>
+                    <div class="math-formula">
+                         $$\\int f(x) \\, dx = \\int f(\\phi(t)) \\phi'(t) \\, dt$$
+                    </div>
+                </div>
+                 <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">定理</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">∫ <tspan fill="#e74c3c">f(x)</tspan> <tspan fill="#3498db">dx</tspan></text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 40: Second Method Transformation -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>变换过程</h2>
+                    <p>令 $x = \\phi(t)$，则 $dx = \\phi'(t)dt$</p>
+                </div>
+                <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <text fill="#e74c3c" font-size="18" x="180" y="160">令 x = φ(t)</text>
+                        <text fill="#3498db" font-size="18" x="420" y="160">dx = φ'(t)dt</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="240">∫ <tspan fill="#e74c3c">f(φ(t))</tspan> · <tspan fill="#3498db">φ'(t)dt</tspan></text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 41: Goal of Second Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第二类换元法的目标</h2>
+                    <p>通过变量代换，达到以下目的：</p>
+                    <p style="margin-top: 1.5rem;">✓ 消去根号</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="150">目标</text>
+                        <rect x="100" y="200" width="400" height="60" rx="10" fill="rgba(231,76,60,0.2)" stroke="#e74c3c"></rect>
+                        <text x="300" y="235" fill="#ecf0f1" font-size="20" text-anchor="middle">复杂函数 (含根式)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 42: Goal Details -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>具体目标</h2>
+                    <p>✓ 简化函数结构</p>
+                    <p style="margin-top: 1rem;">✓ 转化为基本积分形式</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="150" x2="300" y2="220" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="100" y="250" width="400" height="60" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="285" fill="#2ecc71" font-size="20" text-anchor="middle">简单函数 (易积分)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 43: Trigonometric Substitution Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>核心技巧：三角换元</h2>
+                    <p>第二类换元法最经典的应用。</p>
+                    <p style="margin-top: 1.5rem;">利用三角函数平方关系来<strong>消去根号</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                         <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="180">三角换元</text>
+                        <text fill="#2ecc71" font-size="26" text-anchor="middle" x="300" y="280">消去根号的利器</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 44: Trig Identity -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基本恒等式</h2>
+                    <div class="math-formula">
+                        $$\\sin^2(t) + \\cos^2(t) = 1$$
+                    </div>
+                    <p style="margin-top: 1.5rem;">这是三角换元的理论基础</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <circle cx="300" cy="250" r="80" fill="none" stroke="#3498db" stroke-width="3"></circle>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="260">sin²+cos²=1</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 45: Trig Sub Type 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>三角换元类型（一）</h2>
+                    <p>若被积函数含 $\\sqrt{a^2 - x^2}$：</p>
+                    <div class="math-formula" style="border-color:#3498db;">
+                        $$x = a \\sin(t)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                         <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">类型 1</text>
+                        <rect x="100" y="180" width="400" height="80" rx="10" fill="rgba(52,152,219,0.2)" stroke="#3498db"></rect>
+                        <text x="300" y="225" fill="#ecf0f1" font-size="22" text-anchor="middle">含 √(a²-x²)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 46: Trig Sub Type 1 Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>类型一结果</h2>
+                    <p>则：$\\sqrt{a^2 - x^2} = a\\cos(t)$</p>
+                    <p style="margin-top: 1.5rem; color: #2ecc71;">根号被消去了！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="100" y="220" width="400" height="80" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="265" fill="#2ecc71" font-size="22" text-anchor="middle">x = a sin(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 47: Trig Sub Type 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>三角换元类型（二）</h2>
+                    <p>若被积函数含 $\\sqrt{a^2 + x^2}$：</p>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$x = a \\tan(t)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                         <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">类型 2</text>
+                        <rect x="100" y="180" width="400" height="80" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="225" fill="#ecf0f1" font-size="22" text-anchor="middle">含 √(a²+x²)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 48: Trig Sub Type 2 Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>类型二结果</h2>
+                    <p>则：$\\sqrt{a^2 + x^2} = a\\sec(t)$</p>
+                    <p style="margin-top: 1.5rem; color: #2ecc71;">根号被消去了！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="100" y="220" width="400" height="80" rx="10" fill="rgba(52,152,219,0.2)" stroke="#3498db"></rect>
+                        <text x="300" y="265" fill="#3498db" font-size="22" text-anchor="middle">x = a tan(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 49: Trig Sub Type 3 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>三角换元类型（三）</h2>
+                    <p>若被积函数含 $\\sqrt{x^2 - a^2}$：</p>
+                    <div class="math-formula" style="border-color:#e74c3c;">
+                        $$x = a \\sec(t)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                         <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">类型 3</text>
+                        <rect x="100" y="180" width="400" height="80" rx="10" fill="rgba(231,76,60,0.2)" stroke="#e74c3c"></rect>
+                        <text x="300" y="225" fill="#ecf0f1" font-size="22" text-anchor="middle">含 √(x²-a²)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 50: Trig Sub Type 3 Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>类型三结果</h2>
+                    <p>则：$\\sqrt{x^2 - a^2} = a\\tan(t)$</p>
+                    <p style="margin-top: 1.5rem; color: #2ecc71;">根号被消去了！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="190" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="100" y="220" width="400" height="80" rx="10" fill="rgba(155,89,182,0.2)" stroke="#9b59b6"></rect>
+                        <text x="300" y="265" fill="#9b59b6" font-size="22" text-anchor="middle">x = a sec(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 51: Trig Sub Example Intro -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>三角换元示例</h2>
+                    <p>求解积分：</p>
+                    <div class="math-formula" style="border-color:#f39c12;">
+                        $$\\int \\frac{1}{\\sqrt{1-x^2}} \\, dx$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="100">例题</text>
+                        <rect x="100" y="200" width="400" height="100" rx="10" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3"></rect>
+                        <text x="300" y="260" fill="#ecf0f1" font-size="24" text-anchor="middle">∫ 1/√(1-x²) dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 52: Example Note -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>经典问题</h2>
+                    <p>这是一个经典的三角换元问题。</p>
+                    <p style="margin-top: 1.5rem; color: #f39c12;">让我们一步步来解决它</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="250">经典例题</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 53: Trig Sub Example Step 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>识别类型</h2>
+                    <p>观察积分 $\\int \\frac{1}{\\sqrt{1-x^2}} \\, dx$</p>
+                    <p style="margin-top: 1.5rem;">含有 $\\sqrt{a^2-x^2}$ 结构，其中 $a=1$。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="100">识别类型</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">√(1-x²)</text>
+                        <line x1="300" y1="230" x2="300" y2="290" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 54: Type Recognition -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>确定换元方式</h2>
+                    <p style="color: #f39c12; font-size: 22px;">应该使用 $x = \\sin(t)$ 换元。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="180">√(a²-x²) 型</text>
+                        <line x1="300" y1="200" x2="300" y2="260" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="150" y="280" width="300" height="70" rx="10" fill="rgba(52,152,219,0.2)" stroke="#3498db"></rect>
+                        <text x="300" y="320" fill="#3498db" font-size="22" text-anchor="middle">x = sin(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 55: Trig Sub Example Step 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>换元</h2>
+                    <p>令 $x = \\sin(t)$，则：</p>
+                    <div class="math-formula">
+                        $$dx = \\cos(t) \\, dt$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">换元</text>
+                        <rect x="100" y="150" width="400" height="70" rx="10" fill="rgba(52,152,219,0.2)" stroke="#3498db"></rect>
+                        <text x="300" y="190" fill="#ecf0f1" font-size="20" text-anchor="middle">x = sin(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 56: Differential Calculation -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>求微分</h2>
+                    <div class="math-formula">
+                        $$dx = \\cos(t) \\, dt$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="100" y="180" width="400" height="70" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="220" fill="#ecf0f1" font-size="20" text-anchor="middle">dx = cos(t) dt</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 57: Radical Simplification -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>简化根式</h2>
+                    <div class="math-formula">
+                        $$\\sqrt{1-x^2} = \\sqrt{1-\\sin^2(t)} = \\cos(t)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="100" y="180" width="400" height="70" rx="10" fill="rgba(155,89,182,0.2)" stroke="#9b59b6"></rect>
+                        <text x="300" y="220" fill="#ecf0f1" font-size="20" text-anchor="middle">√(1-x²) = cos(t)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 58: Trig Sub Example Step 3 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>代入与简化</h2>
+                    <p>将换元结果代入原积分：</p>
+                    <div class="math-formula">
+                        $$\\int \\frac{\\cos(t)}{\\sqrt{1-\\sin^2(t)}} \\, dt$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">代入</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="200">∫ cos(t)/√(1-sin²t) dt</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 59: Simplification Process -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>化简</h2>
+                    <div class="math-formula">
+                        $$= \\int \\frac{\\cos(t)}{\\cos(t)} \\, dt = \\int 1 \\, dt$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="120" x2="300" y2="180" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="220">∫ cos(t)/cos(t) dt</text>
+                        <line x1="300" y1="250" x2="300" y2="310" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 60: Simplified Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>简化结果</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$\\int 1 \\, dt$$
+                    </div>
+                    <p style="margin-top: 1.5rem; color: #2ecc71;">积分变得非常简单！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="200" y="180" width="200" height="60" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="215" fill="#2ecc71" font-size="22" text-anchor="middle">∫ 1 dt</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 61: Trig Sub Example Step 4 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>积分</h2>
+                    <p>现在积分变得非常简单：</p>
+                    <div class="math-formula">
+                        $$\\int 1 \\, dt = t + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="100">积分</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">∫ 1 dt</text>
+                        <line x1="300" y1="230" x2="300" y2="300" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 62: Integration Result -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>积分结果</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$t + C$$
+                    </div>
+                    <p style="margin-top: 1.5rem;">接下来需要回代</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <rect x="150" y="180" width="300" height="80" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"></rect>
+                        <text x="300" y="230" fill="#2ecc71" font-size="26" text-anchor="middle">t + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 63: Trig Sub Example Step 5 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>回代</h2>
+                    <p>因为 $x = \\sin(t)$，所以：</p>
+                    <div class="math-formula">
+                        $$t = \\arcsin(x)$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">回代</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="180">t + C</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="240">x = sin(t) ⇒ t = arcsin(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 64: Final Answer Trig Example -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>最终答案</h2>
+                    <div class="math-formula" style="border-color:#2ecc71;">
+                        $$\\int \\frac{1}{\\sqrt{1-x^2}} \\, dx = \\arcsin(x) + C$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="300" y1="100" x2="300" y2="160" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-sub)"></line>
+                        <rect x="100" y="190" width="400" height="100" rx="10" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"></rect>
+                        <text x="300" y="250" fill="#2ecc71" font-size="26" text-anchor="middle">arcsin(x) + C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 65: Summary First Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结：第一类换元法</h2>
+                    <p><strong>凑微分法</strong>是首选和最常用的方法。</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="150">第一类换元法</text>
+                        <rect x="100" y="200" width="400" height="150" rx="10" fill="rgba(52,152,219,0.2)" stroke="#3498db"></rect>
+                        <text x="300" y="250" fill="#3498db" font-size="24" text-anchor="middle">凑微分法</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 66: First Method Key Point -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第一类换元法要点</h2>
+                    <p>当你能一眼看出被积函数中包含 $g(x)$ 和它的导数 $g'(x)$ 时，就用它。</p>
+                    <p style="color: #f39c12; margin-top: 1.5rem;">关键：识别函数与导数的关系</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text x="300" y="200" fill="#ecf0f1" font-size="18" text-anchor="middle">看到 g(x) 和 g'(x)</text>
+                        <text x="300" y="250" fill="#ecf0f1" font-size="18" text-anchor="middle">"凑"出微分形式</text>
+                        <text x="300" y="300" fill="#2ecc71" font-size="18" text-anchor="middle">最常用！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 67: Summary Second Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结：第二类换元法</h2>
+                    <p>当被积函数结构复杂，特别是含有难以处理的<strong>根式</strong>时。</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="150">第二类换元法</text>
+                        <rect x="100" y="200" width="400" height="150" rx="10" fill="rgba(231,76,60,0.2)" stroke="#e74c3c"></rect>
+                        <text x="300" y="250" fill="#e74c3c" font-size="24" text-anchor="middle">三角换元</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 68: Second Method Key Point -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第二类换元法要点</h2>
+                    <p>考虑使用第二类换元法（如三角换元）来简化结构。</p>
+                    <p style="color: #f39c12; margin-top: 1.5rem;">关键：消去根号，简化结构</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text x="300" y="200" fill="#ecf0f1" font-size="18" text-anchor="middle">看到 √根式</text>
+                        <text x="300" y="250" fill="#ecf0f1" font-size="18" text-anchor="middle">"换"掉复杂结构</text>
+                        <text x="300" y="300" fill="#2ecc71" font-size="18" text-anchor="middle">处理根式的利器！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 69: Core Ability -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>核心能力</h2>
+                    <p style="font-size: 22px; color: #f39c12;">换元法的精髓在于通过大量练习，培养出对函数结构的"直觉"。</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="150">核心能力</text>
+                        <circle cx="300" cy="280" r="120" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="4"></circle>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="290">数学直觉</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 70: Three Abilities -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>三大能力</h2>
+                    <p style="margin-top: 1rem;">✓ 识别函数模式</p>
+                    <p style="margin-top: 1rem;">✓ 快速判断方法</p>
+                    <p style="margin-top: 1rem;">✓ 熟练运用技巧</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="250">练习 → 直觉</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 71: How to Choose Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>如何选择换元法？</h2>
+                    <p style="margin-top: 1.5rem;">✓ 看到导数关系 → 用凑微分</p>
+                    <p style="margin-top: 1rem;">✓ 看到复杂根式 → 用三角换元</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="150">换元策略</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 72: Strategy Comparison -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>策略对比</h2>
+                    <p><strong>第一类（凑）：</strong>看到 g(x) 和 g'(x)，"凑"出来</p>
+                    <p style="margin-top: 1rem;"><strong>第二类（换）：</strong>看到 √根式，"换"掉它</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+    <script type="module">
+        // Placeholder for SDK import
+        // window.playbackFinished = false; try { const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = {
+            "1": "欢迎学习不定积分的核心技巧：换元积分法。",
+            "2": "我们先从简单的积分说起，比如余弦函数的积分。",
+            "3": "但当函数变复杂时，比如出现复合函数，基本公式就不够用了。",
+            "4": "换元法的理论基础是我们熟悉的链式法则。",
+            "5": "换元法正是链式法则的逆运算，这是它的核心思想。",
+            "6": "第一类换元法，也叫凑微分法，是最常用的技巧。",
+            "7": "让我们看看第一类换元法的定理形式。",
+            "8": "现在通过一个具体例子来演示凑微分法。",
+            "9": "第一步：观察函数结构，找到内层函数并设为u。",
+            "10": "第二步：对u求微分，看能否在原函数中找到这个微分。",
+            "11": "第三步：将原积分中的变量全部换成u。",
+            "12": "换元后的积分变成了基本形式，可以直接计算。",
+            "13": "第四步：积分完成后，必须将u回代成原变量x。",
+            "14": "这是第一种常见的凑微分形式：分式型。",
+            "15": "第二种常见形式：指数型，e的指数是复合函数。",
+            "16": "第三种常见形式：幂函数型。",
+            "17": "凑微分法的关键是培养识别函数与导数关系的直觉。",
+            "18": "当凑不出导数关系时，我们需要第二类换元法。",
+            "19": "第二类换元法通过更复杂的代换来简化函数结构。",
+            "20": "第二类换元法的目标是消去根号，简化被积函数。",
+            "21": "三角换元是第二类换元法最经典的应用。",
+            "22": "第一种三角换元：含根号a方减x方时，令x等于a乘以sint。",
+            "23": "第二种三角换元：含根号a方加x方时，令x等于a乘以tant。",
+            "24": "第三种三角换元：含根号x方减a方时，令x等于a乘以sect。",
+            "25": "让我们通过一个例子来演示三角换元的完整过程。",
+            "26": "首先识别类型，这是根号1减x方，属于a方减x方型。",
+            "27": "令x等于sint，求出dx和根式的表达式。",
+            "28": "将换元结果代入原积分，根式被完美消去。",
+            "29": "积分变得非常简单，结果是t加C。",
+            "30": "最后回代，因为x等于sint，所以t等于arcsinx。",
+            "31": "总结第一类换元法：看到函数和导数关系就用凑微分。",
+            "32": "总结第二类换元法：看到复杂根式就用三角换元。",
+            "33": "换元法的精髓在于通过练习培养数学直觉。",
+            "34": "记住：看到导数关系用凑微分，看到根式用三角换元。多练习，熟能生巧！"
+        };
+        const speechScript = {
+            "1": "同学们好！今天我们来学习不定积分中最核心、最强大的一个技巧——换元积分法。掌握了它，大部分积分难题都能迎刃而解。",
+            "2": "我们先从简单的积分说起。对于像余弦函数这样的基本函数，我们可以直接用公式得到它的积分是正弦函数。",
+            "3": "但是，当函数变复杂了，比如变成了余弦x平方乘以2x，基本积分公式就无能为力了。这个时候，我们就需要更强大的技术。",
+            "4": "换元法的理论基础，其实是我们非常熟悉的求导链式法则。链式法则告诉我们如何对复合函数求导。",
+            "5": "如果我们对链式法则两边同时积分，就得到了换元法的基本形态。换元法就是链式法则的逆运算！",
+            "6": "我们先来看第一类换元法，它有个更通俗的名字叫凑微分法。核心思想是在被积函数中找到内层函数和它的微分。",
+            "7": "第一类换元法的定理告诉我们，如果能找到g(x)和它的导数g'(x)，就可以通过换元u等于g(x)来简化积分。",
+            "8": "现在让我们通过一个具体例子来演示凑微分法的标准解题步骤。我们要计算2x乘以余弦x平方的积分。",
+            "9": "第一步是观察函数结构。我们发现x平方是被余弦函数包裹的内层函数，所以我们设u等于x平方。",
+            "10": "第二步，对u求微分。u等于x平方，所以du等于2xdx。太好了！这个2xdx正好存在于原被积函数中！",
+            "11": "第三步是换元。我们把原积分中的x平方换成u，把2xdx换成du，积分就变成了对余弦u积分。",
+            "12": "换元后的积分是基本形式，我们可以直接计算。余弦u的积分等于正弦u加C。",
+            "13": "第四步非常关键，就是回代。积分完成后，一定要把u换回到x的表达式。因为u等于x平方，所以最终答案是正弦x平方加C。",
+            "14": "让我们来看第一种常见的凑微分形式。当分子是g'(x)，分母是g(x)时，设u等于g(x)，积分结果是ln绝对值u加C。",
+            "15": "第二种常见形式是指数型。当e的指数是g(x)，旁边又乘以g'(x)时，设u等于g(x)，积分结果是e的u次方加C。",
+            "16": "第三种常见形式是幂函数型。当g(x)的n次方乘以g'(x)时，设u等于g(x)，积分结果是u的n加1次方除以n加1。",
+            "17": "凑微分法的关键能力，是培养出一眼识别函数与其导数关系的直觉。这需要通过大量练习来实现。",
+            "18": "然而，有时候被积函数虽然复杂，却凑不出导数形式，尤其是带根号的时候。这时，我们就需要第二类换元法。",
+            "19": "第二类换元法的思路是：通过一个更复杂的代换x等于φ(t)，来强制简化被积函数的结构。",
+            "20": "第二类换元法的目标很明确：消去根号，简化函数结构，转化为基本积分形式。",
+            "21": "第二类换元法最璀璨的应用，就是三角换元。它利用正弦平方加余弦平方等于1这样的恒等式，来完美地消掉积分中的根号。",
+            "22": "第一种三角换元：当被积函数含有根号a方减x方时，我们令x等于a乘以sint，这样根式就变成了a乘以cost。",
+            "23": "第二种三角换元：当被积函数含有根号a方加x方时，我们令x等于a乘以tant，根式就变成了a乘以sect。",
+            "24": "第三种三角换元：当被积函数含有根号x方减a方时，我们令x等于a乘以sect，根式就变成了a乘以tant。",
+            "25": "现在让我们来看一个经典的三角换元例子。我们要计算根号1减x平方分之一的积分。",
+            "26": "首先识别类型。这个积分含有根号1减x平方，是典型的a方减x方结构，其中a等于1。所以我们应该令x等于sint。",
+            "27": "令x等于sint后，dx就等于cost乘以dt。同时，根号1减x平方就等于根号1减sin平方t，也就是cost。",
+            "28": "现在我们把换元结果代入原积分。分子是cost，分母的根式也是cost，它们约分后，积分就变成了对1积分。",
+            "29": "对1积分非常简单，结果就是t加C。",
+            "30": "最后一步是回代。因为x等于sint，所以t就等于arcsinx。最终答案是arcsinx加C。",
+            "31": "让我们总结一下第一类换元法。凑微分法是首选和最常用的方法。当你能敏锐地发现被积函数中包含某个函数和它的导数时，就用凑微分法。",
+            "32": "第二类换元法的使用场景是：当被积函数结构复杂，特别是含有难以处理的根式时，就考虑使用三角换元来简化结构。",
+            "33": "换元法的精髓在于通过大量练习，培养出对函数结构的数学直觉。这种直觉能让你快速判断该用哪种方法。",
+            "34": "最后总结：看到函数和导数关系就用凑微分，看到复杂根式就用三角换元。记住，熟能生巧，多练习才能培养出数学直觉。谢谢大家！"
+        };
+        const actionMap = {
+            "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O",
+            "5": "A_LH_introduced_O", "6": "A_RH_point_O", "7": "A_LH_introduced_O", "8": "A_RH_point_O",
+            "9": "A_LH_introduced_O", "10": "A_RH_point_O", "11": "A_LH_introduced_O", "12": "A_RH_point_O",
+            "13": "A_LH_introduced_O", "14": "A_RH_point_O", "15": "A_LH_introduced_O", "16": "A_RH_point_O",
+            "17": "A_LH_introduced_O", "18": "A_RH_point_O", "19": "A_LH_introduced_O", "20": "A_RH_point_O",
+            "21": "A_LH_introduced_O", "22": "A_RH_point_O", "23": "A_LH_introduced_O", "24": "A_RH_point_O",
+            "25": "A_LH_introduced_O", "26": "A_RH_point_O", "27": "A_LH_introduced_O", "28": "A_RH_point_O",
+            "29": "A_LH_introduced_O", "30": "A_RH_point_O", "31": "A_LH_introduced_O", "32": "A_RH_point_O",
+            "33": "A_LH_introduced_O", "34": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 34;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+        let speechFinishedResolve = null;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error('MathJax 渲染失败:', err));
+            }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; }
+        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
+
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接或未开始讲课'); return; }
+            const content = speechScript[slideNum];
+            if (!content) return;
+            try {
+                const action = actionMap[slideNum];
+                if (action) { await avatarPlatform.writeCmd("action", action); }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) { console.error('❌ 讲解失败:', error); }
+        }
+
+        function getSlideDuration(slideNum) { const speech = speechScript[slideNum]; if (!speech) return 5000; return speech.length * 120 + 2000; }
+        function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (window.AvatarPlatform) { resolve(); return; }
+                const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000);
+                window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); });
+            });
+        }
+
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+            try {
+                updateStatus('等待SDK...', 'connecting');
+                // await waitForSDK(); // Enable this if you have the SDK locally
+                 if(typeof AvatarPlatform === 'undefined') {
+                    console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
+                    updateStatus('SDK未加载', 'error');
+                    startBtn.textContent = '❌ SDK未加载';
+                    return;
+                }
+                
+                if(avatarPlatform) { avatarPlatform.destroy(); }
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+
+                avatarPlatform.on('connected', () => {
+                    isConnected = true; isTeaching = true; updateStatus('已连接', 'connected');
+                    startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => speakContent(currentSlide + 1), 1000);
+                }).on('disconnected', () => {
+                    isConnected = false; updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error); updateStatus('错误', 'error');
+                    startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
+                }).on('frame_stop', () => {
+                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
+                });
+                
+                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 } });
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error');
+                startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
+            }
+        }
+
+        async function startAutoPlay() {
+            if (!isTeaching || !isConnected) { alert("请先点击“开始讲课”并等待连接成功。"); return; }
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
+            try {
+                for (let i = currentSlide; i < totalSlides; i++) {
+                    if (!isAutoPlaying) break;
+                    showSlide(i);
+                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                    await speakContent(i + 1);
+                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1) + 2000));
+                    await Promise.race([speechPromise, timeoutPromise]);
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+            } catch (error) { console.error('❌ 自动播放失败:', error); }
+            finally {
+                isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false;
+                window.playbackFinished = true; document.title = "PLAYBACK_FINISHED"; console.log('🎉 播放完成');
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
+        });
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
+    </script>
 </body>
 </html>

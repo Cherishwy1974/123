@@ -1,457 +1,1267 @@
-﻿
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>
-   05_5.1_不定积分的概念
-  </title>
-<script src="https://cdn.tailwindcss.com">
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<script>
-   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
-  </script>
-<script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-<style>
-   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:975px;height:1105px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;width: 100%;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-9999px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left: -9999px;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:23px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-9999px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>05_5.1_不定积分的概念</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true, 
+                processEnvironments: true 
+            },
+            chtml: { fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2' },
+            startup: { 
+                pageReady: () => { 
+                    return MathJax.startup.defaultPageReady().then(() => { 
+                        console.log('✅ MathJax已加载'); 
+                    }); 
+                } 
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+        .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
+        .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
+        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
+        .chalkboard strong { color: #e74c3c; }
+        .math-formula-box { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
+        .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
 </head>
 <body class="blackboard">
-<div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-<div class="avatar-container">
-<div class="wrapper" id="avatarWrapper">
-</div>
-</div>
-<div class="slide-container flex-grow" id="slide-container">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
+        
+        <!-- Page 1: Title -->
+        <div class="slide active">
+            <div class="slide-content" style="flex-direction: column; text-align: center;">
+                <h1 style="font-size: 3.5rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);">不定积分的概念与性质</h1>
+                <p style="font-size: 1.5rem; color: #9ca3af; margin-top: 1rem;">第五章 | 积分学的开端</p>
+                <svg viewBox="0 0 600 300" style="width: 60%; max-width: 700px; margin-top: 2rem;">
+                    <text fill="#3498db" font-size="150" text-anchor="middle" x="150" y="200">f(x)</text>
+                    <path d="M 280 150 C 320 120, 380 180, 420 150" fill="none" stroke="#f39c12" stroke-width="5" marker-end="url(#arrowhead-main)">
+                         <animate attributeName="d" dur="4s" repeatCount="indefinite" values="M 280 150 C 320 120, 380 180, 420 150; M 280 150 C 320 180, 380 120, 420 150; M 280 150 C 320 120, 380 180, 420 150"></animate>
+                    </path>
+                    <text fill="#f39c12" font-size="24" text-anchor="middle" x="350" y="120">求导 vs 求积分</text>
+                    <text fill="#2ecc71" font-size="150" text-anchor="middle" x="500" y="200">∫</text>
+                    <defs><marker id="arrowhead-main" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#f39c12"/></marker></defs>
+                </svg>
+            </div>
+        </div>
 
+        <!-- Page 2: Review - What is Derivative -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>回顾：什么是求导？</h2>
+                    <p>在前面的章节中，我们学习了求导运算。</p>
+                    <p>给定一个函数 \\(F(x)\\)，我们可以求出它的导数 \\(f(x)\\)。</p>
+                    <div class="math-formula-box">\\[ F(x) \\xrightarrow{求导} f(x) \\]</div>
+                    <p>这是一个<strong>正向过程</strong>：从原函数到导数。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">正向：求导运算</text>
+                        <rect x="100" y="200" width="180" height="100" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="190" y="260">F(x)</text>
+                        <path d="M 290 250 H 320" stroke="#e74c3c" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="305" y="230">求导</text>
+                        <rect x="320" y="200" width="180" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="410" y="260">f(x)</text>
+                        <defs><marker id="arrow-vis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#e74c3c" /></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-<div class="slide">
-<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-<div style="flex: 1; text-align: center; padding: 2rem;">
-<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       不定积分的概念
-      </h1>
-<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第05章 视频 5.1
-      </p>
-<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 原函数的概念
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 不定积分的定义
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 基本积分公式
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 积分性质
-       </p>
-</div>
-</div>
-<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-<defs>
-<lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#e67e22;stop-opacity:1">
-</stop>
-<stop offset="100%" style="stop-color:#d35400;stop-opacity:1">
-</stop>
-</lineargradient>
-</defs>
-<text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ∫
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-</animate>
-</text>
-<circle cx="150" cy="280" fill="none" r="30" stroke="#e67e22" stroke-width="3">
-<animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<circle cx="300" cy="280" fill="none" r="30" stroke="#d35400" stroke-width="3">
-<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        积分
-       </text>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-center">
-<h1 class="text-6xl font-bold">
-       不定积分的概念
-      </h1>
-<p class="text-2xl mt-4 text-gray-300">
-       第5章 视频 5.1
-      </p>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#3498db" font-size="80" text-anchor="middle" x="300" y="180">
-        ∫
-        <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.3;1;0.3">
-</animate>
-</text>
-<text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="280">
-        反求导
-       </text>
-<text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="360">
-        + C
-        <animate attributename="opacity" dur="1.5s" repeatcount="indefinite" values="0.5;1;0.5">
-</animate>
-</text>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       概念引入
-      </h2>
-<p class="mt-4 leading-relaxed">
-       不定积分就是寻找导数等于 $f(x)$ 的函数族，记得加上常数 $C$。
-      </p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        导数 → 不定积分：求导的逆过程
-       </li>
-<li>
-<strong>
-         定义：
-        </strong>
-        $F'(x)=f(x)$ ⇒ $F(x)+C$ 为不定积分
-       </li>
-<li>
-<strong>
-         记号：
-        </strong>
-        $\int f(x)dx$
-       </li>
-</ul>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="180" x="100" y="120">
-</rect>
-<text fill="#ecf0f1" font-size="24" text-anchor="middle" x="190" y="165">
-        F'(x)=f(x)
-       </text>
-<line marker-end="url(#arrow17)" stroke="#f39c12" stroke-width="3" x1="280" x2="320" y1="160" y2="160">
-</line>
-<text fill="#f39c12" font-size="16" text-anchor="middle" x="300" y="145">
-        积分
-       </text>
-<rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="3" width="180" x="320" y="120">
-</rect>
-<text fill="#ecf0f1" font-size="24" text-anchor="middle" x="410" y="165">
-        F(x)+C
-       </text>
-<g opacity="0">
-<text fill="#3498db" font-size="28" text-anchor="middle" x="300" y="280">
-         ∫f(x)dx
-        </text>
-<text fill="#e74c3c" font-size="20" opacity="0" text-anchor="middle" x="300" y="340">
-         别忘了+C!
-         <animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-</animate>
-</text>
-<animate attributename="opacity" dur="6s" repeatcount="indefinite" values="0;1;1;1">
-</animate>
-</g>
-<defs>
-<marker id="arrow17" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       基本公式
-      </h2>
-<p class="mt-4 leading-relaxed">
-       把求导公式倒过来记忆最直观，但别忘了常数项。
-      </p>
-<div class="mt-6 space-y-4">
-<p>
-        $\int x^n dx = \frac{x^{n+1}}{n+1}+C$ （$n\neq -1$）
-       </p>
-<p>
-        $\int \frac{1}{x} dx = \ln|x|+C$
-       </p>
-<p>
-        $\int e^x dx = e^x+C$
-       </p>
-<p>
-        $\int \sin x dx = -\cos x+C$
-       </p>
-</div>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">
-        基本积分表
-       </text>
-<g opacity="0">
-<rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="2" width="360" x="120" y="100">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">
-         ∫x^n dx = x^(n+1)/(n+1) + C
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(46,204,113,0.2)" height="50" rx="8" stroke="#2ecc71" stroke-width="2" width="360" x="120" y="170">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="200">
-         ∫1/x dx = ln|x| + C
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="2" width="360" x="120" y="240">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="270">
-         ∫e^x dx = e^x + C
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(155,89,182,0.2)" height="50" rx="8" stroke="#9b59b6" stroke-width="2" width="360" x="120" y="310">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="340">
-         ∫sin x dx = -cos x + C
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-</animate>
-</g>
-<circle cx="520" cy="340" fill="rgba(241,196,15,0.3)" opacity="0" r="30" stroke="#f39c12" stroke-width="3">
-<text fill="#ecf0f1" font-size="24" text-anchor="middle" x="520" y="350">
-         +C
-        </text>
-<animate attributename="opacity" dur="10s" repeatcount="indefinite" values="0;0;0;0;0;1">
-</animate>
-</circle>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       性质与应用
-      </h2>
-<p class="mt-4 leading-relaxed">
-       遇到多项式或简单组合时，直接拆分积分即可。
-      </p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        $\int [f(x)\pm g(x)]dx = \int f(x)dx \pm \int g(x)dx$
-       </li>
-<li>
-        $\int kf(x)dx = k\int f(x)dx$
-       </li>
-<li>
-<strong>
-         例：
-        </strong>
-        $\int (x^2+3x)dx = \frac{x^3}{3}+\frac{3x^2}{2}+C$
-       </li>
-</ul>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">
-        ∫(x²+3x)dx
-       </text>
-<text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="140">
-        拆分
-       </text>
-<line marker-end="url(#arrow18)" stroke="#2ecc71" stroke-width="3" x1="300" x2="200" y1="160" y2="200">
-</line>
-<line marker-end="url(#arrow18)" stroke="#e74c3c" stroke-width="3" x1="300" x2="400" y1="160" y2="200">
-</line>
-<rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="160" x="120" y="200">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="200" y="235">
-        ∫x² dx
-       </text>
-<rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="160" x="320" y="200">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="400" y="235">
-        ∫3x dx
-       </text>
-<line marker-end="url(#arrow18)" stroke="#f39c12" stroke-width="3" x1="200" x2="200" y1="260" y2="300">
-</line>
-<line marker-end="url(#arrow18)" stroke="#f39c12" stroke-width="3" x1="400" x2="400" y1="260" y2="300">
-</line>
-<text fill="#2ecc71" font-size="18" text-anchor="middle" x="200" y="340">
-        x³/3
-       </text>
-<text fill="#e74c3c" font-size="18" text-anchor="middle" x="400" y="340">
-        3x²/2
-       </text>
-<text fill="#f39c12" font-size="22" text-anchor="middle" x="300" y="420">
-        = x³/3 + 3x²/2 + C
-       </text>
-<defs>
-<marker id="arrow18" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       小结
-      </h2>
-<p class="mt-4 leading-relaxed">
-<strong>
-        核心要点：
-       </strong>
-</p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        不定积分是求导的逆运算
-       </li>
-<li>
-        结果必须加常数 $C$
-       </li>
-<li>
-        基本公式要熟记
-       </li>
-<li>
-        可以用求导验证结果
-       </li>
-</ul>
-<p class="mt-8 text-gray-400">
-       任何不定积分都别忘了常数项，这是最容易扣分的地方。
-      </p>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">
-        ∫ 不定积分
-       </text>
-<circle cx="300" cy="260" fill="rgba(241,196,15,0.1)" r="140" stroke="#f39c12" stroke-width="4">
-</circle>
-<g opacity="0">
-<rect fill="rgba(52,152,219,0.2)" height="40" rx="5" stroke="#3498db" stroke-width="2" width="120" x="160" y="180">
-</rect>
-<text fill="#ecf0f1" font-size="16" text-anchor="middle" x="220" y="205">
-         逆运算
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;1;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(46,204,113,0.2)" height="40" rx="5" stroke="#2ecc71" stroke-width="2" width="120" x="320" y="180">
-</rect>
-<text fill="#ecf0f1" font-size="16" text-anchor="middle" x="380" y="205">
-         +C!
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;1;1;1">
-</animate>
-</g>
-<g opacity="0">
-<rect fill="rgba(231,76,60,0.2)" height="40" rx="5" stroke="#e74c3c" stroke-width="2" width="220" x="190" y="270">
-</rect>
-<text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="295">
-         基本公式熟记
-        </text>
-<animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;1;1">
-</animate>
-</g>
-<text fill="#2ecc71" font-size="24" opacity="0" text-anchor="middle" x="300" y="430">
-        求导验证
-        <animate attributename="opacity" dur="8s" repeatcount="indefinite" values="0;0;0;0;1">
-</animate>
-</text>
-</svg>
-</div>
-</div>
-</div>
-</div>
-<div class="subtitle-area" id="subtitleArea">
-   欢迎学习不定积分的概念！点击开始讲课启动虚拟人讲师。
-  </div>
-<div class="control-bar">
-<div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     5
-    </span>
-    页
-   </div>
-<button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-<button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-<button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-<button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-</div>
-<script type="module">
-        // 播放完成标记（供OBS检测）
+        <!-- Page 3: Example of Derivative -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>求导的例子</h2>
+                    <p>让我们看一个具体的例子：</p>
+                    <div class="math-formula-box">\\[ (x^2)' = 2x \\]</div>
+                    <p>这告诉我们：\\(x^2\\) 的导数是 \\(2x\\)。</p>
+                    <p>这个过程我们已经非常熟悉了。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">具体例子</text>
+                        <rect x="100" y="200" width="180" height="100" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="190" y="265">x²</text>
+                        <path d="M 290 250 H 320" stroke="#e74c3c" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="305" y="230">求导</text>
+                        <rect x="320" y="200" width="180" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="410" y="265">2x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Reverse Question -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>反向思考</h2>
+                    <p>现在，让我们把问题<strong>反过来</strong>想：</p>
+                    <p>如果已知一个函数的导数是 \\(2x\\)，</p>
+                    <p>那么这个<strong>原来的函数</strong>是什么呢？</p>
+                    <div class="math-formula-box">\\[ ? \\xrightarrow{求导} 2x \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">逆向问题</text>
+                        <rect x="100" y="200" width="180" height="100" fill="rgba(241,196,15,0.2)" stroke="#f39c12" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="40" text-anchor="middle" x="190" y="265">?</text>
+                        <path d="M 290 250 H 320" stroke="#e74c3c" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="305" y="230">求导</text>
+                        <rect x="320" y="200" width="180" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="410" y="265">2x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: First Answer -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>第一个答案</h2>
+                    <p>你可能马上想到：是 \\(x^2\\)！</p>
+                    <div class="math-formula-box">\\[ (x^2)' = 2x \\]</div>
+                    <p>没错！\\(x^2\\) 确实是一个答案。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">找到了一个答案</text>
+                        <rect x="100" y="200" width="180" height="100" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="190" y="265">x²</text>
+                        <path d="M 290 250 H 320" stroke="#2ecc71" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="305" y="230">✓</text>
+                        <rect x="320" y="200" width="180" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="410" y="265">2x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: More Answers -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>但是，答案不止一个！</h2>
+                    <p>仔细想想，下面这些函数的导数也都是 \\(2x\\)：</p>
+                    <div class="math-formula-box">\\[ (x^2 + 1)' = 2x \\]</div>
+                    <div class="math-formula-box">\\[ (x^2 - 5)' = 2x \\]</div>
+                    <div class="math-formula-box">\\[ (x^2 + 100)' = 2x \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="60">多个答案！</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="150" y="150">x²</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="150" y="220">x² + 1</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="150" y="290">x² - 5</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="150" y="360">x² + 100</text>
+                        <path d="M 230 210 L 370 210" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="300" y="200">求导后</text>
+                        <rect x="380" y="170" width="150" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" rx="10"/>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="455" y="220">都是 2x</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Definition of Primitive Function -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>原函数的定义</h2>
+                    <p>如果在区间 \\(I\\) 上，可导函数 \\(F(x)\\) 的导数为 \\(f(x)\\)，即</p>
+                    <div class="math-formula-box">\\[ F'(x) = f(x) \\]</div>
+                    <p>那么，\\(F(x)\\) 就称为 \\(f(x)\\) 在该区间上的一个<strong>原函数</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">原函数的概念</text>
+                        <rect x="100" y="200" width="180" height="100" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="190" y="250">F(x)</text>
+                        <text fill="#1abc9c" font-size="18" text-anchor="middle" x="190" y="280">原函数</text>
+                        <path d="M 290 250 H 320" stroke="#e74c3c" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="305" y="230">F'(x)</text>
+                        <rect x="320" y="200" width="180" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="410" y="260">f(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: Why +C -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>为什么有无穷多个原函数？</h2>
+                    <p>因为常数的导数为零：</p>
+                    <div class="math-formula-box">\\[ (C)' = 0 \\]</div>
+                    <p>所以，如果 \\(F(x)\\) 是 \\(f(x)\\) 的一个原函数，</p>
+                    <p>那么 \\(F(x) + C\\) 也是 \\(f(x)\\) 的原函数。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">常数的导数为零</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">(F(x) + C)' = ?</text>
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="300" y="250">= F'(x) + (C)'</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="320">= f(x) + 0</text>
+                        <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="400">= f(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 9: Family of Primitives -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>原函数族</h2>
+                    <p>\\(F(x) + C\\) 代表了 \\(f(x)\\) 的<strong>所有</strong>原函数。</p>
+                    <p>我们称它为 \\(f(x)\\) 的<strong>原函数族</strong>。</p>
+                    <p>其中，\\(C\\) 是任意常数，称为<strong>积分常数</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="60">原函数族：F(x) + C</text>
+                        <line x1="100" y1="400" x2="500" y2="400" stroke="#fff" opacity="0.5"/>
+                        <line x1="100" y1="100" x2="100" y2="400" stroke="#fff" opacity="0.5"/>
+                        <path d="M 150 350 Q 300 150, 450 350" fill="none" stroke="#3498db" stroke-width="3"/>
+                        <text fill="#3498db" font-size="16" x="460" y="350">C=0</text>
+                        <path d="M 150 300 Q 300 100, 450 300" fill="none" stroke="#2ecc71" stroke-width="3"/>
+                        <text fill="#2ecc71" font-size="16" x="460" y="300">C=50</text>
+                        <path d="M 150 400 Q 300 200, 450 400" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                        <text fill="#e74c3c" font-size="16" x="460" y="400">C=-50</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="450">互相平移的一族曲线</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 10: Definition of Indefinite Integral -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>不定积分的定义</h2>
+                    <p>函数 \\(f(x)\\) 的全体原函数 \\(F(x)+C\\) 称为 \\(f(x)\\) 的<strong>不定积分</strong>。</p>
+                    <p>记作：</p>
+                    <div class="math-formula-box">\\[ \\int f(x) \\,dx = F(x) + C \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="100">不定积分</text>
+                        <text fill="#ecf0f1" font-family="serif" font-size="120" text-anchor="middle" x="150" y="280">∫</text>
+                        <text fill="#3498db" font-size="50" text-anchor="middle" x="280" y="270">f(x)dx</text>
+                        <text fill="#ecf0f1" font-size="50" text-anchor="middle" x="400" y="270">=</text>
+                        <text fill="#2ecc71" font-size="50" text-anchor="middle" x="500" y="270">F(x)+C</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 11: Notation Explanation -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>不定积分的记号</h2>
+                    <p>在 \\(\\int f(x) \\,dx\\) 中：</p>
+                    <ul>
+                        <li>\\(\\int\\) — <strong>积分号</strong></li>
+                        <li>\\(f(x)\\) — <strong>被积函数</strong></li>
+                        <li>\\(x\\) — <strong>积分变量</strong></li>
+                        <li>\\(f(x)dx\\) — <strong>被积表达式</strong></li>
+                    </ul>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">记号的含义</text>
+                        <text fill="#ecf0f1" font-family="serif" font-size="100" text-anchor="middle" x="150" y="280">∫</text>
+                        <text fill="#3498db" font-size="40" text-anchor="middle" x="250" y="270">f(x)</text>
+                        <text fill="#e74c3c" font-size="40" text-anchor="middle" x="350" y="270">dx</text>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="150" y="320">积分号</text>
+                        <text fill="#3498db" font-size="16" text-anchor="middle" x="250" y="320">被积函数</text>
+                        <text fill="#e74c3c" font-size="16" text-anchor="middle" x="350" y="320">积分变量</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 12: Geometric Meaning -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>几何意义</h2>
+                    <p>\\(\\int f(x)dx\\) 在几何上表示一族<strong>互相平行</strong>的曲线。</p>
+                    <p>这族曲线称为 \\(f(x)\\) 的<strong>积分曲线族</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="60">积分曲线族</text>
+                        <path d="M 150 350 Q 300 150, 450 350" fill="none" stroke="#3498db" stroke-width="3"/>
+                        <path d="M 150 300 Q 300 100, 450 300" fill="none" stroke="#2ecc71" stroke-width="3"/>
+                        <path d="M 150 250 Q 300 50, 450 250" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                        <line x1="300" y1="50" x2="300" y2="450" stroke="#fff" stroke-dasharray="4,4" opacity="0.7"/>
+                        <text fill="#ecf0f1" font-size="16" text-anchor="middle" x="300" y="40">x = x₀</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: Parallel Tangents -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>切线的平行性</h2>
+                    <p>在同一横坐标 \\(x_0\\) 处，</p>
+                    <p>所有积分曲线的切线都具有相同的斜率 \\(f(x_0)\\)。</p>
+                    <p>因此，这些切线<strong>互相平行</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="60">切线平行</text>
+                        <path d="M 150 350 Q 300 150, 450 350" fill="none" stroke="#3498db" stroke-width="3"/>
+                        <path d="M 150 300 Q 300 100, 450 300" fill="none" stroke="#2ecc71" stroke-width="3"/>
+                        <path d="M 150 250 Q 300 50, 450 250" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                        <line x1="250" y1="210" x2="350" y2="210" stroke="#e74c3c" stroke-width="2" />
+                        <line x1="250" y1="260" x2="350" y2="260" stroke="#2ecc71" stroke-width="2" />
+                        <line x1="250" y1="310" x2="350" y2="310" stroke="#3498db" stroke-width="2" />
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="450">斜率相同，切线平行</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 14: Inverse Operation 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>积分与微分的关系（一）</h2>
+                    <p>求不定积分与求导是<strong>互为逆运算</strong>。</p>
+                    <p>先积分，再求导，等于函数自身：</p>
+                    <div class="math-formula-box">\\[ \\frac{d}{dx} \\left[ \\int f(x) \\,dx \\right] = f(x) \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">先积分，再求导</text>
+                        <rect x="100" y="180" width="400" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">\\(\\frac{d}{dx} \\int f(x)dx = f(x)\\)</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="350">回到原点！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 15: Inverse Operation 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>积分与微分的关系（二）</h2>
+                    <p>先求导，再积分，等于函数自身加常数：</p>
+                    <div class="math-formula-box">\\[ \\int F'(x) \\,dx = F(x) + C \\]</div>
+                    <p>注意：这里多了一个常数 \\(C\\)。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">先求导，再积分</text>
+                        <rect x="100" y="180" width="400" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">\\(\\int f'(x)dx = f(x) + C\\)</text>
+                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="350">多了一个 C！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 16: Basic Formula Introduction -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>基本积分公式的来源</h2>
+                    <p>所有基本积分公式都来源于<strong>反向应用求导公式</strong>。</p>
+                    <p>我们把已知的求导公式"倒过来"，就得到了积分公式。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="100">反向应用</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="200">求导公式</text>
+                        <path d="M 300 220 V 280" stroke="#f39c12" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="350" y="250">反向</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="320">积分公式</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 17: Power Rule -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>公式一：幂函数积分</h2>
+                    <p>最重要的公式是<strong>幂函数积分公式</strong>：</p>
+                    <div class="math-formula-box">\\[ \\int x^n \\,dx = \\frac{x^{n+1}}{n+1} + C \\quad (n \\neq -1) \\]</div>
+                    <p><strong>口诀：</strong>指数加一，再除以新的指数。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">幂函数积分</text>
+                        <rect x="100" y="200" width="400" height="100" fill="rgba(241,196,15,0.2)" stroke="#f39c12" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="260">指数加一，除以新指数</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 18: Power Rule Example -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>幂函数积分的例子</h2>
+                    <p>例如：</p>
+                    <div class="math-formula-box">\\[ \\int x^2 \\,dx = \\frac{x^{2+1}}{2+1} + C = \\frac{1}{3}x^3 + C \\]</div>
+                    <p>验证：\\((\\frac{1}{3}x^3)' = x^2\\) ✓</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">例子</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="180" y="200">(x³)' = 3x²</text>
+                        <path d="M 260 240 C 300 240, 300 200, 340 200" fill="none" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrow-vis)"/>
+                        <path d="M 340 240 C 300 240, 300 280, 260 280" fill="none" stroke="#2ecc71" stroke-width="3" marker-start="url(#arrow-vis-start)"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="420" y="280">\\(\\int 3x^2 dx = x^3+C\\)</text>
+                        <defs><marker id="arrow-vis-start" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 10 0 L 0 5 L 10 10 z" fill="#2ecc71" /></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 19: Log Formula -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>公式二：对数函数</h2>
+                    <p>当 \\(n = -1\\) 时，幂函数公式不适用。</p>
+                    <p>我们需要一个特殊的公式：</p>
+                    <div class="math-formula-box">\\[ \\int \\frac{1}{x} \\,dx = \\ln|x| + C \\]</div>
+                    <p><strong>注意：</strong>必须加<strong>绝对值</strong>！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">对数积分</text>
+                        <text fill="#ecf0f1" font-size="22" x="120" y="200">因为 \\((\\ln|x|)' = \\frac{1}{x}\\)</text>
+                        <text fill="#2ecc71" font-size="28" x="120" y="280">所以 \\(\\int \\frac{1}{x}dx = \\ln|x|+C\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 20: Exponential Formula -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>公式三：指数函数</h2>
+                    <p>指数函数的积分最简单：</p>
+                    <div class="math-formula-box">\\[ \\int e^x \\,dx = e^x + C \\]</div>
+                    <p>因为 \\(e^x\\) 的导数就是它自己！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">指数积分</text>
+                        <text fill="#ecf0f1" font-size="22" x="120" y="200">因为 \\((e^x)' = e^x\\)</text>
+                        <text fill="#3498db" font-size="28" x="120" y="280">所以 \\(\\int e^x dx = e^x+C\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 21: Cosine Formula -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>公式四：余弦函数</h2>
+                    <p>余弦函数的积分：</p>
+                    <div class="math-formula-box">\\[ \\int \\cos x \\,dx = \\sin x + C \\]</div>
+                    <p>因为 \\((\\sin x)' = \\cos x\\)。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">余弦积分</text>
+                        <text fill="#ecf0f1" font-size="22" x="120" y="200">因为 \\((\\sin x)' = \\cos x\\)</text>
+                        <text fill="#2ecc71" font-size="28" x="120" y="280">所以 \\(\\int \\cos x dx = \\sin x+C\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 22: Sine Formula -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>公式五：正弦函数</h2>
+                    <p>正弦函数的积分：</p>
+                    <div class="math-formula-box">\\[ \\int \\sin x \\,dx = -\\cos x + C \\]</div>
+                    <p style="color:#e74c3c;"><strong>注意符号！</strong>因为 \\((\\cos x)' = -\\sin x\\)。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">正弦积分</text>
+                        <text fill="#ecf0f1" font-size="22" x="120" y="200">因为 \\((-\\cos x)' = \\sin x\\)</text>
+                        <text fill="#e74c3c" font-size="28" x="120" y="280">所以 \\(\\int \\sin x dx = -\\cos x+C\\)</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="380">别忘了负号！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 23: Property 1 Introduction -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>不定积分的性质</h2>
+                    <p>和求导一样，不定积分也满足一些方便计算的<strong>线性性质</strong>。</p>
+                    <p>这些性质可以帮助我们简化复杂的积分计算。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="150">线性性质</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="250">1. 提常数</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="320">2. 拆加减</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 24: Property 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>性质一：常数因子可提出</h2>
+                    <p>被积函数中的常数因子可以提到积分号外面。</p>
+                    <div class="math-formula-box">\\[ \\int k \\cdot f(x) \\,dx = k \\int f(x) \\,dx \\quad (k \\neq 0) \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="100">常数可以"穿过"积分号</text>
+                        <text fill="#ecf0f1" font-family="serif" font-size="80" text-anchor="middle" x="150" y="280">∫</text>
+                        <text fill="#e74c3c" font-size="50" text-anchor="middle" x="220" y="275">k</text>
+                        <text fill="#3498db" font-size="40" text-anchor="middle" x="300" y="270">f(x)dx</text>
+                        <path d="M 220 300 C 180 350, 120 350, 80 300" fill="none" stroke="#e74c3c" stroke-dasharray="5,5" stroke-width="3" marker-start="url(#arrow-vis-start)"/>
+                        <text fill="#e74c3c" font-size="50" text-anchor="middle" x="50" y="275">k</text>
+                        <text fill="#ecf0f1" font-family="serif" font-size="80" text-anchor="middle" x="110" y="280">∫</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 25: Property 1 Example -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>提常数的例子</h2>
+                    <p>例如：</p>
+                    <div class="math-formula-box">\\[ \\int 3x^2 \\,dx = 3 \\int x^2 \\,dx \\]</div>
+                    <div class="math-formula-box">\\[ = 3 \\cdot \\frac{x^3}{3} + C = x^3 + C \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">例子</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">\\(\\int 3x^2 dx\\)</text>
+                        <path d="M 300 200 V 240" stroke="#f39c12" stroke-width="4" marker-end="url(#arrow-vis)"/>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="280">\\(3 \\int x^2 dx\\)</text>
+                        <path d="M 300 300 V 340" stroke="#f39c12" stroke-width="4" marker-end="url(#arrow-vis)"/>
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="300" y="380">\\(x^3 + C\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 26: Property 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>性质二：加减法可拆分</h2>
+                    <p>两个函数和（或差）的积分，等于它们积分的和（或差）。</p>
+                    <div class="math-formula-box">\\[ \\int [f(x) \\pm g(x)] \\,dx = \\int f(x) \\,dx \\pm \\int g(x) \\,dx \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="60">积分号可以"穿过"加减号</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">\\(\\int(f(x)+g(x))dx\\)</text>
+                        <text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="250">⇕</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="320">\\(\\int f(x)dx + \\int g(x)dx\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 27: Property 2 Warning -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>重要提醒</h2>
+                    <p>这个性质对<strong>乘除法不成立</strong>！</p>
+                    <p style="color:#e74c3c; font-size: 22px;">\\(\\int f(x)g(x)dx \\neq \\int f(x)dx \\cdot \\int g(x)dx\\)</p>
+                    <p>积分号不能"穿过"乘除号。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="100">警告！</text>
+                        <text fill="#e74c3c" font-size="80" text-anchor="middle" x="300" y="250">✗</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="320">乘除法不能拆分</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 28: Example Introduction -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>综合例题</h2>
+                    <p>现在，让我们用学到的知识来解决一个实际问题。</p>
+                    <p>计算：</p>
+                    <div class="math-formula-box">\\[ \\int (x^2 + 3\\cos x - \\frac{5}{x}) \\,dx \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="100">综合应用</text>
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="300" y="250">\\(\\int(x^2+3\\cos x-\\frac{5}{x})dx\\)</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="350">如何计算？</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 29: Example Step 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>步骤一：拆分</h2>
+                    <p>利用线性性质，将积分拆分：</p>
+                    <div class="math-formula-box">\\[ = \\int x^2 \\,dx + \\int 3\\cos x \\,dx - \\int \\frac{5}{x} \\,dx \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="80">拆分成三个积分</text>
+                        <text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="180">\\(\\int x^2 dx\\)</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="260">\\(+ \\int 3\\cos x dx\\)</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="340">\\(- \\int \\frac{5}{x} dx\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 30: Example Step 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>步骤二：提出常数</h2>
+                    <p>将常数因子提到积分号外：</p>
+                    <div class="math-formula-box">\\[ = \\int x^2 \\,dx + 3\\int \\cos x \\,dx - 5\\int \\frac{1}{x} \\,dx \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="80">提出常数</text>
+                        <text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="180">\\(\\int x^2 dx\\)</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="260">\\(+ 3 \\int \\cos x dx\\)</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="340">\\(- 5 \\int \\frac{1}{x} dx\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 31: Example Step 3 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>步骤三：分别积分</h2>
+                    <p>对每一项应用基本积分公式：</p>
+                    <div class="math-formula-box">\\[ = \\frac{x^3}{3} + 3\\sin x - 5\\ln|x| + C_1 + C_2 + C_3 \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="80">应用公式</text>
+                        <text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="180">\\(\\frac{x^3}{3}\\)</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="260">\\(+ 3\\sin x\\)</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="340">\\(- 5\\ln|x|\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 32: Example Step 4 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>步骤四：合并常数</h2>
+                    <p>将所有积分常数合并为一个 \\(C\\)：</p>
+                    <div class="math-formula-box">\\[ = \\frac{1}{3}x^3 + 3\\sin x - 5\\ln|x| + C \\]</div>
+                    <p>这就是最终答案！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="80">最终结果</text>
+                        <rect x="80" y="180" width="440" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="240">\\(\\frac{1}{3}x^3 + 3\\sin x - 5\\ln|x| + C\\)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 33: Verification Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>如何检验结果？</h2>
+                    <p>不定积分有一个很棒的特点：</p>
+                    <p>你可以<strong>自己检验</strong>答案是否正确！</p>
+                    <p>方法：对结果<strong>求导</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="150">求导验证法</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="250">积分结果</text>
+                        <path d="M 300 270 V 320" stroke="#e74c3c" stroke-width="5" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="350" y="295">求导</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="360">被积函数？</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 34: Verification Example -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>验证的例子</h2>
+                    <p>我们计算出 \\(\\int 2x \\,dx = x^2 + C\\)。</p>
+                    <p><strong>检验：</strong></p>
+                    <div class="math-formula-box">\\[ (x^2+C)' = 2x + 0 = 2x \\]</div>
+                    <p style="color:#2ecc71;">结果正确！✓</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">验证过程</text>
+                        <rect x="100" y="150" width="200" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="200" y="195">x² + C</text>
+                        <path d="M 310 190 H 340" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="325" y="175">求导</text>
+                        <rect x="350" y="150" width="150" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" rx="10"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="425" y="195">2x ✓</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 35: Summary 1 - Concepts -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结（一）：核心概念</h2>
+                    <ul>
+                        <li><strong>原函数：</strong>导数为 \\(f(x)\\) 的函数 \\(F(x)\\)</li>
+                        <li><strong>不定积分：</strong>全体原函数 \\(F(x)+C\\)</li>
+                        <li><strong>积分常数 C：</strong>不能忘记！</li>
+                    </ul>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="80">核心概念</text>
+                        <circle cx="300" cy="260" r="140" fill="rgba(241,196,15,0.1)" stroke="#f39c12" stroke-width="4"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="180">原函数 F(x)</text>
+                        <text fill="#e74c3c" font-size="30" text-anchor="middle" x="300" y="260">+ C</text>
+                        <text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="340">不定积分</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 36: Summary 2 - Relationship -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结（二）：互逆关系</h2>
+                    <p>积分与微分（求导）是<strong>互为逆运算</strong>。</p>
+                    <div class="math-formula-box">\\[ \\frac{d}{dx}\\int f(x)dx = f(x) \\]</div>
+                    <div class="math-formula-box">\\[ \\int F'(x)dx = F(x) + C \\]</div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="80">互逆运算</text>
+                        <text fill="#3498db" font-size="28" text-anchor="middle" x="300" y="200">求导</text>
+                        <text fill="#f39c12" font-size="50" text-anchor="middle" x="300" y="280">⇅</text>
+                        <text fill="#2ecc71" font-size="28" text-anchor="middle" x="300" y="360">积分</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 37: Summary 3 - Formulas -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结（三）：基本公式</h2>
+                    <ul>
+                        <li>\\(\\int x^n dx = \\frac{x^{n+1}}{n+1} + C\\)</li>
+                        <li>\\(\\int \\frac{1}{x} dx = \\ln|x| + C\\)</li>
+                        <li>\\(\\int e^x dx = e^x + C\\)</li>
+                        <li>\\(\\int \\cos x dx = \\sin x + C\\)</li>
+                        <li>\\(\\int \\sin x dx = -\\cos x + C\\)</li>
+                    </ul>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="100">五个基本公式</text>
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="300" y="180">幂函数</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="240">对数</text>
+                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="300">指数</text>
+                        <text fill="#9b59b6" font-size="24" text-anchor="middle" x="300" y="360">三角函数</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 38: Summary 4 - Properties -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结（四）：线性性质</h2>
+                    <ul>
+                        <li><strong>性质1：</strong>常数因子可提出</li>
+                        <li><strong>性质2：</strong>加减法可拆分</li>
+                    </ul>
+                    <p style="margin-top:20px;">这两条性质是计算的基础！</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="100">线性性质</text>
+                        <rect x="100" y="180" width="400" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" rx="10"/>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="230">提常数 + 拆加减</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 39: Summary 5 - Method -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>总结（五）：计算方法</h2>
+                    <p><strong>步骤：</strong></p>
+                    <ol>
+                        <li>拆分：利用加减法性质</li>
+                        <li>提常数：利用常数因子性质</li>
+                        <li>应用公式：对每一项积分</li>
+                        <li>合并：将所有常数合并为一个 C</li>
+                    </ol>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="80">四步法</text>
+                        <text fill="#3498db" font-size="22" text-anchor="middle" x="300" y="180">1. 拆分</text>
+                        <path d="M 300 190 V 210" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-vis)"/>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="240">2. 提常数</text>
+                        <path d="M 300 250 V 270" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-vis)"/>
+                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="300">3. 应用公式</text>
+                        <path d="M 300 310 V 330" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow-vis)"/>
+                        <text fill="#9b59b6" font-size="22" text-anchor="middle" x="300" y="360">4. 合并常数</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 40: Key Point -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>最重要的一点</h2>
+                    <p style="font-size: 28px; color: #e74c3c; text-align: center; margin-top: 50px;">
+                        <strong>永远不要忘记 +C ！</strong>
+                    </p>
+                    <p style="text-align: center; margin-top: 30px;">
+                        这是不定积分与定积分的本质区别。
+                    </p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500">
+                        <text fill="#e74c3c" font-size="120" text-anchor="middle" x="300" y="280">+ C</text>
+                        <text fill="#f1c40f" font-size="28" text-anchor="middle" x="300" y="380">不能忘记！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 41: Conclusion -->
+        <div class="slide">
+            <div class="slide-content" style="flex-direction: column; text-align: center; justify-content: center;">
+                <h2 style="font-size: 2.8rem; font-weight: bold; color: #f1c40f;">本节课结束</h2>
+                <p style="font-size: 1.5rem; color: #1abc9c; margin-top: 1rem;">感谢观看</p>
+                <p style="color: #e74c3c; margin-top: 3rem; font-size: 24px;">下节课我们将学习更多的积分技巧！</p>
+            </div>
+        </div>
+        
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习不定积分的概念!</div>
+    <div class="control-bar">
+        <div style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; text-align: center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">41</span> 页</div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    
+    <script type="module">
         window.playbackFinished = false;
+        try { const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = {
+            "1": "欢迎学习《不定积分的概念与性质》",
+            "2": "让我们先回顾一下求导运算",
+            "3": "比如，x的平方的导数是2x",
+            "4": "现在，让我们把问题反过来想",
+            "5": "你可能马上想到：是x的平方！",
+            "6": "但是，答案不止一个！",
+            "7": "这就引出了原函数的定义",
+            "8": "为什么有无穷多个原函数呢？",
+            "9": "所有原函数构成一个函数族",
+            "10": "这个函数族就是不定积分",
+            "11": "让我们认识一下不定积分的记号",
+            "12": "不定积分的几何意义是一族平行曲线",
+            "13": "在同一点处，所有曲线的切线都平行",
+            "14": "积分与微分是互为逆运算",
+            "15": "先求导再积分，会多一个常数C",
+            "16": "所有积分公式都来自求导公式",
+            "17": "最重要的是幂函数积分公式",
+            "18": "让我们看一个幂函数积分的例子",
+            "19": "当指数为负一时，需要对数公式",
+            "20": "指数函数的积分最简单",
+            "21": "余弦函数的积分是正弦函数",
+            "22": "正弦函数的积分要注意符号",
+            "23": "不定积分有两条重要的线性性质",
+            "24": "性质一：常数因子可以提出",
+            "25": "让我们看一个提常数的例子",
+            "26": "性质二：加减法可以拆分",
+            "27": "但是乘除法不能拆分！",
+            "28": "现在来看一个综合例题",
+            "29": "第一步：拆分成三个积分",
+            "30": "第二步：提出常数因子",
+            "31": "第三步：分别应用基本公式",
+            "32": "第四步：合并所有常数为一个C",
+            "33": "如何检验积分结果是否正确？",
+            "34": "对结果求导，看是否等于被积函数",
+            "35": "总结：原函数、不定积分、积分常数",
+            "36": "总结：积分与微分互为逆运算",
+            "37": "总结：五个基本积分公式",
+            "38": "总结：两条线性性质",
+            "39": "总结：计算的四步法",
+            "40": "最重要的一点：永远不要忘记+C",
+            "41": "本节课结束，感谢观看！"
+        };
 
-   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-<script>
-   const lessonTitle="不定积分的概念";const subtitleScript={"1":"欢迎学习不定积分的概念！","2":"不定积分就是寻找导数等于 f(x) 的函数族，记得加上常数 C。","3":"把求导公式倒过来记忆最直观，但别忘了常数项。","4":"遇到多项式或简单组合时，直接拆分积分即可。","5":"任何不定积分都别忘了常数项，这是最容易扣分的地方。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;}).on('frame_stop',(data)=>{console.log('✅ 虚拟人讲解完成 frame_stop:',data);if(isAutoPlaying&&currentSlide<totalSlides-1){console.log(`🎬 自动播放: 第${currentSlide+1}页讲解完成，准备翻页到第${currentSlide+2}页`);setTimeout(()=>{if(isAutoPlaying){currentSlide++;showSlide(currentSlide);setTimeout(()=>{if(isAutoPlaying){speakContent(currentSlide+1);}},800);}},1500);}});avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',                                    // 数学讲解 AppID
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',             // 数学讲解 API密钥
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',       // 数学讲解 API密钥
-                    sceneId: '237415046114840576',                       // 数学讲解 场景ID
+        const speechScript = {
+            "1": "同学们好！今天我们开启新的篇章，学习微积分的另一半——积分学。首先，我们来了解不定积分的概念与性质。",
+            "2": "在学习新知识前，我们先来回顾一下求导。求导是一个正向过程，给定一个函数F(x)，我们可以求出它的导数f(x)。",
+            "3": "比如，x的平方的导数是2x。这个过程我们已经非常熟悉了。",
+            "4": "现在，让我们把问题反过来想：如果已知一个函数的导数是2x，那么这个原来的函数是什么呢？",
+            "5": "你可能马上想到：是x的平方！没错，x的平方确实是一个答案。",
+            "6": "但是，仔细想想，x的平方加1、x的平方减5、x的平方加100，它们的导数也都是2x。看来，答案不止一个！",
+            "7": "这就引出了原函数的定义。如果F(x)的导数等于f(x)，那么F(x)就称为f(x)的一个原函数。",
+            "8": "为什么有无穷多个原函数呢？因为常数的导数为零。所以，如果F(x)是f(x)的一个原函数，那么F(x)加上任意常数C，也是f(x)的原函数。",
+            "9": "F(x)加C代表了f(x)的所有原函数，我们称它为f(x)的原函数族。其中，C是任意常数，称为积分常数。",
+            "10": "函数f(x)的全体原函数F(x)加C，称为f(x)的不定积分。我们用一个长长的S符号来表示，记作积分号f(x)dx，等于F(x)加C。",
+            "11": "在这个记号中，积分号是那个长长的S，f(x)是被积函数，x是积分变量，f(x)dx是被积表达式。",
+            "12": "不定积分在几何上表示一族互相平行的曲线，称为f(x)的积分曲线族。",
+            "13": "在同一横坐标x0处，所有积分曲线的切线都具有相同的斜率f(x0)，因此这些切线互相平行。",
+            "14": "从定义中我们可以看出，求不定积分与求导是互为逆运算。先积分再求导，会回到函数本身。",
+            "15": "而先求导再积分，会等于函数本身加上一个常数C。这个常数C非常重要，千万不能忘记。",
+            "16": "既然是逆运算，那我们就可以把所有求导公式反过来，得到我们的基本积分公式。",
+            "17": "最重要的就是幂函数的积分公式：x的n次方的积分，等于n加1分之x的n加1次方，再加C。口诀是：指数加一，再除以新的指数。",
+            "18": "比如，x的平方的积分，等于3分之1的x的3次方加C。我们可以通过求导来验证这个结果。",
+            "19": "当n等于负1时，幂函数公式不适用。我们需要一个特殊的公式：x分之1的积分等于ln绝对值x加C。注意，这里必须加绝对值。",
+            "20": "指数函数的积分最简单：e的x次方的积分就是e的x次方加C，因为e的x次方的导数就是它自己。",
+            "21": "余弦函数的积分是正弦函数加C，因为正弦函数的导数是余弦函数。",
+            "22": "正弦函数的积分是负的余弦函数加C。注意这里的负号，因为余弦函数的导数是负的正弦函数。",
+            "23": "和求导一样，不定积分也满足一些方便计算的线性性质。这些性质可以帮助我们简化复杂的积分计算。",
+            "24": "性质一：被积函数中的常数因子可以提到积分号外面。",
+            "25": "比如，3倍x的平方的积分，可以写成3乘以x的平方的积分，最后等于x的3次方加C。",
+            "26": "性质二：两个函数和或差的积分，等于它们积分的和或差。也就是说，积分号可以穿过加减号。",
+            "27": "但是要注意，这个性质对乘除法不成立！积分号不能穿过乘除号。",
+            "28": "现在，让我们用学到的知识来解决一个实际问题。计算x的平方加3倍cosx减x分之5的积分。",
+            "29": "第一步，利用线性性质，将积分拆分成三个积分的和差。",
+            "30": "第二步，将常数因子提到积分号外面。",
+            "31": "第三步，对每一项分别应用基本积分公式。",
+            "32": "第四步，将所有积分常数合并为一个C。这就是最终答案。",
+            "33": "不定积分有一个很棒的特点：你可以自己检验答案是否正确。方法非常简单：对你的结果求导。",
+            "34": "如果求导后的结果等于原来的被积函数，那么你的计算就是正确的。",
+            "35": "让我们总结一下核心概念。原函数是导数为f(x)的函数F(x)。不定积分是全体原函数F(x)加C。积分常数C绝对不能忘记。",
+            "36": "积分与微分是互为逆运算。先积分再求导等于函数本身，先求导再积分等于函数本身加C。",
+            "37": "我们学习了五个基本积分公式：幂函数、对数、指数和两个三角函数。",
+            "38": "我们还学习了两条线性性质：常数因子可提出，加减法可拆分。这两条性质是计算的基础。",
+            "39": "计算不定积分的方法可以总结为四步：拆分、提常数、应用公式、合并常数。",
+            "40": "最后，我要强调最重要的一点：永远不要忘记加C！这是不定积分与定积分的本质区别。",
+            "41": "我们今天的内容就到这里。请同学们务必理解不定积分是求导的逆运算这一核心思想。我们下节课再见！"
+        };
+        
+        const actionMap = {
+            "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O", "5": "A_LH_introduced_O",
+            "6": "A_RH_point_O", "7": "A_LH_introduced_O", "8": "A_RH_point_O", "9": "A_LH_introduced_O", "10": "A_RH_point_O",
+            "11": "A_LH_introduced_O", "12": "A_RH_point_O", "13": "A_LH_introduced_O", "14": "A_RH_point_O", "15": "A_LH_introduced_O",
+            "16": "A_RH_point_O", "17": "A_LH_introduced_O", "18": "A_RH_point_O", "19": "A_LH_introduced_O", "20": "A_RH_point_O",
+            "21": "A_LH_introduced_O", "22": "A_RH_point_O", "23": "A_LH_introduced_O", "24": "A_RH_point_O", "25": "A_LH_introduced_O",
+            "26": "A_RH_point_O", "27": "A_LH_introduced_O", "28": "A_RH_point_O", "29": "A_LH_introduced_O", "30": "A_RH_point_O",
+            "31": "A_LH_introduced_O", "32": "A_RH_point_O", "33": "A_LH_introduced_O", "34": "A_RH_point_O", "35": "A_LH_introduced_O",
+            "36": "A_RH_point_O", "37": "A_LH_introduced_O", "38": "A_RH_point_O", "39": "A_LH_introduced_O", "40": "A_RH_point_O",
+            "41": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 41;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+        let speechFinishedResolve = null;
+        let isSpeaking = false;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([slides[index]]).catch(err => console.error("MathJax 渲染失败:", err));
+            }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        async function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                if (isSpeaking && avatarPlatform) { await avatarPlatform.stop(); }
+                showSlide(currentSlide + 1);
+                if (!isAutoPlaying && isTeaching) { speakContent(currentSlide + 1); }
+            }
+        }
+
+        async function previousSlide() {
+            if (currentSlide > 0) {
+                if (isSpeaking && avatarPlatform) { await avatarPlatform.stop(); }
+                showSlide(currentSlide - 1);
+                if (!isAutoPlaying && isTeaching) { speakContent(currentSlide + 1); }
+            }
+        }
+
+        function restart() {
+            if (isAutoPlaying) stopAutoPlay();
+            if (avatarPlatform) { avatarPlatform.stop(); }
+            showSlide(0);
+            isTeaching = true; // Keep teaching mode on for immediate restart
+        }
+        
+        function stopAutoPlay() {
+             isAutoPlaying = false;
+             const btn = document.getElementById('autoPlayBtn');
+             btn.disabled = false;
+             btn.textContent = '🎬 自动播放';
+             if (speechFinishedResolve) {
+                speechFinishedResolve('stopped');
+                speechFinishedResolve = null;
+             }
+             console.log("⏹️ 自动播放已停止。");
+        }
+
+
+        function updateSubtitle(slideNum) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            subtitleArea.textContent = subtitleScript[slideNum] || '';
+        }
+
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; }
+            const content = speechScript[slideNum];
+            if (!content) return;
+
+            try {
+                await avatarPlatform.stop(); // Stop previous speech just in case
+                isSpeaking = true;
+                console.log(`[Sync] 🎤 开始讲解第${slideNum}页`);
+                const action = actionMap[slideNum];
+                if (action) { await avatarPlatform.writeCmd("action", action); }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) {
+                console.error('❌ 讲解失败:', error);
+                isSpeaking = false;
+                if (isAutoPlaying && speechFinishedResolve) {
+                    speechFinishedResolve('error');
+                    speechFinishedResolve = null;
+                }
+            }
+        }
+
+        function getSlideDuration(slideNum) {
+            const speech = speechScript[slideNum];
+            if (!speech) return 10000;
+            return speech.length * 250 + 10000; // Generous timeout
+        }
+
+        function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
+        
+        function waitForSDK() { return new Promise((resolve, reject) => { if (window.AvatarPlatform) { resolve(); return; } const timeout = setTimeout(() => reject(new Error('SDK加载超时')), 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
+        
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                updateStatus('等待SDK...', 'connecting');
+                await waitForSDK();
+                if(avatarPlatform) { avatarPlatform.destroy(); }
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform.on('connected', () => {
+                    console.log('🎉 连接成功');
+                    isConnected = true;
+                    isTeaching = true;
+                    updateStatus('已连接', 'connected');
+                    startBtn.textContent = '💖 虚拟人已就绪';
+                    if (!isAutoPlaying) {
+                        setTimeout(() => speakContent(currentSlide + 1), 1000);
+                    }
+                }).on('disconnected', () => {
+                    isConnected = false;
+                    isSpeaking = false;
+                    updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error);
+                    updateStatus('错误', 'error');
+                    startBtn.textContent = '❌ 连接失败';
+                    startBtn.disabled = false;
+                    isTeaching = false;
+                }).on('frame_stop', () => {
+                    console.log(`[Sync] ✅ 收到 'frame_stop' 信号`);
+                    isSpeaking = false;
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('[Sync] 🎬 通知自动播放：可以进入下一页');
+                        speechFinishedResolve('completed');
+                        speechFinishedResolve = null;
+                    }
+                });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
                     serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}async function startAutoPlay(){if(isAutoPlaying){stopAutoPlay();return;}try{console.log('🎬 开始自动播放完整课程...');isAutoPlaying=true;const autoPlayBtn=document.getElementById('autoPlayBtn');autoPlayBtn.textContent='⏹️ 停止播放';autoPlayBtn.style.background='linear-gradient(135deg, #f44336, #d32f2f)';updateStatus('🎬 自动播放将在 2 秒后开始，请准备录屏！','recording');await new Promise(resolve=>setTimeout(resolve,2000));updateStatus('🎬 自动播放开始！','recording');document.body.classList.add('recording-mode');console.log('📹 进入录制模式，隐藏UI元素');if(!avatarPlatform||!isConnected){console.log('🎬 启动虚拟人...');await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}currentSlide=0;showSlide(0);await new Promise(resolve=>setTimeout(resolve,800));if(isConnected&&isTeaching){speakContent(1);console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');}else{console.error('❌ 虚拟人未连接，自动播放失败');stopAutoPlay();}}catch(error){console.error('❌ 自动播放失败:',error);updateStatus('自动播放失败: '+error.message,'error');stopAutoPlay();}}function stopAutoPlay(){if(isAutoPlaying){isAutoPlaying=false;document.body.classList.remove('recording-mode');const autoPlayBtn=document.getElementById('autoPlayBtn');autoPlayBtn.textContent='🎬 自动播放';autoPlayBtn.style.background='';autoPlayBtn.disabled=false;console.log('⏹️ 自动播放已停止');updateStatus('自动播放已停止','normal');}}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
+                });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1 }, avatar: { avatar_id: '110332017' }, tts: { vcn: 'x4_yiting' } });
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                startBtn.textContent = '🎀 开始讲课';
+                startBtn.disabled = false;
+            }
+        }
+        
+        async function startAutoPlay() {
+            const btn = document.getElementById('autoPlayBtn');
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                return;
+            }
+
+            if (!avatarPlatform || !isConnected) {
+                await startTeaching();
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                 if (!isConnected) {
+                    console.error("启动虚拟人失败，自动播放已取消。");
+                    return;
+                }
+            }
+
+            isAutoPlaying = true;
+            btn.disabled = true; // Disable until finished or stopped
+            btn.textContent = '⏹️ 停止播放';
+
+            try {
+                for (let i = currentSlide; i < totalSlides; i++) {
+                     if (!isAutoPlaying) break;
+                    console.log(`\n🎬 === 准备播放第 ${i + 1}/${totalSlides} 页 ===`);
+                    showSlide(i);
+                    await new Promise(resolve => setTimeout(resolve, 200));
+
+                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                    speakContent(i + 1);
+
+                    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('timeout'), getSlideDuration(i + 1)));
+                    
+                    console.log(`[Sync] ⏳ 等待讲解完成或超时...`);
+                    const result = await Promise.race([speechPromise, timeoutPromise]);
+
+                    if (!isAutoPlaying) break; // Check again in case stop was pressed during speech
+
+                    if (result === 'timeout') {
+                         console.warn(`[Sync] ⚠️ 第 ${i + 1} 页讲解超时! 强制进入下一页。`);
+                         await avatarPlatform.stop();
+                    } else {
+                         console.log(`[Sync] ✅ 第 ${i + 1} 页讲解正常完成。`);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            } catch (error) {
+                console.error('❌ 自动播放流程出现严重错误:', error);
+            } finally {
+                if (isAutoPlaying) { // Only show completion message if it wasn't manually stopped
+                    console.log('🎉 自动播放流程已全部完成');
+                    window.playbackFinished = true;
+                    document.title = "PLAYBACK_FINISHED";
+                }
+                stopAutoPlay(); // Reset state
+            }
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); } });
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
+
         setTimeout(() => {
-            console.log('🚀 自动启动播放...');
+            console.log('🚀 3秒后自动启动播放...');
             startAutoPlay();
         }, 3000);
-  </script>
+    </script>
 </body>
 </html>

@@ -1,452 +1,872 @@
-﻿
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>
-   05_5.4_不定积分综合复习
-  </title>
-<script src="https://cdn.tailwindcss.com">
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<script>
-   window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],ignoreHtmlClass:'tex2jax_ignore',processHtmlClass:'tex2jax_process'},startup:{ready:()=>{console.log('✅ MathJax已加载并配置完成');MathJax.startup.defaultReady();}}};
-  </script>
-<script async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-<style>
-   *{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;height:100%;margin:0;padding:0;}body{font-family:'Noto Serif SC',serif;background:#1a1a2e;overflow:hidden;height:100vh;width:100vw;}.blackboard{width:100vw;height:100vh;background:#1a1a2e;position:relative;border:10px solid #795548;margin:0;}.avatar-container{position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);width:975px;height:1105px;overflow:hidden;z-index:50;pointer-events:none;background:transparent;}.wrapper{width:100%;height:100%;background:transparent;pointer-events:auto;}.slide-container{width:100%;height:100%;position:relative;}.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:opacity 0.6s ease-in-out;display:flex;justify-content:center;align-items:center;padding:2rem;background-color:transparent;}.slide.active{opacity:1;visibility:visible;}.slide-content{display:flex;flex-direction:row;gap:2rem;width:100%;width: 100%;height:95%;}.blackboard-text{font-family:'Noto Serif SC','Source Han Serif SC','Source Han Serif CN','Songti SC','SimSun','宋体',serif;color:#e0e0e0;display:flex;flex-direction:column;justify-content:center;padding:1.5rem;}.blackboard-text h1{color:#f1c40f;text-shadow:0 0 8px rgba(241,196,15,0.5);}.blackboard-text h2{color:#f1c40f;border-bottom:2px solid #f39c12;}.blackboard-text h3{color:#1abc9c;}.blackboard-text strong{color:#e74c3c;}.blackboard-text .math-formula{background-color:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem;border-left:4px solid #f39c12;font-size:20px;}.animation-pane{position:relative;overflow:hidden;background:transparent;}.control-bar{position:fixed;left:-9999px;top:50%;transform:translateY(-50%);width:250px;background:rgba(30,30,30,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:200;border-radius:0 15px 15px 0;padding:20px 15px;transition:left 0.3s ease;}.control-bar:hover{left: -9999px;}.control-bar::before{content:'▶️';position:absolute;top:50%;right:-25px;transform:translateY(-50%);background:rgba(30,30,30,0.95);padding:10px 5px;border-radius:0 10px 10px 0;font-size:16px;writing-mode:vertical-lr;}.btn{padding:12px 20px;background:linear-gradient(135deg,#4a4a4a,#666);color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;transition:all 0.3s ease;width:100%;text-align:center;}.btn:hover{background:linear-gradient(135deg,#555,#777);transform:translateY(-2px);}.btn.primary{background:linear-gradient(135deg,#FF69B4,#FF1493);}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}.subtitle-area{position:absolute;bottom:20px;left:50px;right:50px;height:50px;background:rgba(0,0,0,0.8);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:60;color:white;font-size:23px;text-align:center;padding:0 20px;line-height:1.4;}.status-indicator{position:absolute;top:10px;right:10px;padding:5px 10px;background:rgba(0,0,0,0.5);color:white;border-radius:5px;font-size:16px;z-index:100;transition:opacity 0.3s ease;display:none;}.status-indicator.connected{background:rgba(76,175,80,0.8);display:block;}.status-indicator.recording{background:rgba(244,67,54,0.8);animation:pulse 1.5s infinite;display:block;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}.status-indicator.error{background:rgba(244,67,54,0.8);display:block;}.status-indicator.connecting{background:rgba(255,152,0,0.8);display:block;}.recording-mode .status-indicator{opacity:0;pointer-events:none;}.recording-mode .control-bar{left:-9999px;transition:left 0.5s ease;}.nav-btn{background-color:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);transition:all 0.3s ease;}.nav-btn:hover{background-color:rgba(255,255,255,0.2);transform:translateY(-2px);}.nav-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05_5.4_不定积分综合复习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            startup: {
+                ready: () => {
+                    console.log('✅ MathJax已加载并配置完成');
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .blackboard-text { flex: 0 0 45%; font-family: 'Noto Serif SC', serif; color: #e0e0e0; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
+        .blackboard-text h2 { font-size: 2.5rem; color: #f1c40f; border-bottom: 2px solid #f39c12; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+        .blackboard-text h3 { font-size: 1.5rem; color: #1abc9c; margin-top: 1.5rem; margin-bottom: 1rem; }
+        .blackboard-text p, .blackboard-text li { font-size: 1.25rem; line-height: 1.8; }
+        .blackboard-text strong { color: #e74c3c; }
+        .math-formula { background-color: rgba(0,0,0,0.2); margin: 1rem 0; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f39c12; font-size: 1.25rem; text-align: center; }
+        .animation-pane { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 250px; background: rgba(30,30,30,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 200; border-radius: 0 15px 15px 0; padding: 20px 15px; }
+        .btn { padding: 12px 20px; background: linear-gradient(135deg, #4a4a4a, #666); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s ease; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
 </head>
 <body class="blackboard">
-<div class="status-indicator" id="statusIndicator">
-   等待连接
-  </div>
-<div class="avatar-container">
-<div class="wrapper" id="avatarWrapper">
-</div>
-</div>
-<div class="slide-container flex-grow" id="slide-container">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
 
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2 text-center">
+                    <h1 class="text-6xl font-bold" style="color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5);">不定积分综合复习</h1>
+                    <p class="text-2xl mt-4 text-gray-400">第五章 核心技巧梳理</p>
+                    <div style="display: inline-block; text-align: left; margin-top: 2rem; font-size: 1.1rem;">
+                        <p style="margin: 0.8rem 0;">✓ 核心方法回顾</p>
+                        <p style="margin: 0.8rem 0;">✓ 解题策略分析</p>
+                        <p style="margin: 0.8rem 0;">✓ 综合例题演练</p>
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#2ecc71" font-family="serif" font-size="120" text-anchor="middle" x="300" y="280">∫</text>
+                        <text fill="#ecf0f1" font-size="28" x="180" y="420">技巧、策略与实践</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-<div class="slide">
-<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-<div style="flex: 1; text-align: center; padding: 2rem;">
-<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-       不定积分综合复习
-      </h1>
-<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-       第05章 视频 5.4
-      </p>
-<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 积分方法回顾
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 综合例题分析
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 常见积分技巧
-       </p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">
-        ✓ 解题策略梳理
-       </p>
-</div>
-</div>
-<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-<defs>
-<lineargradient id="grad2" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#27ae60;stop-opacity:1">
-</stop>
-<stop offset="100%" style="stop-color:#229954;stop-opacity:1">
-</stop>
-</lineargradient>
-</defs>
-<text fill="url(#grad2)" font-family="serif" font-size="50" text-anchor="middle" x="300" y="120">
-        ∫
-        <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7">
-</animate>
-</text>
-<circle cx="150" cy="280" fill="none" r="30" stroke="#27ae60" stroke-width="3">
-<animate attributename="r" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<circle cx="300" cy="280" fill="none" r="30" stroke="#229954" stroke-width="3">
-<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<circle cx="450" cy="280" fill="none" r="30" stroke="#e74c3c" stroke-width="3">
-<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="30;45;30">
-</animate>
-</circle>
-<text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="380">
-        综合
-       </text>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-center">
-<h1 class="text-6xl font-bold">
-       不定积分综合复习
-      </h1>
-<p class="text-2xl mt-4 text-gray-300">
-       第5章 视频 5.4
-      </p>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<circle cx="200" cy="250" fill="none" r="80" stroke="#3498db" stroke-width="4">
-<animate attributename="r" dur="2s" repeatcount="indefinite" values="80;90;80">
-</animate>
-</circle>
-<text fill="#3498db" font-size="20" text-anchor="middle" x="200" y="260">
-        换元法
-       </text>
-<circle cx="400" cy="250" fill="none" r="80" stroke="#2ecc71" stroke-width="4">
-<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="80;90;80">
-</animate>
-</circle>
-<text fill="#2ecc71" font-size="20" text-anchor="middle" x="400" y="260">
-        分部法
-       </text>
-<text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="150">
-        ∫
-       </text>
-<text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="400">
-        综合复习
-       </text>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       知识梳理
-      </h2>
-<p class="mt-4 leading-relaxed">
-       积分就是求导的逆操作，掌握两种技巧后，大部分积分题都能处理。
-      </p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        不定积分概念、基本公式
-       </li>
-<li>
-        换元法：凑微分、第二类换元
-       </li>
-<li>
-        分部法："反对幂三指"
-       </li>
-<li>
-        思维导图连接求导与积分
-       </li>
-</ul>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">
-        不定积分知识图
-       </text>
-<rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="2" width="240" x="180" y="100">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">
-        基本公式
-       </text>
-<line stroke="#f39c12" stroke-width="3" x1="300" x2="240" y1="150" y2="190">
-</line>
-<line stroke="#f39c12" stroke-width="3" x1="300" x2="360" y1="150" y2="190">
-</line>
-<rect fill="rgba(46,204,113,0.2)" height="50" rx="8" stroke="#2ecc71" stroke-width="2" width="120" x="120" y="190">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="180" y="220">
-        换元法
-       </text>
-<rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="2" width="120" x="360" y="190">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="420" y="220">
-        分部法
-       </text>
-<line marker-end="url(#arrow25)" stroke="#f39c12" stroke-width="3" x1="240" x2="240" y1="240" y2="280">
-</line>
-<line marker-end="url(#arrow25)" stroke="#f39c12" stroke-width="3" x1="360" x2="360" y1="240" y2="280">
-</line>
-<rect fill="rgba(155,89,182,0.2)" height="60" rx="10" stroke="#9b59b6" stroke-width="3" width="360" x="120" y="280">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="315">
-        综合应用
-       </text>
-<defs>
-<marker id="arrow25" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       综合例题1
-      </h2>
-<p class="mt-4 leading-relaxed">
-       看到根号 $1-x^2$ 时，常见的换元是设 $u=1-x^2$。
-      </p>
-<div class="mt-6 space-y-4">
-<p>
-<strong>
-         例：
-        </strong>
-        $\int \frac{x}{\sqrt{1-x^2}}dx$
-       </p>
-<p class="text-gray-400">
-        设 $u=1-x^2$，则 $du=-2xdx$
-       </p>
-<p class="text-gray-400">
-        $=-\frac{1}{2}\int u^{-1/2}du = -\sqrt{u}+C$
-       </p>
-<p class="text-gray-400">
-        $=-\sqrt{1-x^2}+C$
-       </p>
-</div>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="70">
-        ∫ x/√(1-x²) dx
-       </text>
-<rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="360" x="120" y="110">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="145">
-        设 u=1-x², du=-2x dx
-       </text>
-<line marker-end="url(#arrow26)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="170" y2="210">
-</line>
-<rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="210">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="245">
-        -1/2 ∫ u^(-1/2) du
-       </text>
-<line marker-end="url(#arrow26)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="270" y2="310">
-</line>
-<rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="310">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="345">
-        -√u + C
-       </text>
-<line marker-end="url(#arrow26)" stroke="#2ecc71" stroke-width="3" x1="300" x2="300" y1="370" y2="410">
-</line>
-<text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="450">
-        -√(1-x²) + C
-       </text>
-<defs>
-<marker id="arrow26" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       综合例题2
-      </h2>
-<p class="mt-4 leading-relaxed">
-       幂次越高，可能需要多次分部积分，直到幂次降为零。
-      </p>
-<div class="mt-6 space-y-4">
-<p>
-<strong>
-         例：
-        </strong>
-        $\int x^2 e^x dx$
-       </p>
-<p class="text-gray-400">
-        第一次：$u=x^2$，$dv=e^x dx$
-       </p>
-<p class="text-gray-400">
-        $=x^2 e^x - 2\int xe^x dx$
-       </p>
-<p class="text-gray-400">
-        第二次：继续分部积分
-       </p>
-<p class="text-gray-400">
-        $=x^2 e^x - 2xe^x + 2e^x + C$
-       </p>
-</div>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="60">
-        ∫ x²·e^x dx (多次分部)
-       </text>
-<rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="3" width="300" x="150" y="100">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">
-        第1次：u=x², dv=e^x dx
-       </text>
-<line marker-end="url(#arrow27)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="150" y2="180">
-</line>
-<rect fill="rgba(46,204,113,0.2)" height="50" rx="8" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="180">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="210">
-        x²·e^x - 2∫ x·e^x dx
-       </text>
-<line marker-end="url(#arrow27)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="230" y2="260">
-</line>
-<rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="260">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="290">
-        第2次：再分部一次
-       </text>
-<line marker-end="url(#arrow27)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="310" y2="340">
-</line>
-<rect fill="rgba(155,89,182,0.2)" height="60" rx="8" stroke="#9b59b6" stroke-width="3" width="440" x="80" y="340">
-</rect>
-<text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="375">
-        x²·e^x - 2x·e^x + 2e^x + C
-       </text>
-<defs>
-<marker id="arrow27" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-<div class="slide">
-<div class="slide-content">
-<div class="blackboard-text w-1/2 text-xl p-8">
-<h2 class="text-4xl font-bold mb-8 pb-2">
-       章节总结
-      </h2>
-<p class="mt-4 leading-relaxed">
-<strong>
-        第5章核心：
-       </strong>
-</p>
-<ul class="list-disc list-inside mt-6 space-y-4">
-<li>
-        不定积分是求导的逆运算
-       </li>
-<li>
-        换元法和分部法是两大技巧
-       </li>
-<li>
-        多做题培养"看一眼就知道用什么方法"的直觉
-       </li>
-<li>
-        结果可以用求导检查
-       </li>
-</ul>
-<p class="mt-8 text-gray-400">
-       积分结果可以用求导检查，这样既巩固导数也验证答案。
-      </p>
-</div>
-<div class="animation-pane w-1/2">
-<svg class="w-full h-full" viewbox="0 0 600 500">
-<text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">
-        📚 第5章完成
-       </text>
-<rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="4" width="180" x="100" y="140">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="190" y="185">
-        导数⇄积分
-       </text>
-<text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="180">
-        ↔
-       </text>
-<rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="4" width="180" x="320" y="140">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="410" y="185">
-        两大技巧
-       </text>
-<line marker-end="url(#arrow28)" stroke="#f39c12" stroke-width="4" x1="300" x2="300" y1="220" y2="260">
-</line>
-<rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="4" width="300" x="150" y="260">
-</rect>
-<text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="305">
-        多练习→直觉
-       </text>
-<text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="400">
-        下一章：定积分
-       </text>
-<defs>
-<marker id="arrow28" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12">
-</path>
-</marker>
-</defs>
-</svg>
-</div>
-</div>
-</div>
-</div>
-<div class="subtitle-area" id="subtitleArea">
-   欢迎学习不定积分综合复习！点击开始讲课启动虚拟人讲师。
-  </div>
-<div class="control-bar">
-<div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
-    第
-    <span id="currentSlide">
-     1
-    </span>
-    /
-    <span id="totalSlides">
-     5
-    </span>
-    页
-   </div>
-<button class="btn nav-btn" id="prevBtn" onclick="previousSlide()">
-    ⬅️ 上一页
-   </button>
-<button class="btn primary" id="startBtn" onclick="startTeaching()">
-    🎀 开始讲课
-   </button>
-<button class="btn nav-btn" id="nextBtn" onclick="nextSlide()">
-    下一页 ➡️
-   </button>
-<button class="btn" onclick="restart()">
-    🔄 重新开始
-   </button>
-<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">
-    🎬 自动播放
-   </button>
-</div>
-<script type="module">
-        // 播放完成标记（供OBS检测）
-        window.playbackFinished = false;
+        <!-- Slide 2: 不定积分的定义 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">不定积分的定义</h2>
+                    <p>不定积分是求导的<strong>逆运算</strong>。</p>
+                    <div class="math-formula">
+                        $$ \\int f(x) \\, dx = F(x) + C $$
+                    </div>
+                    <p>其中 $F(x)$ 是 $f(x)$ 的一个<strong>原函数</strong>，$C$ 是任意常数。</p>
+                    <p class="mt-4">这意味着：如果 $F'(x) = f(x)$，那么 $F(x)$ 就是 $f(x)$ 的原函数。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="100">不定积分</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="280" x="160" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="225">∫ f(x) dx = F(x) + C</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="340">F'(x) = f(x)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-   try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
-  </script>
-<script>
-   const lessonTitle="不定积分综合复习";const subtitleScript={"1":"欢迎学习不定积分综合复习！","2":"积分就是求导的逆操作，掌握两种技巧后，大部分积分题都能处理。","3":"看到根号1−x²时，常见的换元是设 u=1−x²。","4":"幂次越高，可能需要多次分部积分，直到幂次降为零。","5":"积分结果可以用求导检查，这样既巩固导数也验证答案。"};const actionMap={"1":"A_RLH_welcome_O","2":"A_RLH_welcome_O","3":"A_LH_introduced_O","4":"A_RH_point_O","5":"A_RLH_welcome_O"};let currentSlide=1;const totalSlides=5;let avatarPlatform=null;let isConnected=false;let isTeaching=false;let isAutoPlaying=false;const slides=document.querySelectorAll('.slide');function showSlide(index){slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));currentSlide=index;document.getElementById('currentSlide').textContent=index+1;if(window.MathJax&&window.MathJax.typesetPromise){window.MathJax.typesetPromise([slides[index]]).catch(err=>console.error(err));}document.getElementById('prevBtn').disabled=index===0;document.getElementById('nextBtn').disabled=index===totalSlides-1;updateSubtitle(index+1);}function nextSlide(){if(currentSlide<totalSlides-1){showSlide(currentSlide+1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function previousSlide(){if(currentSlide>0){showSlide(currentSlide-1);if(!isAutoPlaying)speakContent(currentSlide+1);}}function restart(){showSlide(0);if(avatarPlatform){avatarPlatform.stop();}isConnected=false;isTeaching=false;isAutoPlaying=false;}function updateSubtitle(slideNum){const subtitleArea=document.getElementById('subtitleArea');subtitleArea.textContent=subtitleScript[slideNum]||'';}async function speakContent(slideNum){if(!isTeaching||!isConnected||!avatarPlatform){console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');return;}const content=subtitleScript[slideNum];if(!content)return;try{const action=actionMap[slideNum];if(action){await avatarPlatform.writeCmd("action",action);console.log(`✅ 执行动作: ${action}`);}await avatarPlatform.writeText(content,{nlp:false});console.log(`✅ 沐沐讲解第${slideNum}页: ${content}`);updateSubtitle(slideNum);}catch(error){console.error('❌ 虚拟人讲解失败:',error);}}function updateStatus(message,type='normal'){const indicator=document.getElementById('statusIndicator');if(indicator){indicator.textContent=message;indicator.className='status-indicator';if(type==='connected'){indicator.classList.add('connected');}else if(type==='error'){indicator.classList.add('error');}else if(type==='connecting'){indicator.classList.add('connecting');}}}function waitForSDK(){return new Promise((resolve,reject)=>{if(typeof AvatarPlatform!=='undefined'){resolve();return;}const timeout=setTimeout(()=>{reject(new Error('SDK加载超时，请刷新页面重试'));},10000);window.addEventListener('sdkReady',function handler(){clearTimeout(timeout);window.removeEventListener('sdkReady',handler);resolve();});})}async function startTeaching(){const startBtn=document.getElementById('startBtn');startBtn.textContent='🔄 启动中...';startBtn.disabled=true;try{console.log('⏳ 等待SDK模块加载...');updateStatus('等待SDK加载...','connecting');await waitForSDK();console.log('✅ 讯飞官方SDK已加载');updateStatus('SDK已加载','connecting');if(avatarPlatform){avatarPlatform.destroy();}avatarPlatform=new AvatarPlatform({useInlinePlayer:true});avatarPlatform.on('connected',(initResp)=>{console.log('🎉 虚拟人连接成功！',initResp);isConnected=true;isTeaching=true;updateStatus('已连接','connected');startBtn.textContent='💖 虚拟人已就绪';setTimeout(()=>{speakContent(currentSlide+1);},1000);}).on('disconnected',(err)=>{console.log('🔌 虚拟人连接断开');isConnected=false;updateStatus('连接断开','error');if(err){console.error('❌ 连接异常断开:',err);}}).on('error',(error)=>{console.error('❌ 虚拟人错误:',error);updateStatus('错误: '+error.message,'error');startBtn.textContent='❌ 连接失败';startBtn.disabled=false;isTeaching=false;});avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',                                    // 数学讲解 AppID
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',             // 数学讲解 API密钥
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',       // 数学讲解 API密钥
-                    sceneId: '237415046114840576',                       // 数学讲解 场景ID
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}async function startAutoPlay(){if(!avatarPlatform||!isConnected){await startTeaching();await new Promise(resolve=>setTimeout(resolve,2000));}isAutoPlaying=true;document.getElementById('autoPlayBtn').disabled=true;for(let i=currentSlide;i<totalSlides;i++){showSlide(i);speakContent(i+1);const duration=(subtitleScript[i+1].length/5)*1000+2000;await new Promise(resolve=>setTimeout(resolve,duration));}isAutoPlaying=false;document.getElementById('autoPlayBtn').disabled=false;}document.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}else if(e.key==='ArrowLeft'){e.preventDefault();previousSlide();}else if(e.key==='Enter'){e.preventDefault();speakContent(currentSlide+1);}});document.getElementById('totalSlides').textContent=totalSlides;showSlide(0);
-        // 🚀 自动启动播放 - 延迟3秒后自动开始
-        setTimeout(() => {
-            console.log('🚀 自动启动播放...');
-            startAutoPlay();
-        }, 3000);
-  </script>
+        <!-- Slide 3: 积分与导数的关系 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">积分与导数的关系</h2>
+                    <p>积分与求导互为<strong>逆运算</strong>。</p>
+                    <div class="math-formula" style="border-color: #2ecc71;">
+                        $$ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $$
+                    </div>
+                    <p>这个关系告诉我们：对积分结果求导，应该得到原来的被积函数。</p>
+                    <p class="mt-4" style="color: #e74c3c;">这也是检验积分结果是否正确的重要方法！</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="32" text-anchor="middle" x="300" y="100">互逆关系</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="220" x="190" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="195">求导 F'(x)</text>
+                        <text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="290">⇅</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="220" x="190" y="320"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="365">积分 ∫f(x)dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 换元法介绍 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">方法一：换元积分法</h2>
+                    <p>换元法是处理<strong>复合函数</strong>积分的核心技巧。</p>
+                    <h3>核心思想</h3>
+                    <p>通过变量代换 $u=g(x)$，将复杂的积分转化为简单的积分。</p>
+                    <div class="math-formula">
+                        $$ \\int f(g(x))g'(x) \\, dx = \\int f(u) \\, du $$
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">换元法：化繁为简</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="2" width="400" x="100" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="190">∫ f(g(x))g'(x) dx</text>
+                        <text fill="#f1c40f" font-size="30" text-anchor="middle" x="300" y="270">↓ u = g(x)</text>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="2" width="400" x="100" y="310"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="350">∫ f(u) du</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 换元法的关键 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">换元法的关键技巧</h2>
+                    <h3>"凑微分"</h3>
+                    <p>观察被积函数，寻找<strong>"一部分"是"另一部分"导数</strong>的形式。</p>
+                    <p class="mt-4">例如：在 $\\int f(g(x))g'(x) \\, dx$ 中</p>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-xl">
+                        <li>$g(x)$ 是内层函数</li>
+                        <li>$g'(x)$ 是它的导数</li>
+                        <li>$f$ 是外层函数</li>
+                    </ul>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">凑微分技巧</text>
+                        <circle cx="300" cy="250" fill="rgba(241,196,15,0.1)" r="100" stroke="#f39c12" stroke-width="3"></circle>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="240">观察</text>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="270">↓</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">凑微分</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="400">找到内层函数及其导数</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: 换元法例题 - 问题提出 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">换元法示例（1/3）</h2>
+                    <h3>问题</h3>
+                    <p>求解 $\\int \\frac{x}{\\sqrt{1-x^2}} \\, dx$</p>
+                    <h3 class="mt-6">第一步：观察</h3>
+                    <p>分子是 $x$，分母根号内是 $1-x^2$。</p>
+                    <p class="mt-4">注意到：$(1-x^2)' = -2x$</p>
+                    <p style="color: #2ecc71;">分子 $x$ 与根号内函数的导数只差一个常数！</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="70">$\\int \\frac{x}{\\sqrt{1-x^2}} \\, dx$</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="360" x="120" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">观察：分子与分母的关系</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">$(1-x^2)' = -2x$</text>
+                        <text fill="#f1c40f" font-size="20" text-anchor="middle" x="300" y="380">可以凑微分！</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 换元法例题 - 换元过程 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">换元法示例（2/3）</h2>
+                    <h3>第二步：换元</h3>
+                    <p>令 $u = 1-x^2$</p>
+                    <p class="mt-2">则 $du = -2x \\, dx$</p>
+                    <p class="mt-2">即 $x \\, dx = -\\frac{1}{2}du$</p>
+                    <h3 class="mt-6">第三步：代入</h3>
+                    <div class="math-formula">
+                        $$ \\int \\frac{x}{\\sqrt{1-x^2}} \\, dx = \\int \\frac{1}{\\sqrt{u}} \\left(-\\frac{1}{2}du\\right) $$
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="360" x="120" y="110"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="145">$u = 1-x^2, xdx = -\\frac{1}{2} du$</text>
+                        <line marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="170" y2="210"></line>
+                        <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="210"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="245">$- \\frac{1}{2} \\int u^{-1/2} du$</text>
+                        <defs><marker id="arrow1" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 换元法例题 - 完成计算 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">换元法示例（3/3）</h2>
+                    <h3>第四步：积分</h3>
+                    <div class="math-formula">
+                        $$ -\\frac{1}{2}\\int u^{-1/2}du = -\\frac{1}{2} \\cdot 2u^{1/2} + C = -\\sqrt{u} + C $$
+                    </div>
+                    <h3 class="mt-4">第五步：回代</h3>
+                    <div class="math-formula" style="border-color: #2ecc71;">
+                        $$ = -\\sqrt{1-x^2} + C $$
+                    </div>
+                    <p class="mt-4" style="color: #e74c3c;">完成！可以通过求导验证结果。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="120"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="155">$- \\frac{1}{2} \\int u^{-1/2} du$</text>
+                        <line marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="180" y2="220"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="220"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="255">$- \\sqrt{1-x^2} + C$</text>
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="350">✓ 答案</text>
+                        <defs><marker id="arrow2" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 分部积分法介绍 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">方法二：分部积分法</h2>
+                    <p>分部积分法用于处理<strong>两个不同类型函数乘积</strong>的积分。</p>
+                    <h3>核心公式</h3>
+                     <div class="math-formula">
+                        $$ \\int u \\, dv = uv - \\int v \\, du $$
+                    </div>
+                    <p class="mt-4">这个公式来源于乘积的求导法则。</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">分部积分法</text>
+                        <rect fill="rgba(0,0,0,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="2" width="400" x="100" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="195">$\\int u \\, dv = uv - \\int v \\, du$</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">处理函数乘积</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 分部积分法的选择技巧 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">选择 u 的技巧</h2>
+                    <h3>"反对幂三指"口诀</h3>
+                    <p>按以下顺序，谁靠前，谁优先选作 $u$：</p>
+                    <ol class="list-decimal list-inside mt-4 space-y-3 text-xl">
+                        <li><strong>反</strong>三角函数（如 $\\arcsin x$）</li>
+                        <li><strong>对</strong>数函数（如 $\\ln x$）</li>
+                        <li><strong>幂</strong>函数（如 $x^n$）</li>
+                        <li><strong>三</strong>角函数（如 $\\sin x$）</li>
+                        <li><strong>指</strong>数函数（如 $e^x$）</li>
+                    </ol>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="80">选择 u 的优先级</text>
+                        <text fill="#1abc9c" font-size="28" text-anchor="middle" x="300" y="150">反对幂三指</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="220">反三角 > 对数 > 幂</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="260">> 三角 > 指数</text>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="300" y="350">(LIATE)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 分部积分例题 - 问题提出 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">分部法示例（1/4）</h2>
+                    <h3>问题</h3>
+                    <p>求解 $\\int x^2 e^x \\, dx$</p>
+                    <h3 class="mt-6">第一步：分析</h3>
+                    <p>这是<strong>幂函数</strong>与<strong>指数函数</strong>的乘积。</p>
+                    <p class="mt-4">按"反对幂三指"口诀：</p>
+                    <p style="color: #2ecc71;">幂函数在指数函数前面，所以选 $u=x^2$</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                     <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">$\\int x^2 e^x \\, dx$</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">幂函数 × 指数函数</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">选择：$u = x^2$</text>
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="360">$dv = e^x dx$</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: 分部积分例题 - 第一次分部 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">分部法示例（2/4）</h2>
+                    <h3>第二步：求 du 和 v</h3>
+                    <p>$u=x^2$ → $du=2x \\, dx$</p>
+                    <p>$dv=e^x dx$ → $v=e^x$</p>
+                    <h3 class="mt-4">第三步：第一次分部</h3>
+                    <div class="math-formula">
+                        $$ \\int x^2 e^x \\, dx = x^2e^x - \\int e^x \\cdot 2x \\, dx $$
+                    </div>
+                    <div class="math-formula" style="border-color: #2ecc71;">
+                        $$ = x^2e^x - 2\\int xe^x \\, dx $$
+                    </div>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <rect fill="rgba(52,152,219,0.2)" height="50" rx="8" stroke="#3498db" stroke-width="3" width="300" x="150" y="100"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">$u=x^2, dv=e^x dx$</text>
+                        <line marker-end="url(#arrow3)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="150" y2="180"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="60" rx="8" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="215">$x^2e^x - 2\\int xe^x dx$</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="320">还需要再次分部！</text>
+                        <defs><marker id="arrow3" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 分部积分例题 - 第二次分部 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">分部法示例（3/4）</h2>
+                    <h3>第四步：对 $\\int xe^x dx$ 再次分部</h3>
+                    <p>令 $u=x, dv=e^x dx$</p>
+                    <p>则 $du=dx, v=e^x$</p>
+                    <div class="math-formula">
+                        $$ \\int xe^x dx = xe^x - \\int e^x dx = xe^x - e^x $$
+                    </div>
+                    <p class="mt-4" style="color: #2ecc71;">幂次降低了，可以直接积分！</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="120"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="150">对 $\\int xe^x dx$ 再分部</text>
+                        <line marker-end="url(#arrow4)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="170" y2="200"></line>
+                        <rect fill="rgba(46,204,113,0.2)" height="60" rx="8" stroke="#2ecc71" stroke-width="3" width="300" x="150" y="200"></rect>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="235">$xe^x - e^x$</text>
+                        <defs><marker id="arrow4" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: 分部积分例题 - 最终结果 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">分部法示例（4/4）</h2>
+                    <h3>第五步：整合结果</h3>
+                    <div class="math-formula">
+                        $$ \\int x^2 e^x \\, dx = x^2e^x - 2(xe^x - e^x) + C $$
+                    </div>
+                    <h3>化简</h3>
+                    <div class="math-formula" style="border-color: #2ecc71;">
+                        $$ = x^2e^x - 2xe^x + 2e^x + C $$
+                    </div>
+                    <div class="math-formula" style="border-color: #2ecc71;">
+                        $$ = (x^2 - 2x + 2)e^x + C $$
+                    </div>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">最终答案</text>
+                        <rect fill="rgba(155,89,182,0.2)" height="80" rx="8" stroke="#9b59b6" stroke-width="3" width="440" x="80" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">$(x^2-2x+2)e^x + C$</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">✓ 完成</text>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="300" y="380">可通过求导验证</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: 解题策略第一步 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">解题策略（1/3）</h2>
+                    <h3>第一步：直接积分</h3>
+                    <p>首先判断：是否为<strong>基本积分公式</strong>？</p>
+                    <p class="mt-4">常见的基本积分：</p>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-xl">
+                        <li>$\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$</li>
+                        <li>$\\int e^x dx = e^x + C$</li>
+                        <li>$\\int \\sin x dx = -\\cos x + C$</li>
+                    </ul>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">策略一：直接积分</text>
+                        <circle cx="300" cy="250" fill="rgba(46,204,113,0.1)" r="100" stroke="#2ecc71" stroke-width="3"></circle>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="260">基本公式？</text>
+                        <text fill="#f1c40f" font-size="20" text-anchor="middle" x="300" y="380">最简单的情况</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: 解题策略第二步 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">解题策略（2/3）</h2>
+                    <h3>第二步：化简变形</h3>
+                    <p>如果不能直接积分，考虑：</p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li><strong>代数变形</strong>：展开、因式分解</li>
+                        <li><strong>三角变形</strong>：利用三角恒等式</li>
+                        <li><strong>分式拆分</strong>：部分分式分解</li>
+                    </ul>
+                    <p class="mt-6" style="color: #e74c3c;">目标：转化为更简单的形式</p>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">策略二：化简变形</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="180">代数变形</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="240">三角变形</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="300">分式拆分</text>
+                        <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="400">化繁为简</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: 解题策略第三步 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">解题策略（3/3）</h2>
+                    <h3>第三步：选择方法</h3>
+                    <p><strong>换元法</strong>：具有 $f(g(x))g'(x)$ 结构</p>
+                    <p class="mt-3"><strong>分部法</strong>：两个不同类型函数的乘积</p>
+                    <h3 class="mt-6">组合使用</h3>
+                    <p>有时需要：</p>
+                    <ul class="list-disc list-inside mt-3 space-y-2 text-xl">
+                        <li>先换元，再分部</li>
+                        <li>先分部，再换元</li>
+                        <li>多次使用同一方法</li>
+                    </ul>
+                </div>
+                 <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">策略三：选择方法</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="60" rx="8" stroke="#3498db" stroke-width="3" width="280" x="160" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="185">换元法</text>
+                        <rect fill="rgba(231,76,60,0.2)" height="60" rx="8" stroke="#e74c3c" stroke-width="3" width="280" x="160" y="240"></rect>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="275">分部法</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="360">或组合使用</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: 检验方法 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">检验积分结果</h2>
+                    <h3>重要习惯</h3>
+                    <p>完成积分后，<strong>对结果求导</strong>进行检验。</p>
+                    <div class="math-formula">
+                        $$ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $$
+                    </div>
+                    <p class="mt-4">如果求导后得到原来的被积函数，说明积分正确！</p>
+                    <p class="mt-4" style="color: #e74c3c;">这是验证答案最可靠的方法。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">检验方法</text>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="195">对积分结果求导</text>
+                        <text fill="#f1c40f" font-size="30" text-anchor="middle" x="300" y="280">↓</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="300"></rect>
+                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="345">应得到被积函数</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: 培养直觉 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">培养积分直觉</h2>
+                    <h3>熟能生巧</h3>
+                    <p>通过<strong>大量练习</strong>，培养快速识别题型的能力。</p>
+                    <p class="mt-4">练习的目标：</p>
+                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                        <li>一眼看出该用什么方法</li>
+                        <li>快速找到换元的变量</li>
+                        <li>准确选择分部积分的 u</li>
+                    </ul>
+                    <p class="mt-6" style="color: #2ecc71;">从"思考"到"直觉"的转变</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">培养直觉</text>
+                        <circle cx="300" cy="250" fill="rgba(241,196,15,0.1)" r="120" stroke="#f39c12" stroke-width="4"></circle>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">练习</text>
+                        <text fill="#f1c40f" font-size="30" text-anchor="middle" x="300" y="260">↓</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="290">直觉</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="420">量变引起质变</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: 总结 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="blackboard-text w-1/2">
+                    <h2 class="font-bold">本章总结</h2>
+                    <h3>核心要点</h3>
+                    <ul class="list-disc list-inside mt-4 space-y-4 text-xl">
+                        <li><strong>两大方法</strong>：换元法与分部积分法</li>
+                        <li><strong>一个习惯</strong>：先观察，后动手</li>
+                        <li><strong>一个技巧</strong>：求导检验结果</li>
+                        <li><strong>一个目标</strong>：通过练习培养直觉</li>
+                    </ul>
+                    <p class="mt-8 text-gray-400">不定积分是微积分的基石，掌握它为后续学习打下坚实基础。</p>
+                </div>
+                <div class="animation-pane w-1/2">
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="100">不定积分 · 核心</text>
+                        <circle cx="300" cy="280" fill="rgba(241,196,15,0.1)" r="120" stroke="#f39c12" stroke-width="4"></circle>
+                        <text fill="#3498db" font-size="24" text-anchor="middle" x="220" y="280">换元</text>
+                        <text fill="#fff" font-size="24" text-anchor="middle" x="300" y="280">&</text>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="380" y="280">分部</text>
+                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="450">练习 → 直觉 → 成功</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习不定积分综合复习！</div>
+    <div class="control-bar">
+        <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">
+            第 <span id="currentSlide">1</span> / <span id="totalSlides">20</span> 页
+        </div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <script type="module">
+        try {
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            console.log('✅ 讯飞SDK模块已加载');
+        } catch (error) {
+            console.error('❌ SDK模块加载失败:', error);
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = {
+            "1": "欢迎进行不定积分综合复习！本节将系统梳理核心技巧与策略。",
+            "2": "不定积分是求导的逆运算，寻找原函数是其本质。",
+            "3": "积分与导数互为逆运算，这也是检验积分结果的重要方法。",
+            "4": "换元法是处理复合函数积分的核心技巧，通过变量代换化繁为简。",
+            "5": "换元法的关键在于凑微分，找到内层函数及其导数。",
+            "6": "来看换元法实例第一步：观察被积函数的结构特征。",
+            "7": "换元法实例第二步：进行变量代换，将积分转化为简单形式。",
+            "8": "换元法实例第三步：完成积分并回代，得到最终答案。",
+            "9": "分部积分法用于处理两个不同类型函数乘积的积分。",
+            "10": "选择u的技巧：按反对幂三指口诀确定优先级。",
+            "11": "分部法实例第一步：分析函数类型，选择合适的u和dv。",
+            "12": "分部法实例第二步：进行第一次分部积分，降低幂次。",
+            "13": "分部法实例第三步：对剩余积分再次分部，继续降低幂次。",
+            "14": "分部法实例第四步：整合结果并化简，得到最终答案。",
+            "15": "解题策略第一步：判断是否为基本积分公式，能直接积分最好。",
+            "16": "解题策略第二步：考虑化简变形，通过代数或三角变换简化。",
+            "17": "解题策略第三步：选择换元法或分部法，有时需要组合使用。",
+            "18": "完成积分后，对结果求导进行检验是重要的好习惯。",
+            "19": "通过大量练习培养积分直觉，从思考到直觉的转变是关键。",
+            "20": "总结：掌握两大方法，养成好习惯，通过练习培养直觉。"
+        };
+
+        const speechScript = {
+            "1": "同学们好！今天我们对不定积分进行一次全面的复习，把之前学过的核心方法和解题技巧系统地串联起来。",
+            "2": "首先，我们必须牢记不定积分的本质。它是求导的逆向操作，我们做的每一道积分题，都是在为给定的导数寻找它的原函数。",
+            "3": "积分与导数互为逆运算，这个关系非常重要。它告诉我们，对积分结果求导，应该得到原来的被积函数。这也是检验答案是否正确的最可靠方法。",
+            "4": "我们的第一个强大工具，是换元积分法。它的精髓在于通过变量代换，把一个看起来很复杂的积分，变成我们熟悉的基本积分形式。",
+            "5": "换元法的关键技巧就是凑微分。我们要观察被积函数，寻找一部分是另一部分导数的形式。找到内层函数和它的导数，就成功了一半。",
+            "6": "我们来看一个典型的换元法例子。第一步是观察：看到这种根号和多项式的组合，我们要思考分子与根号内函数的导数有什么关系。",
+            "7": "第二步是换元。我们令u等于根号内的表达式，然后求出du，看看能不能把原积分中的部分凑成du的形式。代入后，积分就变简单了。",
+            "8": "第三步是完成积分并回代。对u的简单积分我们都会做，做完后别忘了把u换回x，这样就得到了最终答案。",
+            "9": "我们的第二个法宝，是分部积分法。当被积函数是两个不同类型的函数相乘时，比如幂函数乘以指数函数，就该请出分部积分法了。",
+            "10": "选择谁做u很关键，记住反对幂三指这个口诀。反三角函数优先级最高，然后是对数、幂函数、三角函数，最后是指数函数。",
+            "11": "我们来看一个需要多次分部积分的例子。第一步是分析函数类型。这是幂函数和指数函数的乘积，按口诀，我们选幂函数作为u。",
+            "12": "第二步进行第一次分部。求出du和v后，代入分部积分公式。我们发现，幂函数的次数降低了，但还需要继续积分。",
+            "13": "第三步对剩余的积分再次分部。每进行一次分部，幂函数的次数就会降低一次，直到它变成常数，问题就解决了。",
+            "14": "第四步是整合结果。把两次分部的结果合并起来，化简后就得到了最终答案。这个过程需要耐心和细心。",
+            "15": "那么，拿到一道题，到底该用什么方法呢？第一步，先看能不能直接积分。如果是基本积分公式，那就最简单了。",
+            "16": "第二步，如果不能直接积分，考虑化简变形。通过代数变换、三角恒等式或分式拆分，把复杂的式子变简单。",
+            "17": "第三步，选择合适的方法。如果有复合函数结构，优先考虑换元；如果是函数乘积，就想想分部。有时候还需要组合使用这两种方法。",
+            "18": "完成积分后，一定要养成检验的好习惯。对结果求导，看看能不能得到原来的被积函数。这是验证答案最可靠的方法。",
+            "19": "最后，我要强调练习的重要性。通过大量练习，我们能培养出快速识别题型、选择正确方法的直觉。从需要思考到形成直觉，这是一个质的飞跃。",
+            "20": "好了，我们来总结一下。不定积分的计算，主要依靠换元法和分部法这两大支柱。养成先观察后动手、做完求导检验的好习惯。通过大量练习培养直觉，你就能熟练掌握不定积分了！"
+        };
+        
+        const actionMap = {
+            "1": "A_RLH_welcome_O",
+            "2": "A_RH_point_O",
+            "3": "A_LH_introduced_O",
+            "4": "A_RH_point_O",
+            "5": "A_LH_introduced_O",
+            "6": "A_RH_point_O",
+            "7": "A_LH_introduced_O",
+            "8": "A_RH_point_O",
+            "9": "A_LH_introduced_O",
+            "10": "A_RH_point_O",
+            "11": "A_LH_introduced_O",
+            "12": "A_RH_point_O",
+            "13": "A_LH_introduced_O",
+            "14": "A_RH_point_O",
+            "15": "A_LH_introduced_O",
+            "16": "A_RH_point_O",
+            "17": "A_LH_introduced_O",
+            "18": "A_RH_point_O",
+            "19": "A_LH_introduced_O",
+            "20": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 20;
+        let avatarPlatform = null;
+        let isConnected = false;
+        let isTeaching = false;
+        let isAutoPlaying = false;
+        let speechFinishedResolve = null;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err));
+            }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        function nextSlide() { 
+            if (currentSlide < totalSlides - 1) { 
+                showSlide(currentSlide + 1); 
+                if (!isAutoPlaying) speakContent(currentSlide + 1); 
+            } 
+        }
+        
+        function previousSlide() { 
+            if (currentSlide > 0) { 
+                showSlide(currentSlide - 1); 
+                if (!isAutoPlaying) speakContent(currentSlide + 1); 
+            } 
+        }
+        
+        function restart() { 
+            showSlide(0); 
+            if (avatarPlatform) { 
+                avatarPlatform.stop(); 
+            } 
+            isConnected = false; 
+            isTeaching = false; 
+            isAutoPlaying = false; 
+        }
+        
+        function updateSubtitle(slideNum) { 
+            const subtitleArea = document.getElementById('subtitleArea'); 
+            subtitleArea.textContent = subtitleScript[slideNum] || ''; 
+        }
+        
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) { 
+                console.log('⚠️ 虚拟人未连接，跳过播报'); 
+                return; 
+            }
+            const content = speechScript[slideNum];
+            if (!content) return;
+            try {
+                const action = actionMap[slideNum];
+                if (action) { 
+                    await avatarPlatform.writeCmd("action", action); 
+                }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) { 
+                console.error('❌ 讲解失败:', error); 
+            }
+        }
+
+        function updateStatus(message, type) { 
+            const indicator = document.getElementById('statusIndicator'); 
+            if (indicator) { 
+                indicator.textContent = message; 
+                indicator.className = 'status-indicator'; 
+                if (type === 'connected') indicator.classList.add('connected'); 
+                else if (type === 'error') indicator.classList.add('error'); 
+                else if (type === 'connecting') indicator.classList.add('connecting'); 
+            } 
+        }
+        
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (typeof AvatarPlatform !== 'undefined') { 
+                    resolve(); 
+                    return; 
+                }
+                const timeout = setTimeout(() => { 
+                    reject(new Error('SDK加载超时')); 
+                }, 10000);
+                window.addEventListener('sdkReady', function handler() { 
+                    clearTimeout(timeout); 
+                    window.removeEventListener('sdkReady', handler); 
+                    resolve(); 
+                });
+            });
+        }
+
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+            try {
+                updateStatus('等待SDK...', 'connecting');
+                await waitForSDK();
+                if (avatarPlatform) { 
+                    avatarPlatform.destroy(); 
+                }
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform.on('connected', (initResp) => {
+                    console.log('🎉 连接成功'); 
+                    isConnected = true; 
+                    isTeaching = true; 
+                    updateStatus('已连接', 'connected'); 
+                    startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => { 
+                        speakContent(currentSlide + 1); 
+                    }, 1000);
+                }).on('disconnected', (err) => {
+                    isConnected = false; 
+                    updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error); 
+                    updateStatus('错误', 'error'); 
+                    startBtn.textContent = '❌ 连接失败'; 
+                    startBtn.disabled = false; 
+                    isTeaching = false;
+                }).on('frame_stop', (data) => {
+                    if (isAutoPlaying && speechFinishedResolve) { 
+                        speechFinishedResolve(); 
+                        speechFinishedResolve = null; 
+                    }
+                });
+                
+                avatarPlatform.setApiInfo({ 
+                    appId: 'e8c180ed', 
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', 
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', 
+                    sceneId: '237415046114840576', 
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' 
+                });
+                avatarPlatform.setGlobalParams({ 
+                    stream: { protocol: 'xrtc', alpha: 1 }, 
+                    avatar: { avatar_id: '110332017' }, 
+                    tts: { vcn: 'x4_yiting' } 
+                });
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error); 
+                updateStatus('启动失败', 'error'); 
+                startBtn.textContent = '🎀 开始讲课'; 
+                startBtn.disabled = false;
+            }
+        }
+
+        function getSlideDuration(slideNum) { 
+            const speech = speechScript[slideNum]; 
+            if (!speech) return 5000; 
+            return speech.length * 150 + 2000; 
+        }
+        
+        async function startAutoPlay() {
+            if (!isTeaching) { 
+                await startTeaching(); 
+                await new Promise(r => setTimeout(r, 3000)); 
+            }
+            if (!isConnected) { 
+                alert("虚拟人未连接，无法自动播放。"); 
+                return; 
+            }
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
+            for (let i = currentSlide; i < totalSlides; i++) {
+                if (!isAutoPlaying) break;
+                showSlide(i);
+                const speechPromise = new Promise(resolve => { 
+                    speechFinishedResolve = resolve; 
+                });
+                await speakContent(i + 1);
+                const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                await Promise.race([speechPromise, timeoutPromise]);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            }
+            isAutoPlaying = false;
+            document.getElementById('autoPlayBtn').disabled = false;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { 
+                e.preventDefault(); 
+                nextSlide(); 
+            }
+            else if (e.key === 'ArrowLeft') { 
+                e.preventDefault(); 
+                previousSlide(); 
+            }
+        });
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
+    </script>
 </body>
 </html>
