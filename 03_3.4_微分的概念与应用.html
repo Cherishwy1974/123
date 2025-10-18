@@ -718,11 +718,14 @@
             try {
                 updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
+                console.log('✅ SDK已就绪，开始初始化虚拟人...');
 
                 if(avatarPlatform) {
+                    console.log('🔄 销毁旧的虚拟人实例...');
                     avatarPlatform.destroy();
                 }
 
+                console.log('🎭 创建新的虚拟人实例...');
                 avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
 
                 avatarPlatform.on('connected', (initResp) => {
@@ -735,12 +738,16 @@
                         speakContent(currentSlide + 1);
                     }, 1000);
                 }).on('disconnected', (err) => {
+                    console.error('❌ 虚拟人连接断开:', err);
                     isConnected = false;
                     isSpeaking = false;
                     updateStatus('连接断开', 'error');
+                    startBtn.textContent = '🔄 重新连接';
+                    startBtn.disabled = false;
                 }).on('error', (error) => {
-                    console.error('❌ 错误:', error);
-                    updateStatus('错误', 'error');
+                    console.error('❌ 虚拟人SDK错误:', error);
+                    console.error('错误详情:', JSON.stringify(error, null, 2));
+                    updateStatus('错误: ' + (error.message || '未知错误'), 'error');
                     startBtn.textContent = '❌ 连接失败';
                     startBtn.disabled = false;
                     isTeaching = false;
@@ -756,6 +763,7 @@
                     }
                 });
 
+                console.log('🔑 设置API信息...');
                 avatarPlatform.setApiInfo({
                     appId: 'e8c180ed',
                     apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
@@ -764,6 +772,7 @@
                     serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
                 });
 
+                console.log('⚙️ 设置全局参数...');
                 avatarPlatform.setGlobalParams({
                     stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 },
                     avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 },
@@ -771,10 +780,12 @@
                     avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
                 });
 
+                console.log('🚀 启动虚拟人连接...');
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error);
-                updateStatus('启动失败', 'error');
+                console.error('错误堆栈:', error.stack);
+                updateStatus('启动失败: ' + (error.message || '未知错误'), 'error');
                 startBtn.textContent = '🎀 开始讲课';
                 startBtn.disabled = false;
             }
