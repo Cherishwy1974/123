@@ -678,8 +678,12 @@
             if (!content) return;
 
             try {
-                // 先停止任何可能正在进行的讲解，确保纯净的开始
-                await avatarPlatform.stop();
+                // 只有在正在讲解时才停止，避免在刚连接时调用stop导致断开
+                if (isSpeaking) {
+                    console.log('[Sync] 🛑 停止当前讲解');
+                    await avatarPlatform.stop();
+                }
+
                 isSpeaking = true;
                 console.log(`[Sync] 🎤 开始讲解第${slideNum}页`);
 
@@ -734,9 +738,12 @@
                     isTeaching = true;
                     updateStatus('已连接', 'connected');
                     startBtn.textContent = '💖 虚拟人已就绪';
+                    // 等待2秒让连接稳定后再开始讲解
                     setTimeout(() => {
-                        speakContent(currentSlide + 1);
-                    }, 1000);
+                        if (isConnected && !isAutoPlaying) {
+                            speakContent(currentSlide + 1);
+                        }
+                    }, 2000);
                 }).on('disconnected', (err) => {
                     console.error('❌ 虚拟人连接断开:', err);
                     isConnected = false;
@@ -793,7 +800,15 @@
         async function startAutoPlay() {
             if (!avatarPlatform || !isConnected) {
                 await startTeaching();
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // 等待3秒让虚拟人连接完全稳定
+                await new Promise(resolve => setTimeout(resolve, 3000));
+
+                // 再次检查连接状态
+                if (!isConnected) {
+                    console.error('❌ 虚拟人连接失败，无法自动播放');
+                    alert('虚拟人连接失败，请检查网络后重试');
+                    return;
+                }
             }
 
             isAutoPlaying = true;
