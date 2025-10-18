@@ -683,10 +683,13 @@
             }
         }
         // 计算单页播放时长（用于超时fallback）
+        // 注意：因为包含大量公式需要音译成汉字朗读，所以时间需要更长
+        // 这个时间仅用于超时保护，正常情况下应该由frame_stop事件触发翻页
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
-            if (!speech) return 5000;
-            return speech.length * 120 + 2000;
+            if (!speech) return 10000;
+            // 每个字150毫秒（考虑公式音译）+ 5秒缓冲时间（仅作为超时保护）
+            return speech.length * 150 + 5000;
         }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
         function waitForSDK() { return new Promise((resolve, reject) => { if (typeof AvatarPlatform !== 'undefined') { resolve(); return; } const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
@@ -794,21 +797,19 @@
                             await speakContent(i + 1);
                             console.log(`⏳ 等待虚拟人讲解第${i + 1}页完成...`);
 
-                            // 设置超时保护
+                            // 设置超时保护（仅作为兜底，正常应该由frame_stop触发）
                             const timeoutPromise = new Promise(resolve => setTimeout(() => {
                                 console.log(`⚠️ 第${i + 1}页讲解超时,继续下一页`);
                                 isSpeaking = false;
                                 resolve();
-                            }, getSlideDuration(i + 1) + 5000));
+                            }, getSlideDuration(i + 1)));
 
                             // 等待讲解完成或超时
                             await Promise.race([speechPromise, timeoutPromise]);
                             console.log(`✅ 第${i + 1}页讲解完成`);
 
-                            // 讲解完成后等待一小段时间再翻页
-                            if (i < totalSlides - 1) {
-                                await new Promise(resolve => setTimeout(resolve, 500));
-                            }
+                            // 讲解完成后立即翻页，不需要额外等待
+                            // frame_stop事件触发后应该立即进入下一页
                         } catch (error) {
                             console.error(`❌ 第${i + 1}页讲解异常:`, error);
                             isSpeaking = false;
