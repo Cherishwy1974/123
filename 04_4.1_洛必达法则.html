@@ -21,10 +21,10 @@
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
         .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
-        .slide-container { width: 100%; height: 100%; position: relative; }
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide-container { width: 100%; height: calc(100% - 100px); position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; padding-bottom: 0; background-color: transparent; }
         .slide.active { opacity: 1; visibility: visible; }
-        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 100%; max-height: 100%; }
         .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
         .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
         .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
@@ -35,7 +35,7 @@
         .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
         .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .subtitle-area { position: fixed; bottom: 10px; left: 50px; right: 50px; min-height: 60px; max-height: 90px; background: rgba(0,0,0,0.85); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 100; color: white; font-size: 22px; text-align: center; padding: 15px 20px; line-height: 1.4; overflow-y: auto; }
         .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
         .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
         .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
@@ -47,19 +47,28 @@
     <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
     <div class="slide-container">
         
-        <!-- Page 1: 课程引入 -->
+        <!-- Page 1: Title -->
         <div class="slide active">
             <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>欢迎学习洛必达法则</h2>
-                    <p>同学们好！今天我们将学习一个非常重要的求极限工具。</p>
-                    <p style="margin-top:30px; font-size:24px; color:#f39c12;">在开始之前，让我们先回顾一下求极限的基础知识。</p>
+                <div class="chalkboard" style="text-align: center;">
+                    <h1 style="font-size: 2.8rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);">洛必达法则</h1>
+                    <p style="font-size: 1.2rem; color: #bdc3c7; margin-top: 1rem;">第4章 - 求解不定式极限的利器</p>
+                    <div style="margin-top: 2.5rem; text-align: left; display: inline-block;">
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 不定式的概念与分类</p>
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 洛必达法则的条件与应用</p>
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 典型例题分步精讲</p>
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 其他不定式的转化技巧</p>
+                    </div>
                 </div>
                 <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="36" text-anchor="middle" x="300" y="200">洛必达法则</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="260">L'Hôpital's Rule</text>
-                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="350">求解不定式极限的利器</text>
+                    <svg class="w-full h-full" viewBox="0 0 600 500">
+                        <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="4" width="180" x="100" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="190" y="200">lim f/g</text>
+                        <text fill="#f39c12" font-size="40" text-anchor="middle" x="300" y="195">=</text>
+                        <rect fill="rgba(46,204,113,0.2)" height="80" rx="10" stroke="#2ecc71" stroke-width="4" width="200" x="320" y="150"></rect>
+                        <text fill="#ecf0f1" font-size="32" text-anchor="middle" x="420" y="200">lim f'/g'</text>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="280">0/0 或 ∞/∞ 型</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="350">分子分母分别求导</text>
                     </svg>
                 </div>
             </div>
@@ -1096,16 +1105,38 @@
                         $$\\lim \\frac{f(x)}{g(x)} = \\lim \\frac{f'(x)}{g'(x)}$$
                     </div>
                     <p style="margin-top:20px;"><strong>✗ 商的求导法则：</strong></p>
+                    <div class="math-formula" style="border-color:#e74c3c;">
+                        $$\\left(\\frac{f(x)}{g(x)}\\right)' = \\frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">对比</text>
+                        <rect x="80" y="140" width="440" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="175">✓ 洛必达法则</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="210">lim f/g = lim f'/g'</text>
+                        <rect x="80" y="280" width="440" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
+                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="315">✗ 商的求导</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="350">(f/g)' = (f'g-fg')/g²</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 47: Summary 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
                     <h2>洛必达法则总结 (一)</h2>
                     <h3>核心公式</h3>
                     <p>当满足条件时：</p>
                     <div class="math-formula">
-                        $$\lim \frac{f(x)}{g(x)} = \lim \frac{f'(x)}{g'(x)}$$
+                        $$\\lim \\frac{f(x)}{g(x)} = \\lim \\frac{f'(x)}{g'(x)}$$
                     </div>
                     <h3>直接适用类型</h3>
                     <ul style="font-size: 22px;">
-                        <li style="color:#e74c3c; margin: 15px 0;">$\frac{0}{0}$ 型</li>
-                        <li style="color:#3498db; margin: 15px 0;">$\frac{\infty}{\infty}$ 型</li>
+                        <li style="color:#e74c3c; margin: 15px 0;">$\\frac{0}{0}$ 型</li>
+                        <li style="color:#3498db; margin: 15px 0;">$\\frac{\\infty}{\\infty}$ 型</li>
                     </ul>
                     <h3>使用前提</h3>
                      <ul style="margin-left: 30px;">
@@ -1132,17 +1163,17 @@
             </div>
         </div>
         
-        <!-- Page 17: Summary 2 -->
+        <!-- Page 48: Summary 2 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>洛必达法则总结 (二)</h2>
                     <h3>需要转化的类型</h3>
-                    <p>遇到以下类型，需要先变形为 $\frac{0}{0}$ 或 $\frac{\infty}{\infty}$：</p>
+                    <p>遇到以下类型，需要先变形为 $\\frac{0}{0}$ 或 $\\frac{\\infty}{\\infty}$：</p>
                     <ul style="margin-left: 20px;">
-                        <li><strong>$0 \cdot \infty$ 型:</strong>  化为分式 $\frac{f}{1/g}$ 或 $\frac{g}{1/f}$</li>
-                        <li><strong>$\infty - \infty$ 型:</strong>  通过通分或有理化</li>
-                        <li><strong>$1^{\infty}, 0^0, \infty^0$ 型:</strong>  取对数，利用 $y=e^{\ln y}$</li>
+                        <li><strong>$0 \\cdot \\infty$ 型:</strong>  化为分式 $\\frac{f}{1/g}$ 或 $\\frac{g}{1/f}$</li>
+                        <li><strong>$\\infty - \\infty$ 型:</strong>  通过通分或有理化</li>
+                        <li><strong>$1^{\\infty}, 0^0, \\infty^0$ 型:</strong>  取对数，利用 $y=e^{\\ln y}$</li>
                     </ul>
                     <p style="margin-top: 25px; color: #f39c12;"><strong>核心思想：</strong></p>
                     <p>洛必达法则是处理不定式极限的强大武器，但它的使用有严格的条件。请牢记：<strong>先判断，再转化，后求导</strong>。</p>
@@ -1176,12 +1207,20 @@
         <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
     </div>
     <script type="module">
-        // 此处为虚拟人SDK加载代码，请根据实际情况替换
-        // window.playbackFinished = false; try { const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
+        // 虚拟人SDK加载代码
+        window.playbackFinished = false; 
+        try { 
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); 
+            window.AvatarPlatform = AvatarPlatform; 
+            console.log('✅ 讯飞SDK模块已加载'); 
+        } catch (error) { 
+            console.error('❌ SDK加载失败:', error); 
+        } 
+        window.dispatchEvent(new CustomEvent('sdkReady'));
     </script>
     <script>
         const subtitleScript = {
-            "1": "回顾求极限：对于简单函数，我们可以直接代入求值。",
+            "1": "欢迎学习洛必达法则：求解不定式极限的利器。",
             "2": "当直接代入得到 0/0 时，我们称之为“不定式”，无法直接确定其值。",
             "3": "当变量趋于无穷，得到 ∞/∞ 时，这也是一种常见的不定式。",
             "4": "为解决不定式问题，我们引入一个强大的工具——洛必达法则。",
@@ -1200,7 +1239,7 @@
             "17": "总结：对于复杂不定式，牢记“先判断，再转化，后求导”的原则。"
         };
         const speechScript = {
-            "1": "同学们好！我们之前已经学习过一些求极限的方法。比如对于简单的函数，像x平方加3，当x趋于2时，我们只要直接把2代入，就能得到答案7。但是，这种方法并不是万能的，很多时候我们会遇到更复杂的情况。",
+            "1": "同学们好！欢迎来到洛必达法则的学习。今天我们将学习一个非常重要且强大的工具，它专门用来求解不定式极限。这个法则在高等数学中应用非常广泛，掌握它能帮助我们轻松解决很多看似困难的极限问题。让我们开始吧！",
             "2": "我们来看一个经典的例子，求sinx除以x的极限，当x趋于0时。如果直接代入，分子sin0等于0，分母也是0。我们就得到了一个0比0的形式。这在数学上叫做“不定式”，它的结果是不确定的，不能想当然地认为是1或者0。",
             "3": "除了0比0，还有另一种常见的不定式。比如求e的x次方除以x平方的极限，当x趋于正无穷时。这时候，分子和分母都冲向了无穷大。我们得到的就是无穷比无穷的形式。它的结果同样是不确定的，需要特殊的工具来解决。",
             "4": "那么，如何解决这些棘手的不定式呢？今天，我们就来学习一个专门为此而生的强大武器，它的名字叫“洛必达法则”。这个法则的思路非常巧妙，它告诉我们，当一个分式的极限不好求时，我们可以试试看，求它的分子分母各自求导之后的那个新分式的极限。",
