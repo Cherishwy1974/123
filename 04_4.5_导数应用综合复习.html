@@ -1240,16 +1240,16 @@
 
                     const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
                     await speakContent(slideNum);
-                    console.log(`⏳ 等待frame_stop事件（超时时间: ${estimatedDuration + 10000}ms）...`);
+                    console.log(`⏳ 等待frame_stop事件（超时时间: ${estimatedDuration + 3000}ms）...`);
 
                     const timeoutPromise = new Promise(resolve =>
                         setTimeout(() => {
-                            console.log(`⚠️ 第${slideNum}页讲解超时（${estimatedDuration + 10000}ms），继续下一页`);
+                            console.log(`⚠️ 第${slideNum}页讲解超时（${estimatedDuration + 3000}ms），继续下一页`);
                             if (speechFinishedResolve) {
                                 speechFinishedResolve = null;
                             }
                             resolve();
-                        }, estimatedDuration + 10000)
+                        }, estimatedDuration + 3000)
                     );
 
                     await Promise.race([speechPromise, timeoutPromise]);
