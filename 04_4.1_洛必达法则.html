@@ -684,6 +684,19 @@
 
         document.getElementById('totalSlides').textContent = totalSlides;
         showSlide(0);
+
+        // 自动启动：页面加载完成后自动开始讲课和播放
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                console.log('🚀 自动启动讲课...');
+                startTeaching().then(() => {
+                    setTimeout(() => {
+                        console.log('🎬 自动启动自动播放...');
+                        startAutoPlay();
+                    }, 2000);
+                }).catch(err => console.error('❌ 启动失败:', err));
+            }, 1000);
+        });
     </script>
 </body>
 </html>
