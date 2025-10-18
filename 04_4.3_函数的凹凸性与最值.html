@@ -707,6 +707,16 @@
         // 播放完成标记（供OBS检测）
         window.playbackFinished = false;
 
+        /*
+         * 虚拟人语音与幻灯片同步优化说明：
+         * 1. 使用 frame_stop 事件监听虚拟人语音播放完成
+         * 2. 语音播放完成后立即翻页，无延迟
+         * 3. 移除了基于时长计算的双重翻页机制
+         * 4. 优化超时时间为预计时长+3秒（原为+10秒）
+         * 5. 启用虚拟人预加载和音频缓存
+         * 6. 提升码率和帧率以改善流畅度
+         */
+
    try{const{default:AvatarPlatform,SDKEvents,PlayerEvents,RecorderEvents,UserMedia}=await import('./avatar-sdk-web_3.1.2.1002/index.js');window.AvatarPlatform=AvatarPlatform;window.SDKEvents=SDKEvents;window.PlayerEvents=PlayerEvents;window.RecorderEvents=RecorderEvents;window.UserMedia=UserMedia;console.log('✅ 讯飞官方SDK模块已加载');console.log('SDK版本:',AvatarPlatform.getVersion());}catch(error){console.error('❌ SDK模块加载失败:',error);}window.dispatchEvent(new CustomEvent('sdkReady'));
   </script>
   <script>
@@ -716,7 +726,7 @@
                     apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
                     sceneId: '237415046114840576',
                     serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1000000,fps:25},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100},avatar_dispatch:{interactive_mode:1,content_analysis:0}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}
+                });avatarPlatform.setGlobalParams({stream:{protocol:'xrtc',alpha:1,bitrate:1500000,fps:30},avatar:{avatar_id:'110332017',width:1920,height:1080,scale:1,move_h:0,move_v:0,audio_format:1},tts:{vcn:'x4_yiting',speed:50,pitch:50,volume:100,cache_audio:1},avatar_dispatch:{interactive_mode:1,content_analysis:0,preload_avatar:1}});await avatarPlatform.start({wrapper:document.getElementById('avatarWrapper')});console.log('🎓 虚拟人教学系统启动完成');}catch(error){console.error('❌ 启动失败:',error);updateStatus('启动失败: '+error.message,'error');startBtn.textContent='🎀 开始讲课';startBtn.disabled=false;}}
         // 将数学公式音译为中文
         function translateMathToSpeech(text){
             let result=text;
