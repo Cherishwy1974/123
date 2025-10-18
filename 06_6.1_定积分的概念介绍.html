@@ -1,826 +1,667 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>06_6.1_定积分的概念介绍</title>
-<link href="./noto-serif-sc.css" rel="stylesheet"/>
-<style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
-        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; display: flex; }
-        .page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; transition: all 0.5s ease; padding: 30px; display: flex; }
-        .page.active { opacity: 1; visibility: visible; }
-        .left-panel { width: 35%; height: 100%; padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-        .right-panel { width: 65%; height: 100%; padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible; }
-        .chalk-text { color: #ffffff; font-size: 16px; font-weight: normal; letter-spacing: 0.5px; line-height: 1.5; }
-        .title { font-size: 24px; margin-bottom: 20px; text-align: center; color: #e1bee7; }
-        .emphasis { color: #FF6B6B; font-size: 18px; }
-        .formula-box { background: rgba(255,224,102,0.1); padding: 15px; border-radius: 8px; border: 2px dashed rgba(255,224,102,0.4); margin: 15px 0; text-align: center; }
-        .chalk-list { list-style: none; padding-left: 0; margin: 15px 0; }
-        .chalk-list li { position: relative; padding-left: 20px; margin: 10px 0; font-size: 16px; }
-        .chalk-list li::before { content: "•"; position: absolute; left: 0; color: #FFE066; }
-        .svg-animation { width: 100%; height: auto; max-width: none; max-height: none; transform: translateX(-70px) scale(2); transform-origin: left center; }
-        .page-indicator { position: absolute; top: 20px; right: 20px; color: #FFE066; font-size: 16px; z-index: 100; }
-        .small-text { font-size: 14px; color: rgba(255,255,255,0.8); }
-        .mjx-chtml { color: #ffffff !important; font-size: 16px !important; }
-        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 12px; z-index: 100; display: none !important; }
-        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
-        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
-        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
-        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .control-bar:hover { left: -9999px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
-        .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
-        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: center; backdrop-filter: blur(5px); text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
-        .btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
-        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-        .btn.primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
-        .recording-mode .control-bar { left: -9999px; transition: left 0.5s ease; }
-    
-        /* 封面页样式覆盖 */
-        .page.cover-page {
-            display: flex !important;
-            padding: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        .page.cover-page > div {
-            display: flex !important;
-        }
-    </style>
-<script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>06_6.1_定积分的概念介绍 (扩展版)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
         window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']], packages: ['base', 'ams'], processEscapes: true, processEnvironments: true, macros: { frac: ['\frac{#1}{#2}', 2], dfrac: ['\displaystyle\frac{#1}{#2}', 2] } },
-            startup: { pageReady: () => { console.log('MathJax is ready.'); return MathJax.startup.defaultPageReady(); } },
-            options: { processHtmlClass: 'tex2jax_process', ignoreHtmlClass: 'tex2jax_ignore' }
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            svg: { fontCache: 'global' },
+            startup: { pageReady: () => { return MathJax.startup.defaultPageReady().then(() => { console.log('✅ MathJax已加载'); }); } }
         };
     </script>
-<script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
+        .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
+        .avatar-container { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 975px; height: 1105px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
+        .slide-container { width: 100%; height: 100%; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
+        .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+        .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
+        .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
+        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
+        .chalkboard strong { color: #e74c3c; }
+        .math-formula { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
+        .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
+        .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
+        .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
+        .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
+        .status-indicator.connecting { background: rgba(255, 152, 0, 0.8); display: block; }
+    </style>
 </head>
-<body>
-<div class="blackboard">
-<div class="status-indicator" id="statusIndicator">等待连接</div>
-<div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 5 页</div>
-<!-- 封面页 -->
-<div class="page active cover-page" data-page="1" id="page1">
-<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
-<div style="flex: 1; text-align: center; padding: 2rem;">
-<h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-                        定积分的概念介绍
-                    </h1>
-<p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-                        第6章 视频 6.1
-                    </p>
-<div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 定积分的概念</p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 定积分的性质</p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 定积分的计算</p>
-<p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 积分的几何意义</p>
-</div>
-</div>
-<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-<svg style="width: 100%; max-width: 500px; height: 400px;" viewbox="0 0 600 500">
-<defs>
-<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#2ecc71;stop-opacity:0.8"></stop>
-<stop offset="100%" style="stop-color:#27ae60;stop-opacity:0.3"></stop>
-</lineargradient>
-</defs>
-<text fill="#2ecc71" font-family="serif" font-size="70" text-anchor="middle" x="300" y="80">
-                            ∫
-                            <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7"></animate>
-</text>
-<path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320" fill="none" stroke="#3498db" stroke-width="3"></path>
-<path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320 L 450 350 L 150 350 Z" fill="url(#grad1)">
-<animate attributename="opacity" dur="4s" repeatcount="indefinite" values="0;0.7;0.7;0.3"></animate>
-</path>
-<line stroke="#666" stroke-width="2" x1="150" x2="150" y1="150" y2="350"></line>
-<line stroke="#666" stroke-dasharray="5,5" stroke-width="2" x1="450" x2="450" y1="150" y2="350"></line>
-</svg>
-</div>
-</div>
-</div>
-<div class="page" id="page2">
-<div class="left-panel">
-<h1 class="title chalk-text">积分的想法</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">切成小块，然后加起来</p>
-<div class="formula-box">
-<p class="chalk-text">$$\int_a^b f(x) \, dx$$</p>
-</div>
-<ul class="chalk-list">
-<li class="chalk-text">∫ 是拉长的 S (Sum 求和)</li>
-<li class="chalk-text">dx 是极小的宽度</li>
-<li class="chalk-text">f(x) 是每块的高度</li>
-<li class="chalk-text">积分 = 无限多小块的和</li>
-</ul>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
-<!-- 坐标轴 -->
-<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="480" y2="480"></line>
-<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="480" y2="100"></line>
-<!-- 曲线 -->
-<path d="M 100 380 Q 250 180, 400 280 T 600 130" fill="none" filter="url(#glow)" stroke="#FF6B6B" stroke-width="4"></path>
-<!-- 矩形分割动画 - 4个矩形 -->
-<defs>
-<lineargradient id="rectGrad" x1="0%" x2="0%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.6"></stop>
-<stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.3"></stop>
-</lineargradient>
-</defs>
-<g id="rect4">
-<rect fill="url(#rectGrad)" height="150" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="150" y="330">
-<animate attributename="height" begin="0s;rect4.end+2s" dur="0.5s" fill="freeze" values="0;150"></animate>
-<animate attributename="y" begin="0s;rect4.end+2s" dur="0.5s" fill="freeze" values="480;330"></animate>
-<animate attributename="opacity" begin="0s;rect4.end+2s" dur="0.3s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#rectGrad)" height="250" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="250" y="230">
-<animate attributename="height" begin="0.5s;rect4.end+2.5s" dur="0.5s" fill="freeze" values="0;250"></animate>
-<animate attributename="y" begin="0.5s;rect4.end+2.5s" dur="0.5s" fill="freeze" values="480;230"></animate>
-<animate attributename="opacity" begin="0.5s;rect4.end+2.5s" dur="0.3s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#rectGrad)" height="225" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="350" y="255">
-<animate attributename="height" begin="1.0s;rect4.end+3.0s" dur="0.5s" fill="freeze" values="0;225"></animate>
-<animate attributename="y" begin="1.0s;rect4.end+3.0s" dur="0.5s" fill="freeze" values="480;255"></animate>
-<animate attributename="opacity" begin="1.0s;rect4.end+3.0s" dur="0.3s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#rectGrad)" height="300" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="450" y="180">
-<animate attributename="height" begin="1.5s;rect4.end+3.5s" dur="0.5s" fill="freeze" id="rect4" values="0;300"></animate>
-<animate attributename="y" begin="1.5s;rect4.end+3.5s" dur="0.5s" fill="freeze" values="480;180"></animate>
-<animate attributename="opacity" begin="1.5s;rect4.end+3.5s" dur="0.3s" fill="freeze" values="0;1"></animate>
-</rect>
-</g>
-<!-- 标签 -->
-<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="550">切成小矩形求和</text>
-<!-- dx 标注 -->
-<g opacity="0">
-<line stroke="#FFE066" stroke-width="2" x1="150" x2="250" y1="495" y2="495"></line>
-<line stroke="#FFE066" stroke-width="2" x1="150" x2="150" y1="490" y2="500"></line>
-<line stroke="#FFE066" stroke-width="2" x1="250" x2="250" y1="490" y2="500"></line>
-<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="200" y="515">Δx</text>
-<animate attributename="opacity" dur="5s" repeatcount="indefinite" values="0;1;1;0"></animate>
-</g>
-</svg>
-</div>
-</div>
-</div>
-<!-- 第3页：分得越细越精确 - 极限思想 -->
-<div class="page" id="page3">
-<div class="left-panel">
-<h1 class="title chalk-text">分得越细越精确</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">极限的思想</p>
-<div class="formula-box">
-<p class="chalk-text">$$\lim_{n \to \infty} \sum_{i=1}^{n} f(x_i) \Delta x = \int_a^b f(x)dx$$</p>
-</div>
-<ul class="chalk-list">
-<li class="chalk-text">n = 4：粗略近似</li>
-<li class="chalk-text">n = 8：更好一些</li>
-<li class="chalk-text">n = 16：相当接近</li>
-<li class="chalk-text">n → ∞：完全精确！</li>
-</ul>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
-<!-- 坐标轴 -->
-<line stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
-<line stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="100"></line>
-<!-- 曲线 -->
-<path d="M 100 350 C 200 200, 300 250, 400 200 S 500 250, 600 150" fill="none" filter="url(#glow)" stroke="#FF6B6B" stroke-width="4"></path>
-<!-- 16个细矩形近似 -->
-<defs>
-<lineargradient id="fineGrad" x1="0%" x2="0%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.5"></stop>
-<stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:0.2"></stop>
-</lineargradient>
-</defs>
-<g id="fineRects">
-<rect fill="url(#fineGrad)" height="120" stroke="#4ECDC4" stroke-width="1" width="30" x="120" y="330">
-<animate attributename="opacity" begin="0s;fineRects.end+3s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="140" stroke="#4ECDC4" stroke-width="1" width="30" x="150" y="310">
-<animate attributename="opacity" begin="0.1s;fineRects.end+3.1s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="170" stroke="#4ECDC4" stroke-width="1" width="30" x="180" y="280">
-<animate attributename="opacity" begin="0.2s;fineRects.end+3.2s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="200" stroke="#4ECDC4" stroke-width="1" width="30" x="210" y="250">
-<animate attributename="opacity" begin="0.3s;fineRects.end+3.3s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="220" stroke="#4ECDC4" stroke-width="1" width="30" x="240" y="230">
-<animate attributename="opacity" begin="0.4s;fineRects.end+3.4s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="230" stroke="#4ECDC4" stroke-width="1" width="30" x="270" y="220">
-<animate attributename="opacity" begin="0.5s;fineRects.end+3.5s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="225" stroke="#4ECDC4" stroke-width="1" width="30" x="300" y="225">
-<animate attributename="opacity" begin="0.6s;fineRects.end+3.6s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="235" stroke="#4ECDC4" stroke-width="1" width="30" x="330" y="215">
-<animate attributename="opacity" begin="0.7s;fineRects.end+3.7s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="245" stroke="#4ECDC4" stroke-width="1" width="30" x="360" y="205">
-<animate attributename="opacity" begin="0.8s;fineRects.end+3.8s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="250" stroke="#4ECDC4" stroke-width="1" width="30" x="390" y="200">
-<animate attributename="opacity" begin="0.9s;fineRects.end+3.9s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="240" stroke="#4ECDC4" stroke-width="1" width="30" x="420" y="210">
-<animate attributename="opacity" begin="1.0s;fineRects.end+4.0s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="230" stroke="#4ECDC4" stroke-width="1" width="30" x="450" y="220">
-<animate attributename="opacity" begin="1.1s;fineRects.end+4.1s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="240" stroke="#4ECDC4" stroke-width="1" width="30" x="480" y="210">
-<animate attributename="opacity" begin="1.2s;fineRects.end+4.2s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="260" stroke="#4ECDC4" stroke-width="1" width="30" x="510" y="190">
-<animate attributename="opacity" begin="1.3s;fineRects.end+4.3s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="280" stroke="#4ECDC4" stroke-width="1" width="30" x="540" y="170">
-<animate attributename="opacity" begin="1.4s;fineRects.end+4.4s" dur="0.1s" fill="freeze" values="0;1"></animate>
-</rect>
-<rect fill="url(#fineGrad)" height="300" stroke="#4ECDC4" stroke-width="1" width="30" x="570" y="150">
-<animate attributename="opacity" begin="1.5s;fineRects.end+4.5s" dur="0.1s" fill="freeze" id="fineRects" values="0;1"></animate>
-</rect>
-</g>
-<!-- 文字说明 -->
-<text fill="#FFE066" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="70">n = 16 个矩形</text>
-<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="520">
-                            误差越来越小
-                            <animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
-</text>
-</svg>
-</div>
-</div>
-</div>
-<!-- 第4页：速度与距离的例子 - 实际应用 -->
-<div class="page" id="page4">
-<div class="left-panel">
-<h1 class="title chalk-text">实际例子：开车</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">速度 → 距离</p>
-<ul class="chalk-list">
-<li class="chalk-text">速度: v(t) km/h</li>
-<li class="chalk-text">时间: t 小时</li>
-<li class="chalk-text">距离 = 速度×时间</li>
-</ul>
-<div class="formula-box">
-<p class="chalk-text">$$s = \int_0^t v(\tau) \, d\tau$$</p>
-</div>
-<p class="chalk-text small-text">积分就是累加所有瞬间的距离</p>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
-<!-- 道路 -->
-<defs>
-<lineargradient id="roadGrad" x1="0%" x2="0%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#3d3d3d;stop-opacity:1"></stop>
-<stop offset="50%" style="stop-color:#2d2d2d;stop-opacity:1"></stop>
-<stop offset="100%" style="stop-color:#3d3d3d;stop-opacity:1"></stop>
-</lineargradient>
-</defs>
-<rect fill="url(#roadGrad)" height="100" rx="5" width="600" x="50" y="250"></rect>
-<line opacity="0.8" stroke="#FFE066" stroke-dasharray="20,10" stroke-width="3" x1="50" x2="650" y1="300" y2="300">
-<animate attributename="stroke-dashoffset" dur="1s" repeatcount="indefinite" values="0;-30"></animate>
-</line>
-<!-- 汽车 -->
-<g id="car">
-<rect fill="#FF6B6B" filter="url(#glow)" height="40" rx="8" width="80" x="0" y="270"></rect>
-<rect fill="#FF6B6B" height="25" rx="5" width="50" x="10" y="260"></rect>
-<circle cx="20" cy="315" fill="#333" r="8">
-<animatetransform attributename="transform" dur="2s" repeatcount="indefinite" type="rotate" values="0 20 315; 360 20 315"></animatetransform>
-</circle>
-<circle cx="60" cy="315" fill="#333" r="8">
-<animatetransform attributename="transform" dur="2s" repeatcount="indefinite" type="rotate" values="0 60 315; 360 60 315"></animatetransform>
-</circle>
-<rect fill="#87CEEB" height="15" opacity="0.7" rx="2" width="15" x="55" y="265"></rect>
-<animatetransform attributename="transform" dur="8s" repeatcount="indefinite" type="translate" values="80,0; 550,0; 80,0"></animatetransform>
-</g>
-<!-- 速度计 -->
-<g transform="translate(500, 50)">
-<circle cx="75" cy="75" fill="#2d3436" filter="url(#glow)" r="70" stroke="#FFE066" stroke-width="3"></circle>
-<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="75" y="130">km/h</text>
-<!-- 刻度 -->
-<line stroke="#ffffff" stroke-width="2" x1="75" x2="75" y1="15" y2="25"></line>
-<line stroke="#ffffff" stroke-width="2" x1="135" x2="125" y1="75" y2="75"></line>
-<line stroke="#ffffff" stroke-width="2" x1="75" x2="75" y1="135" y2="125"></line>
-<line stroke="#ffffff" stroke-width="2" x1="15" x2="25" y1="75" y2="75"></line>
-<!-- 指针 -->
-<line filter="url(#glow)" stroke="#FF6B6B" stroke-linecap="round" stroke-width="4" x1="75" x2="75" y1="75" y2="25">
-<animatetransform attributename="transform" dur="8s" repeatcount="indefinite" type="rotate" values="0 75 75; 60 75 75; 120 75 75; 30 75 75; 0 75 75"></animatetransform>
-</line>
-<circle cx="75" cy="75" fill="#FF6B6B" r="5"></circle>
-</g>
-<!-- 速度-时间图 -->
-<g transform="translate(50, 380)">
-<line stroke="#FFE066" stroke-width="2" x1="0" x2="300" y1="150" y2="150"></line>
-<line stroke="#FFE066" stroke-width="2" x1="0" x2="0" y1="150" y2="0"></line>
-<polygon fill="#FFE066" points="300,150 290,145 290,155"></polygon>
-<polygon fill="#FFE066" points="0,0 -5,10 5,10"></polygon>
-<!-- 速度曲线 -->
-<polyline fill="none" filter="url(#glow)" points="0,100 50,80 100,40 150,70 200,90 250,110 300,100" stroke="#4ECDC4" stroke-width="3">
-<animate attributename="stroke-dasharray" dur="3s" fill="freeze" values="0,1000; 1000,0"></animate>
-<animate attributename="stroke-dashoffset" dur="3s" fill="freeze" values="1000;0"></animate>
-</polyline>
-<!-- 面积填充 -->
-<path d="M 0 150 L 0 100 L 50 80 L 100 40 L 150 70 L 200 90 L 250 110 L 300 100 L 300 150 Z" fill="rgba(78,205,196,0.4)">
-<animate attributename="fill-opacity" dur="8s" repeatcount="indefinite" values="0;0.4;0.4;0"></animate>
-</path>
-<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="150" y="170">时间 t</text>
-<text fill="#FFE066" font-size="16" font-weight="bold" x="-20" y="75">v(t)</text>
-<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="150" y="75">面积 = 距离</text>
-</g>
-</svg>
-</div>
-</div>
-</div>
-<!-- 第5页：改变世界 - 微积分的应用 -->
-<div class="page" id="page5">
-<div class="left-panel">
-<h1 class="title chalk-text">改变世界</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">微积分的应用</p>
-<ul class="chalk-list">
-<li class="chalk-text">物理学：运动定律</li>
-<li class="chalk-text">工程学：建筑设计</li>
-<li class="chalk-text">经济学：最优化</li>
-<li class="chalk-text">人工智能：深度学习</li>
-</ul>
-<div class="formula-box">
-<p class="chalk-text small-text">现代科技的数学基础！</p>
-</div>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
-<!-- 中心：微积分 -->
-<circle cx="350" cy="300" fill="rgba(255,224,102,0.3)" filter="url(#glow)" r="60" stroke="#FFE066" stroke-width="4">
-<animate attributename="r" dur="2s" repeatcount="indefinite" values="60;70;60"></animate>
-</circle>
-<text fill="#FFE066" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="310">微积分</text>
-<!-- 应用领域 - 物理 -->
-<g transform="translate(200, 150)">
-<circle cx="0" cy="0" fill="rgba(78,205,196,0.3)" r="50" stroke="#4ECDC4" stroke-width="3">
-<animate attributename="r" begin="0s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
-</circle>
-<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">物理</text>
-<text fill="#ffffff" font-size="14" text-anchor="middle" x="0" y="-60">F=ma</text>
-<!-- 连接线 -->
-<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="40" x2="290" y1="40" y2="240">
-<animate attributename="stroke-dashoffset" dur="1s" repeatcount="indefinite" values="10;0"></animate>
-</line>
-</g>
-<!-- 工程 -->
-<g transform="translate(500, 150)">
-<circle cx="0" cy="0" fill="rgba(255,107,107,0.3)" r="50" stroke="#FF6B6B" stroke-width="3">
-<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
-</circle>
-<text fill="#FF6B6B" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">工程</text>
-<!-- 桥梁图标 -->
-<path d="M -30 -20 Q 0 -35, 30 -20" fill="none" stroke="#ffffff" stroke-width="2"></path>
-<line stroke="#ffffff" stroke-width="2" x1="-30" x2="-30" y1="-20" y2="-10"></line>
-<line stroke="#ffffff" stroke-width="2" x1="30" x2="30" y1="-20" y2="-10"></line>
-<!-- 连接线 -->
-<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="-40" x2="-110" y1="40" y2="240">
-<animate attributename="stroke-dashoffset" begin="0.25s" dur="1s" repeatcount="indefinite" values="10;0"></animate>
-</line>
-</g>
-<!-- 经济 -->
-<g transform="translate(200, 450)">
-<circle cx="0" cy="0" fill="rgba(155,89,182,0.3)" r="50" stroke="#9B59B6" stroke-width="3">
-<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
-</circle>
-<text fill="#9B59B6" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">经济</text>
-<!-- 增长曲线 -->
-<polyline fill="none" points="-20,20 -10,10 0,15 10,5 20,-5" stroke="#ffffff" stroke-width="2"></polyline>
-<!-- 连接线 -->
-<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="40" x2="290" y1="-40" y2="-90">
-<animate attributename="stroke-dashoffset" begin="0.5s" dur="1s" repeatcount="indefinite" values="10;0"></animate>
-</line>
-</g>
-<!-- AI -->
-<g transform="translate(500, 450)">
-<circle cx="0" cy="0" fill="rgba(52,152,219,0.3)" r="50" stroke="#3498DB" stroke-width="3">
-<animate attributename="r" begin="1.5s" dur="2s" repeatcount="indefinite" values="50;55;50"></animate>
-</circle>
-<text fill="#3498DB" font-size="18" font-weight="bold" text-anchor="middle" x="0" y="5">AI</text>
-<!-- 神经网络图标 -->
-<circle cx="-15" cy="-15" fill="#ffffff" r="3"></circle>
-<circle cx="0" cy="-15" fill="#ffffff" r="3"></circle>
-<circle cx="15" cy="-15" fill="#ffffff" r="3"></circle>
-<circle cx="0" cy="15" fill="#ffffff" r="3"></circle>
-<line stroke="#ffffff" stroke-width="1" x1="-15" x2="0" y1="-15" y2="15"></line>
-<line stroke="#ffffff" stroke-width="1" x1="0" x2="0" y1="-15" y2="15"></line>
-<line stroke="#ffffff" stroke-width="1" x1="15" x2="0" y1="-15" y2="15"></line>
-<!-- 连接线 -->
-<line opacity="0.5" stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="-40" x2="-110" y1="-40" y2="-90">
-<animate attributename="stroke-dashoffset" begin="0.75s" dur="1s" repeatcount="indefinite" values="10;0"></animate>
-</line>
-</g>
-</svg>
-</div>
-</div>
-</div>
-</div>
-<div class="control-bar">
-<div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
-            第 <span id="currentPageControl">1</span> 页 / 共 5 页
+<body class="blackboard">
+    <div class="status-indicator" id="statusIndicator">等待连接</div>
+    <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
+    <div class="slide-container">
+
+        <!-- Page 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="chalkboard" style="text-align: center;">
+                    <h1 style="font-size: 2.8rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);">定积分的概念</h1>
+                    <p style="font-size: 1.2rem; color: #bdc3c7; margin-top: 1rem;">第6章 - 从近似到精确的飞跃</p>
+                    <div style="margin-top: 2.5rem; text-align: left; display: inline-block;">
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 曲边梯形面积问题</p>
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 分割、近似、求和、取极限</p>
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 定积分的几何意义与性质</p>
+                        <p style="font-size: 1rem; margin: 0.8rem 0; color: #e0e0e0;">✓ 物理应用实例</p>
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320 L 450 350 L 150 350 Z" fill="url(#grad1)"></path>
+                        <defs><linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#2ecc71;stop-opacity:0.8"></stop><stop offset="100%" style="stop-color:#27ae60;stop-opacity:0.3"></stop></linearGradient></defs>
+                        <text fill="#2ecc71" font-family="serif" font-size="70" text-anchor="middle" x="300" y="150">∫</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="420">从近似到精确</text>
+                    </svg>
+                </div>
+            </div>
         </div>
-<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
-<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
-<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
-<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
-</div>
-<div class="subtitle-area" id="subtitleArea">欢迎学习定积分！</div>
 
-<!-- 讯飞官方SDK -->
-<script type="module">
-        // 播放完成标记（供OBS检测）
-        window.playbackFinished = false;
+        <!-- Page 2: The Problem -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>问题的提出：曲边梯形面积</h2>
+                    <p>我们知道如何计算矩形、三角形、梯形的面积。</p>
+                    <p>但如果一个图形的边界是<strong>曲线</strong>，我们该如何计算它的面积呢？</p>
+                    <p>例如，由曲线 $y=f(x)$，直线 $x=a, x=b$ 及 $x$ 轴所围成的图形，我们称之为<strong>曲边梯形</strong>。</p>
+                    <p style="margin-top: 2rem; color: #e74c3c;">我们已有的几何公式，对此无能为力。这激发了定积分思想的诞生。</p>
+                </div>
+                <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">如何求“曲”的面积？</text>
+                        <path d="M 150 350 Q 250 150, 450 250 L 450 350 Z" fill="rgba(46,204,113,0.3)" stroke="#2ecc71" stroke-width="2"></path>
+                        <path d="M 150 350 Q 250 150, 450 250" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <line x1="150" y1="350" x2="450" y2="350" stroke="#ecf0f1" stroke-width="2"></line>
+                        <line x1="150" y1="350" x2="150" y2="280" stroke="#ecf0f1" stroke-width="2"></line>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="370">a</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="450" y="370">b</text>
+                        <text fill="#f1c40f" font-size="48" text-anchor="middle" x="300" y="300">?</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-    try {
-        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+        <!-- Page 3: The Strategy -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>核心策略：化曲为直，积少成多</h2>
+                    <p>面对“曲”的困难，一个自然的想法是：</p>
+                    <p style="color: #f39c12; font-size: 22px; text-align: center;">用我们熟悉的“直”来近似“曲”。</p>
+                    <p>我们可以将曲边梯形分割成许多非常窄的<strong>小矩形</strong>。每个小矩形的面积都易于计算。</p>
+                    <p>将所有这些小矩形的面积加起来，就可以得到曲边梯形面积的一个<strong>近似值</strong>。</p>
+                </div>
+                <div class="visualization">
+                    <svg class="svg-animation" viewbox="0 0 700 600" style="transform: scale(1.5); transform-origin: center center;">
+                        <path d="M 100 380 Q 250 180, 400 280 T 600 130" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="4"></path>
+                        <g>
+                            <rect fill="rgba(78,205,196,0.6)" height="150" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="150" y="330"></rect>
+                            <rect fill="rgba(78,205,196,0.6)" height="250" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="250" y="230"></rect>
+                            <rect fill="rgba(78,205,196,0.6)" height="225" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="350" y="255"></rect>
+                            <rect fill="rgba(78,205,196,0.6)" height="300" rx="3" stroke="#4ECDC4" stroke-width="2" width="100" x="450" y="180"></rect>
+                        </g>
+                        <text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="550">用小矩形近似</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-        window.AvatarPlatform = AvatarPlatform;
-        window.SDKEvents = SDKEvents;
-        window.PlayerEvents = PlayerEvents;
-        window.RecorderEvents = RecorderEvents;
-        window.UserMedia = UserMedia;
+        <!-- Page 4: Step 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分思想四部曲之一：分割</h2>
+                    <h3>第一步：分割 (Partition)</h3>
+                    <p>将区间 $[a, b]$ 任意地分割成 $n$ 个小区间：</p>
+                    <div class="math-formula">
+                        $$[x_0, x_1], [x_1, x_2], \dots, [x_{n-1}, x_n]$$
+                    </div>
+                    <p>其中 $a=x_0 < x_1 < \dots < x_n = b$。</p>
+                    <p>每个小区间的长度记为 $\Delta x_i = x_i - x_{i-1}$。</p>
+                    <p style="color:#95a5a6">这相当于把曲边梯形的底边切成了很多小段。</p>
+                </div>
+                <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">第一步：分割区间</text>
+                        <line x1="100" y1="250" x2="500" y2="250" stroke="#ecf0f1" stroke-width="3"></line>
+                        <line x1="100" y1="245" x2="100" y2="255" stroke="#ecf0f1" stroke-width="3"></line>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="100" y="280">a=x₀</text>
+                        <line x1="160" y1="245" x2="160" y2="255" stroke="#ecf0f1" stroke-width="3"></line>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="160" y="280">x₁</text>
+                        <line x1="250" y1="245" x2="250" y2="255" stroke="#ecf0f1" stroke-width="3"></line>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="250" y="280">x₂</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="350" y="250">...</text>
+                         <line x1="500" y1="245" x2="500" y2="255" stroke="#ecf0f1" stroke-width="3"></line>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="500" y="280">b=xₙ</text>
+                        
+                        <line x1="160" y1="320" x2="250" y2="320" stroke="#2ecc71" stroke-width="2"></line>
+                        <line x1="160" y1="315" x2="160" y2="325" stroke="#2ecc71" stroke-width="2"></line>
+                        <line x1="250" y1="315" x2="250" y2="325" stroke="#2ecc71" stroke-width="2"></line>
+                        <text fill="#2ecc71" font-size="18" text-anchor="middle" x="205" y="350">Δx₂</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-        console.log('✅ 讯飞官方SDK模块已加载');
-        console.log('SDK版本:', AvatarPlatform.getVersion());
+        <!-- Page 5: Step 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分思想四部曲之二：近似</h2>
+                    <h3>第二步：近似 (Approximation)</h3>
+                    <p>在每个小区间 $[x_{i-1}, x_i]$ 上，任取一点 $\xi_i$。</p>
+                    <p>我们用一个<strong>高为 $f(\xi_i)$、宽为 $\Delta x_i$ 的小矩形</strong>，来近似代替相应的小曲边梯形。</p>
+                    <p>这个小矩形的面积为：</p>
+                    <div class="math-formula">
+                        $$\text{小矩形面积} \approx f(\xi_i) \cdot \Delta x_i$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">第二步：近似</text>
+                        <path d="M 150 400 Q 250 200, 450 300" fill="none" stroke="#3498db" stroke-width="3"></path>
+                        <rect x="200" y="250" width="100" height="150" fill="rgba(46,204,113,0.3)" stroke="#2ecc71"></rect>
+                        <line x1="200" y1="400" x2="300" y2="400" stroke="#ecf0f1" stroke-width="2"></line>
+                        <circle cx="270" cy="400" r="4" fill="#e74c3c"></circle>
+                        <text fill="#e74c3c" font-size="18" text-anchor="middle" x="270" y="420">ξᵢ</text>
+                        <line x1="270" y1="400" x2="270" y2="250" stroke="#e74c3c" stroke-dasharray="3,3"></line>
+                        <text fill="#2ecc71" font-size="18" x="310" y="325">高 f(ξᵢ)</text>
+                        <text fill="#2ecc71" font-size="18" text-anchor="middle" x="250" y="440">宽 Δxᵢ</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-    } catch (error) {
-        console.error('❌ SDK模块加载失败:', error);
-    }
+        <!-- Page 6: Step 3 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分思想四部曲之三：求和</h2>
+                    <h3>第三步：求和 (Summation)</h3>
+                    <p>将所有 $n$ 个小矩形的面积加起来，得到曲边梯形面积的一个近似值。这个和我们称为<strong>黎曼和 (Riemann Sum)</strong>。</p>
+                    <div class="math-formula">
+                        $$\text{总面积} \approx \sum_{i=1}^{n} f(\xi_i) \Delta x_i$$
+                    </div>
+                     <p>显然，矩形划分得越细（即 $n$ 越大），这个近似和就越接近真实面积。</p>
+                </div>
+                <div class="visualization">
+                    <svg class="svg-animation" viewbox="0 0 700 600" style="transform: scale(1.5); transform-origin: center center;">
+                        <path d="M 100 380 Q 250 180, 400 280 T 600 130" fill="none" stroke="#FF6B6B" stroke-width="4"></path>
+                        <g>
+                            <rect fill="rgba(78,205,196,0.6)" height="150" width="100" x="150" y="330"></rect>
+                            <rect fill="rgba(78,205,196,0.6)" height="250" width="100" x="250" y="230"></rect>
+                            <rect fill="rgba(78,205,196,0.6)" height="225" width="100" x="350" y="255"></rect>
+                            <rect fill="rgba(78,205,196,0.6)" height="300" width="100" x="450" y="180"></rect>
+                        </g>
+                        <text fill="#4ECDC4" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="100">面积 ≈ A₁ + A₂ + A₃ + A₄</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-    window.dispatchEvent(new CustomEvent('sdkReady'));
-</script>
+        <!-- Page 7: Step 4 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分思想四部曲之四：取极限</h2>
+                    <h3>第四步：取极限 (Limit)</h3>
+                    <p>当分割无限加细，即每个小矩形的宽度都趋于0时，这些矩形面积的和的极限，就是我们要求的曲边梯形的<strong>精确面积</strong>。</p>
+                    <p>我们记所有小区间长度的最大值为 $\lambda = \max\{\Delta x_i\}$。</p>
+                    <p>当 $\lambda \to 0$ 时，黎曼和的极限就是定积分。</p>
+                </div>
+                <div class="visualization">
+                     <svg class="svg-animation" viewbox="0 0 700 600" style="transform: scale(1.5); transform-origin: center center;">
+                        <path d="M 100 350 C 200 200, 300 250, 400 200 S 500 250, 600 150" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="4"></path>
+                        <text fill="#FFE066" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="100">当 Δx → 0, 矩形总面积 → 曲线下面积</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 8: Formal Definition -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分的正式定义</h2>
+                    <p>综合以上四步，我们给出定积分的正式定义：</p>
+                    <div class="math-formula">
+                        $$\int_a^b f(x) \, dx = \lim_{\lambda \to 0} \sum_{i=1}^{n} f(\xi_i) \Delta x_i$$
+                    </div>
+                    <p>这个定义告诉我们，定积分本质上是“无限求和”的结果。</p>
+                    <p>当这个极限存在时，我们称函数 $f(x)$ 在区间 $[a, b]$ 上是<strong>可积的</strong>。</p>
+                </div>
+                 <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">定积分的定义</text>
+                        <rect x="100" y="120" width="400" height="100" fill="rgba(231,76,60,0.2)" stroke="#e74c3c"></rect>
+                        <text x="300" y="175" fill="#ecf0f1" font-size="24" text-anchor="middle">黎曼和: Σ f(ξᵢ)Δxᵢ</text>
+                        
+                        <text x="300" y="270" fill="#f39c12" font-size="40">↓ (λ→0)</text>
+                        
+                        <rect x="100" y="320" width="400" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71"></rect>
+                        <text x="300" y="375" fill="#2ecc71" font-size="32" text-anchor="middle">定积分: ∫ₐᵇ f(x)dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-<script>
-        // === 虚拟人相关配置 ===
+        <!-- Page 9: Notation Breakdown -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分符号解析</h2>
+                    <p>让我们来仔细看看定积分的每一个组成部分：</p>
+                    <div class="math-formula" style="font-size:28px">
+                        $$\int_a^b f(x) \, dx$$
+                    </div>
+                    <ul>
+                        <li>$\int$: <strong>积分号</strong>，源自拉长的字母 'S'，代表求和(Sum)。</li>
+                        <li>$a, b$: <strong>积分下限</strong>和<strong>积分上限</strong>，定义了积分的区间。</li>
+                        <li>$f(x)$: <strong>被积函数</strong>，代表曲线的高度。</li>
+                        <li>$x$: <strong>积分变量</strong>。</li>
+                        <li>$dx$: <strong>积分微元</strong>，代表无限小的区间宽度。</li>
+                    </ul>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f1c40f" font-size="70" x="150" y="250">∫</text>
+                        <text fill="#ecf0f1" font-size="30" x="200" y="300">a</text>
+                        <text fill="#ecf0f1" font-size="30" x="200" y="200">b</text>
+                        <text fill="#ecf0f1" font-size="40" x="300" y="250">f(x)</text>
+                        <text fill="#ecf0f1" font-size="40" x="420" y="250">dx</text>
+
+                        <text fill="#f1c40f" font-size="18" x="150" y="300" text-anchor="middle">积分号</text>
+                        <text fill="#ecf0f1" font-size="18" x="240" y="330" text-anchor="middle">积分限</text>
+                        <text fill="#ecf0f1" font-size="18" x="300" y="300" text-anchor="middle">被积函数</text>
+                        <text fill="#ecf0f1" font-size="18" x="420" y="300" text-anchor="middle">微元</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 10: Geometric Meaning 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分的几何意义 (1)：面积</h2>
+                    <p>当被积函数 $f(x)$ 在区间 $[a, b]$ 上<strong>恒大于等于0</strong>时 ($f(x) \ge 0$)：</p>
+                    <div class="math-formula">
+                        $$\int_a^b f(x) \, dx = \text{曲边梯形的面积}$$
+                    </div>
+                    <p>这正是我们推导定积分概念的出发点。</p>
+                    <p style="color:#95a5a6">定积分提供了一个普适的、精确的计算由曲线围成图形面积的方法。</p>
+                </div>
+                 <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <path d="M 150 350 Q 250 150, 450 250 L 450 350 Z" fill="rgba(46,204,113,0.3)" stroke="#2ecc71" stroke-width="2"></path>
+                        <path d="M 150 350 Q 250 150, 450 250" fill="none" stroke="#2ecc71" stroke-width="4"></path>
+                        <line x1="100" y1="350" x2="500" y2="350" stroke="#ecf0f1"></line>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="150">f(x) ≥ 0</text>
+                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="280">面积A = ∫ₐᵇ f(x)dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 11: Geometric Meaning 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分的几何意义 (2)：代数和</h2>
+                    <p>如果 $f(x)$ 在区间内有正有负呢？</p>
+                    <p>定积分会将 $x$ 轴<strong>上方</strong>的面积作为<strong>正值</strong>累加，将 $x$ 轴<strong>下方</strong>的面积作为<strong>负值</strong>累加。</p>
+                    <p>因此，一般情况下，定积分的值是面积的<strong>“代数和”</strong>或称<strong>“净面积”</strong>。</p>
+                    <div class="math-formula">
+                        $$\int_a^b f(x) \, dx = A_{上} - A_{下}$$
+                    </div>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <line x1="50" y1="250" x2="550" y2="250" stroke="#ecf0f1"></line>
+                        <path d="M 100 250 C 150 100, 250 100, 300 250 C 350 400, 450 400, 500 250" fill="none" stroke="#3498db" stroke-width="4"></path>
+                        <path d="M 100 250 C 150 100, 250 100, 300 250 Z" fill="rgba(46,204,113,0.3)"></path>
+                        <path d="M 300 250 C 350 400, 450 400, 500 250 Z" fill="rgba(231,76,60,0.3)"></path>
+                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="200" y="180">A上 (+)</text>
+                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="400" y="350">A下 (-)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 12: Application -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>物理应用：变速直线运动的路程</h2>
+                    <p>定积分的一个经典应用是计算变速直线运动的路程。</p>
+                    <p>如果一个物体的速度函数是 $v(t)$，那么从时刻 $t=a$ 到 $t=b$ 它所经过的路程 $s$ 就是：</p>
+                    <div class="math-formula">
+                        $$s = \int_a^b |v(t)| \, dt$$
+                    </div>
+                    <p>这可以理解为，我们将总时间分割成无数个微小时间段 $dt$，在每个 $dt$ 内，物体近似于匀速运动，路程为 $v(t)dt$。将所有这些微小路程累加起来，就是总路程。</p>
+                </div>
+                 <div class="visualization">
+                    <svg class="svg-animation" viewbox="0 0 700 600">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="350" y="60">速度 v(t) → 路程 s</text>
+                        <g transform="translate(150, 380)">
+                            <line stroke="#FFE066" stroke-width="2" x1="0" x2="300" y1="150" y2="150"></line>
+                            <line stroke="#FFE066" stroke-width="2" x1="0" x2="0" y1="150" y2="0"></line>
+                            <polyline fill="none" points="0,100 50,80 100,40 150,70 200,90 250,110 300,100" stroke="#4ECDC4" stroke-width="3"></polyline>
+                            <path d="M 0 150 L 0 100 L 50 80 L 100 40 L 150 70 L 200 90 L 250 110 L 300 100 L 300 150 Z" fill="rgba(78,205,196,0.4)"></path>
+                            <text fill="#FFE066" font-size="16" text-anchor="middle" x="150" y="170">时间 t</text>
+                            <text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="150" y="75">面积 = 路程</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: Properties 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分的基本性质 (1)</h2>
+                    <p>定积分有一些非常直观和重要的性质。</p>
+                    <div class="math-formula">
+                        $$1. \quad \int_a^a f(x) \, dx = 0$$
+                    </div>
+                    <p><strong>解释：</strong>积分区间长度为0，面积自然为0。</p>
+                    <div class="math-formula">
+                        $$2. \quad \int_a^b f(x) \, dx = - \int_b^a f(x) \, dx$$
+                    </div>
+                    <p><strong>解释：</strong>交换积分上下限，积分值变号。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">基本性质</text>
+                        <rect x="100" y="120" width="400" height="80" rx="10" fill="rgba(255,255,255,0.1)"></rect>
+                        <text x="300" y="165" fill="#ecf0f1" font-size="22" text-anchor="middle">∫ₐᵃ f(x)dx = 0</text>
+                        <rect x="100" y="250" width="400" height="80" rx="10" fill="rgba(255,255,255,0.1)"></rect>
+                        <text x="300" y="295" fill="#ecf0f1" font-size="22" text-anchor="middle">∫ₐᵇ f(x)dx = - ∫ᵇₐ f(x)dx</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 14: Properties 2 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>定积分的基本性质 (2)</h2>
+                    <h3>线性性质</h3>
+                    <div class="math-formula">
+                        $$3. \quad \int_a^b [f(x) \pm g(x)] \, dx = \int_a^b f(x) \, dx \pm \int_a^b g(x) \, dx$$
+                    </div>
+                     <div class="math-formula">
+                        $$4. \quad \int_a^b k f(x) \, dx = k \int_a^b f(x) \, dx \quad (k \text{为常数})$$
+                    </div>
+                    <h3>区间可加性</h3>
+                     <div class="math-formula">
+                        $$5. \quad \int_a^b f(x) \, dx = \int_a^c f(x) \, dx + \int_c^b f(x) \, dx$$
+                    </div>
+                </div>
+                <div class="visualization">
+                     <svg viewBox="0 0 600 500" class="w-full h-full">
+                         <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">线性 & 可加</text>
+                        <path d="M 100 350 Q 250 200 500 300" fill="none" stroke="#3498db" stroke-width="3"></path>
+                        <path d="M 100 350 L 300 350 L 300 237 Z" fill="rgba(46,204,113,0.3)"></path>
+                        <path d="M 300 350 L 500 350 L 500 300 Q 375 300 300 237 Z" fill="rgba(231,76,60,0.3)"></path>
+                        <line x1="300" y1="350" x2="300" y2="237" stroke="#ecf0f1" stroke-dasharray="3,3"></line>
+                        <text x="100" y="370" fill="#ecf0f1">a</text>
+                        <text x="300" y="370" fill="#ecf0f1">c</text>
+                        <text x="500" y="370" fill="#ecf0f1">b</text>
+                        <text x="200" y="300" fill="#2ecc71" font-size="20">∫ₐᶜ</text>
+                        <text x="400" y="300" fill="#e74c3c" font-size="20">∫ᶜᵇ</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 15: The Bridge -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>如何计算定积分？</h2>
+                    <p>定积分的定义是一个复杂的极限过程，用它来直接计算非常困难。</p>
+                    <p>幸运的是，微积分的另一个伟大成果——<strong>微积分基本定理</strong>——为我们架起了一座桥梁。</p>
+                    <p>它将看似无关的<strong>定积分</strong>（求面积）与<strong>不定积分</strong>（求原函数）紧密地联系在了一起。</p>
+                     <div class="math-formula" style="border-color:#f39c12;">
+                        $$\int_a^b f(x) \, dx = F(b) - F(a)$$
+                    </div>
+                    <p>其中 $F(x)$ 是 $f(x)$ 的一个原函数。这将在下一节课中详细讲解。</p>
+                </div>
+                <div class="visualization">
+                    <svg class="w-full h-full" viewbox="0 0 600 500">
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">从概念到计算的桥梁</text>
+                        <rect fill="rgba(52,152,219,0.2)" height="120" rx="10" stroke="#3498db" width="220" x="50" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="160" y="235">定积分</text>
+                        <text fill="#95a5a6" font-size="16" text-anchor="middle" x="160" y="265">(求面积)</text>
+                        <text fill="#f39c12" font-size="60" text-anchor="middle" x="300" y="255">🌉</text>
+                        <rect fill="rgba(46,204,113,0.2)" height="120" rx="10" stroke="#2ecc71" width="220" x="330" y="180"></rect>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="440" y="235">不定积分</text>
+                         <text fill="#95a5a6" font-size="16" text-anchor="middle" x="440" y="265">(求原函数)</text>
+                        <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="380">微积分基本定理</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 16: Summary -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="chalkboard">
+                    <h2>本节总结</h2>
+                    <p>今天，我们从直观的面积问题出发，理解了定积分的诞生过程。</p>
+                    <h3>核心思想</h3>
+                    <p><strong>分割、近似、求和、取极限。</strong></p>
+                    <h3>核心概念</h3>
+                    <ul>
+                        <li>定积分是<strong>黎曼和的极限</strong>。</li>
+                        <li>几何意义是<strong>面积的代数和</strong>。</li>
+                        <li>它在物理、工程等领域有着广泛的应用。</li>
+                    </ul>
+                    <p style="margin-top: 2rem;">我们已经理解了定积分“是什么”，下一节课，我们将学习如何高效地计算它。</p>
+                </div>
+                <div class="visualization">
+                    <svg viewBox="0 0 600 500" class="w-full h-full">
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">定积分 = 无限求和</text>
+                        <path d="M 100 350 C 200 200, 400 400, 500 250" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2"></path>
+                        <text fill="#ecf0f1" text-anchor="middle" x="300" y="200" font-size="24">分割→近似→求和→取极限</text>
+                        <text fill="#f1c40f" text-anchor="middle" x="300" y="300" font-size="40">∫ₐᵇ f(x)dx</text>
+                        <text fill="#e74c3c" text-anchor="middle" x="300" y="400" font-size="22">几何意义：(代数)面积</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="subtitle-area" id="subtitleArea">欢迎学习定积分的概念！</div>
+    <div class="control-bar">
+        <div style="color:#f1c40f;font-weight:bold;margin-bottom:15px;text-align:center;">第 <span id="currentSlide">1</span> / <span id="totalSlides">16</span> 页</div>
+        <button class="btn" id="prevBtn" onclick="previousSlide()">⬅️ 上一页</button>
+        <button class="btn primary" id="startBtn" onclick="startTeaching()">🎀 开始讲课</button>
+        <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
+        <button class="btn" onclick="restart()">🔄 重新开始</button>
+        <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+    </div>
+    <script type="module">
+        // Placeholder for SDK import
+        // window.playbackFinished = false; try { const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+    <script>
+        const subtitleScript = {
+            "1": "欢迎来到第六章，今天我们开启一个全新的概念：定积分。",
+            "2": "我们如何计算由曲线围成的图形面积？这就是定积分思想的起点。",
+            "3": "面对“曲”的困难，我们的策略是用熟悉的“直”（小矩形）去近似。",
+            "4": "定积分思想的第一步“分割”：将要求的区间切分成许多小段。",
+            "5": "第二步“近似”：在每个小段上，用一个矩形去近似那一小块的曲边图形。",
+            "6": "第三步“求和”：将所有小矩形的面积加起来，得到总面积的近似值。",
+            "7": "第四步“取极限”：当矩形无限细分时，近似和的极限就是精确面积。",
+            "8": "这四步——分割、近似、求和、取极限——最终构成了定积分的正式定义。",
+            "9": "定积分的符号 ∫ₐᵇ f(x)dx 每一部分都有其精确的含义。",
+            "10": "当函数f(x)大于等于0时，定积分的几何意义就是曲线下方的面积。",
+            "11": "当函数有正有负时，定积分计算的是x轴上方与下方区域面积的“代数和”。",
+            "12": "在物理学中，对速度函数v(t)进行定积分，就可以得到物体运动的路程。",
+            "13": "定积分具有一些非常直观的基本性质，例如积分区间为0则积分为0。",
+            "14": "定积分还满足线性和区间可加性，这为我们的计算提供了便利。",
+            "15": "那么如何计算定积分呢？微积分基本定理将为我们架起从概念到计算的桥梁。",
+            "16": "总结：定积分的本质是“无限求和”，它的几何意义是面积的代数和。"
+        };
+        const speechScript = {
+            "1": "同学们好！欢迎来到第六章的学习。今天，我们将开启一个微积分中至关重要的全新概念——定积分，它是一次从近似到精确的伟大飞跃。",
+            "2": "我们学习几何时，会计算各种标准图形的面积。但如果一个图形的边界是曲线，比如这条抛物线下方的区域，我们该怎么办呢？传统几何方法失效了，这就引出了我们今天的主题。",
+            "3": "面对不规则的“曲”，人类最古老也最智慧的想法，就是用规则的“直”去近似它。我们可以把这个曲边图形，切成很多个我们熟悉的小矩形，把这些小矩形的面积加起来，不就得到了一个近似值吗？",
+            "4": "这个伟大的思想，可以被精确地描述为四步。第一步，叫做“分割”。我们把图形的底边，也就是积分区间，从a到b，任意地切割成n个小段。",
+            "5": "第二步，叫做“近似”。在每一个小段上，我们用一个高度为函数值的小矩形，来近似代替原来那块窄窄的曲边图形。这个小矩形的面积，就是高乘以宽。",
+            "6": "第三步，叫做“求和”。我们把刚才建立的所有小矩形的面积，一个一个地加起来。得到的这个总和，在数学上被称为“黎曼和”，它就是我们对总面积的近似估算。显然，矩形越多，估算就越准。",
+            "7.": "最关键的第四步来了——“取极限”。想象一下，我们让分割无限地加细，让每个小矩形的宽度都趋向于0。那么，这些矩形面积总和的极限，就等于曲边梯形精确的、真实的面积。",
+            "8": "把这四步合在一起，就构成了定积分的严格数学定义。定积分，本质上就是我们刚才描述的那个黎曼和，在分割无限细的情况下所取的极限。它代表了一种“无限求和”的思想。",
+            "9": "我们来看一下定积分的符号。这个拉长的S就是积分号，代表求和。a和b是积分的下限和上限。f(x)是被积函数，代表每个小矩形的高。而dx，则代表了无限小的宽度。",
+            "10": "那么，定积分的几何意义是什么呢？当被积函数f(x)始终在x轴上方时，它的定积分，就精确地等于这个函数图像下方的曲边梯形的面积。这正是我们一开始想要解决的问题。",
+            "11": "那如果函数图像有上有下，穿过了x轴呢？定积分是一个更广义的概念。它会把x轴上方的面积算作正数，把x轴下方的面积算作负数。所以，定积分的几何意义，是面积的“代数和”，或者叫“净面积”。",
+            "12": "定积分在现实世界中无处不在。比如在物理学中，我们都知道路程等于速度乘以时间。但如果速度是随时变化的呢？总路程，就是对速度函数v(t)从起点到终点时间的定积分。它累加了每一个瞬间所走过的微小路程。",
+            "13": "定积分也满足一些非常直观的性质。比如，从a到a的积分，因为区间长度是0，所以积分值自然就是0。另外，如果我们交换积分的上下限，积分值就会变一个符号。",
+            "14": "和导数一样，定积分也满足线性性质，和的积分等于积分的和，常数因子也可以提出去。此外，它还具有区间可加性，从a到b的积分，等于从a到c再从c到b的积分之和。",
+            "15": "现在我们理解了定积分“是什么”，但还有一个关键问题：怎么计算它呢？难道每次都要去求那个复杂的极限吗？幸运的是，牛顿和莱布尼茨发现的“微积分基本定理”，为我们架起了一座从不定积分到定积分的桥梁。我们下一节课，就来学习这个强大的计算工具。",
+            "16": "好了，我们来总结一下今天的内容。定积分的核心思想，是“分割、近似、求和、取极限”这四步曲。它的本质是黎曼和的极限，几何意义是面积的代数和，并且在物理等领域有着广泛的应用。谢谢大家！"
+        };
+        const actionMap = {
+            "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O",
+            "5": "A_LH_introduced_O", "6": "A_RH_point_O", "7": "A_LH_introduced_O", "8": "A_RH_point_O",
+            "9": "A_LH_introduced_O", "10": "A_RH_point_O", "11": "A_LH_introduced_O", "12": "A_RH_point_O",
+            "13": "A_LH_introduced_O", "14": "A_RH_point_O", "15": "A_LH_introduced_O", "16": "A_RLH_welcome_O"
+        };
+
+        let currentSlide = 0;
+        const totalSlides = 16;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+        let speechFinishedResolve = null;
+        const slides = document.querySelectorAll('.slide');
 
-        let currentPage = 1;
-        const totalPages = 5;
-
-        // === 字幕脚本设置 ===
-        const subtitleScript = {
-            1: `欢迎来到定积分的学习。定积分是微积分中的核心概念之一，它将无限细分与求和的思想完美结合，为我们解决实际问题提供了强大的工具。今天我们将从直观的角度理解定积分的本质。`,
-            2: `定积分的核心思想非常简单：切成小块，然后加起来。积分符号∫实际上是拉长的字母S，代表求和Sum。dx表示极小的宽度，f(x)是每一小块的高度。当我们把无限多个小块加起来，就得到了定积分。`,
-            3: `分得越细，近似就越精确。这就是极限的思想。当我们把区间分成4个小矩形时，只是粗略近似；分成8个会更好一些；分成16个就相当接近了。当分割数趋向无穷时，我们就得到了完全精确的结果。`,
-            4: `让我们看一个实际例子：开车的距离问题。如果速度是变化的，怎么计算总距离呢？答案就是对速度函数求积分。每一小段时间内的距离等于速度乘以时间，把所有瞬间的距离累加起来，就得到了总距离。速度-时间图像下的面积，就是行驶的距离。`,
-            5: `微积分改变了世界。从物理学的运动定律，到工程学的建筑设计，从经济学的最优化问题，到人工智能的深度学习，微积分都是现代科技的数学基础。掌握定积分，你就掌握了理解世界的一把钥匙。`
-        };
-
-        // 虚拟人相关函数
-        function updateStatus(message, type = 'normal') {
-            const indicator = document.getElementById('statusIndicator');
-            if (indicator) {
-                indicator.textContent = message;
-                indicator.className = 'status-indicator';
-                if (type === 'connected') {
-                    indicator.classList.add('connected');
-                } else if (type === 'error') {
-                    indicator.classList.add('error');
-                } else if (type === 'connecting') {
-                    indicator.classList.add('connecting');
-                } else if (type === 'recording') {
-                    indicator.classList.add('recording');
-                }
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error('MathJax 渲染失败:', err));
             }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
         }
 
-        function updateSubtitle(text) {
-            const subtitleArea = document.getElementById('subtitleArea');
-            if (subtitleArea) {
-                subtitleArea.textContent = text;
-            }
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; }
+        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
+
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接或未开始讲课'); return; }
+            const content = speechScript[slideNum];
+            if (!content) return;
+            try {
+                const action = actionMap[slideNum];
+                if (action) { await avatarPlatform.writeCmd("action", action); }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) { console.error('❌ 讲解失败:', error); }
         }
+
+        function getSlideDuration(slideNum) { const speech = speechScript[slideNum]; if (!speech) return 5000; return speech.length * 120 + 2000; }
+        function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
 
         function waitForSDK() {
             return new Promise((resolve, reject) => {
-                if (typeof AvatarPlatform !== 'undefined') {
-                    resolve();
-                    return;
-                }
-
-                const timeout = setTimeout(() => {
-                    reject(new Error('SDK加载超时，请刷新页面重试'));
-                }, 10000);
-
-                window.addEventListener('sdkReady', function handler() {
-                    clearTimeout(timeout);
-                    window.removeEventListener('sdkReady', handler);
-                    resolve();
-                });
+                if (window.AvatarPlatform) { resolve(); return; }
+                const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000);
+                window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); });
             });
-        }
-
-        function switchToPage(pageNum) {
-            if (pageNum < 1 || pageNum > totalPages) return;
-            const pages = document.querySelectorAll('.page');
-            pages.forEach((page, index) => {
-                if (index + 1 === pageNum) {
-                    page.classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                }
-            });
-            currentPage = pageNum;
-            document.getElementById('currentPage').textContent = pageNum;
-            document.getElementById('currentPageControl').textContent = pageNum;
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise();
-            }
-        }
-
-        function nextPage() {
-            if (currentPage < totalPages) switchToPage(currentPage + 1);
-        }
-
-        function previousPage() {
-            if (currentPage > 1) switchToPage(currentPage - 1);
         }
 
         async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
             try {
-                console.log('⏳ 等待SDK模块加载...');
-                updateStatus('等待SDK加载...', 'connecting');
-                await waitForSDK();
-
-                console.log('✅ 讯飞官方SDK已加载');
-                updateStatus('SDK已加载', 'connecting');
-
-                if(avatarPlatform) {
-                    avatarPlatform.destroy();
+                updateStatus('等待SDK...', 'connecting');
+                // await waitForSDK(); // Enable this if you have the SDK locally
+                if(typeof AvatarPlatform === 'undefined') {
+                    console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
+                    updateStatus('SDK未加载', 'error');
+                    startBtn.textContent = '❌ SDK未加载';
+                    return;
                 }
+                
+                if(avatarPlatform) { avatarPlatform.destroy(); }
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
 
-                avatarPlatform = new AvatarPlatform({
-                    useInlinePlayer: true
+                avatarPlatform.on('connected', () => {
+                    isConnected = true; isTeaching = true; updateStatus('已连接', 'connected');
+                    startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => speakContent(currentSlide + 1), 1000);
+                }).on('disconnected', () => {
+                    isConnected = false; updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error); updateStatus('错误', 'error');
+                    startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
+                }).on('frame_stop', () => {
+                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
                 });
-
-                avatarPlatform
-                    .on('connected', (initResp) => {
-                        console.log('🎉 虚拟人连接成功！', initResp);
-                        isConnected = true;
-                        isTeaching = true;
-                        updateStatus('已连接', 'connected');
-
-                        setTimeout(() => {
-                            speakContent(currentPage);
-                        }, 1000);
-                    })
-                    .on('disconnected', (err) => {
-                        console.log('🔌 虚拟人连接断开');
-                        isConnected = false;
-                        updateStatus('连接断开', 'error');
-                        if (err) {
-                            console.error('❌ 连接异常断开:', err);
-                        }
-                    })
-                    .on('error', (error) => {
-                        console.error('❌ 虚拟人错误:', error);
-                        updateStatus('错误: ' + error.message, 'error');
-                        isTeaching = false;
-                    })
-                    .on('frame_stop', (data) => {
-                        console.log('✅ 虚拟人讲解完成');
-                    })
-                    .on('tts_duration', (data) => {
-                        console.log('📊 TTS时长信息:', data);
-                    });
-
-                avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',                                    // 数学讲解 AppID
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',             // 数学讲解 API密钥
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',       // 数学讲解 API密钥
-                    sceneId: '237415046114840576',                       // 数学讲解 场景ID
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });
-
-                avatarPlatform.setGlobalParams({
-                    stream: {
-                        protocol: 'xrtc',
-                        alpha: 1,
-                        bitrate: 1000000,
-                        fps: 25
-                    },
-                    avatar: {
-                        avatar_id: '110332017',
-                        width: 1920,
-                        height: 1080,
-                        scale: 1,
-                        move_h: 0,
-                        move_v: 0,
-                        audio_format: 1
-                    },
-                    tts: {
-                        vcn: 'x4_yiting',
-                        speed: 50,
-                        pitch: 50,
-                        volume: 100
-                    },
-                    avatar_dispatch: {
-                        interactive_mode: 1,
-                        content_analysis: 0
-                    }
-                });
-
-                await avatarPlatform.start({
-                    wrapper: document.getElementById('avatarWrapper')
-                });
-
-                console.log('🎓 虚拟人教学系统启动完成');
-
+                
+                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 } });
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
-                console.error('❌ 启动失败:', error);
-                updateStatus('启动失败', 'error');
-                alert(`启动失败：${error.message}\n\n请检查控制台获取详细错误信息。`);
+                console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error');
+                startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
             }
-        }
-
-        async function speakContent(pageNum) {
-            if (!isTeaching || !isConnected || !avatarPlatform) {
-                console.log('⚠️ 虚拟人未连接或未开始教学，跳过语音播报');
-                return;
-            }
-
-            const content = subtitleScript[pageNum];
-            if (!content) return;
-
-            try {
-                await avatarPlatform.writeText(content, {
-                    nlp: false
-                });
-
-                console.log(`✅ 虚拟人讲解第${pageNum}页`);
-                updateSubtitle(content);
-            } catch (error) {
-                console.error('❌ 虚拟人讲解失败:', error);
-            }
-        }
-
-        function getPageTitle(pageNum) {
-            const titles = {
-                1: "定积分的概念介绍",
-                2: "积分的想法",
-                3: "分得越细越精确",
-                4: "定积分的定义",
-                5: "总结"
-            };
-            return titles[pageNum] || `第${pageNum}页`;
-        }
-
-        function getPageDuration(pageNum) {
-            const durations = {
-                1: 20000, 2: 18000, 3: 20000, 4: 22000, 5: 15000
-            };
-            return durations[pageNum] || 15000;
         }
 
         async function startAutoPlay() {
-            if (isAutoPlaying) {
-                stopAutoPlay();
-                return;
-            }
-
+            if (!isTeaching || !isConnected) { alert("请先点击“开始讲课”并等待连接成功。"); return; }
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
             try {
-                console.log('🎬 开始自动播放完整课程...');
-                isAutoPlaying = true;
-
-                // 首先启动虚拟人
-                if (!avatarPlatform || !isConnected) {
-                    console.log('🎬 启动虚拟人...');
-                    await startTeaching();
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                for (let i = currentSlide; i < totalSlides; i++) {
+                    if (!isAutoPlaying) break;
+                    showSlide(i);
+                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                    await speakContent(i + 1);
+                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1) + 2000));
+                    await Promise.race([speechPromise, timeoutPromise]);
+                    await new Promise(resolve => setTimeout(resolve, 1500));
                 }
-
-                const autoPlayBtn = document.getElementById('autoPlayBtn');
-                autoPlayBtn.textContent = '⏹️ 停止播放';
-                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-
-                console.log(`⏰ 倒计时: 1秒`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-
-                console.log('🚀 自动播放正式开始！');
-                document.body.classList.add('recording-mode');
-
-                console.log(`🚀 开始逐页播放，总共${totalPages}页`);
-                for (let page = 1; page <= totalPages; page++) {
-                    try {
-                        if (!isAutoPlaying) {
-                            console.log('🛑 自动播放被停止');
-                            break;
-                        }
-
-                        console.log(`\n🎬 === 开始播放第${page}页/${totalPages}页 ===`);
-                        switchToPage(page);
-                        console.log(`📄 已切换到第${page}页: ${getPageTitle(page)}`);
-
-                        console.log(`⏳ 等待页面渲染 0.8秒...`);
-                        await new Promise(resolve => setTimeout(resolve, 800));
-
-                        const pageTime = getPageDuration(page);
-                        console.log(`⏰ 等待阅读时间 ${pageTime/1000}秒...`);
-                        await new Promise(resolve => setTimeout(resolve, pageTime));
-
-                        if (page === totalPages) {
-                            console.log(`⏳ 最后一页，停顿2秒...`);
-                            await new Promise(resolve => setTimeout(resolve, 2000));
-                        }
-
-                        console.log(`✅ 第${page}页播放完成\n`);
-
-                    } catch (error) {
-                        console.error(`❌ 第${page}页播放过程出错:`, error);
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                    }
-                }
-
-                console.log('🎉 所有页面播放完成！');
-
-                if (isAutoPlaying) {
-                    console.log('⏰ 等待3秒后结束录制...');
-                    await new Promise(resolve => setTimeout(resolve, 3000));
-                    stopAutoPlay();
-                }
-
-            } catch (error) {
-                console.error('❌ 自动播放失败:', error);
-                stopAutoPlay();
-            }
-        }
-
-        function stopAutoPlay() {
-            if (isAutoPlaying) {
-                isAutoPlaying = false;
-                window.playbackFinished = true;
-                document.title = "PLAYBACK_FINISHED";
-                console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
-                document.body.classList.remove('recording-mode');
-                const autoPlayBtn = document.getElementById('autoPlayBtn');
-                autoPlayBtn.textContent = '🎬 自动播放';
-                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
-                console.log('⏹️ 自动播放已停止');
+            } catch (error) { console.error('❌ 自动播放失败:', error); }
+            finally {
+                isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false;
+                window.playbackFinished = true; document.title = "PLAYBACK_FINISHED"; console.log('🎉 播放完成');
             }
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                e.preventDefault();
-                nextPage();
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                previousPage();
-            }
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
-        let wheelTimeout;
-        document.addEventListener('wheel', (e) => {
-            clearTimeout(wheelTimeout);
-            wheelTimeout = setTimeout(() => {
-                if (e.deltaY > 0) {
-                    nextPage();
-                } else if (e.deltaY < 0) {
-                    previousPage();
-                }
-            }, 50);
-        }, { passive: true });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            switchToPage(1);
-
-            // 🚀 自动启动播放 - 延迟3秒后自动开始
-            setTimeout(() => {
-                console.log('🚀 自动启动播放...');
-                startAutoPlay();
-            }, 3000);
-        });
-
-        window.addEventListener('beforeunload', function() {
-            if (isAutoPlaying) {
-                stopAutoPlay();
-            }
-
-            if (avatarPlatform && isConnected) {
-                avatarPlatform.stop();
-            }
-        });
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(0);
     </script>
 </body>
 </html>

@@ -600,15 +600,15 @@
                 for (let segmentId of segments) {
                     const speech = speechScript[segmentId];
                     if (speech) {
-                        totalDuration += speech.length * 150 + 1000;
+                        totalDuration += speech.length * 180;
                     }
                 }
-                return totalDuration + 2000;
+                return totalDuration;
             }
-            
+
             const speech = speechScript[slideNum];
             if (!speech) return 10000;
-            return speech.length * 150 + 3000;
+            return speech.length * 180;
         }
 
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
@@ -664,11 +664,10 @@
                             speechFinishedResolve = null;
                         }
                         resolve();
-                    }, getSlideDuration(i + 1) + 2000));
+                    }, getSlideDuration(i + 1)));
                     await Promise.race([speechPromise, timeoutPromise]);
-                    await new Promise(resolve => setTimeout(resolve, 1500)); 
                 }
-            } catch (error) { console.error('❌ 自动播放失败:', error); } 
+            } catch (error) { console.error('❌ 自动播放失败:', error); }
             finally {
                 isAutoPlaying = false;
                 document.getElementById('autoPlayBtn').disabled = false;

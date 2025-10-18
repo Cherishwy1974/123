@@ -1122,8 +1122,8 @@
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
             if (!speech) return 10000;
-            // 每个汉字150ms（正常语速） + 3秒缓冲时间
-            return speech.length * 150 + 3000;
+            // 每个汉字180ms（正常语速）
+            return speech.length * 180;
         }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
 
@@ -1184,9 +1184,8 @@
                     showSlide(i);
                     const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
                     await speakContent(i + 1);
-                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1) + 2000));
+                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
                     await Promise.race([speechPromise, timeoutPromise]);
-                    await new Promise(resolve => setTimeout(resolve, 1500));
                 }
             } catch (error) { console.error('❌ 自动播放失败:', error); }
             finally {

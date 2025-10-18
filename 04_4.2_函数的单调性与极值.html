@@ -605,8 +605,8 @@
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
             if (!speech) return 10000;
-            // 每个汉字150ms（正常语速） + 3秒缓冲时间
-            return speech.length * 150 + 3000;
+            // 每个汉字180ms（正常语速）
+            return speech.length * 180;
         }
         
         async function startAutoPlay() {
@@ -614,17 +614,22 @@
             if (!isConnected) { alert("虚拟人未连接,无法自动播放。"); return; }
             isAutoPlaying = true;
             document.getElementById('autoPlayBtn').disabled = true;
-            for (let i = currentSlide; i < totalSlides; i++) {
-                if (!isAutoPlaying) break;
-                showSlide(i);
-                const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
-                await speakContent(i + 1);
-                const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
-                await Promise.race([speechPromise, timeoutPromise]);
-                await new Promise(resolve => setTimeout(resolve, 1500));
+            try {
+                for (let i = currentSlide; i < totalSlides; i++) {
+                    if (!isAutoPlaying) break;
+                    showSlide(i);
+                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                    await speakContent(i + 1);
+                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                    await Promise.race([speechPromise, timeoutPromise]);
+                }
+            } catch (error) { console.error('❌ 自动播放失败:', error); }
+            finally {
+                isAutoPlaying = false;
+                document.getElementById('autoPlayBtn').disabled = false;
+                window.playbackFinished = true;
+                document.title = "PLAYBACK_FINISHED";
             }
-            isAutoPlaying = false;
-            document.getElementById('autoPlayBtn').disabled = false;
         }
 
         document.addEventListener('keydown', (e) => {
