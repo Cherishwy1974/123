@@ -700,13 +700,13 @@
             }
         }
         // 计算单页播放时长（用于超时fallback）
-        // 注意：因为包含大量公式需要音译成汉字朗读，所以时间需要更长
+        // 注意：speechScript中的内容已经是公式音译后的汉字，直接计算字数即可
         // 这个时间只用于网络异常时的保护，正常同步依赖 frame_stop 事件
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
-            if (!speech) return 15000;
-            // 估算一个非常宽松的时间：每个字250毫秒 + 10秒的额外缓冲
-            return speech.length * 250 + 10000;
+            if (!speech) return 10000;
+            // 每个汉字按150毫秒计算（正常语速） + 3秒缓冲时间
+            return speech.length * 150 + 3000;
         }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
         function waitForSDK() { return new Promise((resolve, reject) => { if (typeof AvatarPlatform !== 'undefined') { resolve(); return; } const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
