@@ -14,7 +14,6 @@
                 processEscapes: true,
                 processEnvironments: true
             },
-            chtml: { fontCache: 'global' },
             startup: {
                 pageReady: () => {
                     return MathJax.startup.defaultPageReady().then(() => {
@@ -628,11 +627,8 @@
 
         async function nextSlide() {
             if (currentSlide < totalSlides - 1) {
-                // 如果虚拟人正在讲解，先停止
-                if (isSpeaking && avatarPlatform) {
-                    await avatarPlatform.stop();
-                    isSpeaking = false;
-                }
+                // 注意：不调用 stop()，避免断开连接
+                // 直接翻页，新的讲解会覆盖旧的
                 showSlide(currentSlide + 1);
                 if (!isAutoPlaying && isTeaching && isConnected) {
                     await speakContent(currentSlide + 1);
@@ -642,11 +638,8 @@
 
         async function previousSlide() {
             if (currentSlide > 0) {
-                // 如果虚拟人正在讲解，先停止
-                if (isSpeaking && avatarPlatform) {
-                    await avatarPlatform.stop();
-                    isSpeaking = false;
-                }
+                // 注意：不调用 stop()，避免断开连接
+                // 直接翻页，新的讲解会覆盖旧的
                 showSlide(currentSlide - 1);
                 if (!isAutoPlaying && isTeaching && isConnected) {
                     await speakContent(currentSlide + 1);
@@ -655,11 +648,8 @@
         }
         function restart() {
             showSlide(0);
-            if (avatarPlatform) {
-                avatarPlatform.stop();
-            }
-            isConnected = false;
-            isTeaching = false;
+            // 注意：不调用 stop()，避免断开连接
+            // 只重置状态标志
             isAutoPlaying = false;
             isSpeaking = false;
             speechFinishedResolve = null;
@@ -678,11 +668,8 @@
             if (!content) return;
 
             try {
-                // 只有在正在讲解时才停止，避免在刚连接时调用stop导致断开
-                if (isSpeaking) {
-                    console.log('[Sync] 🛑 停止当前讲解');
-                    await avatarPlatform.stop();
-                }
+                // 注意：不要调用 stop()，因为会导致整个连接断开
+                // SDK会自动管理讲解队列
 
                 isSpeaking = true;
                 console.log(`[Sync] 🎤 开始讲解第${slideNum}页`);
