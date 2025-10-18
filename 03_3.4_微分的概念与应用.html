@@ -687,9 +687,9 @@
         // 这个时间仅用于超时保护，正常情况下应该由frame_stop事件触发翻页
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
-            if (!speech) return 10000;
-            // 每个字150毫秒（考虑公式音译）+ 5秒缓冲时间（仅作为超时保护）
-            return speech.length * 150 + 5000;
+            if (!speech) return 15000;
+            // 每个字250毫秒（公式音译需要更多时间）+ 8秒缓冲时间
+            return speech.length * 250 + 8000;
         }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
         function waitForSDK() { return new Promise((resolve, reject) => { if (typeof AvatarPlatform !== 'undefined') { resolve(); return; } const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
@@ -730,12 +730,15 @@
                     isSpeaking = false;
                 }).on('frame_stop', (data) => {
                     console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                    console.log('   当前状态 - isAutoPlaying:', isAutoPlaying, 'isSpeaking:', isSpeaking, 'currentSlide:', currentSlide + 1);
                     isSpeaking = false;
 
                     if (isAutoPlaying && speechFinishedResolve) {
-                        console.log('🎬 通知自动播放:虚拟人讲解完成');
+                        console.log('🎬 通知自动播放:虚拟人讲解完成，准备翻页');
                         speechFinishedResolve();
                         speechFinishedResolve = null;
+                    } else {
+                        console.log('⚠️ frame_stop触发但未翻页 - isAutoPlaying:', isAutoPlaying, 'speechFinishedResolve:', !!speechFinishedResolve);
                     }
                 });
 
@@ -795,18 +798,23 @@
 
                             // 开始讲解
                             await speakContent(i + 1);
-                            console.log(`⏳ 等待虚拟人讲解第${i + 1}页完成...`);
+                            const expectedDuration = getSlideDuration(i + 1);
+                            console.log(`⏳ 等待虚拟人讲解第${i + 1}页完成... (预计最长${(expectedDuration/1000).toFixed(1)}秒)`);
 
                             // 设置超时保护（仅作为兜底，正常应该由frame_stop触发）
+                            const startTime = Date.now();
                             const timeoutPromise = new Promise(resolve => setTimeout(() => {
-                                console.log(`⚠️ 第${i + 1}页讲解超时,继续下一页`);
+                                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                                console.log(`⚠️ 第${i + 1}页讲解超时(${elapsed}秒),继续下一页`);
                                 isSpeaking = false;
+                                speechFinishedResolve = null;
                                 resolve();
-                            }, getSlideDuration(i + 1)));
+                            }, expectedDuration));
 
                             // 等待讲解完成或超时
                             await Promise.race([speechPromise, timeoutPromise]);
-                            console.log(`✅ 第${i + 1}页讲解完成`);
+                            const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                            console.log(`✅ 第${i + 1}页讲解完成 (实际用时${elapsed}秒)`);
 
                             // 讲解完成后立即翻页，不需要额外等待
                             // frame_stop事件触发后应该立即进入下一页
