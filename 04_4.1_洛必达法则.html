@@ -559,7 +559,7 @@
 
         async function speakContent(slideNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接或未开始讲课'); return; }
-            
+
             const segments = getMultiSegmentSpeech(slideNum);
             if (segments) {
                 for (let i = 0; i < segments.length; i++) {
@@ -569,10 +569,12 @@
                     try {
                         const action = actionMap[segmentId];
                         if (action) { await avatarPlatform.writeCmd("action", action); }
+                        console.log(`🎤 虚拟人开始讲解第${segmentId}页...`);
                         await avatarPlatform.writeText(content, { nlp: false });
                         updateSubtitle(segmentId);
                         const speech = speechScript[segmentId];
-                        const duration = speech ? speech.length * 150 + 1000 : 5000;
+                        const duration = speech ? speech.length * 180 : 5000;
+                        console.log(`⏳ 等待${duration}ms...`);
                         await new Promise(resolve => setTimeout(resolve, duration));
                     } catch (error) { console.error(`❌ 讲解片段${segmentId}失败:`, error); }
                 }
@@ -587,8 +589,17 @@
                 try {
                     const action = actionMap[slideNum];
                     if (action) { await avatarPlatform.writeCmd("action", action); }
+                    console.log(`🎤 虚拟人开始讲解第${slideNum}页...`);
                     await avatarPlatform.writeText(content, { nlp: false });
                     updateSubtitle(slideNum);
+                    const speech = speechScript[slideNum];
+                    const duration = speech ? speech.length * 180 : 5000;
+                    console.log(`⏳ 等待${duration}ms...`);
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('✅ 第' + slideNum + '页讲解完成');
+                        speechFinishedResolve();
+                        speechFinishedResolve = null;
+                    }
                 } catch (error) { console.error('❌ 讲解失败:', error); }
             }
         }
@@ -686,17 +697,21 @@
         showSlide(0);
 
         // 自动启动：页面加载完成后自动开始讲课和播放
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                console.log('🚀 自动启动讲课...');
-                startTeaching().then(() => {
-                    setTimeout(() => {
-                        console.log('🎬 自动启动自动播放...');
+        setTimeout(() => {
+            console.log('🚀 自动启动讲课...');
+            startTeaching().then(() => {
+                // 等待虚拟人真正连接
+                const checkConnection = setInterval(() => {
+                    if (isConnected) {
+                        clearInterval(checkConnection);
+                        console.log('✅ 虚拟人已连接，开始自动播放...');
                         startAutoPlay();
-                    }, 2000);
-                }).catch(err => console.error('❌ 启动失败:', err));
-            }, 1000);
-        });
+                    }
+                }, 500);
+                // 最多等待 10 秒
+                setTimeout(() => clearInterval(checkConnection), 10000);
+            }).catch(err => console.error('❌ 启动失败:', err));
+        }, 1000);
     </script>
 </body>
 </html>
