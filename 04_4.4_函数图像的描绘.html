@@ -949,13 +949,51 @@
             }
         }
 
-        // 计算单页播放时长（用于超时fallback）
-        // 注意：speechScript中的内容已经是公式音译后的汉字，直接计算字数即可
+        // 将数学公式音译为中文
+        function translateMathToSpeech(text) {
+            let result = text;
+            result = result.replace(/f''\(x\)/g, 'f两撇x');
+            result = result.replace(/f'\(x\)/g, 'f撇x');
+            result = result.replace(/f''\(x_0\)/g, 'f两撇x零');
+            result = result.replace(/f'\(x_0\)/g, 'f撇x零');
+            result = result.replace(/x_0/g, 'x零');
+            result = result.replace(/x\^2/g, 'x平方');
+            result = result.replace(/x\^3/g, 'x立方');
+            result = result.replace(/>/g, '大于');
+            result = result.replace(/</g, '小于');
+            result = result.replace(/=/g, '等于');
+            result = result.replace(/\$/g, '');
+            result = result.replace(/\\/g, '');
+            return result;
+        }
+
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
-            if (!speech) return 10000;
-            // 每个汉字180ms（正常语速）
-            return speech.length * 180;
+            if (!speech) return 5000;
+            const translatedSpeech = translateMathToSpeech(speech);
+            const charCount = translatedSpeech.length;
+            const duration = charCount * 200 + 1500;
+            console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
+
+        // 自动翻页函数（根据语音时长自动翻页）
+        function startAutoPageTurn() {
+            function scheduleNextPage() {
+                if (currentSlide < totalSlides - 1) {
+                    const waitTime = getSlideDuration(currentSlide + 1);
+                    console.log(`📄 当前第 ${currentSlide + 1} 页，${waitTime}ms 后翻页`);
+                    autoPageTimer = setTimeout(() => {
+                        nextSlide();
+                        scheduleNextPage();
+                    }, waitTime);
+                } else {
+                    console.log('✅ 已到达最后一页，自动翻页结束');
+                    window.playbackFinished = true;
+                    document.title = "PLAYBACK_FINISHED";
+                }
+            }
+            scheduleNextPage();
         }
         
         async function startAutoPlay() {
@@ -1018,10 +1056,11 @@
             showSlide(0);
             console.log('✨ 函数图像的描绘教学系统初始化完成');
 
-            // 🚀 自动启动播放 - 延迟3秒后自动开始
+            // 🚀 自动启动播放和翻页 - 延迟3秒后自动开始
             setTimeout(() => {
-                console.log('🚀 自动启动播放...');
+                console.log('🚀 自动启动播放和翻页...');
                 startAutoPlay();
+                startAutoPageTurn();
             }, 3000);
         });
     </script>
