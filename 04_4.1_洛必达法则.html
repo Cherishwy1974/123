@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
-    <title>04_4.1_洛必达法则 (扩展版)</title>
+    <title>04_4.1_洛必达法则</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
@@ -57,7 +57,6 @@
     <div class="status-indicator" id="statusIndicator">等待连接</div>
     <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
     <div class="slide-container">
-        
         <!-- Page 1: Title -->
         <div class="slide active">
             <div class="slide-content">
@@ -85,49 +84,7 @@
             </div>
         </div>
 
-        <!-- Page 2: 简单极限回顾 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>回顾：简单极限</h2>
-                    <p>对于简单的函数,我们可以使用<strong>直接代入法</strong>。</p>
-                    <h3>例子</h3>
-                    <p>求 \(\lim\limits_{x \to 2} (x^2 + 3)\)</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 2} (x^2 + 3) = 2^2 + 3 = 7\]
-                    </div>
-                    <p style="margin-top:20px;">这种方法简单直接,但并非总是有效。</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">直接代入法</text>
-                        <rect x="100" y="150" width="400" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="210">lim (x² + 3) = 2² + 3 = 7</text>
-                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="350">✓ 简单有效</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 3: 遇到困难 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>当直接代入失效时</h2>
-                    <p>但很多时候,直接代入会遇到问题。</p>
-                    <p style="margin-top:30px; font-size:22px; color:#e74c3c;">我们来看一个经典的例子...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="150">直接代入法</text>
-                        <text fill="#f39c12" font-size="60" text-anchor="middle" x="300" y="280">?</text>
-                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="380">遇到困难了...</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 4: 不定式 0/0 引入 -->
+        <!-- Page 2: 不定式 0/0 引入 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -149,7 +106,7 @@
             </div>
         </div>
 
-        <!-- Page 5: 0/0 型详解 -->
+        <!-- Page 3: 0/0 型详解 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -171,7 +128,7 @@
             </div>
         </div>
 
-        <!-- Page 6: 不定式概念 -->
+        <!-- Page 4: 不定式概念 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -191,7 +148,7 @@
             </div>
         </div>
 
-        <!-- Page 7: 不定式 ∞/∞ 引入 -->
+        <!-- Page 5: 不定式 ∞/∞ 引入 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -213,7 +170,7 @@
             </div>
         </div>
 
-        <!-- Page 8: ∞/∞ 型详解 -->
+        <!-- Page 6: ∞/∞ 型详解 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -235,7 +192,7 @@
             </div>
         </div>
 
-        <!-- Page 9: ∞/∞ 也是不定式 -->
+        <!-- Page 7: ∞/∞ 也是不定式 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -257,7 +214,7 @@
             </div>
         </div>
 
-        <!-- Page 10: 引出洛必达法则 -->
+        <!-- Page 8: 引出洛必达法则 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -279,7 +236,7 @@
             </div>
         </div>
 
-        <!-- Page 11: 洛必达法则登场 -->
+        <!-- Page 9: 洛必达法则登场 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -300,7 +257,7 @@
             </div>
         </div>
 
-        <!-- Page 12: 法则核心思想 -->
+        <!-- Page 10: 法则核心思想 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -324,7 +281,7 @@
             </div>
         </div>
 
-        <!-- Page 13: 法则公式 (0/0) -->
+        <!-- Page 11: 法则公式 (0/0) -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -348,7 +305,7 @@
             </div>
         </div>
 
-        <!-- Page 14: 使用条件1 -->
+        <!-- Page 12: 使用条件1 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -368,7 +325,7 @@
             </div>
         </div>
 
-        <!-- Page 15: 使用条件2 -->
+        <!-- Page 13: 使用条件2 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -389,7 +346,7 @@
             </div>
         </div>
 
-        <!-- Page 16: 使用条件3 -->
+        <!-- Page 14: 使用条件3 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -410,7 +367,7 @@
             </div>
         </div>
 
-        <!-- Page 17: ∞/∞ 型法则 -->
+        <!-- Page 15: ∞/∞ 型法则 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
@@ -431,778 +388,49 @@
             </div>
         </div>
 
-        <!-- Page 18: 例1 引入 -->
+        <!-- Page 16: 总结 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题1：经典问题</h2>
-                    <p>现在让我们用洛必达法则解决第一个问题：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0} \frac{\sin x}{x}\]
-                    </div>
-                    <p style="margin-top:20px;">我们按步骤来解决...</p>
+                    <h2>总结与注意事项</h2>
+                    <p><strong>核心要点：</strong></p>
+                    <p style="margin-left:20px; margin-top:15px;">• 洛必达法则是分别求导，不是商的求导法则</p>
+                    <p style="margin-left:20px;">• 必须先检查是否为不定式</p>
+                    <p style="margin-left:20px;">• 条件满足时可以连续使用</p>
+                    <p style="margin-top:20px; color:#2ecc71;">掌握这个法则，极限问题迎刃而解！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="100">例题1</text>
-                        <rect x="100" y="200" width="400" height="100" fill="rgba(255,255,255,0.1)" stroke="#ecf0f1" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="260">lim (sin x) / x</text>
+                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="80">核心思想</text>
+                        <circle cx="300" cy="250" r="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="240">分别求导</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="270">求新极限</text>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- Page 19: 例1 步骤1 -->
+        <!-- Page 17: 其他不定式总结 -->
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例1 - 步骤1：检查类型</h2>
-                    <p>当 \(x \to 0\) 时：</p>
-                    <p style="margin-left:20px; margin-top:15px;">\(\sin x \to 0\)</p>
-                    <p style="margin-left:20px;">\(x \to 0\)</p>
-                    <p style="margin-top:20px; color:#e74c3c; font-size:22px;">✓ 这是 \(\frac{0}{0}\) 型,可以使用洛必达法则！</p>
+                    <h2>其他不定式的处理方法</h2>
+                    <p><strong>0·∞ 型：</strong>化为分式 \(\frac{f}{1/g}\) 或 \(\frac{g}{1/f}\)</p>
+                    <p style="margin-top:15px;"><strong>∞-∞ 型：</strong>通分或有理化</p>
+                    <p style="margin-top:15px;"><strong>幂指型：</strong>取对数转化为 0·∞ 型</p>
+                    <p style="margin-top:30px; color:#f1c40f; font-size:22px;">记住：先判断，再转化，后求导！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">步骤1：检查</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">x → 0</text>
-                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="240">sin x → 0</text>
-                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="280">x → 0</text>
-                        <rect x="150" y="340" width="300" height="80" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="40" text-anchor="middle" x="300" y="390">0/0 ✓</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 20: 例1 步骤2 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例1 - 步骤2：应用法则</h2>
-                    <p>分子分母分别求导：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0} \frac{\sin x}{x} = \lim\limits_{x \to 0} \frac{(\sin x)'}{(x)'}\]
-                    </div>
-                    <p style="margin-top:20px;">计算导数...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">步骤2：求导</text>
-                        <rect x="100" y="150" width="400" height="80" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="200">lim (sin x) / x</text>
-                        <line x1="300" y1="230" x2="300" y2="280" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
-                        <text fill="#f39c12" font-size="18" x="310" y="260">分别求导</text>
-                        <rect x="100" y="280" width="400" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="330">lim (sin x)' / (x)'</text>
-                        <defs>
-                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                <path d="M0,0 L0,6 L9,3 z" fill="#f39c12"/>
-                            </marker>
-                        </defs>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 21: 例1 步骤3 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例1 - 步骤3：计算导数</h2>
-                    <p>求导结果：</p>
-                    <p style="margin-left:20px; margin-top:15px;">\((\sin x)' = \cos x\)</p>
-                    <p style="margin-left:20px;">\((x)' = 1\)</p>
-                    <div class="math-formula">
-                        \[= \lim\limits_{x \to 0} \frac{\cos x}{1}\]
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">步骤3：计算</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">(sin x)' = cos x</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">(x)' = 1</text>
-                        <rect x="100" y="280" width="400" height="80" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="330">lim (cos x) / 1</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 22: 例1 步骤4 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例1 - 步骤4：求极限</h2>
-                    <p>现在可以直接代入了：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0} \frac{\cos x}{1} = \frac{\cos 0}{1} = \frac{1}{1} = 1\]
-                    </div>
-                    <p style="margin-top:30px; color:#2ecc71; font-size:26px;"><strong>答案：1</strong></p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">步骤4：代入</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">cos 0 / 1</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">= 1 / 1</text>
-                        <rect x="200" y="300" width="200" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
-                        <text fill="#2ecc71" font-size="50" text-anchor="middle" x="300" y="365">1</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 23: 例2 引入 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例题2：\(\frac{\infty}{\infty}\) 型</h2>
-                    <p>现在来看一个 \(\frac{\infty}{\infty}\) 型的例子：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{e^x}{x^2}\]
-                    </div>
-                    <p style="margin-top:20px;">这个例子会更有趣...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="100">例题2</text>
-                        <rect x="100" y="200" width="400" height="100" fill="rgba(255,255,255,0.1)" stroke="#ecf0f1" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="260">lim e^x / x²</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 24: 例2 检查类型 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例2 - 检查类型</h2>
-                    <p>当 \(x \to +\infty\) 时：</p>
-                    <p style="margin-left:20px; margin-top:15px;">\(e^x \to +\infty\)</p>
-                    <p style="margin-left:20px;">\(x^2 \to +\infty\)</p>
-                    <p style="margin-top:20px; color:#3498db; font-size:22px;">✓ 这是 \(\frac{\infty}{\infty}\) 型！</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">检查类型</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">x → +∞</text>
-                        <text fill="#3498db" font-size="22" text-anchor="middle" x="300" y="240">e^x → +∞</text>
-                        <text fill="#3498db" font-size="22" text-anchor="middle" x="300" y="280">x² → +∞</text>
-                        <rect x="150" y="340" width="300" height="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="40" text-anchor="middle" x="300" y="390">∞/∞ ✓</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 25: 例2 第一次应用 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例2 - 第一次应用法则</h2>
-                    <p>分子分母分别求导：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{e^x}{x^2} = \lim\limits_{x \to +\infty} \frac{(e^x)'}{(x^2)'}\]
-                    </div>
-                    <div class="math-formula">
-                        \[= \lim\limits_{x \to +\infty} \frac{e^x}{2x}\]
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">第1次洛必达</text>
-                        <rect x="100" y="150" width="400" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="195">e^x / x²</text>
-                        <line x1="300" y1="220" x2="300" y2="270" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
-                        <text fill="#f39c12" font-size="18" x="310" y="250">求导</text>
-                        <rect x="100" y="270" width="400" height="70" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="315">e^x / 2x</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 26: 例2 仍是不定式 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例2 - 仍然是不定式！</h2>
-                    <p>检查新的极限：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{e^x}{2x}\]
-                    </div>
-                    <p style="margin-top:20px; color:#e74c3c;">这仍然是 \(\frac{\infty}{\infty}\) 型！</p>
-                    <p style="margin-top:20px;">怎么办？</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">检查新极限</text>
-                        <rect x="100" y="180" width="400" height="100" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="26" text-anchor="middle" x="300" y="240">e^x / 2x</text>
-                        <text fill="#e74c3c" font-size="40" text-anchor="middle" x="300" y="350">仍是 ∞/∞</text>
-                        <text fill="#f39c12" font-size="50" text-anchor="middle" x="300" y="430">?</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 27: 例2 连续使用 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例2 - 连续使用法则</h2>
-                    <p style="color:#2ecc71; font-size:22px;">好消息：只要条件满足,可以<strong>连续使用</strong>洛必达法则！</p>
-                    <p style="margin-top:30px;">我们再次应用...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="100">连续使用</text>
-                        <circle cx="300" cy="280" r="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3">
-                            <animate attributeName="r" dur="2s" values="100;110;100" repeatCount="indefinite"/>
-                        </circle>
-                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="290">可以继续</text>
-                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="320">使用法则！</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 28: 例2 第二次应用 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例2 - 第二次应用法则</h2>
-                    <p>再次分别求导：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{e^x}{2x} = \lim\limits_{x \to +\infty} \frac{(e^x)'}{(2x)'}\]
-                    </div>
-                    <div class="math-formula">
-                        \[= \lim\limits_{x \to +\infty} \frac{e^x}{2}\]
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">第2次洛必达</text>
-                        <rect x="100" y="150" width="400" height="70" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="195">e^x / 2x</text>
-                        <line x1="300" y1="220" x2="300" y2="270" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
-                        <text fill="#f39c12" font-size="18" x="310" y="250">再次求导</text>
-                        <rect x="100" y="270" width="400" height="70" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="315">e^x / 2</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 29: 例2 最终结果 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例2 - 最终结果</h2>
-                    <p>现在极限很明显了：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to +\infty} \frac{e^x}{2} = \frac{+\infty}{2} = +\infty\]
-                    </div>
-                    <p style="margin-top:30px; color:#f1c40f; font-size:26px;"><strong>答案：\(+\infty\)</strong></p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">最终结果</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">x → +∞</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">e^x / 2 → +∞</text>
-                        <rect x="200" y="300" width="200" height="100" fill="rgba(241,196,15,0.2)" stroke="#f1c40f" stroke-width="3" rx="10"/>
-                        <text fill="#f1c40f" font-size="50" text-anchor="middle" x="300" y="365">+∞</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 30: 其他不定式引入 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>其他类型的不定式</h2>
-                    <p>洛必达法则只能直接用于：</p>
-                    <p style="text-align:center; font-size:24px; margin:20px 0;">\(\frac{0}{0}\) 和 \(\frac{\infty}{\infty}\)</p>
-                    <p style="margin-top:30px;">但还有其他类型的不定式...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">其他不定式</text>
-                        <rect x="100" y="180" width="150" height="80" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="30" text-anchor="middle" x="175" y="230">0·∞</text>
-                        <rect x="320" y="180" width="150" height="80" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="30" text-anchor="middle" x="395" y="230">∞-∞</text>
-                        <rect x="210" y="300" width="150" height="80" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="285" y="350">1^∞...</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 31: 0·∞ 型介绍 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>\(0 \cdot \infty\) 型不定式</h2>
-                    <p>形式：\(\lim f(x)g(x)\)</p>
-                    <p style="margin-left:20px; margin-top:15px;">其中一个因子趋于 0</p>
-                    <p style="margin-left:20px;">另一个因子趋于 \(\infty\)</p>
-                    <p style="margin-top:30px; color:#e74c3c;">需要先<strong>转化</strong>为分式形式！</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">0·∞ 型</text>
-                        <circle cx="300" cy="250" r="80" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="30" text-anchor="middle" x="300" y="265">f · g</text>
-                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="380">一个→0, 一个→∞</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 32: 0·∞ 型转化方法 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>\(0 \cdot \infty\) 型转化</h2>
-                    <p>转化策略：化为分式</p>
-                    <div class="math-formula">
-                        \[f \cdot g = \frac{f}{\frac{1}{g}} \quad (\text{化为 } \frac{0}{0})\]
-                    </div>
-                    <p style="text-align:center; margin:20px 0;">或</p>
-                    <div class="math-formula">
-                        \[f \cdot g = \frac{g}{\frac{1}{f}} \quad (\text{化为 } \frac{\infty}{\infty})\]
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">转化策略</text>
-                        <circle cx="300" cy="150" r="50" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="160">f·g</text>
-                        <line x1="200" y1="210" x2="150" y2="280" stroke="#f39c12" stroke-width="2" marker-end="url(#arrow)"/>
-                        <line x1="400" y1="210" x2="450" y2="280" stroke="#f39c12" stroke-width="2" marker-end="url(#arrow)"/>
-                        <circle cx="150" cy="320" r="50" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="325">f/(1/g)</text>
-                        <circle cx="450" cy="320" r="50" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="450" y="325">g/(1/f)</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 33: 例3 引入 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例题3：\(0 \cdot \infty\) 型</h2>
-                    <p>求极限：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0^+} x \ln x\]
-                    </div>
-                    <p style="margin-top:20px;">让我们应用转化策略...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="100">例题3</text>
-                        <rect x="100" y="200" width="400" height="100" fill="rgba(255,255,255,0.1)" stroke="#ecf0f1" stroke-width="2" rx="10"/>
-                        <text fill="#ecf0f1" font-size="28" text-anchor="middle" x="300" y="260">lim x ln x</text>
-                        <text fill="#95a5a6" font-size="20" text-anchor="middle" x="300" y="290">x → 0⁺</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 34: 例3 检查类型 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例3 - 检查类型</h2>
-                    <p>当 \(x \to 0^+\) 时：</p>
-                    <p style="margin-left:20px; margin-top:15px;">\(x \to 0\)</p>
-                    <p style="margin-left:20px;">\(\ln x \to -\infty\)</p>
-                    <p style="margin-top:20px; color:#e74c3c; font-size:22px;">这是 \(0 \cdot \infty\) 型！</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">检查类型</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">x → 0⁺</text>
-                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="240">x → 0</text>
-                        <text fill="#e74c3c" font-size="22" text-anchor="middle" x="300" y="280">ln x → -∞</text>
-                        <rect x="150" y="340" width="300" height="80" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="36" text-anchor="middle" x="300" y="390">0·∞</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 35: 例3 转化 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例3 - 转化为分式</h2>
-                    <p>将 \(x\) 放到分母：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0^+} x \ln x = \lim\limits_{x \to 0^+} \frac{\ln x}{\frac{1}{x}}\]
-                    </div>
-                    <p style="margin-top:20px;">现在变成了 \(\frac{-\infty}{+\infty}\) 型！</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">转化</text>
-                        <rect x="100" y="150" width="400" height="70" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="195">x · ln x</text>
-                        <line x1="300" y1="220" x2="300" y2="270" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
-                        <text fill="#f39c12" font-size="18" x="310" y="250">转化</text>
-                        <rect x="100" y="270" width="400" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="315">ln x / (1/x)</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 36: 例3 应用法则 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例3 - 应用洛必达法则</h2>
-                    <p>分子分母分别求导：</p>
-                    <div class="math-formula">
-                        \[= \lim\limits_{x \to 0^+} \frac{(\ln x)'}{\left(\frac{1}{x}\right)'} = \lim\limits_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}}\]
-                    </div>
-                    <p style="margin-top:20px;">化简...</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">应用法则</text>
-                        <rect x="100" y="150" width="400" height="70" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">ln x / (1/x)</text>
-                        <line x1="300" y1="220" x2="300" y2="270" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
-                        <text fill="#f39c12" font-size="18" x="310" y="250">求导</text>
-                        <rect x="100" y="270" width="400" height="70" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="315">(1/x) / (-1/x²)</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 37: 例3 化简 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例3 - 化简</h2>
-                    <p>化简分式：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}} = \lim\limits_{x \to 0^+} \frac{1}{x} \cdot \frac{x^2}{-1}\]
-                    </div>
-                    <div class="math-formula">
-                        \[= \lim\limits_{x \to 0^+} (-x)\]
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">化简</text>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="180">(1/x) / (-1/x²)</text>
-                        <text fill="#f39c12" font-size="30" text-anchor="middle" x="300" y="250">=</text>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="320">-x</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 38: 例3 结果 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>例3 - 最终结果</h2>
-                    <p>求极限：</p>
-                    <div class="math-formula">
-                        \[\lim\limits_{x \to 0^+} (-x) = 0\]
-                    </div>
-                    <p style="margin-top:30px; color:#2ecc71; font-size:26px;"><strong>答案：0</strong></p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="80">最终结果</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="180">lim (-x)</text>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="230">x → 0⁺</text>
-                        <rect x="200" y="300" width="200" height="100" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
-                        <text fill="#2ecc71" font-size="50" text-anchor="middle" x="300" y="365">0</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 39: ∞-∞ 型介绍 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>\(\infty - \infty\) 型不定式</h2>
-                    <p>形式：\(\lim [f(x)-g(x)]\)</p>
-                    <p style="margin-left:20px; margin-top:15px;">其中 \(f(x) \to \infty\)</p>
-                    <p style="margin-left:20px;">且 \(g(x) \to \infty\)</p>
-                    <p style="margin-top:30px; color:#3498db;">转化策略：通分或有理化</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">∞-∞ 型</text>
-                        <circle cx="300" cy="250" r="80" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="30" text-anchor="middle" x="300" y="265">f - g</text>
-                        <text fill="#3498db" font-size="20" text-anchor="middle" x="300" y="380">两个都→∞</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 40: ∞-∞ 型转化 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>\(\infty - \infty\) 型转化</h2>
-                    <p>通过<strong>通分</strong>,将两项合并为一个分式。</p>
-                    <p style="margin-top:20px;">例如：</p>
-                    <div class="math-formula">
-                        \[\frac{1}{x-1} - \frac{1}{\ln x} = \frac{\ln x - (x-1)}{(x-1)\ln x}\]
-                    </div>
-                    <p style="margin-top:20px;">通常会变成 \(\frac{0}{0}\) 型。</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">转化策略</text>
-                        <circle cx="300" cy="180" r="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="190">f - g</text>
-                        <line x1="300" y1="240" x2="300" y2="300" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow)"/>
-                        <text fill="#f39c12" font-size="18" x="310" y="275">通分</text>
-                        <circle cx="300" cy="360" r="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="370">A / B</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 41: 幂指型介绍 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>幂指函数型不定式</h2>
-                    <p>包括三种形式：</p>
-                    <p style="margin-left:20px; margin-top:15px;">• \(1^{\infty}\) 型</p>
-                    <p style="margin-left:20px;">• \(0^0\) 型</p>
-                    <p style="margin-left:20px;">• \(\infty^0\) 型</p>
-                    <p style="margin-top:30px; color:#9b59b6;">转化策略：取对数</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">幂指型</text>
-                        <circle cx="200" cy="200" r="50" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="200" y="210">1^∞</text>
-                        <circle cx="400" cy="200" r="50" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="400" y="210">0⁰</text>
-                        <circle cx="300" cy="320" r="50" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2"/>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="330">∞⁰</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 42: 幂指型转化步骤 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>幂指型转化步骤</h2>
-                    <p>对于 \(\lim [f(x)]^{g(x)}\)：</p>
-                    <p style="margin-top:20px;"><strong>步骤1：</strong>设 \(y = [f(x)]^{g(x)}\)</p>
-                    <p><strong>步骤2：</strong>两边取对数：\(\ln y = g(x) \ln f(x)\)</p>
-                    <p><strong>步骤3：</strong>先求 \(\lim (\ln y)\)</p>
-                    <p><strong>步骤4：</strong>原极限 \(= e^{\lim (\ln y)}\)</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">转化步骤</text>
-                        <rect x="80" y="120" width="440" height="60" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="20" x="100" y="160">① 设 y = [f(x)]^g(x)</text>
-                        <rect x="80" y="200" width="440" height="60" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="20" x="100" y="240">② 取对数: ln y = g·ln f</text>
-                        <rect x="80" y="280" width="440" height="60" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="20" x="100" y="320">③ 求 lim(ln y) = L</text>
-                        <rect x="80" y="360" width="440" height="60" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="2" rx="8"/>
-                        <text fill="#ecf0f1" font-size="20" x="100" y="400">④ 原极限 = e^L</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 43: 注意事项1 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>注意事项（一）</h2>
-                    <p style="color:#e74c3c; font-size:24px;"><strong>必须先检查类型！</strong></p>
-                    <p style="margin-top:20px;">只有当极限是不定式时,才能使用洛必达法则。</p>
-                    <p style="margin-top:20px;">滥用法则是最常见的错误！</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">警告</text>
-                        <rect x="100" y="180" width="400" height="150" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3" rx="10">
-                            <animate attributeName="opacity" dur="2s" values="0.5;1;0.5" repeatCount="indefinite"/>
-                        </rect>
-                        <text fill="#e74c3c" font-size="50" text-anchor="middle" x="300" y="240">❌</text>
-                        <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="290">滥用洛必达法则</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 44: 错误示例 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>错误示例</h2>
-                    <p>求 \(\lim\limits_{x \to 0} \frac{x+1}{x+2}\)</p>
-                    <p style="margin-top:20px;"><strong>✗ 错误：</strong>直接用洛必达</p>
-                    <div class="math-formula" style="border-color:#e74c3c;">
-                        \[\lim\limits_{x \to 0} \frac{1}{1} = 1 \quad (\text{错误!})\]
-                    </div>
-                    <p style="margin-top:20px;"><strong>✓ 正确：</strong>直接代入</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        \[\lim\limits_{x \to 0} \frac{x+1}{x+2} = \frac{1}{2}\]
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="26" text-anchor="middle" x="300" y="60">对比</text>
-                        <rect x="80" y="120" width="440" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                        <text fill="#e74c3c" font-size="28" text-anchor="middle" x="300" y="160">❌ 错误</text>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">用洛必达 → 1</text>
-                        <rect x="80" y="260" width="440" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
-                        <text fill="#2ecc71" font-size="28" text-anchor="middle" x="300" y="300">✓ 正确</text>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="335">直接代入 → 1/2</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 45: 注意事项2 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>注意事项（二）</h2>
-                    <p style="color:#e74c3c; font-size:24px;"><strong>不是对商求导！</strong></p>
-                    <p style="margin-top:20px;">洛必达法则是<strong>分子分母分别求导</strong>。</p>
-                    <p style="margin-top:20px;">不要与商的求导法则混淆！</p>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">警告</text>
-                        <rect x="100" y="180" width="400" height="150" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3" rx="10">
-                            <animate attributeName="opacity" dur="2s" values="0.5;1;0.5" repeatCount="indefinite" begin="0.5s"/>
-                        </rect>
-                        <text fill="#e74c3c" font-size="50" text-anchor="middle" x="300" y="240">≠</text>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="290">不是商的求导法则</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 46: 对比说明 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>两者的区别</h2>
-                    <p><strong>✓ 洛必达法则：</strong></p>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\\lim \\frac{f(x)}{g(x)} = \\lim \\frac{f'(x)}{g'(x)}$$
-                    </div>
-                    <p style="margin-top:20px;"><strong>✗ 商的求导法则：</strong></p>
-                    <div class="math-formula" style="border-color:#e74c3c;">
-                        $$\\left(\\frac{f(x)}{g(x)}\\right)' = \\frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2}$$
-                    </div>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">对比</text>
-                        <rect x="80" y="140" width="440" height="100" fill="rgba(46,204,113,0.1)" stroke="#2ecc71" stroke-width="3" rx="10"/>
-                        <text fill="#2ecc71" font-size="24" text-anchor="middle" x="300" y="175">✓ 洛必达法则</text>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="210">lim f/g = lim f'/g'</text>
-                        <rect x="80" y="280" width="440" height="100" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="3" rx="10"/>
-                        <text fill="#e74c3c" font-size="24" text-anchor="middle" x="300" y="315">✗ 商的求导</text>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="350">(f/g)' = (f'g-fg')/g²</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Page 47: Summary 1 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>洛必达法则总结 (一)</h2>
-                    <h3>核心公式</h3>
-                    <p>当满足条件时：</p>
-                    <div class="math-formula">
-                        $$\\lim \\frac{f(x)}{g(x)} = \\lim \\frac{f'(x)}{g'(x)}$$
-                    </div>
-                    <h3>直接适用类型</h3>
-                    <ul style="font-size: 22px;">
-                        <li style="color:#e74c3c; margin: 15px 0;">$\\frac{0}{0}$ 型</li>
-                        <li style="color:#3498db; margin: 15px 0;">$\\frac{\\infty}{\\infty}$ 型</li>
-                    </ul>
-                    <h3>使用前提</h3>
-                     <ul style="margin-left: 30px;">
-                        <li>函数在邻域内可导</li>
-                        <li>分母的导数不为零</li>
-                        <li>导数比值的极限存在或为无穷</li>
-                    </ul>
-                </div>
-                <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="60">法则核心回顾</text>
-                        <circle cx="300" cy="250" r="100" fill="rgba(241,196,15,0.3)" stroke="#f39c12" stroke-width="4">
-                            <animate attributeName="r" dur="3s" values="100;110;100" repeatCount="indefinite"/>
-                        </circle>
-                        <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="245">洛必达法则</text>
-                        <text fill="#f1c40f" font-size="18" text-anchor="middle" x="300" y="275">lim f/g = lim f'/g'</text>
-                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="140" y="150">0/0 型</text>
-                        <line x1="190" y1="180" x2="250" y2="220" stroke="#f39c12" stroke-width="2"/>
-                        <text fill="#3498db" font-size="20" text-anchor="middle" x="460" y="150">∞/∞ 型</text>
-                        <line x1="410" y1="180" x2="350" y2="220" stroke="#f39c12" stroke-width="2"/>
-                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="400">前提：可导 & 极限存在</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Page 48: Summary 2 -->
-        <div class="slide">
-            <div class="slide-content">
-                <div class="chalkboard">
-                    <h2>洛必达法则总结 (二)</h2>
-                    <h3>需要转化的类型</h3>
-                    <p>遇到以下类型，需要先变形为 $\\frac{0}{0}$ 或 $\\frac{\\infty}{\\infty}$：</p>
-                    <ul style="margin-left: 20px;">
-                        <li><strong>$0 \\cdot \\infty$ 型:</strong>  化为分式 $\\frac{f}{1/g}$ 或 $\\frac{g}{1/f}$</li>
-                        <li><strong>$\\infty - \\infty$ 型:</strong>  通过通分或有理化</li>
-                        <li><strong>$1^{\\infty}, 0^0, \\infty^0$ 型:</strong>  取对数，利用 $y=e^{\\ln y}$</li>
-                    </ul>
-                    <p style="margin-top: 25px; color: #f39c12;"><strong>核心思想：</strong></p>
-                    <p>洛必达法则是处理不定式极限的强大武器，但它的使用有严格的条件。请牢记：<strong>先判断，再转化，后求导</strong>。</p>
-                </div>
-                 <div class="visualization">
-                    <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
-                        <text fill="#f39c12" font-size="32" text-anchor="middle" x="300" y="60">转化策略回顾</text>
-                         <circle cx="150" cy="150" r="50" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="150" y="155">0·∞</text>
-                        <circle cx="300" cy="150" r="50" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="155">∞-∞</text>
-                        <circle cx="450" cy="150" r="50" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="3"/>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="450" y="155">1^∞</text>
-                        <line x1="300" y1="200" x2="300" y2="280" stroke="#f39c12" stroke-width="3" marker-end="url(#arrow7)"/>
-                        <text fill="#f39c12" font-size="20" text-anchor="middle" x="300" y="245">转化</text>
-                        <rect x="150" y="300" width="300" height="80" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="3" rx="10"/>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="345">0/0 或 ∞/∞</text>
-                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="440">先判断，再转化，后求导！</text>
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="60">处理流程</text>
+                        <rect x="100" y="120" width="400" height="60" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="155">第一步：判断类型</text>
+                        <line x1="300" y1="180" x2="300" y2="220" stroke="#f39c12" stroke-width="2" marker-end="url(#arrow)"/>
+                        <rect x="100" y="220" width="400" height="60" fill="rgba(52,152,219,0.2)" stroke="#3498db" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="255">第二步：转化为标准形式</text>
+                        <line x1="300" y1="280" x2="300" y2="320" stroke="#f39c12" stroke-width="2" marker-end="url(#arrow)"/>
+                        <rect x="100" y="320" width="400" height="60" fill="rgba(46,204,113,0.2)" stroke="#2ecc71" stroke-width="2" rx="8"/>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="355">第三步：应用洛必达法则</text>
                     </svg>
                 </div>
             </div>
@@ -1217,8 +445,9 @@
         <button class="btn" onclick="restart()">🔄 重新开始</button>
         <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
     </div>
+
     <script type="module">
-        // 虚拟人SDK加载代码
+        // 虚拟人SDK加载
         window.playbackFinished = false; 
         try { 
             const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); 
@@ -1229,26 +458,38 @@
         } 
         window.dispatchEvent(new CustomEvent('sdkReady'));
     </script>
+
     <script>
+        // ===== 配置数据 =====
+        // 总幻灯片数（必须与HTML中的实际幻灯片数一致）
+        const totalSlides = 17;
+
+        // 字幕脚本（每页一条）
         const subtitleScript = {
             "1": "欢迎学习洛必达法则：求解不定式极限的利器。",
-            "2": "当直接代入得到 0/0 时，我们称之为不定式，无法直接确定其值。",
-            "3": "当变量趋于无穷，得到 ∞/∞ 时，这也是一种常见的不定式。",
+            "2": "当直接代入得到0比0时，我们称之为不定式，无法直接确定其值。",
+            "3": "当变量趋于无穷，得到无穷比无穷时，这也是一种常见的不定式。",
             "4": "为解决不定式问题，我们引入一个强大的工具——洛必达法则。",
-            "5": "洛必达法则(0/0型)：原极限等于其分子分母分别求导后的极限。",
-            "6": "该法则同样适用于 ∞/∞ 型不定式，使用条件和结论完全相同。",
-            "7": "例1(0/0型)：求 lim(sin x / x)，应用法则后得 lim(cos x / 1)，结果为1。",
-            "8": "例2(∞/∞型)：求 lim(e^x / x²)，首次应用法则后得到 lim(e^x / 2x)。",
-            "9": "新极限仍为 ∞/∞ 型，我们可以连续使用洛必达法则，最终得到 +∞。",
-            "10": "其他不定式(0·∞型)：需先变形为 f/(1/g) 或 g/(1/f) 来创造分数形式。",
-            "11": "其他不定式(∞-∞型)：通常通过通分或有理化，将其转化为 0/0 型。",
-            "12": "其他不定式(幂指型)：通过取对数(ln)的方法，将其转化为 0·∞ 型。",
-            "13": "例3(0·∞型)：求 lim(x ln x)，转化为 lim(ln x / (1/x)) 后应用法则，得0。",
+            "5": "洛必达法则0比0型：原极限等于其分子分母分别求导后的极限。",
+            "6": "该法则同样适用于无穷比无穷型不定式，使用条件和结论完全相同。",
+            "7": "例1，0比0型：求当x趋于0时，sinx除以x的极限，应用法则后得cosx除以1，结果为1。",
+            "8": "例2，无穷比无穷型：求当x趋于正无穷时，e的x次方除以x平方的极限，首次应用法则后得到e的x次方除以2x。",
+            "9": "新极限仍为无穷比无穷型，我们可以连续使用洛必达法则，最终得到正无穷。",
+            "10": "其他不定式，0乘以无穷型：需先变形为f除以1除以g或g除以1除以f来创造分数形式。",
+            "11": "其他不定式，无穷减无穷型：通常通过通分或有理化，将其转化为0比0型。",
+            "12": "其他不定式，幂指型：通过取对数的方法，将其转化为0乘以无穷型。",
+            "13": "例3，0乘以无穷型：求当x从右侧趋于0时，x乘以lnx的极限，转化为lnx除以x分之一后应用法则，得0。",
             "14": "注意：必须先检查是否为不定式，否则滥用法则将导致错误结果。",
             "15": "注意：洛必达法则是分别求导，切勿与商的求导法则相混淆。",
             "16": "总结：洛必达法则的核心是转化不定式极限为导数的比值极限。",
-            "17": "总结：对于复杂不定式，牢记先判断，再转化，后求导的原则。"
+            "17-1": "同学们，现在我们来到了最后一个总结页面。这一页主要讲解的是，当我们遇到一些非标准的不定式类型时，应该如何处理。这些类型包括0乘以无穷、无穷减无穷，以及幂指型等。它们都需要通过适当的转化，才能变成我们熟悉的0比0或无穷比无穷型。",
+            "17-2": "首先，让我们看0乘以无穷型。这种类型的处理方法是，把它化为分式形式。具体来说，我们可以把其中一个因子写成1除以它的倒数的形式，放到分母上。这样就把0乘以无穷转化成了0比0或无穷比无穷型，然后就可以应用洛必达法则了。",
+            "17-3": "第二种类型是无穷减无穷。这种不定式通常出现在两个分式相减的情况。我们的处理策略是通过通分，把两个分式合并成一个分式。这样一来，它通常就会变成我们熟悉的0比0型，接下来就可以使用洛必达法则求解了。",
+            "17-4": "第三种类型是幂指型，包括1的无穷次方、0的0次方、无穷的0次方等等。对付这类问题的通用策略是取对数。我们先设原函数为y，然后两边取自然对数，利用对数的性质把指数拿下来。这样问题就转化成了求lny的极限，通常是0乘以无穷型，我们就可以按照前面的方法处理。最后别忘了，求出来的是lny的极限L，原极限应该是e的L次方。",
+            "17-5": "最后，让我们强调一下核心思想。对于所有这些复杂的不定式，我们的处理流程是：先判断类型，再选择合适的转化方法，最后应用洛必达法则求导。这个流程可以总结为一句话：先判断，再转化，后求导。请同学们一定要牢记这个原则，它是解决所有不定式极限问题的金钥匙。谢谢大家！"
         };
+
+        // 语音脚本（每页一条，与subtitleScript对应）
         const speechScript = {
             "1": "同学们好！欢迎来到洛必达法则的学习。今天我们将学习一个非常重要且强大的工具，它专门用来求解不定式极限。这个法则在高等数学中应用非常广泛，掌握它能帮助我们轻松解决很多看似困难的极限问题。让我们开始吧！",
             "2": "我们来看一个经典的例子，求sinx除以x的极限，当x趋于0时。如果直接代入，分子sin0等于0，分母也是0。我们就得到了一个0比0的形式。这在数学上叫做不定式，它的结果是不确定的，不能想当然地认为是1或者0。",
@@ -1256,7 +497,7 @@
             "4": "那么，如何解决这些棘手的不定式呢？今天，我们就来学习一个专门为此而生的强大武器，它的名字叫洛必达法则。这个法则的思路非常巧妙，它告诉我们，当一个分式的极限不好求时，我们可以试试看，求它的分子分母各自求导之后的那个新分式的极限。",
             "5": "我们先来看0比0型洛必达法则的严格定义。它有三个前提条件：第一，极限必须是0比0的形式。第二，分子分母函数在求极限点的附近要可导，并且分母的导数不能是0。第三，求导之后的新分式，它的极限必须存在。如果这三点都满足，那么原来的极限就等于求导后的新极限。",
             "6": "洛必达法则的强大之处在于，它不仅对0比0型有效，对我们刚才提到的无穷比无穷型，也完全适用。定理的内容几乎一模一样，只需要把第一个条件，从函数趋于0，改成函数趋于无穷大就可以了。其他条件和结论都保持不变。这一点非常方便我们记忆和使用。",
-            "7.": "理论说完了，我们来实战一下。回到最初的问题，求sinx除以x的极限。第一步，检查类型，是0比0型，满足条件。第二步，应用法则，对分子sinx求导得到cosx，对分母x求导得到1。第三步，计算新极限，cosx除以1的极限，就是cos0，等于1。问题轻松解决！",
+            "7": "理论说完了，我们来实战一下。回到最初的问题，求sinx除以x的极限。第一步，检查类型，是0比0型，满足条件。第二步，应用法则，对分子sinx求导得到cosx，对分母x求导得到1。第三步，计算新极限，cosx除以1的极限，就是cos0，等于1。问题轻松解决！",
             "8": "我们再来看无穷比无穷的例子，e的x次方除以x平方。第一步，检查类型，是无穷比无穷，满足条件。第二步，应用法则，分子求导还是e的x次方，分母求导是2x。我们得到的新极限是e的x次方除以2x。但是，我们发现一个问题，这个新极限仍然是无穷比无穷的形式！这该怎么办呢？",
             "9": "别担心，洛必达法则的另一个优点是，只要条件一直满足，我们就可以一直用下去！对于刚才得到的e的x次方除以2x，我们再次检查，它仍然是无穷比无穷型，所以，我们可以对它再次使用洛必达法则！分子求导还是e的x次方，分母求导变成了2。现在极限就非常清晰了，结果是正无穷。",
             "10": "到目前为止，我们只讨论了0比0和无穷比无穷这两种标准的不定式。但还有其他类型，比如0乘以无穷。对于这种，我们需要先做一个变形，把它写成分数形式。通常是把其中一个因子，写成1除以它的倒数的形式，放到分母上，这样就把它转化成了标准的0比0或者无穷比无穷型。",
@@ -1266,22 +507,37 @@
             "14": "学习了强大的工具，更要了解它的使用限制。最需要注意的一点是，使用前必须检查它是不是0比0或者无穷比无穷型！如果不是，比如一个极限可以直接代入算出结果，你却错误地用了洛必达，会得到一个完全错误的答案。所以，检查类型是铁律！",
             "15": "第二个常见的错误，是把洛必达法则和我们之前学的商的求导法则搞混了。请大家一定记住，洛必达法则是对分子和分母分别求导，它是一个求极限的技巧。而商的求导法则是求一个分式函数的导数，两者完全不是一回事。",
             "16": "好了，我们来总结一下洛必达法则的核心内容。它的公式是，原分式的极限等于导数分式的极限。它直接适用于0比0和无穷比无穷这两种不定式，并且使用时需要满足三个前提条件。这是法则的基础。",
-            "17": "对于其他非标准类型的不定式，我们的核心思想是转化。0乘以无穷型化为分式；无穷减无穷型进行通分；而幂指型则取对数。请同学们牢记这个流程：先判断类型，再选择合适的转化方法，最后应用洛必达法则求导。谢谢大家！"
+            "17-1": "同学们，现在我们来到了最后一个总结页面。这一页主要讲解的是，当我们遇到一些非标准的不定式类型时，应该如何处理。这些类型包括0乘以无穷、无穷减无穷，以及幂指型等。它们都需要通过适当的转化，才能变成我们熟悉的0比0或无穷比无穷型。",
+            "17-2": "首先，让我们看0乘以无穷型。这种类型的处理方法是，把它化为分式形式。具体来说，我们可以把其中一个因子写成1除以它的倒数的形式，放到分母上。这样就把0乘以无穷转化成了0比0或无穷比无穷型，然后就可以应用洛必达法则了。",
+            "17-3": "第二种类型是无穷减无穷。这种不定式通常出现在两个分式相减的情况。我们的处理策略是通过通分，把两个分式合并成一个分式。这样一来，它通常就会变成我们熟悉的0比0型，接下来就可以使用洛必达法则求解了。",
+            "17-4": "第三种类型是幂指型，包括1的无穷次方、0的0次方、无穷的0次方等等。对付这类问题的通用策略是取对数。我们先设原函数为y，然后两边取自然对数，利用对数的性质把指数拿下来。这样问题就转化成了求lny的极限，通常是0乘以无穷型，我们就可以按照前面的方法处理。最后别忘了，求出来的是lny的极限L，原极限应该是e的L次方。",
+            "17-5": "最后，让我们强调一下核心思想。对于所有这些复杂的不定式，我们的处理流程是：先判断类型，再选择合适的转化方法，最后应用洛必达法则求导。这个流程可以总结为一句话：先判断，再转化，后求导。请同学们一定要牢记这个原则，它是解决所有不定式极限问题的金钥匙。谢谢大家！"
         };
+
+        // 虚拟人动作配置
         const actionMap = {
             "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O",
             "5": "A_LH_introduced_O", "6": "A_LH_introduced_O", "7": "A_RH_point_O", "8": "A_LH_introduced_O",
             "9": "A_RH_point_O", "10": "A_LH_introduced_O", "11": "A_RH_point_O", "12": "A_LH_introduced_O",
-            "13": "A_RH_point_O", "14": "A_LH_introduced_O", "15": "A_RH_point_O", "16": "A_LH_introduced_O", "17": "A_RLH_welcome_O"
+            "13": "A_RH_point_O", "14": "A_LH_introduced_O", "15": "A_RH_point_O", "16": "A_LH_introduced_O",
+            "17": "A_RLH_welcome_O", "17-1": "A_RLH_welcome_O", "17-2": "A_RH_point_O", "17-3": "A_LH_introduced_O", "17-4": "A_RH_point_O", "17-5": "A_RLH_welcome_O"
         };
 
+        // 检查是否为多片段语音
+        function getMultiSegmentSpeech(slideNum) {
+            if (slideNum === 17) {
+                return ["17-1", "17-2", "17-3", "17-4", "17-5"];
+            }
+            return null;
+        }
+
         let currentSlide = 0;
-        const totalSlides = 17; // Updated total slides
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
         let speechFinishedResolve = null;
+
         const slides = document.querySelectorAll('.slide');
 
         function showSlide(index) {
@@ -1297,30 +553,64 @@
         }
 
         function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide); } }
         function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; }
         function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
 
         async function speakContent(slideNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接或未开始讲课'); return; }
-            const content = speechScript[slideNum];
-            if (!content) return;
-            try {
-                const action = actionMap[slideNum];
-                if (action) { await avatarPlatform.writeCmd("action", action); }
-                await avatarPlatform.writeText(content, { nlp: false });
-                updateSubtitle(slideNum);
-            } catch (error) { console.error('❌ 讲解失败:', error); }
+            
+            const segments = getMultiSegmentSpeech(slideNum);
+            if (segments) {
+                for (let i = 0; i < segments.length; i++) {
+                    const segmentId = segments[i];
+                    const content = speechScript[segmentId];
+                    if (!content) continue;
+                    try {
+                        const action = actionMap[segmentId];
+                        if (action) { await avatarPlatform.writeCmd("action", action); }
+                        await avatarPlatform.writeText(content, { nlp: false });
+                        updateSubtitle(segmentId);
+                        const speech = speechScript[segmentId];
+                        const duration = speech ? speech.length * 150 + 1000 : 5000;
+                        await new Promise(resolve => setTimeout(resolve, duration));
+                    } catch (error) { console.error(`❌ 讲解片段${segmentId}失败:`, error); }
+                }
+                if (isAutoPlaying && speechFinishedResolve) {
+                    console.log('✅ 第' + slideNum + '页所有语音片段播放完成');
+                    speechFinishedResolve();
+                    speechFinishedResolve = null;
+                }
+            } else {
+                const content = speechScript[slideNum];
+                if (!content) return;
+                try {
+                    const action = actionMap[slideNum];
+                    if (action) { await avatarPlatform.writeCmd("action", action); }
+                    await avatarPlatform.writeText(content, { nlp: false });
+                    updateSubtitle(slideNum);
+                } catch (error) { console.error('❌ 讲解失败:', error); }
+            }
         }
 
-        // 计算单页播放时长（用于超时fallback）
-        // 注意：speechScript中的内容已经是公式音译后的汉字，直接计算字数即可
         function getSlideDuration(slideNum) {
+            const segments = getMultiSegmentSpeech(slideNum);
+            if (segments) {
+                let totalDuration = 0;
+                for (let segmentId of segments) {
+                    const speech = speechScript[segmentId];
+                    if (speech) {
+                        totalDuration += speech.length * 150 + 1000;
+                    }
+                }
+                return totalDuration + 2000;
+            }
+            
             const speech = speechScript[slideNum];
             if (!speech) return 10000;
-            // 每个汉字150ms（正常语速） + 3秒缓冲时间
             return speech.length * 150 + 3000;
         }
+
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
 
         function waitForSDK() {
@@ -1333,48 +623,19 @@
 
         async function startTeaching() {
             const startBtn = document.getElementById('startBtn');
-            startBtn.textContent = '🔄 启动中...';
             startBtn.disabled = true;
+            startBtn.textContent = '🔄 连接中...';
+            updateStatus('正在连接虚拟人...', 'connecting');
             try {
-                updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
-                if(typeof window.AvatarPlatform === 'undefined') {
-                    console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
-                    updateStatus('SDK未加载', 'error');
-                    startBtn.textContent = '❌ SDK未加载';
-                    startBtn.disabled = false;
-                    return;
-                }
-
-                if(avatarPlatform) { avatarPlatform.destroy(); }
-                avatarPlatform = new window.AvatarPlatform({ useInlinePlayer: true });
-
-                avatarPlatform.on('connected', (initResp) => {
-                    console.log('🎉 连接成功');
-                    isConnected = true;
-                    isTeaching = true;
-                    updateStatus('已连接', 'connected');
-                    startBtn.textContent = '💖 虚拟人已就绪';
-                    setTimeout(() => { speakContent(currentSlide + 1); }, 1000);
-                }).on('disconnected', (err) => {
-                    isConnected = false;
-                    updateStatus('连接断开', 'error');
-                }).on('error', (error) => {
-                    console.error('❌ 错误:', error);
-                    updateStatus('错误', 'error');
-                    startBtn.textContent = '❌ 连接失败';
-                    startBtn.disabled = false;
-                    isTeaching = false;
-                }).on('frame_stop', (data) => {
-                    console.log('✅ 虚拟人讲解完成 frame_stop:', data);
-                    if (isAutoPlaying && speechFinishedResolve) {
-                        speechFinishedResolve();
-                        speechFinishedResolve = null;
-                    }
-                });
+                isTeaching = true;
+                avatarPlatform = new window.AvatarPlatform();
+                avatarPlatform.on('error', (error) => { console.error('❌ 虚拟人错误:', error); updateStatus('虚拟人错误', 'error'); });
+                avatarPlatform.on('connect', () => { console.log('✅ 虚拟人已连接'); isConnected = true; updateStatus('虚拟人已连接', 'connected'); startBtn.textContent = '🎀 讲课中'; });
+                avatarPlatform.on('frame_stop', (data) => { console.log('✅ 虚拟人讲解完成 frame_stop:', data); if (isAutoPlaying && speechFinishedResolve) { console.log('🎬 通知自动播放：虚拟人讲解完成'); speechFinishedResolve(); speechFinishedResolve = null; } });
                 
                 avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
-                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0, enable_action_status: 1 } });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error);
@@ -1385,14 +646,8 @@
         }
 
         async function startAutoPlay() {
-             if (!isTeaching) {
-                alert("请先点击开始讲课连接虚拟人。");
-                return;
-            }
-            if (!isConnected) {
-                alert("虚拟人未连接，无法自动播放。");
-                return;
-            }
+            if (!isTeaching) { alert("请先点击开始讲课连接虚拟人。"); return; }
+            if (!isConnected) { alert("虚拟人未连接，无法自动播放。"); return; }
 
             isAutoPlaying = true;
             document.getElementById('autoPlayBtn').disabled = true;
@@ -1431,11 +686,8 @@
         document.getElementById('totalSlides').textContent = totalSlides;
         showSlide(0);
         
-        // 页面加载完成后自动启动虚拟人
-        setTimeout(() => {
-            startTeaching();
-        }, 1500);
-
+        setTimeout(() => { startTeaching(); }, 1500);
     </script>
 </body>
 </html>
+
