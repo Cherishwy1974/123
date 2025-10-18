@@ -8,12 +8,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true, 
+                processEnvironments: true 
+            },
             svg: { fontCache: 'global' },
-            startup: { pageReady: () => { return MathJax.startup.defaultPageReady().then(() => { console.log('✅ MathJax已加载'); }); } }
+            startup: { 
+                pageReady: () => { 
+                    return MathJax.startup.defaultPageReady().then(() => { 
+                        console.log('✅ MathJax已加载'); 
+                    }); 
+                } 
+            }
         };
     </script>
-    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
@@ -79,13 +90,13 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>回顾：简单极限</h2>
-                    <p>对于简单的函数，我们可以使用<strong>直接代入法</strong>。</p>
+                    <p>对于简单的函数,我们可以使用<strong>直接代入法</strong>。</p>
                     <h3>例子</h3>
-                    <p>求 $\\lim\\limits_{x \\to 2} (x^2 + 3)$</p>
+                    <p>求 \(\lim\limits_{x \to 2} (x^2 + 3)\)</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 2} (x^2 + 3) = 2^2 + 3 = 7$$
+                        \[\lim\limits_{x \to 2} (x^2 + 3) = 2^2 + 3 = 7\]
                     </div>
-                    <p style="margin-top:20px;">这种方法简单直接，但并非总是有效。</p>
+                    <p style="margin-top:20px;">这种方法简单直接,但并非总是有效。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -103,7 +114,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>当直接代入失效时</h2>
-                    <p>但很多时候，直接代入会遇到问题。</p>
+                    <p>但很多时候,直接代入会遇到问题。</p>
                     <p style="margin-top:30px; font-size:22px; color:#e74c3c;">我们来看一个经典的例子...</p>
                 </div>
                 <div class="visualization">
@@ -120,12 +131,12 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>第一种困境：$\\frac{0}{0}$ 型</h2>
+                    <h2>第一种困境：\(\frac{0}{0}\) 型</h2>
                     <p>考虑这个极限：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0} \\frac{\\sin x}{x}$$
+                        \[\lim\limits_{x \to 0} \frac{\sin x}{x}\]
                     </div>
-                    <p style="margin-top:20px;">如果直接代入 $x=0$ 会发生什么？</p>
+                    <p style="margin-top:20px;">如果直接代入 \(x=0\) 会发生什么？</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -143,10 +154,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>代入后的结果</h2>
-                    <p>当 $x \\to 0$ 时：</p>
-                    <p style="text-align:center; font-size: 24px; color:#e74c3c; margin:20px 0;">分子：$\\sin 0 = 0$</p>
-                    <p style="text-align:center; font-size: 24px; color:#e74c3c; margin:20px 0;">分母：$0$</p>
-                    <p style="margin-top:30px;">我们得到了 $\\frac{0}{0}$ 的形式！</p>
+                    <p>当 \(x \to 0\) 时：</p>
+                    <p style="text-align:center; font-size: 24px; color:#e74c3c; margin:20px 0;">分子：\(\sin 0 = 0\)</p>
+                    <p style="text-align:center; font-size: 24px; color:#e74c3c; margin:20px 0;">分母：\(0\)</p>
+                    <p style="margin-top:30px;">我们得到了 \(\frac{0}{0}\) 的形式！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -165,8 +176,8 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>什么是不定式？</h2>
-                    <p>$\\frac{0}{0}$ 被称为<strong>不定式</strong> (Indeterminate Form)。</p>
-                    <p style="margin-top:20px;">它的值是<strong>不确定的</strong>，不能直接计算。</p>
+                    <p>\(\frac{0}{0}\) 被称为<strong>不定式</strong> (Indeterminate Form)。</p>
+                    <p style="margin-top:20px;">它的值是<strong>不确定的</strong>,不能直接计算。</p>
                     <p style="margin-top:20px; color:#95a5a6;">不同的函数可能得到不同的结果：0、1、或其他值。</p>
                 </div>
                 <div class="visualization">
@@ -184,11 +195,11 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>第二种困境：$\\frac{\\infty}{\\infty}$ 型</h2>
+                    <h2>第二种困境：\(\frac{\infty}{\infty}\) 型</h2>
                     <p>还有另一种常见的不定式。</p>
                     <p style="margin-top:20px;">考虑这个例子：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to +\\infty} \\frac{e^x}{x^2}$$
+                        \[\lim\limits_{x \to +\infty} \frac{e^x}{x^2}\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -207,10 +218,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>趋向无穷的情况</h2>
-                    <p>当 $x \\to +\\infty$ 时：</p>
-                    <p style="text-align:center; font-size: 24px; color:#3498db; margin:20px 0;">分子：$e^x \\to +\\infty$</p>
-                    <p style="text-align:center; font-size: 24px; color:#3498db; margin:20px 0;">分母：$x^2 \\to +\\infty$</p>
-                    <p style="margin-top:30px;">我们得到了 $\\frac{\\infty}{\\infty}$ 的形式！</p>
+                    <p>当 \(x \to +\infty\) 时：</p>
+                    <p style="text-align:center; font-size: 24px; color:#3498db; margin:20px 0;">分子：\(e^x \to +\infty\)</p>
+                    <p style="text-align:center; font-size: 24px; color:#3498db; margin:20px 0;">分母：\(x^2 \to +\infty\)</p>
+                    <p style="margin-top:30px;">我们得到了 \(\frac{\infty}{\infty}\) 的形式！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -229,10 +240,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>又一个不定式</h2>
-                    <p>$\\frac{\\infty}{\\infty}$ 也是一种<strong>不定式</strong>。</p>
+                    <p>\(\frac{\infty}{\infty}\) 也是一种<strong>不定式</strong>。</p>
                     <p style="margin-top:20px;">它的结果同样不确定：</p>
                     <p style="margin-left:20px; margin-top:15px;">• 可能是 0</p>
-                    <p style="margin-left:20px;">• 可能是 $\\infty$</p>
+                    <p style="margin-left:20px;">• 可能是 \(\infty\)</p>
                     <p style="margin-left:20px;">• 也可能是某个常数</p>
                 </div>
                 <div class="visualization">
@@ -252,7 +263,7 @@
                 <div class="chalkboard">
                     <h2>如何解决不定式？</h2>
                     <p>面对这两种不定式：</p>
-                    <p style="text-align:center; font-size:28px; margin:20px 0;">$\\frac{0}{0}$ 和 $\\frac{\\infty}{\\infty}$</p>
+                    <p style="text-align:center; font-size:28px; margin:20px 0;">\(\frac{0}{0}\) 和 \(\frac{\infty}{\infty}\)</p>
                     <p style="margin-top:30px;">我们需要一个强大的工具...</p>
                 </div>
                 <div class="visualization">
@@ -294,10 +305,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>核心思想</h2>
-                    <p>当直接求 $\\frac{f(x)}{g(x)}$ 的极限遇到困难时...</p>
+                    <p>当直接求 \(\frac{f(x)}{g(x)}\) 的极限遇到困难时...</p>
                     <p style="margin-top:30px; font-size:22px; color:#f39c12;">我们可以尝试求它们<strong>导数的比值</strong>的极限！</p>
                     <div class="math-formula" style="margin-top:30px;">
-                        $$\\text{原极限} \\to \\text{导数的极限}$$
+                        \[\text{原极限} \to \text{导数的极限}\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -317,10 +328,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>洛必达法则 ($\\frac{0}{0}$ 型)</h2>
+                    <h2>洛必达法则 (\(\frac{0}{0}\) 型)</h2>
                     <p>当满足一定条件时：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to a} \\frac{f(x)}{g(x)} = \\lim\\limits_{x \\to a} \\frac{f'(x)}{g'(x)}$$
+                        \[\lim\limits_{x \to a} \frac{f(x)}{g(x)} = \lim\limits_{x \to a} \frac{f'(x)}{g'(x)}\]
                     </div>
                     <p style="margin-top:20px; color:#95a5a6;">注意：这里是分子分母<strong>分别求导</strong>！</p>
                 </div>
@@ -343,8 +354,8 @@
                 <div class="chalkboard">
                     <h2>使用条件（一）</h2>
                     <p><strong>条件1：</strong>极限必须是不定式</p>
-                    <p style="margin-left:20px; margin-top:15px;">$\\lim\\limits_{x \\to a} f(x) = 0$ 且 $\\lim\\limits_{x \\to a} g(x) = 0$</p>
-                    <p style="margin-top:20px; color:#e74c3c;">即：必须是 $\\frac{0}{0}$ 型！</p>
+                    <p style="margin-left:20px; margin-top:15px;">\(\lim\limits_{x \to a} f(x) = 0\) 且 \(\lim\limits_{x \to a} g(x) = 0\)</p>
+                    <p style="margin-top:20px; color:#e74c3c;">即：必须是 \(\frac{0}{0}\) 型！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -363,8 +374,8 @@
                 <div class="chalkboard">
                     <h2>使用条件（二）</h2>
                     <p><strong>条件2：</strong>函数可导</p>
-                    <p style="margin-left:20px; margin-top:15px;">在点 $a$ 的某去心邻域内，$f(x)$ 和 $g(x)$ 都可导</p>
-                    <p style="margin-left:20px; margin-top:10px;">且 $g'(x) \\neq 0$</p>
+                    <p style="margin-left:20px; margin-top:15px;">在点 \(a\) 的某去心邻域内,\(f(x)\) 和 \(g(x)\) 都可导</p>
+                    <p style="margin-left:20px; margin-top:10px;">且 \(g'(x) \neq 0\)</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -384,8 +395,8 @@
                 <div class="chalkboard">
                     <h2>使用条件（三）</h2>
                     <p><strong>条件3：</strong>导数极限存在</p>
-                    <p style="margin-left:20px; margin-top:15px;">$\\lim\\limits_{x \\to a} \\frac{f'(x)}{g'(x)}$ 存在（或为 $\\infty$）</p>
-                    <p style="margin-top:30px; color:#2ecc71;">满足这三个条件，就可以使用洛必达法则！</p>
+                    <p style="margin-left:20px; margin-top:15px;">\(\lim\limits_{x \to a} \frac{f'(x)}{g'(x)}\) 存在（或为 \(\infty\)）</p>
+                    <p style="margin-top:30px; color:#2ecc71;">满足这三个条件,就可以使用洛必达法则！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -403,10 +414,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>洛必达法则 ($\\frac{\\infty}{\\infty}$ 型)</h2>
-                    <p>该法则同样适用于 $\\frac{\\infty}{\\infty}$ 型！</p>
+                    <h2>洛必达法则 (\(\frac{\infty}{\infty}\) 型)</h2>
+                    <p>该法则同样适用于 \(\frac{\infty}{\infty}\) 型！</p>
                     <p style="margin-top:20px;">只需将条件1改为：</p>
-                    <p style="margin-left:20px; margin-top:15px;">$\\lim\\limits_{x \\to a} f(x) = \\infty$ 且 $\\lim\\limits_{x \\to a} g(x) = \\infty$</p>
+                    <p style="margin-left:20px; margin-top:15px;">\(\lim\limits_{x \to a} f(x) = \infty\) 且 \(\lim\limits_{x \to a} g(x) = \infty\)</p>
                     <p style="margin-top:20px;">其他条件和结论完全相同。</p>
                 </div>
                 <div class="visualization">
@@ -427,7 +438,7 @@
                     <h2>例题1：经典问题</h2>
                     <p>现在让我们用洛必达法则解决第一个问题：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0} \\frac{\\sin x}{x}$$
+                        \[\lim\limits_{x \to 0} \frac{\sin x}{x}\]
                     </div>
                     <p style="margin-top:20px;">我们按步骤来解决...</p>
                 </div>
@@ -446,10 +457,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例1 - 步骤1：检查类型</h2>
-                    <p>当 $x \\to 0$ 时：</p>
-                    <p style="margin-left:20px; margin-top:15px;">$\\sin x \\to 0$</p>
-                    <p style="margin-left:20px;">$x \\to 0$</p>
-                    <p style="margin-top:20px; color:#e74c3c; font-size:22px;">✓ 这是 $\\frac{0}{0}$ 型，可以使用洛必达法则！</p>
+                    <p>当 \(x \to 0\) 时：</p>
+                    <p style="margin-left:20px; margin-top:15px;">\(\sin x \to 0\)</p>
+                    <p style="margin-left:20px;">\(x \to 0\)</p>
+                    <p style="margin-top:20px; color:#e74c3c; font-size:22px;">✓ 这是 \(\frac{0}{0}\) 型,可以使用洛必达法则！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -471,7 +482,7 @@
                     <h2>例1 - 步骤2：应用法则</h2>
                     <p>分子分母分别求导：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0} \\frac{\\sin x}{x} = \\lim\\limits_{x \\to 0} \\frac{(\\sin x)'}{(x)'}$$
+                        \[\lim\limits_{x \to 0} \frac{\sin x}{x} = \lim\limits_{x \to 0} \frac{(\sin x)'}{(x)'}\]
                     </div>
                     <p style="margin-top:20px;">计算导数...</p>
                 </div>
@@ -500,10 +511,10 @@
                 <div class="chalkboard">
                     <h2>例1 - 步骤3：计算导数</h2>
                     <p>求导结果：</p>
-                    <p style="margin-left:20px; margin-top:15px;">$(\\sin x)' = \\cos x$</p>
-                    <p style="margin-left:20px;">$(x)' = 1$</p>
+                    <p style="margin-left:20px; margin-top:15px;">\((\sin x)' = \cos x\)</p>
+                    <p style="margin-left:20px;">\((x)' = 1\)</p>
                     <div class="math-formula">
-                        $$= \\lim\\limits_{x \\to 0} \\frac{\\cos x}{1}$$
+                        \[= \lim\limits_{x \to 0} \frac{\cos x}{1}\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -525,7 +536,7 @@
                     <h2>例1 - 步骤4：求极限</h2>
                     <p>现在可以直接代入了：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0} \\frac{\\cos x}{1} = \\frac{\\cos 0}{1} = \\frac{1}{1} = 1$$
+                        \[\lim\limits_{x \to 0} \frac{\cos x}{1} = \frac{\cos 0}{1} = \frac{1}{1} = 1\]
                     </div>
                     <p style="margin-top:30px; color:#2ecc71; font-size:26px;"><strong>答案：1</strong></p>
                 </div>
@@ -545,10 +556,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题2：$\\frac{\\infty}{\\infty}$ 型</h2>
-                    <p>现在来看一个 $\\frac{\\infty}{\\infty}$ 型的例子：</p>
+                    <h2>例题2：\(\frac{\infty}{\infty}\) 型</h2>
+                    <p>现在来看一个 \(\frac{\infty}{\infty}\) 型的例子：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to +\\infty} \\frac{e^x}{x^2}$$
+                        \[\lim\limits_{x \to +\infty} \frac{e^x}{x^2}\]
                     </div>
                     <p style="margin-top:20px;">这个例子会更有趣...</p>
                 </div>
@@ -567,10 +578,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例2 - 检查类型</h2>
-                    <p>当 $x \\to +\\infty$ 时：</p>
-                    <p style="margin-left:20px; margin-top:15px;">$e^x \\to +\\infty$</p>
-                    <p style="margin-left:20px;">$x^2 \\to +\\infty$</p>
-                    <p style="margin-top:20px; color:#3498db; font-size:22px;">✓ 这是 $\\frac{\\infty}{\\infty}$ 型！</p>
+                    <p>当 \(x \to +\infty\) 时：</p>
+                    <p style="margin-left:20px; margin-top:15px;">\(e^x \to +\infty\)</p>
+                    <p style="margin-left:20px;">\(x^2 \to +\infty\)</p>
+                    <p style="margin-top:20px; color:#3498db; font-size:22px;">✓ 这是 \(\frac{\infty}{\infty}\) 型！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -592,10 +603,10 @@
                     <h2>例2 - 第一次应用法则</h2>
                     <p>分子分母分别求导：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to +\\infty} \\frac{e^x}{x^2} = \\lim\\limits_{x \\to +\\infty} \\frac{(e^x)'}{(x^2)'}$$
+                        \[\lim\limits_{x \to +\infty} \frac{e^x}{x^2} = \lim\limits_{x \to +\infty} \frac{(e^x)'}{(x^2)'}\]
                     </div>
                     <div class="math-formula">
-                        $$= \\lim\\limits_{x \\to +\\infty} \\frac{e^x}{2x}$$
+                        \[= \lim\limits_{x \to +\infty} \frac{e^x}{2x}\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -619,9 +630,9 @@
                     <h2>例2 - 仍然是不定式！</h2>
                     <p>检查新的极限：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to +\\infty} \\frac{e^x}{2x}$$
+                        \[\lim\limits_{x \to +\infty} \frac{e^x}{2x}\]
                     </div>
-                    <p style="margin-top:20px; color:#e74c3c;">这仍然是 $\\frac{\\infty}{\\infty}$ 型！</p>
+                    <p style="margin-top:20px; color:#e74c3c;">这仍然是 \(\frac{\infty}{\infty}\) 型！</p>
                     <p style="margin-top:20px;">怎么办？</p>
                 </div>
                 <div class="visualization">
@@ -641,7 +652,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例2 - 连续使用法则</h2>
-                    <p style="color:#2ecc71; font-size:22px;">好消息：只要条件满足，可以<strong>连续使用</strong>洛必达法则！</p>
+                    <p style="color:#2ecc71; font-size:22px;">好消息：只要条件满足,可以<strong>连续使用</strong>洛必达法则！</p>
                     <p style="margin-top:30px;">我们再次应用...</p>
                 </div>
                 <div class="visualization">
@@ -664,10 +675,10 @@
                     <h2>例2 - 第二次应用法则</h2>
                     <p>再次分别求导：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to +\\infty} \\frac{e^x}{2x} = \\lim\\limits_{x \\to +\\infty} \\frac{(e^x)'}{(2x)'}$$
+                        \[\lim\limits_{x \to +\infty} \frac{e^x}{2x} = \lim\limits_{x \to +\infty} \frac{(e^x)'}{(2x)'}\]
                     </div>
                     <div class="math-formula">
-                        $$= \\lim\\limits_{x \\to +\\infty} \\frac{e^x}{2}$$
+                        \[= \lim\limits_{x \to +\infty} \frac{e^x}{2}\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -691,9 +702,9 @@
                     <h2>例2 - 最终结果</h2>
                     <p>现在极限很明显了：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to +\\infty} \\frac{e^x}{2} = \\frac{+\\infty}{2} = +\\infty$$
+                        \[\lim\limits_{x \to +\infty} \frac{e^x}{2} = \frac{+\infty}{2} = +\infty\]
                     </div>
-                    <p style="margin-top:30px; color:#f1c40f; font-size:26px;"><strong>答案：$+\\infty$</strong></p>
+                    <p style="margin-top:30px; color:#f1c40f; font-size:26px;"><strong>答案：\(+\infty\)</strong></p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -713,7 +724,7 @@
                 <div class="chalkboard">
                     <h2>其他类型的不定式</h2>
                     <p>洛必达法则只能直接用于：</p>
-                    <p style="text-align:center; font-size:24px; margin:20px 0;">$\\frac{0}{0}$ 和 $\\frac{\\infty}{\\infty}$</p>
+                    <p style="text-align:center; font-size:24px; margin:20px 0;">\(\frac{0}{0}\) 和 \(\frac{\infty}{\infty}\)</p>
                     <p style="margin-top:30px;">但还有其他类型的不定式...</p>
                 </div>
                 <div class="visualization">
@@ -734,10 +745,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>$0 \\cdot \\infty$ 型不定式</h2>
-                    <p>形式：$\\lim f(x)g(x)$</p>
+                    <h2>\(0 \cdot \infty\) 型不定式</h2>
+                    <p>形式：\(\lim f(x)g(x)\)</p>
                     <p style="margin-left:20px; margin-top:15px;">其中一个因子趋于 0</p>
-                    <p style="margin-left:20px;">另一个因子趋于 $\\infty$</p>
+                    <p style="margin-left:20px;">另一个因子趋于 \(\infty\)</p>
                     <p style="margin-top:30px; color:#e74c3c;">需要先<strong>转化</strong>为分式形式！</p>
                 </div>
                 <div class="visualization">
@@ -755,14 +766,14 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>$0 \\cdot \\infty$ 型转化</h2>
+                    <h2>\(0 \cdot \infty\) 型转化</h2>
                     <p>转化策略：化为分式</p>
                     <div class="math-formula">
-                        $$f \\cdot g = \\frac{f}{\\frac{1}{g}} \\quad (\\text{化为 } \\frac{0}{0})$$
+                        \[f \cdot g = \frac{f}{\frac{1}{g}} \quad (\text{化为 } \frac{0}{0})\]
                     </div>
                     <p style="text-align:center; margin:20px 0;">或</p>
                     <div class="math-formula">
-                        $$f \\cdot g = \\frac{g}{\\frac{1}{f}} \\quad (\\text{化为 } \\frac{\\infty}{\\infty})$$
+                        \[f \cdot g = \frac{g}{\frac{1}{f}} \quad (\text{化为 } \frac{\infty}{\infty})\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -785,10 +796,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题3：$0 \\cdot \\infty$ 型</h2>
+                    <h2>例题3：\(0 \cdot \infty\) 型</h2>
                     <p>求极限：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0^+} x \\ln x$$
+                        \[\lim\limits_{x \to 0^+} x \ln x\]
                     </div>
                     <p style="margin-top:20px;">让我们应用转化策略...</p>
                 </div>
@@ -808,10 +819,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例3 - 检查类型</h2>
-                    <p>当 $x \\to 0^+$ 时：</p>
-                    <p style="margin-left:20px; margin-top:15px;">$x \\to 0$</p>
-                    <p style="margin-left:20px;">$\\ln x \\to -\\infty$</p>
-                    <p style="margin-top:20px; color:#e74c3c; font-size:22px;">这是 $0 \\cdot \\infty$ 型！</p>
+                    <p>当 \(x \to 0^+\) 时：</p>
+                    <p style="margin-left:20px; margin-top:15px;">\(x \to 0\)</p>
+                    <p style="margin-left:20px;">\(\ln x \to -\infty\)</p>
+                    <p style="margin-top:20px; color:#e74c3c; font-size:22px;">这是 \(0 \cdot \infty\) 型！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -831,11 +842,11 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例3 - 转化为分式</h2>
-                    <p>将 $x$ 放到分母：</p>
+                    <p>将 \(x\) 放到分母：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0^+} x \\ln x = \\lim\\limits_{x \\to 0^+} \\frac{\\ln x}{\\frac{1}{x}}$$
+                        \[\lim\limits_{x \to 0^+} x \ln x = \lim\limits_{x \to 0^+} \frac{\ln x}{\frac{1}{x}}\]
                     </div>
-                    <p style="margin-top:20px;">现在变成了 $\\frac{-\\infty}{+\\infty}$ 型！</p>
+                    <p style="margin-top:20px;">现在变成了 \(\frac{-\infty}{+\infty}\) 型！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -858,7 +869,7 @@
                     <h2>例3 - 应用洛必达法则</h2>
                     <p>分子分母分别求导：</p>
                     <div class="math-formula">
-                        $$= \\lim\\limits_{x \\to 0^+} \\frac{(\\ln x)'}{(\\frac{1}{x})'} = \\lim\\limits_{x \\to 0^+} \\frac{\\frac{1}{x}}{-\\frac{1}{x^2}}$$
+                        \[= \lim\limits_{x \to 0^+} \frac{(\ln x)'}{\left(\frac{1}{x}\right)'} = \lim\limits_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}}\]
                     </div>
                     <p style="margin-top:20px;">化简...</p>
                 </div>
@@ -883,10 +894,10 @@
                     <h2>例3 - 化简</h2>
                     <p>化简分式：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0^+} \\frac{\\frac{1}{x}}{-\\frac{1}{x^2}} = \\lim\\limits_{x \\to 0^+} \\frac{1}{x} \\cdot \\frac{x^2}{-1}$$
+                        \[\lim\limits_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}} = \lim\limits_{x \to 0^+} \frac{1}{x} \cdot \frac{x^2}{-1}\]
                     </div>
                     <div class="math-formula">
-                        $$= \\lim\\limits_{x \\to 0^+} (-x)$$
+                        \[= \lim\limits_{x \to 0^+} (-x)\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -907,7 +918,7 @@
                     <h2>例3 - 最终结果</h2>
                     <p>求极限：</p>
                     <div class="math-formula">
-                        $$\\lim\\limits_{x \\to 0^+} (-x) = 0$$
+                        \[\lim\limits_{x \to 0^+} (-x) = 0\]
                     </div>
                     <p style="margin-top:30px; color:#2ecc71; font-size:26px;"><strong>答案：0</strong></p>
                 </div>
@@ -927,10 +938,10 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>$\\infty - \\infty$ 型不定式</h2>
-                    <p>形式：$\\lim [f(x)-g(x)]$</p>
-                    <p style="margin-left:20px; margin-top:15px;">其中 $f(x) \\to \\infty$</p>
-                    <p style="margin-left:20px;">且 $g(x) \\to \\infty$</p>
+                    <h2>\(\infty - \infty\) 型不定式</h2>
+                    <p>形式：\(\lim [f(x)-g(x)]\)</p>
+                    <p style="margin-left:20px; margin-top:15px;">其中 \(f(x) \to \infty\)</p>
+                    <p style="margin-left:20px;">且 \(g(x) \to \infty\)</p>
                     <p style="margin-top:30px; color:#3498db;">转化策略：通分或有理化</p>
                 </div>
                 <div class="visualization">
@@ -948,13 +959,13 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>$\\infty - \\infty$ 型转化</h2>
-                    <p>通过<strong>通分</strong>，将两项合并为一个分式。</p>
+                    <h2>\(\infty - \infty\) 型转化</h2>
+                    <p>通过<strong>通分</strong>,将两项合并为一个分式。</p>
                     <p style="margin-top:20px;">例如：</p>
                     <div class="math-formula">
-                        $$\\frac{1}{x-1} - \\frac{1}{\\ln x} = \\frac{\\ln x - (x-1)}{(x-1)\\ln x}$$
+                        \[\frac{1}{x-1} - \frac{1}{\ln x} = \frac{\ln x - (x-1)}{(x-1)\ln x}\]
                     </div>
-                    <p style="margin-top:20px;">通常会变成 $\\frac{0}{0}$ 型。</p>
+                    <p style="margin-top:20px;">通常会变成 \(\frac{0}{0}\) 型。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -976,9 +987,9 @@
                 <div class="chalkboard">
                     <h2>幂指函数型不定式</h2>
                     <p>包括三种形式：</p>
-                    <p style="margin-left:20px; margin-top:15px;">• $1^{\\infty}$ 型</p>
-                    <p style="margin-left:20px;">• $0^0$ 型</p>
-                    <p style="margin-left:20px;">• $\\infty^0$ 型</p>
+                    <p style="margin-left:20px; margin-top:15px;">• \(1^{\infty}\) 型</p>
+                    <p style="margin-left:20px;">• \(0^0\) 型</p>
+                    <p style="margin-left:20px;">• \(\infty^0\) 型</p>
                     <p style="margin-top:30px; color:#9b59b6;">转化策略：取对数</p>
                 </div>
                 <div class="visualization">
@@ -1000,11 +1011,11 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>幂指型转化步骤</h2>
-                    <p>对于 $\\lim [f(x)]^{g(x)}$：</p>
-                    <p style="margin-top:20px;"><strong>步骤1：</strong>设 $y = [f(x)]^{g(x)}$</p>
-                    <p><strong>步骤2：</strong>两边取对数：$\\ln y = g(x) \\ln f(x)$</p>
-                    <p><strong>步骤3：</strong>先求 $\\lim (\\ln y)$</p>
-                    <p><strong>步骤4：</strong>原极限 $= e^{\\lim (\\ln y)}$</p>
+                    <p>对于 \(\lim [f(x)]^{g(x)}\)：</p>
+                    <p style="margin-top:20px;"><strong>步骤1：</strong>设 \(y = [f(x)]^{g(x)}\)</p>
+                    <p><strong>步骤2：</strong>两边取对数：\(\ln y = g(x) \ln f(x)\)</p>
+                    <p><strong>步骤3：</strong>先求 \(\lim (\ln y)\)</p>
+                    <p><strong>步骤4：</strong>原极限 \(= e^{\lim (\ln y)}\)</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -1028,7 +1039,7 @@
                 <div class="chalkboard">
                     <h2>注意事项（一）</h2>
                     <p style="color:#e74c3c; font-size:24px;"><strong>必须先检查类型！</strong></p>
-                    <p style="margin-top:20px;">只有当极限是不定式时，才能使用洛必达法则。</p>
+                    <p style="margin-top:20px;">只有当极限是不定式时,才能使用洛必达法则。</p>
                     <p style="margin-top:20px;">滥用法则是最常见的错误！</p>
                 </div>
                 <div class="visualization">
@@ -1049,14 +1060,14 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>错误示例</h2>
-                    <p>求 $\\lim\\limits_{x \\to 0} \\frac{x+1}{x+2}$</p>
+                    <p>求 \(\lim\limits_{x \to 0} \frac{x+1}{x+2}\)</p>
                     <p style="margin-top:20px;"><strong>✗ 错误：</strong>直接用洛必达</p>
                     <div class="math-formula" style="border-color:#e74c3c;">
-                        $$\\lim\\limits_{x \\to 0} \\frac{1}{1} = 1 \\quad (\\text{错误!})$$
+                        \[\lim\limits_{x \to 0} \frac{1}{1} = 1 \quad (\text{错误!})\]
                     </div>
                     <p style="margin-top:20px;"><strong>✓ 正确：</strong>直接代入</p>
                     <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\\lim\\limits_{x \\to 0} \\frac{x+1}{x+2} = \\frac{1}{2}$$
+                        \[\lim\limits_{x \to 0} \frac{x+1}{x+2} = \frac{1}{2}\]
                     </div>
                 </div>
                 <div class="visualization">
@@ -1326,16 +1337,17 @@
             startBtn.disabled = true;
             try {
                 updateStatus('等待SDK...', 'connecting');
-                // await waitForSDK(); // 如果您本地有SDK，请取消此行注释
-                 if(typeof AvatarPlatform === 'undefined') {
+                await waitForSDK();
+                if(typeof window.AvatarPlatform === 'undefined') {
                     console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
                     updateStatus('SDK未加载', 'error');
                     startBtn.textContent = '❌ SDK未加载';
+                    startBtn.disabled = false;
                     return;
                 }
 
                 if(avatarPlatform) { avatarPlatform.destroy(); }
-                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform = new window.AvatarPlatform({ useInlinePlayer: true });
 
                 avatarPlatform.on('connected', (initResp) => {
                     console.log('🎉 连接成功');
