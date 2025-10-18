@@ -41,7 +41,8 @@
         .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
         .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
         .chalkboard strong { color: #e74c3c; }
-        .math-formula { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
+        .math-formula { display: block; font-size: 20px; color: #1abc9c; margin: 5px 0; }
+        .math-formula .MJXc-display { margin: 0 !important; }
         .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
         .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
@@ -63,9 +64,7 @@
                 <div class="chalkboard">
                     <h2>回顾：导数的概念</h2>
                     <p>我们已经学习了<strong>导数</strong>的概念：</p>
-                    <div class="math-formula">
-                        \[f'(x) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}\]
-                    </div>
+                    <span class="math-formula">\[f'(x) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}\]</span>
                     <p>导数描述了函数的<strong>变化率</strong>。</p>
                     <p style="margin-top: 20px; color: #95a5a6;">今天我们要学习一个新概念——<strong>微分</strong>。</p>
                 </div>
@@ -92,9 +91,7 @@
                     <p>当自变量 \(x\) 有一个<strong>微小变化</strong> \(\Delta x\) 时，</p>
                     <p>函数 \(y\) 会变化多少？</p>
                     <p style="margin-top: 25px;">从导数的定义，当 \(\Delta x\) 很小时：</p>
-                    <div class="math-formula">
-                        \[\Delta y \approx f'(x) \cdot \Delta x\]
-                    </div>
+                    <span class="math-formula">\[\Delta y \approx f'(x) \cdot \Delta x\]</span>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -161,9 +158,7 @@
                 <div class="chalkboard">
                     <h2>微分的定义</h2>
                     <p>设函数 \(y = f(x)\) 在点 \(x\) 可导，则：</p>
-                    <div class="math-formula">
-                        \[dy = f'(x) \cdot dx\]
-                    </div>
+                    <span class="math-formula">\[dy = f'(x) \cdot dx\]</span>
                     <p style="margin-top: 15px;">其中：</p>
                     <p>• \(dx = \Delta x\) 是自变量的微分</p>
                     <p>• \(dy\) 是函数 \(y\) 的微分</p>
@@ -186,9 +181,7 @@
                 <div class="chalkboard">
                     <h2>微分与导数的关系</h2>
                     <p>从 \(dy = f'(x) \cdot dx\) 可得：</p>
-                    <div class="math-formula">
-                        \[f'(x) = \frac{dy}{dx}\]
-                    </div>
+                    <span class="math-formula">\[f'(x) = \frac{dy}{dx}\]</span>
                     <p style="margin-top: 20px;"><strong>导数是微分之商！</strong></p>
                     <p style="color: #95a5a6;">\(\frac{dy}{dx}\) 可以真正理解为 \(dy\) 除以 \(dx\)。</p>
                 </div>
@@ -214,13 +207,9 @@
                     <h2>两种增量</h2>
                     <p>当自变量从 \(x\) 变到 \(x + \Delta x\) 时：</p>
                     <p style="margin-top: 15px;"><strong>1. 曲线实际增量 \(\Delta y\)：</strong></p>
-                    <div class="math-formula">
-                        \[\Delta y = f(x + \Delta x) - f(x)\]
-                    </div>
+                    <span class="math-formula">\[\Delta y = f(x + \Delta x) - f(x)\]</span>
                     <p><strong>2. 切线增量 \(dy\)：</strong></p>
-                    <div class="math-formula">
-                        \[dy = f'(x) \cdot \Delta x\]
-                    </div>
+                    <span class="math-formula">\[dy = f'(x) \cdot \Delta x\]</span>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -258,27 +247,15 @@
                     <p><strong>微分计算 = 导数计算!</strong></p>
 
                     <h3>基本微分公式</h3>
-                    <div class="math-formula">
-                        \[d(x^n) = nx^{n-1}dx\]
-                    </div>
-                    <div class="math-formula">
-                        \[d(\sin x) = \cos x \, dx\]
-                    </div>
-                    <div class="math-formula">
-                        \[d(e^x) = e^x dx\]
-                    </div>
-                    <div class="math-formula">
-                        \[d(\ln x) = \frac{1}{x} dx\]
-                    </div>
+                    <span class="math-formula">\[d(x^n) = nx^{n-1}dx\]</span>
+                    <span class="math-formula">\[d(\sin x) = \cos x \, dx\]</span>
+                    <span class="math-formula">\[d(e^x) = e^x dx\]</span>
+                    <span class="math-formula">\[d(\ln x) = \frac{1}{x} dx\]</span>
 
                     <h3>微分运算法则</h3>
                     <p>和导数运算法则<strong>完全一致</strong>!</p>
-                    <div class="math-formula">
-                        \[d(u \pm v) = du \pm dv\]
-                    </div>
-                    <div class="math-formula">
-                        \[d(uv) = u \, dv + v \, du\]
-                    </div>
+                    <span class="math-formula">\[d(u \pm v) = du \pm dv\]</span>
+                    <span class="math-formula">\[d(uv) = u \, dv + v \, du\]</span>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -333,21 +310,15 @@
 
                     <h3>定理</h3>
                     <p>无论 \(u\) 是<strong>自变量</strong>还是<strong>中间变量</strong>,</p>
-                    <div class="math-formula">
-                        \[d(f(u)) = f'(u) \, du\]
-                    </div>
+                    <span class="math-formula">\[d(f(u)) = f'(u) \, du\]</span>
                     <p>这个形式<strong>保持不变</strong>!</p>
 
                     <h3>例子</h3>
                     <p>1. 若 \(u = x\) (自变量):</p>
-                    <div class="math-formula">
-                        \[d(\sin x) = \cos x \, dx\]
-                    </div>
+                    <span class="math-formula">\[d(\sin x) = \cos x \, dx\]</span>
 
                     <p>2. 若 \(u = x^2\) (中间变量):</p>
-                    <div class="math-formula">
-                        \[d(\sin x^2) = \cos(x^2) \, d(x^2)\]
-                    </div>
+                    <span class="math-formula">\[d(\sin x^2) = \cos(x^2) \, d(x^2)\]</span>
                     <p style="margin-left: 30px;">\(= \cos(x^2) \cdot 2x \, dx\)</p>
 
                     <p style="margin-top: 20px; color: #e74c3c;"><strong>形式不变!</strong> 这让计算更简单!</p>
@@ -387,9 +358,7 @@
                 <div class="chalkboard">
                     <h2>应用一:近似计算</h2>
                     <p>利用微分可以进行<strong>近似计算</strong>:</p>
-                    <div class="math-formula">
-                        \[f(x + \Delta x) \approx f(x) + f'(x) \Delta x\]
-                    </div>
+                    <span class="math-formula">\[f(x + \Delta x) \approx f(x) + f'(x) \Delta x\]</span>
 
                     <h3>例题</h3>
                     <p>计算 \(\sqrt{4.02}\) 的近似值</p>
@@ -398,12 +367,8 @@
                     <p style="margin-left: 30px;">\(f'(x) = \frac{1}{2\sqrt{x}}\)</p>
                     <p style="margin-left: 30px;">\(f'(4) = \frac{1}{2\sqrt{4}} = \frac{1}{4}\)</p>
 
-                    <div class="math-formula">
-                        \[\sqrt{4.02} \approx \sqrt{4} + \frac{1}{4} \times 0.02\]
-                    </div>
-                    <div class="math-formula">
-                        \[= 2 + 0.005 = 2.005\]
-                    </div>
+                    <span class="math-formula">\[\sqrt{4.02} \approx \sqrt{4} + \frac{1}{4} \times 0.02\]</span>
+                    <span class="math-formula">\[= 2 + 0.005 = 2.005\]</span>
 
                     <p style="margin-top: 15px; color: #95a5a6;">实际值: 2.00499... (误差极小!)</p>
                 </div>
@@ -461,23 +426,17 @@
                     <h3>原理</h3>
                     <p>若 \(y = f(x)\),测量 \(x\) 时误差为 \(\Delta x\),</p>
                     <p>则 \(y\) 的<strong>绝对误差</strong>约为:</p>
-                    <div class="math-formula">
-                        \[|\Delta y| \approx |dy| = |f'(x)| \cdot |\Delta x|\]
-                    </div>
+                    <span class="math-formula">\[|\Delta y| \approx |dy| = |f'(x)| \cdot |\Delta x|\]</span>
 
                     <p><strong>相对误差</strong>约为:</p>
-                    <div class="math-formula">
-                        \[\frac{|\Delta y|}{|y|} \approx \frac{|f'(x)| \cdot |\Delta x|}{|f(x)|}\]
-                    </div>
+                    <span class="math-formula">\[\frac{|\Delta y|}{|y|} \approx \frac{|f'(x)| \cdot |\Delta x|}{|f(x)|}\]</span>
 
                     <h3>例题</h3>
                     <p>测量圆的半径 \(r = 10\)cm,误差不超过 0.05cm,</p>
                     <p>估计面积 \(S = \pi r^2\) 的误差。</p>
 
                     <p><strong>解:</strong> \(S' = 2\pi r\), 当 \(r = 10\) 时:</p>
-                    <div class="math-formula">
-                        \[|\Delta S| \approx 2\pi \times 10 \times 0.05 = \pi \approx 3.14 \text{ cm}^2\]
-                    </div>
+                    <span class="math-formula">\[|\Delta S| \approx 2\pi \times 10 \times 0.05 = \pi \approx 3.14 \text{ cm}^2\]</span>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" style="width: 100%; height: 100%;">
@@ -643,13 +602,86 @@
             "10": "A_RH_point_O", "11": "A_RLH_welcome_O"
         };
 
-        let currentSlide = 0; const totalSlides = 11; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; let speechFinishedResolve = null; const slides = document.querySelectorAll('.slide');
-        function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); currentSlide = index; document.getElementById('currentSlide').textContent = index + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err)); } document.getElementById('prevBtn').disabled = index === 0; document.getElementById('nextBtn').disabled = index === totalSlides - 1; updateSubtitle(index + 1); }
-        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; }
-        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
-        async function speakContent(slideNum) { if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; } const content = speechScript[slideNum]; if (!content) return; try { const action = actionMap[slideNum]; if (action) { await avatarPlatform.writeCmd("action", action); } await avatarPlatform.writeText(content, { nlp: false }); updateSubtitle(slideNum); } catch (error) { console.error('❌ 讲解失败:', error); } }
+        let currentSlide = 0; const totalSlides = 11; let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false; let speechFinishedResolve = null; let isSpeaking = false; const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentSlide = index;
+            document.getElementById('currentSlide').textContent = index + 1;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error(err));
+            }
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            updateSubtitle(index + 1);
+        }
+
+        async function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                // 如果虚拟人正在讲解，先停止
+                if (isSpeaking && avatarPlatform) {
+                    await avatarPlatform.stop();
+                    isSpeaking = false;
+                }
+                showSlide(currentSlide + 1);
+                if (!isAutoPlaying && isTeaching && isConnected) {
+                    await speakContent(currentSlide + 1);
+                }
+            }
+        }
+
+        async function previousSlide() {
+            if (currentSlide > 0) {
+                // 如果虚拟人正在讲解，先停止
+                if (isSpeaking && avatarPlatform) {
+                    await avatarPlatform.stop();
+                    isSpeaking = false;
+                }
+                showSlide(currentSlide - 1);
+                if (!isAutoPlaying && isTeaching && isConnected) {
+                    await speakContent(currentSlide + 1);
+                }
+            }
+        }
+        function restart() {
+            showSlide(0);
+            if (avatarPlatform) {
+                avatarPlatform.stop();
+            }
+            isConnected = false;
+            isTeaching = false;
+            isAutoPlaying = false;
+            isSpeaking = false;
+            speechFinishedResolve = null;
+        }
+        function updateSubtitle(slideNum) {
+            const subtitleArea = document.getElementById('subtitleArea');
+            subtitleArea.textContent = subtitleScript[slideNum] || '';
+        }
+
+        async function speakContent(slideNum) {
+            if (!isTeaching || !isConnected || !avatarPlatform) {
+                console.log('⚠️ 虚拟人未连接');
+                return;
+            }
+            const content = speechScript[slideNum];
+            if (!content) return;
+
+            try {
+                isSpeaking = true;
+                console.log(`🎤 开始讲解第${slideNum}页`);
+
+                const action = actionMap[slideNum];
+                if (action) {
+                    await avatarPlatform.writeCmd("action", action);
+                }
+                await avatarPlatform.writeText(content, { nlp: false });
+                updateSubtitle(slideNum);
+            } catch (error) {
+                console.error('❌ 讲解失败:', error);
+                isSpeaking = false;
+            }
+        }
         // 计算单页播放时长（用于超时fallback）
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
@@ -658,8 +690,149 @@
         }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
         function waitForSDK() { return new Promise((resolve, reject) => { if (typeof AvatarPlatform !== 'undefined') { resolve(); return; } const timeout = setTimeout(() => { reject(new Error('SDK加载超时')); }, 10000); window.addEventListener('sdkReady', function handler() { clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve(); }); }); }
-        async function startTeaching() { const startBtn = document.getElementById('startBtn'); startBtn.textContent = '🔄 启动中...'; startBtn.disabled = true; try { updateStatus('等待SDK...', 'connecting'); await waitForSDK(); if(avatarPlatform) { avatarPlatform.destroy(); } avatarPlatform = new AvatarPlatform({ useInlinePlayer: true }); avatarPlatform.on('connected', (initResp) => { console.log('🎉 连接成功'); isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); startBtn.textContent = '💖 虚拟人已就绪'; setTimeout(() => { speakContent(currentSlide + 1); }, 1000); }).on('disconnected', (err) => { isConnected = false; updateStatus('连接断开', 'error'); }).on('error', (error) => { console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false; }).on('frame_stop', (data) => { console.log('✅ 虚拟人讲解完成 frame_stop:', data); if (isAutoPlaying && speechFinishedResolve) { console.log('🎬 通知自动播放:虚拟人讲解完成'); speechFinishedResolve(); speechFinishedResolve = null; } }); avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' }); avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } }); await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') }); } catch (error) { console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false; } }
-        async function startAutoPlay() { if (!avatarPlatform || !isConnected) { await startTeaching(); await new Promise(resolve => setTimeout(resolve, 2000)); } isAutoPlaying = true; document.getElementById('autoPlayBtn').disabled = true; try { for (let i = currentSlide; i < totalSlides; i++) { if (!isAutoPlaying) { console.log('🛑 自动播放被停止'); break; } console.log(`\n🎬 === 开始播放第${i + 1}页/${totalSlides}页 ===`); showSlide(i); if (isConnected && isTeaching && avatarPlatform) { try { const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; }); await speakContent(i + 1); console.log(`⏳ 等待虚拟人讲解第${i + 1}页完成...`); const timeoutPromise = new Promise(resolve => setTimeout(() => { console.log(`⚠️ 第${i + 1}页讲解超时,继续下一页`); resolve(); }, getSlideDuration(i + 1) + 5000)); await Promise.race([speechPromise, timeoutPromise]); console.log(`✅ 第${i + 1}页讲解完成`); } catch (error) { console.error(`❌ 第${i + 1}页讲解异常:`, error); } } else { console.log('⚠️ 虚拟人未连接,使用固定延时'); await new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1))); } const waitTime = i === totalSlides - 1 ? 1500 : 200; await new Promise(resolve => setTimeout(resolve, waitTime)); } if (isAutoPlaying) { await new Promise(resolve => setTimeout(resolve, 3000)); } } catch (error) { console.error('❌ 自动播放失败:', error); } finally { isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; window.playbackFinished = true; document.title = "PLAYBACK_FINISHED"; console.log('🎉 播放完成'); } }
+        async function startTeaching() {
+            const startBtn = document.getElementById('startBtn');
+            startBtn.textContent = '🔄 启动中...';
+            startBtn.disabled = true;
+
+            try {
+                updateStatus('等待SDK...', 'connecting');
+                await waitForSDK();
+
+                if(avatarPlatform) {
+                    avatarPlatform.destroy();
+                }
+
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+
+                avatarPlatform.on('connected', (initResp) => {
+                    console.log('🎉 连接成功');
+                    isConnected = true;
+                    isTeaching = true;
+                    updateStatus('已连接', 'connected');
+                    startBtn.textContent = '💖 虚拟人已就绪';
+                    setTimeout(() => {
+                        speakContent(currentSlide + 1);
+                    }, 1000);
+                }).on('disconnected', (err) => {
+                    isConnected = false;
+                    isSpeaking = false;
+                    updateStatus('连接断开', 'error');
+                }).on('error', (error) => {
+                    console.error('❌ 错误:', error);
+                    updateStatus('错误', 'error');
+                    startBtn.textContent = '❌ 连接失败';
+                    startBtn.disabled = false;
+                    isTeaching = false;
+                    isSpeaking = false;
+                }).on('frame_stop', (data) => {
+                    console.log('✅ 虚拟人讲解完成 frame_stop:', data);
+                    isSpeaking = false;
+
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('🎬 通知自动播放:虚拟人讲解完成');
+                        speechFinishedResolve();
+                        speechFinishedResolve = null;
+                    }
+                });
+
+                avatarPlatform.setApiInfo({
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                avatarPlatform.setGlobalParams({
+                    stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 },
+                    avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 },
+                    tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 },
+                    avatar_dispatch: { interactive_mode: 1, content_analysis: 0 }
+                });
+
+                await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+            } catch (error) {
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败', 'error');
+                startBtn.textContent = '🎀 开始讲课';
+                startBtn.disabled = false;
+            }
+        }
+        async function startAutoPlay() {
+            if (!avatarPlatform || !isConnected) {
+                await startTeaching();
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+
+            isAutoPlaying = true;
+            document.getElementById('autoPlayBtn').disabled = true;
+
+            try {
+                for (let i = currentSlide; i < totalSlides; i++) {
+                    if (!isAutoPlaying) {
+                        console.log('🛑 自动播放被停止');
+                        break;
+                    }
+
+                    console.log(`\n🎬 === 开始播放第${i + 1}页/${totalSlides}页 ===`);
+
+                    // 先翻页
+                    showSlide(i);
+
+                    // 等待一小段时间让页面渲染
+                    await new Promise(resolve => setTimeout(resolve, 300));
+
+                    if (isConnected && isTeaching && avatarPlatform) {
+                        try {
+                            // 创建一个Promise等待讲解完成
+                            const speechPromise = new Promise(resolve => {
+                                speechFinishedResolve = resolve;
+                            });
+
+                            // 开始讲解
+                            await speakContent(i + 1);
+                            console.log(`⏳ 等待虚拟人讲解第${i + 1}页完成...`);
+
+                            // 设置超时保护
+                            const timeoutPromise = new Promise(resolve => setTimeout(() => {
+                                console.log(`⚠️ 第${i + 1}页讲解超时,继续下一页`);
+                                isSpeaking = false;
+                                resolve();
+                            }, getSlideDuration(i + 1) + 5000));
+
+                            // 等待讲解完成或超时
+                            await Promise.race([speechPromise, timeoutPromise]);
+                            console.log(`✅ 第${i + 1}页讲解完成`);
+
+                            // 讲解完成后等待一小段时间再翻页
+                            if (i < totalSlides - 1) {
+                                await new Promise(resolve => setTimeout(resolve, 500));
+                            }
+                        } catch (error) {
+                            console.error(`❌ 第${i + 1}页讲解异常:`, error);
+                            isSpeaking = false;
+                        }
+                    } else {
+                        console.log('⚠️ 虚拟人未连接,使用固定延时');
+                        await new Promise(resolve => setTimeout(resolve, getSlideDuration(i + 1)));
+                    }
+                }
+
+                if (isAutoPlaying) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                }
+            } catch (error) {
+                console.error('❌ 自动播放失败:', error);
+            } finally {
+                isAutoPlaying = false;
+                isSpeaking = false;
+                document.getElementById('autoPlayBtn').disabled = false;
+                window.playbackFinished = true;
+                document.title = "PLAYBACK_FINISHED";
+                console.log('🎉 播放完成');
+            }
+        }
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); } else if (e.key === 'Enter') { e.preventDefault(); speakContent(currentSlide + 1); } });
         document.getElementById('totalSlides').textContent = totalSlides; showSlide(0);
         setTimeout(() => { console.log('🚀 自动启动播放...'); startAutoPlay(); }, 3000);
