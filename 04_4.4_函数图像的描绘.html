@@ -942,7 +942,7 @@
                     }
                 });
                 avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
-                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1 }, avatar: { avatar_id: '110332017' }, tts: { vcn: 'x4_yiting' } });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
@@ -980,30 +980,21 @@
             return duration;
         }
 
-        // 自动翻页函数（根据语音时长自动翻页）
-        function startAutoPageTurn() {
-            function scheduleNextPage() {
-                if (currentSlide < totalSlides - 1) {
-                    const waitTime = getSlideDuration(currentSlide + 1);
-                    console.log(`📄 当前第 ${currentSlide + 1} 页，${waitTime}ms 后翻页`);
-                    autoPageTimer = setTimeout(() => {
-                        nextSlide();
-                        scheduleNextPage();
-                    }, waitTime);
-                } else {
-                    console.log('✅ 已到达最后一页，自动翻页结束');
-                    window.playbackFinished = true;
-                    document.title = "PLAYBACK_FINISHED";
-                }
-            }
-            scheduleNextPage();
-        }
+        // startAutoPageTurn 函数已移除，现在只使用基于 frame_stop 事件的同步翻页
         
         async function startAutoPlay() {
-            if (!isTeaching) { await startTeaching(); await new Promise(r => setTimeout(r, 3000)); }
-            if (!isConnected) { alert("虚拟人未连接，无法自动播放。"); return; }
+            if (!isTeaching || !isConnected) {
+                console.log('⚠️ 虚拟人未连接，无法开始播放');
+                return;
+            }
+
+            console.log('🎬 开始自动播放完整课程...');
             isAutoPlaying = true;
-            document.getElementById('autoPlayBtn').disabled = true;
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
+            if (autoPlayBtn) {
+                autoPlayBtn.textContent = '⏹️ 停止播放';
+                autoPlayBtn.disabled = true;
+            }
 
             for (let i = currentSlide; i < totalSlides; i++) {
                 if (!isAutoPlaying) break;
@@ -1059,12 +1050,19 @@
             showSlide(0);
             console.log('✨ 函数图像的描绘教学系统初始化完成');
 
-            // 🚀 自动启动播放和翻页 - 延迟3秒后自动开始
+            // 🚀 自动启动虚拟人并开始播放（只使用基于 frame_stop 事件的同步翻页）
             setTimeout(() => {
-                console.log('🚀 自动启动播放和翻页...');
-                startAutoPlay();
-                startAutoPageTurn();
-            }, 3000);
+                startTeaching().then(() => {
+                    // 等待虚拟人连接成功后，立即开始播放
+                    const checkConnection = setInterval(() => {
+                        if (isConnected && isTeaching) {
+                            clearInterval(checkConnection);
+                            console.log('✅ 虚拟人已连接，立即开始播放...');
+                            startAutoPlay();
+                        }
+                    }, 500);
+                });
+            }, 1500);
         });
     </script>
 </body>

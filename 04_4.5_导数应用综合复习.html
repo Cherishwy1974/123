@@ -1168,24 +1168,7 @@
             return duration;
         }
 
-        // 自动翻页函数（根据语音时长自动翻页）
-        function startAutoPageTurn() {
-            function scheduleNextPage() {
-                if (currentSlide < totalSlides - 1) {
-                    const waitTime = getSlideDuration(currentSlide + 1);
-                    console.log(`📄 当前第 ${currentSlide + 1} 页，${waitTime}ms 后翻页`);
-                    autoPageTimer = setTimeout(() => {
-                        nextSlide();
-                        scheduleNextPage();
-                    }, waitTime);
-                } else {
-                    console.log('✅ 已到达最后一页，自动翻页结束');
-                    window.playbackFinished = true;
-                    document.title = "PLAYBACK_FINISHED";
-                }
-            }
-            scheduleNextPage();
-        }
+        // startAutoPageTurn 函数已移除，现在只使用基于 frame_stop 事件的同步翻页
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
 
         function waitForSDK() {
@@ -1303,11 +1286,19 @@
             console.log('✨ 导数应用综合复习教学系统初始化完成');
 
             // 🚀 自动启动播放和翻页 - 延迟3秒后自动开始
+            // 🚀 自动启动虚拟人并开始播放（只使用基于 frame_stop 事件的同步翻页）
             setTimeout(() => {
-                console.log('🚀 自动启动播放和翻页...');
-                startAutoPlay();
-                startAutoPageTurn();
-            }, 3000);
+                startTeaching().then(() => {
+                    // 等待虚拟人连接成功后，立即开始播放
+                    const checkConnection = setInterval(() => {
+                        if (isConnected && isTeaching) {
+                            clearInterval(checkConnection);
+                            console.log('✅ 虚拟人已连接，立即开始播放...');
+                            startAutoPlay();
+                        }
+                    }, 500);
+                });
+            }, 1500);
         });
     </script>
 </body>
