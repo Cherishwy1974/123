@@ -583,6 +583,7 @@
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+        let autoPageTimer = null; // 自动翻页定时器
         const slides = document.querySelectorAll('.slide');
 
         function showSlide(index) {
@@ -717,11 +718,43 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
+        // 自动翻页函数
+        function startAutoPageTurn() {
+            if (autoPageTimer) {
+                clearInterval(autoPageTimer);
+            }
+
+            autoPageTimer = setInterval(() => {
+                if (currentSlide < totalSlides - 1) {
+                    nextSlide();
+                    console.log(`📄 自动翻页到第 ${currentSlide + 1} 页`);
+                } else {
+                    clearInterval(autoPageTimer);
+                    console.log('✅ 已到达最后一页，自动翻页结束');
+                    window.playbackFinished = true;
+                    document.title = "PLAYBACK_FINISHED";
+                }
+            }, getSlideDuration(currentSlide + 1)); // 根据当前页语音时长自动翻页
+        }
+
         document.getElementById('totalSlides').textContent = totalSlides;
         showSlide(0);
-        
+
+        // 自动启动虚拟人并开始播放
         setTimeout(() => {
-            startTeaching();
+            startTeaching().then(() => {
+                // 等待虚拟人连接成功后，自动开始播放和翻页
+                const checkConnection = setInterval(() => {
+                    if (isConnected && isTeaching) {
+                        clearInterval(checkConnection);
+                        console.log('✅ 虚拟人已连接，3秒后自动开始播放和翻页...');
+                        setTimeout(() => {
+                            startAutoPlay();
+                            startAutoPageTurn(); // 启动自动翻页
+                        }, 3000);
+                    }
+                }, 500);
+            });
         }, 1500);
 
     </script>

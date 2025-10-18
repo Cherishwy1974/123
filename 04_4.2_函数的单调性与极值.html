@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>04_4.2_函数的单调性与极值</title>
+    <title>04_4.2_函数的单调性与极值 (最终修正版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
@@ -43,6 +43,7 @@
         .blackboard-text h2 { font-size: 2.5rem; color: #f1c40f; border-bottom: 2px solid #f39c12; padding-bottom: 0.5rem; margin-bottom: 2rem; }
         .blackboard-text h3 { font-size: 1.5rem; color: #1abc9c; margin-top: 1.5rem; margin-bottom: 1rem; }
         .blackboard-text p, .blackboard-text li { font-size: 1.25rem; line-height: 1.8; }
+        .blackboard-text ul { list-style-position: inside; }
         .blackboard-text strong { color: #e74c3c; }
         .math-formula { background-color: rgba(0,0,0,0.2); margin: 1rem 0; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f39c12; font-size: 1.25rem; text-align: center; }
         .animation-pane { flex: 1; display: flex; align-items: center; justify-content: center; }
@@ -117,7 +118,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">单调性的几何意义</h2>
                     <p class="mt-4">导数的符号反映了切线的斜率：</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li>导数为<strong>正</strong>：切线向上倾斜，函数上升 ↗</li>
                         <li>导数为<strong>负</strong>：切线向下倾斜，函数下降 ↘</li>
                     </ul>
@@ -141,7 +142,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">极值的概念</h2>
                     <p class="mt-4">极值是函数在<strong>局部邻域</strong>内的最大值或最小值。</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li><strong>极大值</strong>：在某点附近，函数值最大</li>
                         <li><strong>极小值</strong>：在某点附近，函数值最小</li>
                     </ul>
@@ -192,7 +193,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">临界点</h2>
                     <p class="mt-4"><strong>临界点</strong>包括两类：</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li>导数为零的点（驻点）</li>
                         <li>导数不存在的点</li>
                     </ul>
@@ -219,7 +220,7 @@
                     <h2 class="font-bold">极值判定：第一充分条件</h2>
                     <p class="mt-4">通过观察临界点<strong>两侧导数符号的变化</strong>来判断。</p>
                     <p class="mt-6">核心思想：</p>
-                    <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
+                    <ul class="list-disc mt-4 space-y-3 text-xl">
                         <li>导数从正变负 → 函数先增后减 → <strong>极大值</strong></li>
                         <li>导数从负变正 → 函数先减后增 → <strong>极小值</strong></li>
                     </ul>
@@ -244,7 +245,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">第一充分条件（详细）</h2>
                     <p class="mt-4">设 $x_0$ 是临界点：</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li>若 $f'(x)$ 在 $x_0$ 左侧 $>0$，右侧 $<0$ <br>则 $f(x_0)$ 是<strong>极大值</strong></li>
                         <li>若 $f'(x)$ 在 $x_0$ 左侧 $<0$，右侧 $>0$ <br>则 $f(x_0)$ 是<strong>极小值</strong></li>
                         <li>若两侧符号相同，则<strong>不是极值点</strong></li>
@@ -258,9 +259,9 @@
                         <circle cx="300" cy="120" r="8" fill="#fff"></circle>
                         
                         <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="280">极小值：- → +</text>
-                        <path d="M 100 380 C 200 460, 200 460, 300 380" stroke="#e74c3c" stroke-width="4" fill="none"></path>
-                        <path d="M 300 380 C 400 380, 400 380, 500 300" stroke="#2ecc71" stroke-width="4" fill="none"></path>
-                        <circle cx="300" cy="380" r="8" fill="#fff"></circle>
+                        <path d="M 100 420 C 200 500, 200 500, 300 420" stroke="#e74c3c" stroke-width="4" fill="none"></path>
+                        <path d="M 300 420 C 400 420, 400 340, 500 340" stroke="#2ecc71" stroke-width="4" fill="none"></path>
+                        <circle cx="300" cy="420" r="8" fill="#fff"></circle>
                     </svg>
                 </div>
             </div>
@@ -281,11 +282,11 @@
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
                         <text fill="#f1c40f" font-size="24" text-anchor="middle" x="300" y="60">二阶导数的几何意义</text>
-                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="150">f'' < 0 (凹)</text>
+                        <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="150">f'' < 0 (开口向下)</text>
                         <path d="M 150 250 Q 300 150, 450 250" fill="none" stroke="#e74c3c" stroke-width="4"></path>
                         <circle cx="300" cy="168" r="8" fill="#fff"></circle>
                         
-                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="350">f'' > 0 (凸)</text>
+                        <text fill="#2ecc71" font-size="20" text-anchor="middle" x="300" y="350">f'' > 0 (开口向上)</text>
                         <path d="M 150 450 Q 300 550, 450 450" fill="none" stroke="#2ecc71" stroke-width="4"></path>
                         <circle cx="300" cy="468" r="8" fill="#fff"></circle>
                     </svg>
@@ -299,7 +300,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">第二充分条件（详细）</h2>
                     <p class="mt-4">设 $f'(x_0) = 0$：</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li>若 $f''(x_0) < 0$<br>曲线开口向下 → <strong>极大值</strong></li>
                         <li>若 $f''(x_0) > 0$<br>曲线开口向上 → <strong>极小值</strong></li>
                         <li>若 $f''(x_0) = 0$<br>此方法<strong>失效</strong>，需用第一充分条件</li>
@@ -334,7 +335,7 @@
                 </div>
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（1/2）</text>
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（1/3）</text>
                         <rect fill="rgba(52,152,219,0.2)" height="80" rx="10" stroke="#3498db" stroke-width="3" width="350" x="125" y="140"></rect>
                         <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="185">① 确定定义域</text>
                         <line marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="220" y2="260"></line>
@@ -358,7 +359,7 @@
                 </div>
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（2/2）</text>
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（2/3）</text>
                         <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="350" x="125" y="140"></rect>
                         <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="185">③ 找临界点</text>
                         <line marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="220" y2="260"></line>
@@ -381,7 +382,7 @@
                 </div>
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
-                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">最后一步</text>
+                        <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">求极值流程（3/3）</text>
                         <rect fill="rgba(241,196,15,0.2)" height="100" rx="10" stroke="#f1c40f" stroke-width="3" width="350" x="125" y="180"></rect>
                         <text fill="#ecf0f1" font-size="22" text-anchor="middle" x="300" y="225">⑤ 计算极值 f(x₀)</text>
                         <circle cx="300" cy="380" r="60" fill="rgba(46,204,113,0.3)" stroke="#2ecc71" stroke-width="4"></circle>
@@ -397,7 +398,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">实际应用</h2>
                     <p class="mt-4">极值理论在实际问题中有广泛应用：</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li><strong>经济学</strong>：利润最大化、成本最小化</li>
                         <li><strong>工程学</strong>：材料用量最省、效率最高</li>
                         <li><strong>物理学</strong>：能量最低状态</li>
@@ -425,7 +426,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">本节小结</h2>
                     <p class="mt-4"><strong>核心思想：</strong>利用导数分析函数的性质</p>
-                    <ul class="list-disc list-inside mt-6 space-y-4 text-xl">
+                    <ul class="list-disc mt-6 space-y-4 text-xl">
                         <li><strong>单调性</strong>由导数的<strong>符号</strong>决定</li>
                         <li><strong>极值点</strong>出现在导数<strong>变号</strong>的临界点</li>
                         <li>两种判定方法：<strong>一阶</strong>和<strong>二阶</strong>导数</li>
@@ -463,16 +464,9 @@
         window.playbackFinished = false;
 
         try {
-            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
-
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
             window.AvatarPlatform = AvatarPlatform;
-            window.SDKEvents = SDKEvents;
-            window.PlayerEvents = PlayerEvents;
-            window.RecorderEvents = RecorderEvents;
-            window.UserMedia = UserMedia;
-
-            console.log('✅ 讯飞官方SDK模块已加载');
-            console.log('SDK版本:', AvatarPlatform.getVersion());
+            console.log('✅ 讯飞SDK模块已加载 (版本:', AvatarPlatform.getVersion(), ')');
         } catch (error) {
             console.error('❌ SDK模块加载失败:', error);
         }
@@ -517,21 +511,10 @@
         };
         
         const actionMap = { 
-            "1": "A_RLH_welcome_O", 
-            "2": "A_RH_point_O", 
-            "3": "A_LH_introduced_O", 
-            "4": "A_RH_point_O", 
-            "5": "A_LH_introduced_O", 
-            "6": "A_RH_point_O", 
-            "7": "A_LH_introduced_O",
-            "8": "A_RH_point_O",
-            "9": "A_LH_introduced_O",
-            "10": "A_RH_point_O",
-            "11": "A_LH_introduced_O",
-            "12": "A_RH_point_O",
-            "13": "A_LH_introduced_O",
-            "14": "A_RH_point_O",
-            "15": "A_RLH_welcome_O"
+            "1": "A_RLH_welcome_O", "2": "A_RH_point_O", "3": "A_LH_introduced_O", "4": "A_RH_point_O", 
+            "5": "A_LH_introduced_O", "6": "A_RH_point_O", "7": "A_LH_introduced_O", "8": "A_RH_point_O",
+            "9": "A_LH_introduced_O", "10": "A_RH_point_O", "11": "A_LH_introduced_O", "12": "A_RH_point_O",
+            "13": "A_LH_introduced_O", "14": "A_RH_point_O", "15": "A_RLH_welcome_O"
         };
 
         let currentSlide = 0;
@@ -540,7 +523,6 @@
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
-        let speechFinishedResolve = null;
         const slides = document.querySelectorAll('.slide');
 
         function showSlide(index) {
@@ -555,23 +537,27 @@
             updateSubtitle(index + 1);
         }
 
-        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
-        function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; }
+        function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isTeaching || isAutoPlaying) return; speakContent(currentSlide + 1); } }
+        function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isTeaching || isAutoPlaying) return; speakContent(currentSlide + 1); } }
+        function restart() { isAutoPlaying = false; showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } const autoPlayBtn = document.getElementById('autoPlayBtn'); autoPlayBtn.disabled = false; autoPlayBtn.textContent = '🎬 自动播放'; autoPlayBtn.style.background = ''; if(isTeaching) { speakContent(1); } }
         function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
         
         async function speakContent(slideNum) {
-            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接，跳过播报'); return; }
+            if (!isTeaching || !isConnected || !avatarPlatform) { return; }
             const content = speechScript[slideNum];
             if (!content) return;
             try {
                 const action = actionMap[slideNum];
                 if (action) { await avatarPlatform.writeCmd("action", action); }
-                console.log(`🎤 虚拟人开始讲解第${slideNum}页...`);
                 await avatarPlatform.writeText(content, { nlp: false });
                 updateSubtitle(slideNum);
-                console.log(`✅ 第${slideNum}页语音已发送，等待frame_stop事件...`);
             } catch (error) { console.error('❌ 讲解失败:', error); }
+        }
+
+        function getSlideDuration(slideNum) {
+            const speech = speechScript[slideNum];
+            if (!speech) return 5000;
+            return speech.length * 285 + 2000;
         }
 
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
@@ -592,190 +578,71 @@
                 updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
                 
-                if (avatarPlatform) {
-                    avatarPlatform.destroy();
-                }
+                if (avatarPlatform) { avatarPlatform.destroy(); }
                 
                 avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
                 avatarPlatform
                     .on('connected', (initResp) => {
-                        console.log('🎉 虚拟人连接成功！', initResp);
                         isConnected = true;
                         isTeaching = true;
                         updateStatus('已连接', 'connected');
                         startBtn.textContent = '💖 虚拟人已就绪';
-                        
-                        setTimeout(() => {
-                            speakContent(currentSlide + 1);
-                        }, 1000);
+                        // 触发一个自定义事件，通知自动播放可以开始了
+                        window.dispatchEvent(new CustomEvent('teacherReady'));
                     }).on('disconnected', (err) => {
-                    isConnected = false; updateStatus('连接断开', 'error');
-                }).on('error', (error) => {
-                    console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
-                }).on('frame_stop', (data) => {
-                    console.log('🎬 frame_stop事件触发');
-                    if (isAutoPlaying && speechFinishedResolve) {
-                        console.log('✅ 语音播放完成，触发Promise解析');
-                        speechFinishedResolve();
-                        speechFinishedResolve = null;
-                    }
-                });
-                avatarPlatform.setApiInfo({
-                    appId: 'e8c180ed',
-                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
-                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
-                    sceneId: '237415046114840576',
-                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
-                });
-                
-                avatarPlatform.setGlobalParams({
-                    stream: {
-                        protocol: 'xrtc',
-                        alpha: 1,
-                        bitrate: 1000000,
-                        fps: 25
-                    },
-                    avatar: {
-                        avatar_id: '110332017',
-                        width: 1920,
-                        height: 1080,
-                        scale: 1,
-                        move_h: 0,
-                        move_v: 0,
-                        audio_format: 1
-                    },
-                    tts: {
-                        vcn: 'x4_yiting',
-                        speed: 50,
-                        pitch: 50,
-                        volume: 100
-                    },
-                    avatar_dispatch: {
-                        interactive_mode: 1,
-                        content_analysis: 0
-                    }
-                });
+                        isConnected = false; updateStatus('连接断开', 'error');
+                    }).on('error', (error) => {
+                        console.error('❌ 错误:', error); updateStatus('错误', 'error'); startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
+                        // 即使连接失败，也触发事件，让自动播放（无声）可以继续
+                         window.dispatchEvent(new CustomEvent('teacherReady'));
+                    });
+                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error'); startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
+                 window.dispatchEvent(new CustomEvent('teacherReady'));
             }
-        }
-
-        // 计算单页播放时长（用于超时fallback）
-        // 注意：speechScript中的内容已经是公式音译后的汉字，直接计算字数即可
-        function getSlideDuration(slideNum) {
-            const speech = speechScript[slideNum];
-            if (!speech) return 10000;
-            // 每个汉字180ms（正常语速）
-            return speech.length * 180;
         }
         
         async function startAutoPlay() {
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
             if (isAutoPlaying) {
-                stopAutoPlay();
+                isAutoPlaying = false;
+                autoPlayBtn.textContent = '🎬 继续播放';
+                autoPlayBtn.style.background = '';
+                console.log('🛑 自动播放已暂停');
                 return;
             }
 
-            try {
-                console.log('🎬 开始自动播放完整课程...');
-                isAutoPlaying = true;
+            isAutoPlaying = true;
+            autoPlayBtn.textContent = '⏸️ 暂停播放';
+            autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+            console.log('▶️ 自动播放开始/继续');
 
-                const autoPlayBtn = document.getElementById('autoPlayBtn');
-                autoPlayBtn.textContent = '⏹️ 停止播放';
-                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-
-                updateStatus(`🎬 自动播放将在 1 秒后开始，请准备录屏！`, 'recording');
-                await new Promise(resolve => setTimeout(resolve, 1000));
-
-                updateStatus('🎬 自动播放开始！', 'recording');
-                document.body.classList.add('recording-mode');
-
-                if (!isConnected) {
-                    console.log('🎬 后台尝试连接虚拟人...');
-                    startTeaching().catch(error => {
-                        console.log('⚠️ 虚拟人连接失败，继续页面播放:', error);
-                    });
+            for (let i = currentSlide; i < totalSlides; i++) {
+                if (!isAutoPlaying) {
+                    currentSlide = i; // 保存当前进度以便继续
+                    return;
+                }
+                
+                showSlide(i);
+                
+                if (isConnected) {
+                    await speakContent(i + 1);
                 }
 
-                for (let slide = 1; slide <= totalSlides; slide++) {
-                    try {
-                        if (!isAutoPlaying) {
-                            console.log('🛑 自动播放被停止');
-                            break;
-                        }
-
-                        console.log(`\n🎬 === 开始播放第${slide}页/${totalSlides}页 ===`);
-                        showSlide(slide - 1);
-                        updateStatus(`📖 第${slide}页/${totalSlides}页 - 讲解中`, 'recording');
-
-                        await new Promise(resolve => setTimeout(resolve, 800));
-
-                        if (isConnected && isTeaching && avatarPlatform) {
-                            try {
-                                const estimatedDuration = getSlideDuration(slide);
-                                console.log(`📊 第${slide}页预计时长: ${estimatedDuration}ms (${speechScript[slide]?.length || 0}字)`);
-
-                                const speechPromise = new Promise(resolve => {
-                                    speechFinishedResolve = resolve;
-                                });
-
-                                await speakContent(slide);
-                                console.log(`⏳ 等待frame_stop事件（超时时间: ${estimatedDuration + 10000}ms）...`);
-
-                                const timeoutPromise = new Promise(resolve =>
-                                    setTimeout(() => {
-                                        console.log(`⚠️ 第${slide}页讲解超时（${estimatedDuration + 10000}ms），继续下一页`);
-                                        if (speechFinishedResolve) {
-                                            speechFinishedResolve = null;
-                                        }
-                                        resolve();
-                                    }, estimatedDuration + 10000)
-                                );
-
-                                await Promise.race([speechPromise, timeoutPromise]);
-                                console.log(`✅ 第${slide}页讲解完成，准备翻页`);
-
-                                if (slide < totalSlides) {
-                                    console.log(`⏸️ 翻页前等待1.5秒...`);
-                                    await new Promise(resolve => setTimeout(resolve, 1500));
-                                }
-                            } catch (error) {
-                                console.error(`❌ 第${slide}页语音播放失败:`, error);
-                                const slideTime = getSlideDuration(slide);
-                                await new Promise(resolve => setTimeout(resolve, slideTime));
-                            }
-                        } else {
-                            const slideTime = getSlideDuration(slide);
-                            await new Promise(resolve => setTimeout(resolve, slideTime));
-                        }
-                    } catch (error) {
-                        console.error(`❌ 第${slide}页播放过程出错:`, error);
-                    }
-                }
-
-                if (isAutoPlaying) {
-                    stopAutoPlay();
-                }
-            } catch (error) {
-                console.error('❌ 自动播放失败:', error);
-                updateStatus('自动播放失败: ' + error.message, 'error');
-                stopAutoPlay();
+                const waitTime = getSlideDuration(i + 1);
+                await new Promise(resolve => setTimeout(resolve, waitTime));
             }
-        }
 
-        function stopAutoPlay() {
-            if (isAutoPlaying) {
-                isAutoPlaying = false;
-                window.playbackFinished = true;
-                document.title = "PLAYBACK_FINISHED";
-                console.log('🎉 播放完成！已修改标题为 PLAYBACK_FINISHED');
-                document.body.classList.remove('recording-mode');
-                const autoPlayBtn = document.getElementById('autoPlayBtn');
-                autoPlayBtn.textContent = '🎬 自动播放';
-                autoPlayBtn.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
-                console.log('⏹️ 自动播放已停止');
-                updateStatus('自动播放已停止', 'normal');
-            }
+            // 播放完成后重置
+            isAutoPlaying = false;
+            autoPlayBtn.textContent = '🎬 自动播放';
+            autoPlayBtn.style.background = '';
+            window.playbackFinished = true;
+            document.title = "PLAYBACK_FINISHED";
+            console.log('🎉 播放完成');
         }
 
         document.addEventListener('keydown', (e) => {
@@ -783,20 +650,25 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
-        document.getElementById('totalSlides').textContent = totalSlides;
-        showSlide(0);
-
-        // 自动启动：页面加载完成后自动开始讲课和播放
+        // 页面加载后的启动逻辑
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('totalSlides').textContent = totalSlides;
             showSlide(0);
-            console.log('✨ 函数的单调性与极值教学系统初始化完成');
+            console.log('✨ 教学系统初始化完成');
 
-            // 🚀 自动启动播放 - 延迟3秒后自动开始
-            setTimeout(() => {
-                console.log('🚀 自动启动播放...');
-                startAutoPlay();
-            }, 3000);
+            // 1. 自动开始连接虚拟人
+            startTeaching();
+
+            // 2. 监听虚拟人就绪事件
+            window.addEventListener('teacherReady', () => {
+                console.log('🚀 虚拟人已就绪或连接失败，3秒后启动自动播放...');
+                // 3. 延迟后自动启动播放
+                setTimeout(() => {
+                    startAutoPlay();
+                }, 3000);
+            });
         });
+
     </script>
 </body>
 </html>
