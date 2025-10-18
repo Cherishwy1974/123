@@ -555,10 +555,41 @@
             } catch (error) { console.error('❌ 讲解失败:', error); }
         }
 
+        // 将数学公式音译为中文
+        function translateMathToSpeech(text) {
+            let result = text;
+
+            // 常见数学符号音译
+            result = result.replace(/f'\(x\)/g, 'f撇x');
+            result = result.replace(/f''\(x\)/g, 'f两撇x');
+            result = result.replace(/f'\(x_0\)/g, 'f撇x零');
+            result = result.replace(/f''\(x_0\)/g, 'f两撇x零');
+            result = result.replace(/x_0/g, 'x零');
+            result = result.replace(/x_1/g, 'x一');
+            result = result.replace(/x_2/g, 'x二');
+            result = result.replace(/>/g, '大于');
+            result = result.replace(/</g, '小于');
+            result = result.replace(/=/g, '等于');
+            result = result.replace(/\$/g, ''); // 移除LaTeX标记
+            result = result.replace(/\\/g, ''); // 移除反斜杠
+
+            return result;
+        }
+
         function getSlideDuration(slideNum) {
             const speech = speechScript[slideNum];
             if (!speech) return 5000;
-            return speech.length * 285 + 2000;
+
+            // 将公式音译后再计算字数
+            const translatedSpeech = translateMathToSpeech(speech);
+            const charCount = translatedSpeech.length;
+
+            // 标准TTS速度(speed=50)：约每分钟300字，即每秒5字，每字200ms
+            // 加上适当的停顿时间：每页额外1.5秒
+            const duration = charCount * 200 + 1500;
+
+            console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
@@ -651,23 +682,25 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
-        // 自动翻页函数（立即翻页，无延迟）
+        // 自动翻页函数（根据语音时长自动翻页）
         function startAutoPageTurn() {
-            if (autoPageTimer) {
-                clearInterval(autoPageTimer);
-            }
-
-            autoPageTimer = setInterval(() => {
+            function scheduleNextPage() {
                 if (currentSlide < totalSlides - 1) {
-                    nextSlide();
-                    console.log(`📄 自动翻页到第 ${currentSlide + 1} 页`);
+                    const waitTime = getSlideDuration(currentSlide + 1);
+                    console.log(`📄 当前第 ${currentSlide + 1} 页，${waitTime}ms 后翻页`);
+
+                    autoPageTimer = setTimeout(() => {
+                        nextSlide();
+                        scheduleNextPage(); // 递归调度下一页
+                    }, waitTime);
                 } else {
-                    clearInterval(autoPageTimer);
                     console.log('✅ 已到达最后一页，自动翻页结束');
                     window.playbackFinished = true;
                     document.title = "PLAYBACK_FINISHED";
                 }
-            }, 100); // 每100毫秒翻一页
+            }
+
+            scheduleNextPage();
         }
 
         // 页面加载后的启动逻辑
