@@ -143,7 +143,7 @@
                     <h2 class="font-bold">第一步：确定定义域</h2>
                     <p>定义域是函数存在的范围，决定了图像在x轴上的活动区域。</p>
                     <div class="math-formula mt-6">
-                        $$\\text{定义域} = \\{x \\mid f(x) \\text{有意义}\\}$$
+                        $$\text{定义域} = \{x \mid f(x) \text{有意义}\}$$
                     </div>
                     <p class="mt-6"><strong>常见情况：</strong></p>
                     <ul class="list-disc list-inside mt-4 space-y-3 text-xl">
@@ -972,7 +972,10 @@
             if (!speech) return 5000;
             const translatedSpeech = translateMathToSpeech(speech);
             const charCount = translatedSpeech.length;
-            const duration = charCount * 200 + 1500;
+            let duration = charCount * 200;
+            if (slideNum === 1) {
+                duration += 3000;
+            }
             console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }

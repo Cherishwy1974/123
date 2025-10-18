@@ -134,10 +134,11 @@
        二阶导数的符号直接决定了函数的凹凸性。
       </p>
       <div class="math-formula mt-6">
-       $$f''(x) > 0 \\Rightarrow \\text{向上凹}$$
+       $$f''(x) > 0 \Rightarrow \text{向上凹}$$
       </div>
       <div class="math-formula mt-4">
-       $$f''(x) < 0 \\Rightarrow \\text{向下凸}$$
+       $$f''(x) < 0 \Rightarrow \text{向下凸}$$
+      </div>
       </div>
       <p class="mt-6 text-gray-300">
        记忆技巧：二阶导数为正，曲线开口向上；二阶导数为负，曲线开口向下。
@@ -739,7 +740,10 @@
             if(!speech)return 5000;
             const translatedSpeech=translateMathToSpeech(speech);
             const charCount=translatedSpeech.length;
-            const duration=charCount*200+1500;
+            let duration=charCount*200;
+            if(slideNum===1){
+                duration+=3000;
+            }
             console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }

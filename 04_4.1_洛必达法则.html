@@ -652,9 +652,12 @@
             const translatedSpeech = translateMathToSpeech(speech);
             const charCount = translatedSpeech.length;
 
-            // 标准TTS速度(speed=50)：约每分钟300字，即每秒5字，每字200ms
-            // 加上适当的停顿时间：每页额外1.5秒
-            const duration = charCount * 200 + 1500;
+            // 标准TTS速度(speed=50)：每字200ms
+            // 首页特殊处理：额外增加3秒让虚拟人加载
+            let duration = charCount * 200;
+            if (slideNum === 1) {
+                duration += 3000;
+            }
 
             console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
