@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="zh-CN">
 <head>
@@ -66,7 +66,7 @@
 <div class="blackboard">
 <div class="status-indicator" id="statusIndicator">等待连接</div>
 <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 4 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 10 页</div>
 <!-- 第1页：知识清单 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -198,6 +198,12 @@
 </div>
 <!-- 第4页：章末总结 -->
 <div class="page" id="page4">
+<div class="page" id="page5"><div class="left-panel"><h1 class="title chalk-text">例题1 · 题目</h1><div class="board-content"><p class="chalk-text">题目：计算从零到一的x除以一加x平方的定积分，先识别结构。</p></div></div><div class="right-panel"></div></div>
+<div class="page" id="page6"><div class="left-panel"><h1 class="title chalk-text">例题1 · 思路</h1><div class="board-content"><p class="chalk-text">分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。</p></div></div><div class="right-panel"></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">例题1 · 步骤</h1><div class="board-content"><p class="chalk-text">令u等于一加x平方，du等于二x dx；上下限随u从一到二，转化为二分之一积分一到二的一除以u。</p></div></div><div class="right-panel"></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">例题1 · 总结</h1><div class="board-content"><p class="chalk-text">结果是二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。</p></div></div><div class="right-panel"></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题2 · 题目</h1><div class="board-content"><p class="chalk-text">求y等于正弦x与x轴在零到派围成的面积；先画图确认区间与函数符号。</p></div></div><div class="right-panel"></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">例题2 · 思路</h1><div class="board-content"><p class="chalk-text">面积表示为定积分：S等于积分零到派正弦x dx；在该区间正弦非负，直接积分。</p></div></div><div class="right-panel"></div></div>
 <div class="left-panel">
 <h1 class="title chalk-text">章末总结</h1>
 <div class="board-content">
@@ -274,17 +280,12 @@
         let isConnected = false;
         let isTeaching = false;
         let currentPage = 1;
-        const totalPages = 4;
+        const totalPages = 10;
         let isAutoPlaying = false;
 
-        const subtitleScript = {
-            1: "定积分让我们能量化'累积'，这是数学与现实之间的重要桥梁。",
-            2: "定积分换元法与不定积分类似，但上下限也要跟着变。",
-            3: "面积题先画图确认区间，确保积分符号方向正确。",
-            4: "继续前进，我们将用微分方程描述动态变化的世界。"
-        };
+        const subtitleScript = { 1: "本节回顾定积分核心：理解累积量思想，串联牛顿莱布尼茨、换元与面积应用。", 2: "题目：计算从零到一的x除以一加x平方的定积分，先识别结构与方法。", 3: "分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。", 4: "令u等于一加x平方，du等于二x dx；上下限随u从一到二，积分转化为基本形式。", 5: "结果为二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。", 6: "题目：求y等于正弦x与x轴在零到派围成的面积；先确认区间与函数符号。", 7: "面积表示为定积分，S等于积分零到派正弦x dx；该区间内函数非负。", 8: "原函数是负的余弦x，代入上限派和下限零，结果是一加一等于二。", 9: "面积题关键在确定区间与函数符号，防止把负面积算入；必要时做分段。", 10: "总结：把握累积量思想，熟练牛顿莱布尼茨与换元；面积应用常考，建议多练习。" };
 
-        const autoPlayDurations = { 1: 9000, 2: 10000, 3: 9000, 4: 8000 };
+        // durations computed dynamically via getPageDuration()
 
         function updateSubtitle(text) {
             const area = document.getElementById('subtitleArea');
@@ -396,7 +397,7 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];\n            const content = translateMathToSpeech(raw);
             if (!content) return;
 
             try {
@@ -481,4 +482,29 @@
         });
     </script>
 </body>
+</html>
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
 </html>
