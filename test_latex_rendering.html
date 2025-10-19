@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaTeX 渲染测试</title>
+    <script>
+        window.MathJax = {
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true,
+                processEnvironments: true,
+                processRefs: true,
+                packages: {'[+]': ['base', 'ams', 'noerrors', 'color', 'newcommand']}
+            },
+            svg: { fontCache: 'global' },
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false,
+                displayAlign: 'center',
+                displayIndent: '0'
+            },
+            startup: { 
+                pageReady: () => { 
+                    return MathJax.startup.defaultPageReady().then(() => { 
+                        console.log('✅ MathJax已加载并就绪'); 
+                    }); 
+                } 
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Serif SC', serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .formula {
+            background: #ecf0f1;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #2c3e50;">LaTeX 公式渲染测试</h1>
+    
+    <div class="test-section">
+        <h2>测试1: HTML 中的单反斜杠格式</h2>
+        <p>这些公式直接写在 HTML 中，使用单反斜杠：</p>
+        <div class="formula">积分符号: $\int x \, dx$</div>
+        <div class="formula">分数: $\frac{1}{2}$</div>
+        <div class="formula">三角函数: $\sin x, \cos x$</div>
+        <div class="formula">对数: $\ln x$</div>
+        <div class="formula">分部积分公式: $\int u \, dv = uv - \int v \, du$</div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试2: JavaScript 动态插入（双反斜杠）</h2>
+        <p>这些公式通过 JavaScript 插入，使用双反斜杠：</p>
+        <div id="dynamic-formulas"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试3: 复杂公式</h2>
+        <div class="formula">
+            $$\int x e^x \, dx = x e^x - \int e^x \, dx = x e^x - e^x + C$$
+        </div>
+        <div class="formula">
+            $$\int \ln x \, dx = x \ln x - \int x \cdot \frac{1}{x} dx = x \ln x - x + C$$
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>渲染控制</h2>
+        <button onclick="checkRendering()">🔍 检查渲染状态</button>
+        <button onclick="forceRerender()">🔄 强制重新渲染</button>
+        <div id="status" style="margin-top: 15px;"></div>
+    </div>
+
+    <script>
+        // 动态插入公式（使用双反斜杠）
+        window.addEventListener('load', () => {
+            const container = document.getElementById('dynamic-formulas');
+            const formulas = [
+                '积分: $\\\\int x^2 \\\\, dx$',
+                '分数: $\\\\frac{a}{b}$',
+                '极限: $\\\\lim_{x \\\\to 0} \\\\frac{\\\\sin x}{x} = 1$',
+                '求和: $\\\\sum_{i=1}^{n} i = \\\\frac{n(n+1)}{2}$'
+            ];
+            
+            formulas.forEach(formula => {
+                const div = document.createElement('div');
+                div.className = 'formula';
+                div.innerHTML = formula;
+                container.appendChild(div);
+            });
+
+            // 渲染新插入的公式
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).then(() => {
+                    console.log('✅ 动态公式渲染完成');
+                });
+            }
+        });
+
+        function checkRendering() {
+            const statusDiv = document.getElementById('status');
+            const errors = document.querySelectorAll('.MathJax_Error, [data-mjx-error], .mjx-merror');
+            
+            if (errors.length > 0) {
+                statusDiv.innerHTML = `<p class="error">❌ 发现 ${errors.length} 个渲染错误</p>`;
+                errors.forEach((err, idx) => {
+                    console.error(`错误 ${idx + 1}:`, err.textContent || err.getAttribute('data-mjx-error'));
+                });
+            } else {
+                statusDiv.innerHTML = '<p class="success">✅ 所有公式渲染正常！</p>';
+            }
+        }
+
+        function forceRerender() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<p>🔄 正在重新渲染...</p>';
+            
+            if (window.MathJax && window.MathJax.typesetClear) {
+                window.MathJax.typesetClear();
+            }
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().then(() => {
+                    statusDiv.innerHTML = '<p class="success">✅ 重新渲染完成！</p>';
+                    setTimeout(checkRendering, 500);
+                }).catch(err => {
+                    statusDiv.innerHTML = '<p class="error">❌ 渲染失败: ' + err.message + '</p>';
+                });
+            }
+        }
+
+        // 页面加载完成后自动检查
+        window.addEventListener('load', () => {
+            setTimeout(checkRendering, 2000);
+        });
+    </script>
+</body>
+</html>
+

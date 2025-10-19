@@ -1,16 +1,53 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
+<!--
+    LaTeX 公式渲染修复说明：
+    1. MathJax 配置已优化，支持单反斜杠和双反斜杠格式
+    2. 添加了 renderMath() 和 forceRerenderMath() 函数处理幻灯片切换后的公式渲染
+    3. HTML 中的 LaTeX 公式统一使用单反斜杠格式（如 \int, \frac）
+    4. JavaScript 字符串中的 LaTeX 公式使用双反斜杠格式（如 \\int, \\frac）
+    5. 添加了"重新渲染公式"按钮供用户手动修复渲染问题
+
+    修复日期：2025-10-19
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
     <title>05_5.3_分部积分法 (扩展版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax 配置：兼容单反斜杠和双反斜杠格式 -->
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true, processEnvironments: true },
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,      // 处理转义字符
+                processEnvironments: true, // 处理环境
+                processRefs: true,         // 处理引用
+                packages: {'[+]': ['base', 'ams', 'noerrors', 'color', 'newcommand']}  // 添加错误处理包
+            },
             svg: { fontCache: 'global' },
-            startup: { pageReady: () => { return MathJax.startup.defaultPageReady().then(() => { console.log('✅ MathJax已加载'); }); } }
+            chtml: {
+                scale: 1,
+                minScale: 0.5,
+                matchFontHeight: false,
+                displayAlign: 'center',
+                displayIndent: '0'
+            },
+            options: {
+                enableMenu: false,
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('✅ MathJax已加载并就绪');
+                    });
+                }
+            }
         };
     </script>
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -100,7 +137,7 @@
                 <div class="chalkboard">
                     <h2>一个具体的例子</h2>
                     <p>例如,下面这个积分:</p>
-                     <div class="math-formula" style="border-color:#e74c3c;">$\\int x \\cos(x) \\, dx = ?$</div>
+                     <div class="math-formula" style="border-color:#e74c3c;">$\int x \cos(x) \, dx = ?$</div>
                     <p>我们很难找到一个合适的 $u$ 使得它的微分 $du$ 也恰好存在。</p>
                     <p>我们需要一个专门处理<strong>乘积形式</strong>积分的方法。</p>
                 </div>
@@ -145,7 +182,7 @@
                     <p>将乘积求导公式两边同时积分:</p>
                     <div class="math-formula">$[u(x)v(x)]' = u'(x)v(x) + u(x)v'(x)$</div>
                     <p>两边积分:</p>
-                    <div class="math-formula">$u(x)v(x) = \\int u'(x)v(x) \\, dx + \\int u(x)v'(x) \\, dx$</div>
+                    <div class="math-formula">$u(x)v(x) = \int u'(x)v(x) \, dx + \int u(x)v'(x) \, dx$</div>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -169,10 +206,10 @@
                     <h2>公式推导 - 第二步</h2>
                     <p>移项整理,我们就得到了<strong>分部积分公式</strong>:</p>
                     <div class="math-formula">
-                        $$u(x)v(x) = \\int u'(x)v(x) \\, dx + \\int u(x)v'(x) \\, dx$$
+                        $$u(x)v(x) = \int u'(x)v(x) \, dx + \int u(x)v'(x) \, dx$$
                     </div>
                     <p>移项后:</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">$\\int u(x)v'(x) \\, dx = u(x)v(x) - \\int u'(x)v(x) \\, dx$</div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$\int u(x)v'(x) \, dx = u(x)v(x) - \int u'(x)v(x) \, dx$</div>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -196,7 +233,7 @@
                     <p>为了书写方便,我们通常使用微分形式:</p>
                     <p>记 $du = u'(x)dx$, $dv = v'(x)dx$</p>
                     <p>公式就变成了简洁而优美的形态:</p>
-                     <div class="math-formula" style="font-size:28px;">$\\int u \\, dv = uv - \\int v \\, du$</div>
+                     <div class="math-formula" style="font-size:28px;">$\int u \, dv = uv - \int v \, du$</div>
                 </div>
                  <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -213,7 +250,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>核心思想</h2>
-                    <p>将一个不易积分的 $\\int u \\, dv$,转化为另一个可能更容易积分的 $\\int v \\, du$。</p>
+                    <p>将一个不易积分的 $\int u \, dv$,转化为另一个可能更容易积分的 $\int v \, du$。</p>
                     <p style="color: #e74c3c; margin-top: 2rem;">成败的关键,在于如何明智地选择谁是 $u$,谁是 $dv$。</p>
                 </div>
                  <div class="visualization">
@@ -259,10 +296,10 @@
                     <p><strong>"反对幂三指"</strong></p>
                     <p>这是一个按优先级从高到低的顺序,帮助我们决定谁更适合做 $u$:</p>
                     <ul style="margin-top: 1.5rem;">
-                        <li><strong>反</strong>: 反三角函数 (如 $\\arctan x$)</li>
-                        <li><strong>对</strong>: 对数函数 (如 $\\ln x$)</li>
+                        <li><strong>反</strong>: 反三角函数 (如 $\arctan x$)</li>
+                        <li><strong>对</strong>: 对数函数 (如 $\ln x$)</li>
                         <li><strong>幂</strong>: 幂函数 (如 $x^2, x^3$)</li>
-                        <li><strong>三</strong>: 三角函数 (如 $\\sin x, \\cos x$)</li>
+                        <li><strong>三</strong>: 三角函数 (如 $\sin x, \cos x$)</li>
                         <li><strong>指</strong>: 指数函数 (如 $e^x$)</li>
                     </ul>
                 </div>
@@ -289,8 +326,8 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题1:$\\int x e^x \\, dx$</h2>
-                    <p>被积函数是 $x \\cdot e^x$。</p>
+                    <h2>例题1:$\int x e^x \, dx$</h2>
+                    <p>被积函数是 $x \cdot e^x$。</p>
                     <p>这是一个<strong>幂函数</strong>和<strong>指数函数</strong>的乘积。</p>
                 </div>
                  <div class="visualization">
@@ -336,8 +373,8 @@
                 <div class="chalkboard">
                     <h2>例题1 - 计算 du 和 v</h2>
                     <p>我们已经确定了 $u$ 和 $dv$:</p>
-                    <p>$u = x \\implies$ 两边微分 $\\implies du = dx$</p>
-                    <p>$dv = e^x dx \\implies$ 两边积分 $\\implies v = \\int e^x dx = e^x$</p>
+                    <p>$u = x \implies$ 两边微分 $\implies du = dx$</p>
+                    <p>$dv = e^x dx \implies$ 两边积分 $\implies v = \int e^x dx = e^x$</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -359,9 +396,9 @@
                 <div class="chalkboard">
                     <h2>例题1 - 套用公式</h2>
                     <p>将 $u, v, du, dv$ 代入分部积分公式:</p>
-                    <div class="math-formula">$\\int u \\, dv = uv - \\int v \\, du$</div>
+                    <div class="math-formula">$\int u \, dv = uv - \int v \, du$</div>
                     <p>代入得:</p>
-                    <div class="math-formula" style="border-color:#1abc9c;">$\\int x e^x \\, dx = x e^x - \\int e^x \\, dx$</div>
+                    <div class="math-formula" style="border-color:#1abc9c;">$\int x e^x \, dx = x e^x - \int e^x \, dx$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -382,7 +419,7 @@
                 <div class="chalkboard">
                     <h2>例题1 - 求解新积分</h2>
                     <p>现在,我们只需要解决转化后的新积分:</p>
-                     <div class="math-formula">$\\int e^x \\, dx = e^x$</div>
+                     <div class="math-formula">$\int e^x \, dx = e^x$</div>
                     <p>代回原式,并加上常数 $C$:</p>
                     <div class="math-formula" style="border-color:#2ecc71;">$x e^x - e^x + C$</div>
                 </div>
@@ -404,9 +441,9 @@
         <div class="slide">
             <div class="slide-content">
                 <div class="chalkboard">
-                    <h2>例题2:$\\int \\ln x \\, dx$</h2>
+                    <h2>例题2:$\int \ln x \, dx$</h2>
                     <p>这个积分看起来只有一个函数,如何分部?</p>
-                    <p><strong>技巧:</strong> 我们可以把它看作 $\\int \\ln x \\cdot 1 \\, dx$。</p>
+                    <p><strong>技巧:</strong> 我们可以把它看作 $\int \ln x \cdot 1 \, dx$。</p>
                 </div>
                 <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -424,8 +461,8 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例题2 - 巧妙的技巧</h2>
-                    <p>将 $\\int \\ln x \\, dx$ 改写为:</p>
-                     <div class="math-formula">$\\int \\ln x \\cdot 1 \\, dx$</div>
+                    <p>将 $\int \ln x \, dx$ 改写为:</p>
+                     <div class="math-formula">$\int \ln x \cdot 1 \, dx$</div>
                     <p>现在它变成了两个函数的乘积!</p>
                 </div>
                 <div class="visualization">
@@ -446,10 +483,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例题2 - 选择 u 和 dv</h2>
-                    <p>根据"反对幂三指",<strong>对数($\\ln x$)</strong>优先级高于<strong>幂($1=x^0$)</strong>。</p>
+                    <p>根据"反对幂三指",<strong>对数($\ln x$)</strong>优先级高于<strong>幂($1=x^0$)</strong>。</p>
                     <ul style="margin-top: 1.5rem;">
-                        <li>设 $u=\\ln x$, $dv=1 \\cdot dx$</li>
-                        <li>则 $du=\\frac{1}{x}dx$, $v=x$</li>
+                        <li>设 $u=\ln x$, $dv=1 \cdot dx$</li>
+                        <li>则 $du=\frac{1}{x}dx$, $v=x$</li>
                     </ul>
                 </div>
                 <div class="visualization">
@@ -472,9 +509,9 @@
                 <div class="chalkboard">
                     <h2>例题2 - 套用公式求解</h2>
                     <p>套用公式:</p>
-                     <div class="math-formula">$uv - \\int v \\, du = x \\ln x - \\int x \\cdot \\frac{1}{x} dx$</div>
+                     <div class="math-formula">$uv - \int v \, du = x \ln x - \int x \cdot \frac{1}{x} dx$</div>
                     <p>化简:</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">$= x \\ln x - \\int 1 \\, dx = x \\ln x - x + C$</div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$= x \ln x - \int 1 \, dx = x \ln x - x + C$</div>
                 </div>
                 <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -494,9 +531,9 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>进阶技巧:多次分部积分</h2>
-                    <p>有时,使用一次分部积分后,得到的 $\\int v \\, du$ 仍然是一个需要分部积分的乘积形式。</p>
+                    <p>有时,使用一次分部积分后,得到的 $\int v \, du$ 仍然是一个需要分部积分的乘积形式。</p>
                     <p>例如:</p>
-                    <div class="math-formula">$\\int x^2 \\sin(x) \\, dx$</div>
+                    <div class="math-formula">$\int x^2 \sin(x) \, dx$</div>
                 </div>
                  <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -514,10 +551,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例题3 - 第一次分部积分</h2>
-                    <p>根据口诀,我们选 $u=x^2, dv=\\sin(x)dx$。</p>
-                    <p>$du = 2x dx, v = -\\cos(x)$。</p>
+                    <p>根据口诀,我们选 $u=x^2, dv=\sin(x)dx$。</p>
+                    <p>$du = 2x dx, v = -\cos(x)$。</p>
                     <p>套用公式:</p>
-                    <div class="math-formula" style="border-color:#e74c3c;">$= -x^2\\cos(x) + 2 \\int x \\cos(x) \\, dx$</div>
+                    <div class="math-formula" style="border-color:#e74c3c;">$= -x^2\cos(x) + 2 \int x \cos(x) \, dx$</div>
                 </div>
                  <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -534,8 +571,8 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>例题3 - 第二次分部积分</h2>
-                    <p>新的积分 $\\int x \\cos(x) \\, dx$ 仍然是乘积形式,需要再次使用分部积分法!</p>
-                    <p>这次选择 $u=x, dv=\\cos(x)dx$。</p>
+                    <p>新的积分 $\int x \cos(x) \, dx$ 仍然是乘积形式,需要再次使用分部积分法!</p>
+                    <p>这次选择 $u=x, dv=\cos(x)dx$。</p>
                     <p>继续求解即可得到最终答案。</p>
                 </div>
                  <div class="visualization">
@@ -556,7 +593,7 @@
                 <div class="chalkboard">
                     <h2>分部积分法总结</h2>
                     <h3>核心公式</h3>
-                    <div class="math-formula">$\\int u \\, dv = uv - \\int v \\, du$</div>
+                    <div class="math-formula">$\int u \, dv = uv - \int v \, du$</div>
                     <p style="margin-top: 1.5rem;">这个公式实现了积分的转化,让复杂的积分变得简单。</p>
                 </div>
                 <div class="visualization">
@@ -578,8 +615,8 @@
                         <li><strong>识别:</strong> 被积函数是否为两个函数相乘。</li>
                         <li><strong>选择:</strong> 使用"反对幂三指"口诀选择 $u$。</li>
                         <li><strong>计算:</strong> 求出 $du$ 和 $v$。</li>
-                        <li><strong>转化:</strong> 套用公式,得到 $uv - \\int v du$。</li>
-                        <li><strong>求解:</strong> 计算新积分 $\\int v du$ (可能需要再次分部)。</li>
+                        <li><strong>转化:</strong> 套用公式,得到 $uv - \int v du$。</li>
+                        <li><strong>求解:</strong> 计算新积分 $\int v du$ (可能需要再次分部)。</li>
                     </ol>
                 </div>
                 <div class="visualization">
@@ -625,6 +662,8 @@
         <button class="btn" id="nextBtn" onclick="nextSlide()">下一页 ➡️</button>
         <button class="btn" onclick="restart()">🔄 重新开始</button>
         <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+        <!-- 公式渲染修复按钮 -->
+        <button class="btn" onclick="forceRerenderMath()" style="background: rgba(231,76,60,0.3); border-color: #e74c3c;">🔧 重新渲染公式</button>
     </div>
     <script type="module">
         // 加载讯飞虚拟人SDK并广播就绪事件
@@ -712,13 +751,91 @@
         let speechFinishedResolve = null;
         const slides = document.querySelectorAll('.slide');
 
+        /**
+         * 渲染 MathJax 公式
+         * @param {Array|null} elements - 要渲染的元素数组，null 表示渲染整个页面
+         * @returns {Promise<boolean>} - 渲染是否成功
+         *
+         * 修复说明：
+         * 1. 确保幻灯片切换后公式正确渲染
+         * 2. 兼容 HTML 中的单反斜杠和 JavaScript 字符串中的双反斜杠
+         * 3. 添加错误检测和处理机制
+         */
+        function renderMath(elements = null) {
+            return new Promise((resolve) => {
+                if (!window.MathJax || !window.MathJax.typesetPromise) {
+                    console.warn('⚠️ MathJax 未加载');
+                    resolve(false);
+                    return;
+                }
+
+                const target = elements || [document.body];
+
+                window.MathJax.typesetPromise(target)
+                    .then(() => {
+                        // 检测渲染错误
+                        const errors = document.querySelectorAll('.MathJax_Error, [data-mjx-error], .mjx-merror');
+                        if (errors.length > 0) {
+                            console.error('❌ MathJax 渲染错误:', errors.length, '个公式');
+                            errors.forEach((err, idx) => {
+                                console.error(`  错误 ${idx + 1}:`, err.textContent || err.getAttribute('data-mjx-error'));
+                            });
+                            resolve(false);
+                        } else {
+                            console.log('✅ MathJax 渲染成功');
+                            resolve(true);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('❌ MathJax 渲染失败:', err);
+                        resolve(false);
+                    });
+            });
+        }
+
+        /**
+         * 强制重新渲染所有公式（用户手动触发）
+         * 修复说明：提供手动修复选项，当自动渲染失败时可使用
+         */
+        function forceRerenderMath() {
+            console.log('🔄 强制重新渲染所有公式...');
+            if (window.MathJax && window.MathJax.typesetClear) {
+                window.MathJax.typesetClear();
+            }
+            renderMath().then(success => {
+                if (success) {
+                    alert('✅ 公式重新渲染成功！');
+                } else {
+                    alert('❌ 公式渲染失败，请检查控制台错误信息。');
+                }
+            });
+        }
+
+        // 将函数暴露到全局作用域，便于调试和手动调用
+        window.forceRerenderMath = forceRerenderMath;
+
+        /**
+         * 显示指定幻灯片
+         * 修复说明：
+         * 1. 先切换幻灯片可见性
+         * 2. 仅渲染当前活动幻灯片的公式（性能优化）
+         * 3. 使用 Promise 确保公式渲染完成后再执行其他操作
+         */
         function showSlide(index) {
             slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
             currentSlide = index;
             document.getElementById('currentSlide').textContent = index + 1;
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise([slides[index]]).catch(err => console.error('MathJax 渲染失败:', err));
-            }
+
+            // 获取当前活动幻灯片
+            const activeSlide = slides[index];
+
+            // 渲染当前幻灯片的公式
+            renderMath([activeSlide]).then((success) => {
+                if (!success) {
+                    console.warn('⚠️ 第', index + 1, '页公式渲染可能存在问题');
+                }
+            });
+
             document.getElementById('prevBtn').disabled = index === 0;
             document.getElementById('nextBtn').disabled = index === totalSlides - 1;
             updateSubtitle(index + 1);

@@ -94,7 +94,7 @@
                     <h2>从简单积分说起</h2>
                     <p>我们已经掌握了基本积分公式，例如：</p>
                     <div class="math-formula">
-                        $$\\int \\cos(x) \\, dx = \\sin(x) + C$$
+                        $$\int \cos(x) \, dx = \sin(x) + C$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -130,7 +130,7 @@
                     <h2>遇到复杂函数怎么办？</h2>
                     <p>如果被积函数变得复杂，比如出现复合函数：</p>
                      <div class="math-formula" style="border-color:#e74c3c;">
-                        $$\\int \\cos(x^2) \\cdot 2x \\, dx = ?$$
+                        $$\int \cos(x^2) \cdot 2x \, dx = ?$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -167,7 +167,7 @@
                     <p>换元法的理论基础是求导的<strong>链式法则</strong>。</p>
                     <h3>链式法则公式</h3>
                     <div class="math-formula">
-                        $$[F(g(x))]' = F'(g(x)) \\cdot g'(x)$$
+                        $$[F(g(x))]' = F'(g(x)) \cdot g'(x)$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -206,7 +206,7 @@
                     <h2>换元法：链式法则的逆运算</h2>
                     <p>两边同时积分，我们就得到了换元法：</p>
                     <div class="math-formula">
-                        $$\\int F'(g(x)) \\cdot g'(x) \\, dx = F(g(x)) + C$$
+                        $$\int F'(g(x)) \cdot g'(x) \, dx = F(g(x)) + C$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -279,7 +279,7 @@
                     <h2>第一类换元法定理</h2>
                     <p>设 $f(u)$ 具有原函数 $F(u)$， $u=g(x)$ 可导，则：</p>
                     <div class="math-formula">
-                         $$\\int f(g(x))g'(x) \\, dx = \\int f(u) \\, du$$
+                         $$\int f(g(x))g'(x) \, dx = \int f(u) \, du$$
                     </div>
                 </div>
                  <div class="visualization">
@@ -320,7 +320,7 @@
                     <h2>例题：凑微分法</h2>
                     <p>我们通过一个具体例子来演示解题步骤：</p>
                     <div class="math-formula" style="border-color:#f39c12;">
-                        $$\\int 2x\\cos(x^2) \\, dx$$
+                        $$\int 2x\cos(x^2) \, dx$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -358,7 +358,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>第一步：观察与设U</h2>
-                    <p>观察被积函数 $\\int 2x\\cos(x^2) \\, dx$</p>
+                    <p>观察被积函数 $\int 2x\cos(x^2) \, dx$</p>
                     <p style="margin-top: 1rem;">我们发现 $x^2$ 是复合在 $\\cos$ 函数内部的"内层函数"。</p>
                 </div>
                 <div class="visualization">
@@ -415,7 +415,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>完美匹配！</h2>
-                    <p style="color: #2ecc71; font-size: 22px;">太好了！这个 $2x \\, dx$ 部分正好存在于原被积函数中！</p>
+                    <p style="color: #2ecc71; font-size: 22px;">太好了！这个 $2x \, dx$ 部分正好存在于原被积函数中！</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -434,7 +434,7 @@
                     <h2>第三步：换元积分</h2>
                     <p>将被积函数中的 $x$ 全部换成 $u$：</p>
                     <div class="math-formula">
-                        $$\\int \\cos(\\underbrace{x^2}_{u}) \\underbrace{2x \\, dx}_{du}$$
+                        $$\int \cos(\underbrace{x^2}_{u}) \underbrace{2x \, dx}_{du}$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -452,7 +452,7 @@
                 <div class="chalkboard">
                     <h2>换元结果</h2>
                     <div class="math-formula" style="border-color:#9b59b6;">
-                        $$= \\int \\cos(u) \\, du$$
+                        $$= \int \cos(u) \, du$$
                     </div>
                     <p style="margin-top: 1.5rem;">积分变简单了！</p>
                 </div>
@@ -473,7 +473,7 @@
                     <h2>积分计算</h2>
                     <p>现在积分变成了基本形式：</p>
                     <div class="math-formula">
-                        $$\\int \\cos(u) \\, du$$
+                        $$\int \cos(u) \, du$$
                     </div>
                     <p style="margin-top: 1rem;">这是基本积分公式</p>
                 </div>
@@ -493,7 +493,7 @@
                 <div class="chalkboard">
                     <h2>积分结果</h2>
                     <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\\sin(u) + C$$
+                        $$\sin(u) + C$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -529,7 +529,7 @@
                 <div class="chalkboard">
                     <h2>最终答案</h2>
                      <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\\sin(u) + C = \\sin(x^2) + C$$
+                        $$\sin(u) + C = \sin(x^2) + C$$
                     </div>
                     <p style="color: #f39c12; margin-top: 1.5rem; font-size: 22px;"><strong>完成！</strong></p>
                 </div>
@@ -566,7 +566,7 @@
                 <div class="chalkboard">
                     <h2>常见形式（一）：分式型</h2>
                     <div class="math-formula">
-                        $$\\int \\frac{g'(x)}{g(x)} \\, dx$$
+                        $$\int \frac{g'(x)}{g(x)} \, dx$$
                     </div>
                     <p style="margin-top: 1rem;">设 $u=g(x)$，则 $du = g'(x)dx$</p>
                 </div>
@@ -586,7 +586,7 @@
                 <div class="chalkboard">
                     <h2>分式型结果</h2>
                     <div class="math-formula" style="border-color:#2ecc71;">
-                        $$= \\int \\frac{1}{u} \\, du = \\ln|u| + C$$
+                        $$= \int \frac{1}{u} \, du = \ln|u| + C$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -605,7 +605,7 @@
                 <div class="chalkboard">
                     <h2>常见形式（二）：指数型</h2>
                     <div class="math-formula">
-                        $$\\int e^{g(x)} g'(x) \\, dx$$
+                        $$\int e^{g(x)} g'(x) \, dx$$
                     </div>
                     <p style="margin-top: 1rem;">设 $u=g(x)$，则 $du = g'(x)dx$</p>
                 </div>
@@ -625,7 +625,7 @@
                 <div class="chalkboard">
                     <h2>指数型结果</h2>
                     <div class="math-formula" style="border-color:#2ecc71;">
-                        $$= \\int e^u \\, du = e^u + C = e^{g(x)} + C$$
+                        $$= \int e^u \, du = e^u + C = e^{g(x)} + C$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -644,7 +644,7 @@
                 <div class="chalkboard">
                     <h2>常见形式（三）：幂函数型</h2>
                     <div class="math-formula">
-                        $$\\int [g(x)]^n g'(x) \\, dx$$
+                        $$\int [g(x)]^n g'(x) \, dx$$
                     </div>
                     <p style="margin-top: 1rem;">设 $u=g(x)$，则 $du = g'(x)dx$</p>
                 </div>
@@ -664,7 +664,7 @@
                 <div class="chalkboard">
                     <h2>幂函数型结果</h2>
                     <div class="math-formula" style="border-color:#2ecc71;">
-                        $$= \\int u^n \\, du = \\frac{u^{n+1}}{n+1} + C$$
+                        $$= \int u^n \, du = \frac{u^{n+1}}{n+1} + C$$
                     </div>
                 </div>
                 <div class="visualization">
@@ -1024,7 +1024,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>识别类型</h2>
-                    <p>观察积分 $\\int \\frac{1}{\\sqrt{1-x^2}} \\, dx$</p>
+                    <p>观察积分 $\int \frac{1}{\sqrt{1-x^2}} \, dx$</p>
                     <p style="margin-top: 1.5rem;">含有 $\\sqrt{a^2-x^2}$ 结构，其中 $a=1$。</p>
                 </div>
                 <div class="visualization">
@@ -1479,19 +1479,19 @@
         function showSlide(index) {
             slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
             currentSlide = index;
-            document.getElementById('currentSlide').textContent = index + 1;
+            const cs = document.getElementById('currentSlide'); if (cs) cs.textContent = index + 1;
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([slides[index]]).catch(err => console.error('MathJax 渲染失败:', err));
             }
-            document.getElementById('prevBtn').disabled = index === 0;
-            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            const prevBtnEl = document.getElementById('prevBtn'); if (prevBtnEl) prevBtnEl.disabled = index === 0;
+            const nextBtnEl = document.getElementById('nextBtn'); if (nextBtnEl) nextBtnEl.disabled = index === totalSlides - 1;
             updateSubtitle(index + 1);
         }
 
         function nextSlide() { if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
         function previousSlide() { if (currentSlide > 0) { showSlide(currentSlide - 1); if (!isAutoPlaying) speakContent(currentSlide + 1); } }
         function restart() { showSlide(0); if (avatarPlatform) { avatarPlatform.stop(); } isConnected = false; isTeaching = false; isAutoPlaying = false; document.getElementById('autoPlayBtn').disabled = false; }
-        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
+        function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); if (subtitleArea) { subtitleArea.textContent = subtitleScript[slideNum] || ''; } }
 
         // 数学公式音译为中文，便于虚拟人口播与字数统计
         function translateMathToSpeech(text){
@@ -1599,7 +1599,7 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
-        document.getElementById('totalSlides').textContent = totalSlides;
+        (function(){ const ts = document.getElementById('totalSlides'); if (ts) ts.textContent = totalSlides; })();
         showSlide(0);
     </script>
 </body>
