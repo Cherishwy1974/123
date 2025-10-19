@@ -668,6 +668,7 @@
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+        let isSpeaking = false;
         let speechFinishedResolve = null;
         const slides = document.querySelectorAll('.slide');
 
@@ -729,17 +730,25 @@
         }
         
         async function speakContent(slideNum) {
-            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接，跳过播报'); return; }
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; }
             const raw = speechScript[slideNum] || subtitleScript[slideNum];
             if (!raw) return;
             const content = translateMathToSpeech(raw);
+
             try {
+                isSpeaking = true;
+                console.log(`[Sync] 🎤 开始讲解第${slideNum}页`);
                 const action = actionMap[slideNum];
                 if (action) { await avatarPlatform.writeCmd("action", action); }
                 await avatarPlatform.writeText(content, { nlp: false });
                 updateSubtitle(slideNum);
-            } catch (error) { 
-                console.error('❌ 讲解失败:', error); 
+            } catch (error) {
+                console.error('❌ 讲解失败:', error);
+                isSpeaking = false;
+                if (isAutoPlaying && speechFinishedResolve) {
+                    speechFinishedResolve('error');
+                    speechFinishedResolve = null;
+                }
             }
         }
 
@@ -795,15 +804,18 @@
                     isConnected = false; 
                     updateStatus('连接断开', 'error');
                 }).on('error', (error) => {
-                    console.error('❌ 错误:', error); 
-                    updateStatus('错误', 'error'); 
-                    startBtn.textContent = '❌ 连接失败'; 
-                    startBtn.disabled = false; 
+                    console.error('❌ 错误:', error);
+                    updateStatus('错误', 'error');
+                    startBtn.textContent = '❌ 连接失败';
+                    startBtn.disabled = false;
                     isTeaching = false;
-                }).on('frame_stop', (data) => {
-                    if (isAutoPlaying && speechFinishedResolve) { 
-                        speechFinishedResolve(); 
-                        speechFinishedResolve = null; 
+                }).on('frame_stop', () => {
+                    console.log(`[Sync] ✅ 收到 'frame_stop' 信号`);
+                    isSpeaking = false;
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('[Sync] 🎬 通知自动播放：可以进入下一页');
+                        speechFinishedResolve('completed');
+                        speechFinishedResolve = null;
                     }
                 });
                 

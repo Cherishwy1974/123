@@ -871,16 +871,26 @@ function translateMathToSpeech(text){
 }
 
         async function speakContent(slideNum) {
-            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接或未开始讲课'); return; }
+            if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; }
             const raw = speechScript[slideNum] || subtitleScript[slideNum];
             if (!raw) return;
             const content = translateMathToSpeech(raw);
+
             try {
+                isSpeaking = true;
+                console.log(`[Sync] 🎤 开始讲解第${slideNum}页`);
                 const action = actionMap[slideNum];
                 if (action) { await avatarPlatform.writeCmd("action", action); }
                 await avatarPlatform.writeText(content, { nlp: false });
                 updateSubtitle(slideNum);
-            } catch (error) { console.error('❌ 讲解失败:', error); }
+            } catch (error) {
+                console.error('❌ 讲解失败:', error);
+                isSpeaking = false;
+                if (isAutoPlaying && speechFinishedResolve) {
+                    speechFinishedResolve('error');
+                    speechFinishedResolve = null;
+                }
+            }
         }
 
         function getSlideDuration(slideNum) { const speech = speechScript[slideNum] || subtitleScript[slideNum]; if (!speech) return 5000; const t = translateMathToSpeech(speech); const n = t.length; const d = n * 200; console.log(`第${slideNum}页: ${n}字 → ${d}ms`); return d; }
@@ -916,12 +926,23 @@ function translateMathToSpeech(text){
                     startBtn.textContent = '💖 虚拟人已就绪';
                     setTimeout(() => speakContent(currentSlide + 1), 1000);
                 }).on('disconnected', () => {
-                    isConnected = false; updateStatus('连接断开', 'error');
+                    isConnected = false;
+                    isSpeaking = false;
+                    updateStatus('连接断开', 'error');
                 }).on('error', (error) => {
-                    console.error('❌ 错误:', error); updateStatus('错误', 'error');
-                    startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
+                    console.error('❌ 错误:', error);
+                    updateStatus('错误', 'error');
+                    startBtn.textContent = '❌ 连接失败';
+                    startBtn.disabled = false;
+                    isTeaching = false;
                 }).on('frame_stop', () => {
-                    if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
+                    console.log(`[Sync] ✅ 收到 'frame_stop' 信号`);
+                    isSpeaking = false;
+                    if (isAutoPlaying && speechFinishedResolve) {
+                        console.log('[Sync] 🎬 通知自动播放：可以进入下一页');
+                        speechFinishedResolve('completed');
+                        speechFinishedResolve = null;
+                    }
                 });
                 
                 avatarPlatform.setApiInfo({
