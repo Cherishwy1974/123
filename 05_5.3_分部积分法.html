@@ -900,15 +900,15 @@ function translateMathToSpeech(text){
             try {
                 updateStatus('等待SDK...', 'connecting');
                 await waitForSDK();
-                if(typeof AvatarPlatform === 'undefined') {
+                if(typeof window.AvatarPlatform === 'undefined') {
                     console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
                     updateStatus('SDK未加载', 'error');
                     startBtn.textContent = '❌ SDK未加载';
                     return;
                 }
-                
+
                 if(avatarPlatform) { avatarPlatform.destroy(); }
-                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform = new window.AvatarPlatform({ useInlinePlayer: true });
 
                 avatarPlatform.on('connected', () => {
                     isConnected = true; isTeaching = true; updateStatus('已连接', 'connected');
@@ -923,8 +923,40 @@ function translateMathToSpeech(text){
                     if (isAutoPlaying && speechFinishedResolve) { speechFinishedResolve(); speechFinishedResolve = null; }
                 });
                 
-                avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
-                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 } });
+                avatarPlatform.setApiInfo({
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
             } catch (error) {
                 console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error');
