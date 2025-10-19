@@ -61,7 +61,7 @@
         "monitoring_type": 0,
         "private_settings": {}
     },
-    "name": "07_7.1_微分方程的基本概念",
+    "name": "07_7.4_本章回顾与习题精讲",
     "groups": [],
     "quick_transitions": [
         {
@@ -319,17 +319,17 @@
     "sources": [
         {
             "prev_ver": 536870913,
-            "name": "07_7.1_微分方程的基本概念",
-            "uuid": "e5f6a7b8-c9d0-4123-e4f5-a6b7c8d9e0f1",
+            "name": "07_7.4_本章回顾与习题精讲",
+            "uuid": "e1f2a3b4-c5d6-4789-e0f1-a2b3c4d5e6f7",
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 17,
+                "id_counter": 20,
                 "custom_size": false,
                 "items": [
                     {
                         "name": "浏览器",
-                        "source_uuid": "f6a7b8c9-d0e1-4234-f5a6-b7c8d9e0f1a2",
+                        "source_uuid": "f2a3b4c5-d6e7-4890-f1a2-b3c4d5e6f7a8",
                         "visible": true,
                         "locked": false,
                         "rot": 0.0,
@@ -345,7 +345,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 17,
+                        "id": 20,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -397,8 +397,8 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.17": [],
-                "libobs.hide_scene_item.17": []
+                "libobs.show_scene_item.20": [],
+                "libobs.hide_scene_item.20": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -409,11 +409,11 @@
         {
             "prev_ver": 536870913,
             "name": "浏览器",
-            "uuid": "f6a7b8c9-d0e1-4234-f5a6-b7c8d9e0f1a2",
+            "uuid": "f2a3b4c5-d6e7-4890-f1a2-b3c4d5e6f7a8",
             "id": "browser_source",
             "versioned_id": "browser_source",
             "settings": {
-                "url": "https://cherishwy1974.github.io/123/07_7.1_微分方程的基本概念.html",
+                "url": "https://cherishwy1974.github.io/123/07_7.4_本章回顾与习题精讲.html",
                 "width": 1536,
                 "height": 864,
                 "reroute_audio": true,
@@ -446,9 +446,10 @@
     ],
     "scene_order": [
         {
-            "name": "07_7.1_微分方程的基本概念"
+            "name": "07_7.4_本章回顾与习题精讲"
         }
     ],
-    "current_scene": "07_7.1_微分方程的基本概念",
-    "current_program_scene": "07_7.1_微分方程的基本概念"
+    "current_scene": "07_7.4_本章回顾与习题精讲",
+    "current_program_scene": "07_7.4_本章回顾与习题精讲"
 }
+
