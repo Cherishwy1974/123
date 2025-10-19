@@ -715,8 +715,24 @@
         
         function updateSubtitle(slideNum) { const subtitleArea = document.getElementById('subtitleArea'); subtitleArea.textContent = subtitleScript[slideNum] || ''; }
 
-        // 数学公式音译为中文，便于虚拟人口播与字数统计
-        function translateMathToSpeech(text){ if(!text) return ''; let r=text; r=r.replace(/f''\s*\(\s*x\s*\)/g,'f两撇x'); r=r.replace(/f'\s*\(\s*x\s*\)/g,'f撇x'); r=r.replace(/x_0/g,'x零').replace(/x_1/g,'x一').replace(/x_2/g,'x二').replace(/x_3/g,'x三').replace(/x_n/g,'x n'); r=r.replace(/\\lim/g,'极限'); r=r.replace(/\\to/g,'趋向于').replace(/->/g,'趋向于'); r=r.replace(/\\infty/g,'无穷大'); r=r.replace(/\\int/g,'积分'); r=r.replace(/\\sum/g,'求和'); r=r.replace(/\\frac\s*{([^}]*)}\s*{([^}]*)}/g,function(_,a,b){return a+'分之'+b;}); r=r.replace(/\\alpha/g,'阿尔法').replace(/\\beta/g,'贝塔').replace(/\\theta/g,'西塔').replace(/\\Delta/g,'德尔塔'); r=r.replace(/≥/g,'大于等于').replace(/≤/g,'小于等于').replace(/>/g,'大于').replace(/</g,'小于').replace(/=/g,'等于'); r=r.replace(/\\cdot|\\times/g,'乘以'); r=r.replace(/\$/g,'').replace(/\\/g,'').replace(/[{}]/g,''); return r; }
+        // 数学公式音译为中文，便于虚拟人口播与字数统计（使用 RegExp 构造，避免正则字面量在 HTML 中解析问题）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_3",'x三'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("->",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep("\\\\alpha",'阿尔法'); rep("\\\\beta",'贝塔'); rep("\\\\theta",'西塔'); rep("\\\\Delta",'德尔塔');
+            rep("≥",'大于等于'); rep("≤",'小于等于'); rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            rep("\\\\cdot|\\\\times",'乘以');
+            r=r.replace(new RegExp("\\$",'g'),'');
+            r=r.replace(new RegExp("\\\\",'g'),'');
+            r=r.replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
         
         async function speakContent(slideNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接，跳过播报'); return; }
