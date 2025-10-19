@@ -30,7 +30,7 @@
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
-        .avatar-container { position: fixed; top: 58%; left: 50%; transform: translate(-50%, -50%); width: 720px; height: 810px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+.avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 420px; height: 480px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
         .slide-container { width: 100%; height: 100%; position: relative; }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
@@ -81,8 +81,8 @@
                 <div class="chalkboard">
                     <h2>回顾：什么是求导？</h2>
                     <p>在前面的章节中，我们学习了求导运算。</p>
-                    <p>给定一个函数 \\(F(x)\\)，我们可以求出它的导数 \\(f(x)\\)。</p>
-                    <div class="math-formula-box">\\[ F(x) \\xrightarrow{求导} f(x) \\]</div>
+                    <p>给定一个函数 $F(x)$，我们可以求出它的导数 $f(x)$。</p>
+                    <div class="math-formula-box">$F(x) \xrightarrow{求导} f(x)$</div>
                     <p>这是一个<strong>正向过程</strong>：从原函数到导数。</p>
                 </div>
                 <div class="visualization">
@@ -106,8 +106,8 @@
                 <div class="chalkboard">
                     <h2>求导的例子</h2>
                     <p>让我们看一个具体的例子：</p>
-                    <div class="math-formula-box">\\[ (x^2)' = 2x \\]</div>
-                    <p>这告诉我们：\\(x^2\\) 的导数是 \\(2x\\)。</p>
+                    <div class="math-formula-box">$(x^2)' = 2x$</div>
+                    <p>这告诉我们：$x^2$ 的导数是 $2x$。</p>
                     <p>这个过程我们已经非常熟悉了。</p>
                 </div>
                 <div class="visualization">
@@ -130,9 +130,9 @@
                 <div class="chalkboard">
                     <h2>反向思考</h2>
                     <p>现在，让我们把问题<strong>反过来</strong>想：</p>
-                    <p>如果已知一个函数的导数是 \\(2x\\)，</p>
+                    <p>如果已知一个函数的导数是 $2x$，</p>
                     <p>那么这个<strong>原来的函数</strong>是什么呢？</p>
-                    <div class="math-formula-box">\\[ ? \\xrightarrow{求导} 2x \\]</div>
+                    <div class="math-formula-box">$? \xrightarrow{求导} 2x$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -153,9 +153,9 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>第一个答案</h2>
-                    <p>你可能马上想到：是 \\(x^2\\)！</p>
-                    <div class="math-formula-box">\\[ (x^2)' = 2x \\]</div>
-                    <p>没错！\\(x^2\\) 确实是一个答案。</p>
+                    <p>你可能马上想到：是 $x^2$！</p>
+                    <div class="math-formula-box">$(x^2)' = 2x$</div>
+                    <p>没错！$x^2$ 确实是一个答案。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -176,10 +176,10 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>但是，答案不止一个！</h2>
-                    <p>仔细想想，下面这些函数的导数也都是 \\(2x\\)：</p>
-                    <div class="math-formula-box">\\[ (x^2 + 1)' = 2x \\]</div>
-                    <div class="math-formula-box">\\[ (x^2 - 5)' = 2x \\]</div>
-                    <div class="math-formula-box">\\[ (x^2 + 100)' = 2x \\]</div>
+                    <p>仔细想想，下面这些函数的导数也都是 $2x$：</p>
+                    <div class="math-formula-box">$(x^2 + 1)' = 2x$</div>
+                    <div class="math-formula-box">$(x^2 - 5)' = 2x$</div>
+                    <div class="math-formula-box">$(x^2 + 100)' = 2x$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -202,9 +202,9 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>原函数的定义</h2>
-                    <p>如果在区间 \\(I\\) 上，可导函数 \\(F(x)\\) 的导数为 \\(f(x)\\)，即</p>
-                    <div class="math-formula-box">\\[ F'(x) = f(x) \\]</div>
-                    <p>那么，\\(F(x)\\) 就称为 \\(f(x)\\) 在该区间上的一个<strong>原函数</strong>。</p>
+                    <p>如果在区间 $I$ 上，可导函数 $F(x)$ 的导数为 $f(x)$，即</p>
+                    <div class="math-formula-box">$F'(x) = f(x)$</div>
+                    <p>那么，$F(x)$ 就称为 $f(x)$ 在该区间上的一个<strong>原函数</strong>。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -227,9 +227,9 @@
                 <div class="chalkboard">
                     <h2>为什么有无穷多个原函数？</h2>
                     <p>因为常数的导数为零：</p>
-                    <div class="math-formula-box">\\[ (C)' = 0 \\]</div>
-                    <p>所以，如果 \\(F(x)\\) 是 \\(f(x)\\) 的一个原函数，</p>
-                    <p>那么 \\(F(x) + C\\) 也是 \\(f(x)\\) 的原函数。</p>
+                    <div class="math-formula-box">$(C)' = 0$</div>
+                    <p>所以，如果 $F(x)$ 是 $f(x)$ 的一个原函数，</p>
+                    <p>那么 $F(x) + C$ 也是 $f(x)$ 的原函数。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -248,9 +248,9 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>原函数族</h2>
-                    <p>\\(F(x) + C\\) 代表了 \\(f(x)\\) 的<strong>所有</strong>原函数。</p>
-                    <p>我们称它为 \\(f(x)\\) 的<strong>原函数族</strong>。</p>
-                    <p>其中，\\(C\\) 是任意常数，称为<strong>积分常数</strong>。</p>
+                    <p>$F(x) + C$ 代表了 $f(x)$ 的<strong>所有</strong>原函数。</p>
+                    <p>我们称它为 $f(x)$ 的<strong>原函数族</strong>。</p>
+                    <p>其中，$C$ 是任意常数，称为<strong>积分常数</strong>。</p>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -274,9 +274,9 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>不定积分的定义</h2>
-                    <p>函数 \\(f(x)\\) 的全体原函数 \\(F(x)+C\\) 称为 \\(f(x)\\) 的<strong>不定积分</strong>。</p>
+                    <p>函数 $f(x)$ 的全体原函数 $F(x)+C$ 称为 $f(x)$ 的<strong>不定积分</strong>。</p>
                     <p>记作：</p>
-                    <div class="math-formula-box">\\[ \\int f(x) \\,dx = F(x) + C \\]</div>
+                    <div class="math-formula-box">$\int f(x) \, dx = F(x) + C$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -295,12 +295,12 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>不定积分的记号</h2>
-                    <p>在 \\(\\int f(x) \\,dx\\) 中：</p>
+                    <p>在 $\int f(x) \, dx$ 中：</p>
                     <ul>
-                        <li>\\(\\int\\) — <strong>积分号</strong></li>
-                        <li>\\(f(x)\\) — <strong>被积函数</strong></li>
-                        <li>\\(x\\) — <strong>积分变量</strong></li>
-                        <li>\\(f(x)dx\\) — <strong>被积表达式</strong></li>
+                    <li>$\int$ — <strong>积分号</strong></li>
+                    <li>$f(x)$ — <strong>被积函数</strong></li>
+                    <li>$x$ — <strong>积分变量</strong></li>
+                    <li>$f(x)\, dx$ — <strong>被积表达式</strong></li>
                     </ul>
                 </div>
                 <div class="visualization">
@@ -369,7 +369,7 @@
                     <h2>积分与微分的关系（一）</h2>
                     <p>求不定积分与求导是<strong>互为逆运算</strong>。</p>
                     <p>先积分，再求导，等于函数自身：</p>
-                    <div class="math-formula-box">\\[ \\frac{d}{dx} \\left[ \\int f(x) \\,dx \\right] = f(x) \\]</div>
+                    <div class="math-formula-box">$\frac{d}{dx} \left[ \int f(x) \, dx \right] = f(x)$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -388,7 +388,7 @@
                 <div class="chalkboard">
                     <h2>积分与微分的关系（二）</h2>
                     <p>先求导，再积分，等于函数自身加常数：</p>
-                    <div class="math-formula-box">\\[ \\int F'(x) \\,dx = F(x) + C \\]</div>
+                    <div class="math-formula-box">$\int F'(x) \, dx = F(x) + C$</div>
                     <p>注意：这里多了一个常数 \\(C\\)。</p>
                 </div>
                 <div class="visualization">
@@ -609,7 +609,7 @@
                 <div class="chalkboard">
                     <h2>性质二：加减法可拆分</h2>
                     <p>两个函数和（或差）的积分，等于它们积分的和（或差）。</p>
-                    <div class="math-formula-box">\\[ \\int [f(x) \\pm g(x)] \\,dx = \\int f(x) \\,dx \\pm \\int g(x) \\,dx \\]</div>
+                    <div class="math-formula-box">$\int [f(x) \pm g(x)] \, dx = \int f(x) \, dx \pm \int g(x) \, dx$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -648,7 +648,7 @@
                     <h2>综合例题</h2>
                     <p>现在，让我们用学到的知识来解决一个实际问题。</p>
                     <p>计算：</p>
-                    <div class="math-formula-box">\\[ \\int (x^2 + 3\\cos x - \\frac{5}{x}) \\,dx \\]</div>
+                    <div class="math-formula-box">$\int (x^2 + 3\cos x - \frac{5}{x}) \, dx$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -666,7 +666,7 @@
                 <div class="chalkboard">
                     <h2>步骤一：拆分</h2>
                     <p>利用线性性质，将积分拆分：</p>
-                    <div class="math-formula-box">\\[ = \\int x^2 \\,dx + \\int 3\\cos x \\,dx - \\int \\frac{5}{x} \\,dx \\]</div>
+                    <div class="math-formula-box">$= \int x^2 \, dx + \int 3\cos x \, dx - \int \frac{5}{x} \, dx$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -685,7 +685,7 @@
                 <div class="chalkboard">
                     <h2>步骤二：提出常数</h2>
                     <p>将常数因子提到积分号外：</p>
-                    <div class="math-formula-box">\\[ = \\int x^2 \\,dx + 3\\int \\cos x \\,dx - 5\\int \\frac{1}{x} \\,dx \\]</div>
+                    <div class="math-formula-box">$= \int x^2 \, dx + 3\int \cos x \, dx - 5\int \frac{1}{x} \, dx$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -704,7 +704,7 @@
                 <div class="chalkboard">
                     <h2>步骤三：分别积分</h2>
                     <p>对每一项应用基本积分公式：</p>
-                    <div class="math-formula-box">\\[ = \\frac{x^3}{3} + 3\\sin x - 5\\ln|x| + C_1 + C_2 + C_3 \\]</div>
+                    <div class="math-formula-box">$= \frac{x^3}{3} + 3\sin x - 5\ln|x| + C_1 + C_2 + C_3$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">
@@ -723,7 +723,7 @@
                 <div class="chalkboard">
                     <h2>步骤四：合并常数</h2>
                     <p>将所有积分常数合并为一个 \\(C\\)：</p>
-                    <div class="math-formula-box">\\[ = \\frac{1}{3}x^3 + 3\\sin x - 5\\ln|x| + C \\]</div>
+                    <div class="math-formula-box">$= \frac{1}{3}x^3 + 3\sin x - 5\ln|x| + C$</div>
                     <p>这就是最终答案！</p>
                 </div>
                 <div class="visualization">
@@ -764,7 +764,7 @@
                     <h2>验证的例子</h2>
                     <p>我们计算出 \\(\\int 2x \\,dx = x^2 + C\\)。</p>
                     <p><strong>检验：</strong></p>
-                    <div class="math-formula-box">\\[ (x^2+C)' = 2x + 0 = 2x \\]</div>
+                    <div class="math-formula-box">$(x^2+C)' = 2x + 0 = 2x$</div>
                     <p style="color:#2ecc71;">结果正确！✓</p>
                 </div>
                 <div class="visualization">
@@ -810,8 +810,8 @@
                 <div class="chalkboard">
                     <h2>总结（二）：互逆关系</h2>
                     <p>积分与微分（求导）是<strong>互为逆运算</strong>。</p>
-                    <div class="math-formula-box">\\[ \\frac{d}{dx}\\int f(x)dx = f(x) \\]</div>
-                    <div class="math-formula-box">\\[ \\int F'(x)dx = F(x) + C \\]</div>
+                    <div class="math-formula-box">$\frac{d}{dx}\int f(x)\, dx = f(x)$</div>
+                    <div class="math-formula-box">$\int F'(x)\, dx = F(x) + C$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500">

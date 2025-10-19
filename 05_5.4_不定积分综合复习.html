@@ -28,7 +28,7 @@
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
-.avatar-container { position: fixed; top: 58%; left: 50%; transform: translate(-50%, -50%); width: 720px; height: 810px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+.avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 420px; height: 480px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
         .slide-container { width: 100%; height: 100%; position: relative; }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
@@ -84,7 +84,7 @@
                     <h2 class="font-bold">不定积分的定义</h2>
                     <p>不定积分是求导的<strong>逆运算</strong>。</p>
                     <div class="math-formula">
-                        $$ \\int f(x) \\, dx = F(x) + C $$
+                        $ \\int f(x) \\, dx = F(x) + C $
                     </div>
                     <p>其中 $F(x)$ 是 $f(x)$ 的一个<strong>原函数</strong>，$C$ 是任意常数。</p>
                     <p class="mt-4">这意味着：如果 $F'(x) = f(x)$，那么 $F(x)$ 就是 $f(x)$ 的原函数。</p>
@@ -107,7 +107,7 @@
                     <h2 class="font-bold">积分与导数的关系</h2>
                     <p>积分与求导互为<strong>逆运算</strong>。</p>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $$ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $$
+                        $ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $
                     </div>
                     <p>这个关系告诉我们：对积分结果求导，应该得到原来的被积函数。</p>
                     <p class="mt-4" style="color: #e74c3c;">这也是检验积分结果是否正确的重要方法！</p>
@@ -134,7 +134,7 @@
                     <h3>核心思想</h3>
                     <p>通过变量代换 $u=g(x)$，将复杂的积分转化为简单的积分。</p>
                     <div class="math-formula">
-                        $$ \\int f(g(x))g'(x) \\, dx = \\int f(u) \\, du $$
+                        $ \\int f(g(x))g'(x) \\, dx = \\int f(u) \\, du $
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
@@ -212,7 +212,7 @@
                     <p class="mt-2">即 $x \\, dx = -\\frac{1}{2}du$</p>
                     <h3 class="mt-6">第三步：代入</h3>
                     <div class="math-formula">
-                        $$ \\int \\frac{x}{\\sqrt{1-x^2}} \\, dx = \\int \\frac{1}{\\sqrt{u}} \\left(-\\frac{1}{2}du\\right) $$
+                        $ \\int \\frac{x}{\\sqrt{1-x^2}} \\, dx = \\int \\frac{1}{\\sqrt{u}} \\left(-\\frac{1}{2}du\\right) $
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
@@ -235,11 +235,11 @@
                     <h2 class="font-bold">换元法示例（3/3）</h2>
                     <h3>第四步：积分</h3>
                     <div class="math-formula">
-                        $$ -\\frac{1}{2}\\int u^{-1/2}du = -\\frac{1}{2} \\cdot 2u^{1/2} + C = -\\sqrt{u} + C $$
+                        $ -\\frac{1}{2}\\int u^{-1/2}du = -\\frac{1}{2} \\cdot 2u^{1/2} + C = -\\sqrt{u} + C $
                     </div>
                     <h3 class="mt-4">第五步：回代</h3>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $$ = -\\sqrt{1-x^2} + C $$
+                        $ = -\\sqrt{1-x^2} + C $
                     </div>
                     <p class="mt-4" style="color: #e74c3c;">完成！可以通过求导验证结果。</p>
                 </div>
@@ -265,7 +265,7 @@
                     <p>分部积分法用于处理<strong>两个不同类型函数乘积</strong>的积分。</p>
                     <h3>核心公式</h3>
                      <div class="math-formula">
-                        $$ \\int u \\, dv = uv - \\int v \\, du $$
+                        $ \\int u \\, dv = uv - \\int v \\, du $
                     </div>
                     <p class="mt-4">这个公式来源于乘积的求导法则。</p>
                 </div>
@@ -341,10 +341,10 @@
                     <p>$dv=e^x dx$ → $v=e^x$</p>
                     <h3 class="mt-4">第三步：第一次分部</h3>
                     <div class="math-formula">
-                        $$ \\int x^2 e^x \\, dx = x^2e^x - \\int e^x \\cdot 2x \\, dx $$
+                        $ \\int x^2 e^x \\, dx = x^2e^x - \\int e^x \\cdot 2x \\, dx $
                     </div>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $$ = x^2e^x - 2\\int xe^x \\, dx $$
+                        $ = x^2e^x - 2\\int xe^x \\, dx $
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
@@ -370,7 +370,7 @@
                     <p>令 $u=x, dv=e^x dx$</p>
                     <p>则 $du=dx, v=e^x$</p>
                     <div class="math-formula">
-                        $$ \\int xe^x dx = xe^x - \\int e^x dx = xe^x - e^x $$
+                        $ \\int xe^x dx = xe^x - \\int e^x dx = xe^x - e^x $
                     </div>
                     <p class="mt-4" style="color: #2ecc71;">幂次降低了，可以直接积分！</p>
                 </div>
@@ -394,14 +394,14 @@
                     <h2 class="font-bold">分部法示例（4/4）</h2>
                     <h3>第五步：整合结果</h3>
                     <div class="math-formula">
-                        $$ \\int x^2 e^x \\, dx = x^2e^x - 2(xe^x - e^x) + C $$
+                        $ \\int x^2 e^x \\, dx = x^2e^x - 2(xe^x - e^x) + C $
                     </div>
                     <h3>化简</h3>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $$ = x^2e^x - 2xe^x + 2e^x + C $$
+                        $ = x^2e^x - 2xe^x + 2e^x + C $
                     </div>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $$ = (x^2 - 2x + 2)e^x + C $$
+                        $ = (x^2 - 2x + 2)e^x + C $
                     </div>
                 </div>
                  <div class="animation-pane w-1/2">
@@ -504,7 +504,7 @@
                     <h3>重要习惯</h3>
                     <p>完成积分后，<strong>对结果求导</strong>进行检验。</p>
                     <div class="math-formula">
-                        $$ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $$
+                        $ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $
                     </div>
                     <p class="mt-4">如果求导后得到原来的被积函数，说明积分正确！</p>
                     <p class="mt-4" style="color: #e74c3c;">这是验证答案最可靠的方法。</p>

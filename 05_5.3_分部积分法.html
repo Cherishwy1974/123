@@ -19,7 +19,7 @@
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
-.avatar-container { position: fixed; top: 58%; left: 50%; transform: translate(-50%, -50%); width: 720px; height: 810px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+.avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 420px; height: 480px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
         .slide-container { width: 100%; height: 100%; position: relative; }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
@@ -100,9 +100,7 @@
                 <div class="chalkboard">
                     <h2>一个具体的例子</h2>
                     <p>例如,下面这个积分:</p>
-                     <div class="math-formula" style="border-color:#e74c3c;">
-                        $$\\int x \\cos(x) \\, dx = ?$$
-                    </div>
+                     <div class="math-formula" style="border-color:#e74c3c;">$\\int x \\cos(x) \\, dx = ?$</div>
                     <p>我们很难找到一个合适的 $u$ 使得它的微分 $du$ 也恰好存在。</p>
                     <p>我们需要一个专门处理<strong>乘积形式</strong>积分的方法。</p>
                 </div>
@@ -126,9 +124,7 @@
                     <p>和换元法一样,分部积分法的理论基础也是求导法则的逆运算。</p>
                     <p>这次是<strong>乘积求导法则</strong>。</p>
                     <h3>回顾乘积求导</h3>
-                    <div class="math-formula">
-                        $$[u(x)v(x)]' = u'(x)v(x) + u(x)v'(x)$$
-                    </div>
+                    <div class="math-formula">$[u(x)v(x)]' = u'(x)v(x) + u(x)v'(x)$</div>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -147,13 +143,9 @@
                 <div class="chalkboard">
                     <h2>公式推导 - 第一步</h2>
                     <p>将乘积求导公式两边同时积分:</p>
-                    <div class="math-formula">
-                        $$[u(x)v(x)]' = u'(x)v(x) + u(x)v'(x)$$
-                    </div>
+                    <div class="math-formula">$[u(x)v(x)]' = u'(x)v(x) + u(x)v'(x)$</div>
                     <p>两边积分:</p>
-                    <div class="math-formula">
-                        $$u(x)v(x) = \\int u'(x)v(x) \\, dx + \\int u(x)v'(x) \\, dx$$
-                    </div>
+                    <div class="math-formula">$u(x)v(x) = \\int u'(x)v(x) \\, dx + \\int u(x)v'(x) \\, dx$</div>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -180,9 +172,7 @@
                         $$u(x)v(x) = \\int u'(x)v(x) \\, dx + \\int u(x)v'(x) \\, dx$$
                     </div>
                     <p>移项后:</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\\int u(x)v'(x) \\, dx = u(x)v(x) - \\int u'(x)v(x) \\, dx$$
-                    </div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$\\int u(x)v'(x) \\, dx = u(x)v(x) - \\int u'(x)v(x) \\, dx$</div>
                 </div>
                 <div class="visualization">
                      <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -206,9 +196,7 @@
                     <p>为了书写方便,我们通常使用微分形式:</p>
                     <p>记 $du = u'(x)dx$, $dv = v'(x)dx$</p>
                     <p>公式就变成了简洁而优美的形态:</p>
-                     <div class="math-formula" style="font-size:28px;">
-                        $$\\int u \\, dv = uv - \\int v \\, du$$
-                    </div>
+                     <div class="math-formula" style="font-size:28px;">$\\int u \\, dv = uv - \\int v \\, du$</div>
                 </div>
                  <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -324,12 +312,8 @@
                     <h2>例题1 - 选择 u 和 dv</h2>
                     <p>根据"反对幂三指"口诀,<strong>幂函数($x$)</strong>的优先级高于<strong>指数函数($e^x$)</strong>。</p>
                     <p>因此我们选择:</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$u = x$$
-                    </div>
-                     <div class="math-formula" style="border-color:#3498db;">
-                        $$dv = e^x \\, dx$$
-                    </div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$u = x$</div>
+                     <div class="math-formula" style="border-color:#3498db;">$dv = e^x \\, dx$</div>
                 </div>
                  <div class="visualization">
                      <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -375,13 +359,9 @@
                 <div class="chalkboard">
                     <h2>例题1 - 套用公式</h2>
                     <p>将 $u, v, du, dv$ 代入分部积分公式:</p>
-                    <div class="math-formula">
-                        $$\\int u \\, dv = uv - \\int v \\, du$$
-                    </div>
+                    <div class="math-formula">$\\int u \\, dv = uv - \\int v \\, du$</div>
                     <p>代入得:</p>
-                    <div class="math-formula" style="border-color:#1abc9c;">
-                        $$\\int x e^x \\, dx = x e^x - \\int e^x \\, dx$$
-                    </div>
+                    <div class="math-formula" style="border-color:#1abc9c;">$\\int x e^x \\, dx = x e^x - \\int e^x \\, dx$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -402,13 +382,9 @@
                 <div class="chalkboard">
                     <h2>例题1 - 求解新积分</h2>
                     <p>现在,我们只需要解决转化后的新积分:</p>
-                     <div class="math-formula">
-                        $$\\int e^x \\, dx = e^x$$
-                    </div>
+                     <div class="math-formula">$\\int e^x \\, dx = e^x$</div>
                     <p>代回原式,并加上常数 $C$:</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$x e^x - e^x + C$$
-                    </div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$x e^x - e^x + C$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -449,9 +425,7 @@
                 <div class="chalkboard">
                     <h2>例题2 - 巧妙的技巧</h2>
                     <p>将 $\\int \\ln x \\, dx$ 改写为:</p>
-                    <div class="math-formula">
-                        $$\\int \\ln x \\cdot 1 \\, dx$$
-                    </div>
+                     <div class="math-formula">$\\int \\ln x \\cdot 1 \\, dx$</div>
                     <p>现在它变成了两个函数的乘积!</p>
                 </div>
                 <div class="visualization">
@@ -498,13 +472,9 @@
                 <div class="chalkboard">
                     <h2>例题2 - 套用公式求解</h2>
                     <p>套用公式:</p>
-                     <div class="math-formula">
-                        $$uv - \\int v \\, du = x \\ln x - \\int x \\cdot \\frac{1}{x} dx$$
-                    </div>
+                     <div class="math-formula">$uv - \\int v \\, du = x \\ln x - \\int x \\cdot \\frac{1}{x} dx$</div>
                     <p>化简:</p>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$= x \\ln x - \\int 1 \\, dx = x \\ln x - x + C$$
-                    </div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$= x \\ln x - \\int 1 \\, dx = x \\ln x - x + C$</div>
                 </div>
                 <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -526,9 +496,7 @@
                     <h2>进阶技巧:多次分部积分</h2>
                     <p>有时,使用一次分部积分后,得到的 $\\int v \\, du$ 仍然是一个需要分部积分的乘积形式。</p>
                     <p>例如:</p>
-                    <div class="math-formula">
-                         $$\\int x^2 \\sin(x) \\, dx$$
-                    </div>
+                    <div class="math-formula">$\\int x^2 \\sin(x) \\, dx$</div>
                 </div>
                  <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -549,9 +517,7 @@
                     <p>根据口诀,我们选 $u=x^2, dv=\\sin(x)dx$。</p>
                     <p>$du = 2x dx, v = -\\cos(x)$。</p>
                     <p>套用公式:</p>
-                    <div class="math-formula" style="border-color:#e74c3c;">
-                        $$= -x^2\\cos(x) + 2 \\int x \\cos(x) \\, dx$$
-                    </div>
+                    <div class="math-formula" style="border-color:#e74c3c;">$= -x^2\\cos(x) + 2 \\int x \\cos(x) \\, dx$</div>
                 </div>
                  <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
@@ -590,7 +556,7 @@
                 <div class="chalkboard">
                     <h2>分部积分法总结</h2>
                     <h3>核心公式</h3>
-                    <div class="math-formula">$$\\int u \\, dv = uv - \\int v \\, du$$</div>
+                    <div class="math-formula">$\\int u \\, dv = uv - \\int v \\, du$</div>
                     <p style="margin-top: 1.5rem;">这个公式实现了积分的转化,让复杂的积分变得简单。</p>
                 </div>
                 <div class="visualization">

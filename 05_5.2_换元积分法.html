@@ -19,7 +19,7 @@
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         body { font-family: 'Noto Serif SC', serif; background: #1a1a2e; overflow: hidden; height: 100vh; width: 100vw; }
         .blackboard { width: 100vw; height: 100vh; background: #1a1a2e; position: relative; border: 10px solid #795548; margin: 0; }
-.avatar-container { position: fixed; top: 58%; left: 50%; transform: translate(-50%, -50%); width: 720px; height: 810px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+.avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 420px; height: 480px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
         .slide-container { width: 100%; height: 100%; position: relative; }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out; display: flex; justify-content: center; align-items: center; padding: 2rem; background-color: transparent; }
@@ -1193,9 +1193,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>积分结果</h2>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$t + C$$
-                    </div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$t + C$</div>
                     <p style="margin-top: 1.5rem;">接下来需要回代</p>
                 </div>
                 <div class="visualization">
@@ -1213,9 +1211,7 @@
                 <div class="chalkboard">
                     <h2>回代</h2>
                     <p>因为 $x = \\sin(t)$，所以：</p>
-                    <div class="math-formula">
-                        $$t = \\arcsin(x)$$
-                    </div>
+                    <div class="math-formula">$t = \\arcsin(x)$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
@@ -1232,9 +1228,7 @@
             <div class="slide-content">
                 <div class="chalkboard">
                     <h2>最终答案</h2>
-                    <div class="math-formula" style="border-color:#2ecc71;">
-                        $$\\int \\frac{1}{\\sqrt{1-x^2}} \\, dx = \\arcsin(x) + C$$
-                    </div>
+                    <div class="math-formula" style="border-color:#2ecc71;">$\\int \\frac{1}{\\sqrt{1-x^2}} \\, dx = \\arcsin(x) + C$</div>
                 </div>
                 <div class="visualization">
                     <svg viewBox="0 0 600 500" class="w-full h-full">
