@@ -1107,10 +1107,31 @@
             subtitleArea.textContent = subtitleScript[slideNum] || '';
         }
 
+        // 数学公式音译为中文，便于虚拟人口播与字数统计
+        function translateMathToSpeech(text) {
+            if (!text) return '';
+            let result = text;
+            result = result.replace(/f''\s*\(\s*x\s*\)/g, 'f两撇x');
+            result = result.replace(/f'\s*\(\s*x\s*\)/g, 'f撇x');
+            result = result.replace(/x_0/g, 'x零').replace(/x_1/g, 'x一').replace(/x_2/g, 'x二').replace(/x_3/g, 'x三').replace(/x_n/g, 'x n');
+            result = result.replace(/\\lim/g, '极限');
+            result = result.replace(/\\to/g, '趋向于').replace(/->/g, '趋向于');
+            result = result.replace(/\\infty/g, '无穷大');
+            result = result.replace(/\\int/g, '积分');
+            result = result.replace(/\\sum/g, '求和');
+            result = result.replace(/\\frac\s*{([^}]*)}\s*{([^}]*)}/g, function(_, a, b){ return a + '分之' + b; });
+            result = result.replace(/\\alpha/g, '阿尔法').replace(/\\beta/g, '贝塔').replace(/\\theta/g, '西塔').replace(/\\Delta/g, '德尔塔');
+            result = result.replace(/≥/g,'大于等于').replace(/≤/g,'小于等于').replace(/>/g,'大于').replace(/</g,'小于').replace(/=/g,'等于');
+            result = result.replace(/\\cdot|\\times/g, '乘以');
+            result = result.replace(/\$/g, '').replace(/\\/g, '').replace(/[{}]/g, '');
+            return result;
+        }
+
         async function speakContent(slideNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接'); return; }
-            const content = speechScript[slideNum];
-            if (!content) return;
+            const raw = speechScript[slideNum] || subtitleScript[slideNum];
+            if (!raw) return;
+            const content = translateMathToSpeech(raw);
 
             try {
                 await avatarPlatform.stop(); // Stop previous speech just in case
@@ -1131,9 +1152,13 @@
         }
 
         function getSlideDuration(slideNum) {
-            const speech = speechScript[slideNum];
-            if (!speech) return 10000;
-            return speech.length * 250 + 10000; // Generous timeout
+            const speech = speechScript[slideNum] || subtitleScript[slideNum];
+            if (!speech) return 5000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = charCount * 200;
+            console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }

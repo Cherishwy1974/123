@@ -1044,38 +1044,7 @@
             "34": "展望：导数为学习积分学打下坚实基础。",
             "35": "第4章完成！感谢大家的学习！"
         };
-        const speechScript = {
-            "1": "同学们好！欢迎来到我们第四章的最后一节课：导数应用综合复习。在这一节，我们将把之前学过的所有知识点串联起来，做到真正的融会贯通。",
-            "2": "我们为什么要进行综合复习呢？因为导数的各个应用并非孤立存在，而是紧密相连、环环相扣的。在解决复杂问题时，我们需要系统性地运用所有知识点。",
-            "3": "本次复习的目标，就是将这些知识点串联成一张完整的解题地图，做到思路清晰，步骤完整，面对任何复杂问题都能从容应对。",
-            "4": "我们的解题地图从函数本身出发。这是我们分析的起点，一切性质都从这里展开。",
-            "5": "第一步，通过求一阶导数f撇x，我们可以判断函数的单调性，找到函数的极值点。",
-            "6": "第二步，通过求二阶导数f两撇x，我们可以判断函数的凹凸性，找到函数的拐点。",
-            "7": "第三步，将所有信息整合，我们可以描绘函数图像，求解最值问题，证明不等式。",
-            "8": "让我们快速回顾一下。一阶导数f撇x的符号决定函数的变化趋势。f撇大于0，函数单调递增；f撇小于0，函数单调递减。",
-            "9": "可能的极值点，也就是临界点，出现在f撇x等于0或者f撇x不存在的地方。极值的判断需要看临界点两侧f撇x的符号变化。",
-            "10": "二阶导数f两撇x的符号决定图像的弯曲方向。f两撇大于0，图像是凹的，开口向上；f两撇小于0，图像是凸的，开口向下。",
-            "11": "可能的拐点出现在f两撇x等于0或者f两撇x不存在的地方。拐点的判断需要看该点两侧f两撇x的符号变化。",
-            "12": "函数作图的第一步是分析基本性质：确定定义域，判断奇偶性，判断周期性。",
-            "13": "第二步是寻找渐近线：垂直渐近线出现在分母为零的点，水平渐近线通过求极限得到，斜渐近线可以通过多项式长除法找到。",
-            "14": "第三步是一阶导数分析：求f撇x，确定单调区间，找出所有极值点。",
-            "15": "第四步是二阶导数分析：求f两撇x，确定凹凸区间，找出所有拐点。",
-            "16": "第五步是综合描图：将所有信息整合，标出渐近线、极值点和拐点，按照单调性和凹凸性绘制曲线。",
-            "17": "现在，我们来通过一个完整的例题，实践这个流程。我们要分析并描绘的函数是f(x)等于x减1分之x平方减2x加2。",
-            "18": "第一步，确定定义域。分母x减1不能等于0，因此定义域为负无穷到1，并上1到正无穷。",
-            "19": "第二步，寻找垂直渐近线。当x趋于1时，函数趋于无穷，所以x等于1是一条垂直渐近线。",
-            "2": "导数的各个应用紧密相连，综合题要求我们系统性地运用所有知识。",
-            "3": "这是我们的“解题地图”：从函数本身出发，通过各阶导数揭示其全部特性。",
-            "4": "回顾：一阶导数f'(x)的正负，决定了函数f(x)的单调增减趋势。",
-            "5": "回顾：二阶导数f''(x)的正负，决定了函数f(x)图像的凹凸（弯曲方向）。",
-            "6": "这是函数作图的“总纲”，一个万无一失的五步流程。",
-            "7": "我们将通过这个综合例题，完整地演练一遍函数分析的全过程。",
-            "8": "第一步：分析定义域，并通过极限求解垂直、水平和斜渐近线。",
-            "9": "第二步：求解一阶导数，确定函数的单调区间和所有极值点。",
-            "10": "第三步：求解二阶导数，确定函数的凹凸区间，并寻找所有拐点。",
-            "11": "最后一步：综合所有信息，绘制出精确的函数图像。",
-            "12": "总结：导数是分析函数性质的强大工具，为我们学习积分学打下了坚实基础。"
-        };
+
         const speechScript = {
             "1": "同学们好！欢迎来到我们第四章的最后一节课：导数应用综合复习。在这一节，我们将把之前学过的所有知识点串联起来，做到真正的融会贯通。",
             "2": "我们为什么要进行综合复习呢？因为无论是单调性、极值，还是凹凸性、拐点，这些概念都不是孤立的。在解决复杂的函数分析问题时，它们需要被系统性地、联合地使用。这次复习的目的，就是帮大家构建一张清晰的解题地图。",
@@ -1097,14 +1066,15 @@
         };
 
         let currentSlide = 0;
-        const totalSlides = 12; // Updated total slides
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length; // keep in sync with DOM
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
         let autoPageTimer = null;
         let speechFinishedResolve = null;
-        const slides = document.querySelectorAll('.slide');
+        // slides are declared above
 
         function showSlide(index) {
             slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
@@ -1125,8 +1095,9 @@
 
         async function speakContent(slideNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) { console.log('⚠️ 虚拟人未连接或未开始讲课'); return; }
-            const content = speechScript[slideNum];
-            if (!content) return;
+            const raw = speechScript[slideNum] || subtitleScript[slideNum];
+            if (!raw) return;
+            const content = translateMathToSpeech(raw);
             try {
                 const action = actionMap[slideNum];
                 if (action) { await avatarPlatform.writeCmd("action", action); }
@@ -1156,7 +1127,7 @@
         }
 
         function getSlideDuration(slideNum) {
-            const speech = speechScript[slideNum];
+            const speech = speechScript[slideNum] || subtitleScript[slideNum];
             if (!speech) return 5000;
             const translatedSpeech = translateMathToSpeech(speech);
             const charCount = translatedSpeech.length;
@@ -1184,29 +1155,37 @@
             startBtn.textContent = '🔄 启动中...';
             startBtn.disabled = true;
             try {
-                updateStatus('等待SDK...', 'connecting');
-                // await waitForSDK(); // Enable this line if you have the SDK locally
-                if(typeof AvatarPlatform === 'undefined') {
-                    console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
-                    updateStatus('SDK未加载', 'error');
-                    startBtn.textContent = '❌ SDK未加载';
-                    return;
-                }
+                console.log('⏳ 等待SDK模块加载...');
+                updateStatus('等待SDK加载...', 'connecting');
+                await waitForSDK();
+                console.log('✅ 讯飞官方SDK已加载');
+                updateStatus('SDK已加载', 'connecting');
                 
                 if(avatarPlatform) { avatarPlatform.destroy(); }
-                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true, preload: true });
 
-                avatarPlatform.on('connected', () => {
-                    isConnected = true; isTeaching = true; updateStatus('已连接', 'connected');
+                avatarPlatform.on('connected', (initResp) => {
+                    console.log('🎉 虚拟人连接成功！', initResp);
+                    isConnected = true;
+                    isTeaching = true;
+                    updateStatus('已连接', 'connected');
                     startBtn.textContent = '💖 虚拟人已就绪';
-                    setTimeout(() => speakContent(currentSlide + 1), 1000);
-                }).on('disconnected', () => {
-                    isConnected = false; updateStatus('连接断开', 'error');
+                    setTimeout(() => { speakContent(currentSlide + 1); }, 1000);
+                }).on('disconnected', (err) => {
+                    console.log('🔌 虚拟人连接断开');
+                    isConnected = false;
+                    updateStatus('连接断开', 'error');
+                    if (err) {
+                        console.error('❌ 连接异常断开:', err);
+                    }
                 }).on('error', (error) => {
-                    console.error('❌ 错误:', error); updateStatus('错误', 'error');
-                    startBtn.textContent = '❌ 连接失败'; startBtn.disabled = false; isTeaching = false;
-                }).on('frame_stop', () => {
-                    console.log('🎬 frame_stop事件触发');
+                    console.error('❌ 虚拟人错误:', error);
+                    updateStatus('错误: ' + error.message, 'error');
+                    startBtn.textContent = '❌ 连接失败';
+                    startBtn.disabled = false;
+                    isTeaching = false;
+                }).on('frame_stop', (data) => {
+                    console.log('🎬 frame_stop事件触发 - 虚拟人语音播放完成，准备立即翻页');
                     if (isAutoPlaying && speechFinishedResolve) {
                         console.log('✅ 语音播放完成，触发Promise解析');
                         speechFinishedResolve();
@@ -1215,11 +1194,14 @@
                 });
                 
                 avatarPlatform.setApiInfo({ appId: 'e8c180ed', apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b', apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh', sceneId: '237415046114840576', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact' });
-                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 } });
+                avatarPlatform.setGlobalParams({ stream: { protocol: 'xrtc', alpha: 1, bitrate: 1000000, fps: 25 }, avatar: { avatar_id: '110332017', width: 1920, height: 1080, scale: 1, move_h: 0, move_v: 0, audio_format: 1 }, tts: { vcn: 'x4_yiting', speed: 50, pitch: 50, volume: 100 }, avatar_dispatch: { interactive_mode: 1, content_analysis: 0 } });
                 await avatarPlatform.start({ wrapper: document.getElementById('avatarWrapper') });
+                console.log('🎓 虚拟人教学系统启动完成');
             } catch (error) {
-                console.error('❌ 启动失败:', error); updateStatus('启动失败', 'error');
-                startBtn.textContent = '🎀 开始讲课'; startBtn.disabled = false;
+                console.error('❌ 启动失败:', error);
+                updateStatus('启动失败: ' + error.message, 'error');
+                startBtn.textContent = '🎀 开始讲课';
+                startBtn.disabled = false;
             }
         }
 
@@ -1234,7 +1216,8 @@
                     const slideNum = i + 1;
                     const estimatedDuration = getSlideDuration(slideNum);
                     console.log(`\n🎬 === 开始播放第${slideNum}页/${totalSlides}页 ===`);
-                    console.log(`📊 第${slideNum}页预计时长: ${estimatedDuration}ms (${speechScript[slideNum]?.length || 0}字)`);
+                    const preview = translateMathToSpeech(speechScript[slideNum] || subtitleScript[slideNum] || '');
+                    console.log(`📊 第${slideNum}页预计时长: ${estimatedDuration}ms (${preview.length}字)`);
 
                     showSlide(i);
 
