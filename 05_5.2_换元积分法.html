@@ -1377,8 +1377,16 @@
                 <div class="visualization">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
     <script type="module">
-        // Placeholder for SDK import
-        // window.playbackFinished = false; try { const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
+        // 加载讯飞虚拟人SDK并广播就绪事件
+        window.playbackFinished = false;
+        try {
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            console.log('✅ 讯飞SDK模块已加载');
+        } catch (error) {
+            console.error('❌ SDK加载失败:', error);
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
     </script>
     <script>
         const subtitleScript = {
@@ -1513,8 +1521,8 @@
             startBtn.disabled = true;
             try {
                 updateStatus('等待SDK...', 'connecting');
-                // await waitForSDK(); // Enable this if you have the SDK locally
-                 if(typeof AvatarPlatform === 'undefined') {
+                await waitForSDK();
+                if(typeof AvatarPlatform === 'undefined') {
                     console.warn("虚拟人SDK (AvatarPlatform) 未找到, 将无法播放语音和动作。");
                     updateStatus('SDK未加载', 'error');
                     startBtn.textContent = '❌ SDK未加载';

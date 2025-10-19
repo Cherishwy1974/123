@@ -1068,7 +1068,7 @@
 
         async function nextSlide() {
             if (currentSlide < totalSlides - 1) {
-                if (isSpeaking && avatarPlatform) { await avatarPlatform.stop(); }
+                // 不再调用 stop() 避免断开连接
                 showSlide(currentSlide + 1);
                 if (!isAutoPlaying && isTeaching) { speakContent(currentSlide + 1); }
             }
@@ -1076,7 +1076,7 @@
 
         async function previousSlide() {
             if (currentSlide > 0) {
-                if (isSpeaking && avatarPlatform) { await avatarPlatform.stop(); }
+                // 不再调用 stop() 避免断开连接
                 showSlide(currentSlide - 1);
                 if (!isAutoPlaying && isTeaching) { speakContent(currentSlide + 1); }
             }
@@ -1134,7 +1134,6 @@
             const content = translateMathToSpeech(raw);
 
             try {
-                await avatarPlatform.stop(); // Stop previous speech just in case
                 isSpeaking = true;
                 console.log(`[Sync] 🎤 开始讲解第${slideNum}页`);
                 const action = actionMap[slideNum];
@@ -1259,8 +1258,7 @@
                     if (!isAutoPlaying) break; // Check again in case stop was pressed during speech
 
                     if (result === 'timeout') {
-                         console.warn(`[Sync] ⚠️ 第 ${i + 1} 页讲解超时! 强制进入下一页。`);
-                         await avatarPlatform.stop();
+                         console.warn(`[Sync] ⚠️ 第 ${i + 1} 页讲解超时! 继续下一页。`);
                     } else {
                          console.log(`[Sync] ✅ 第 ${i + 1} 页讲解正常完成。`);
                     }
