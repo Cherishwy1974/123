@@ -824,7 +824,7 @@
         function showSlide(index) {
             slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
             currentSlide = index;
-            document.getElementById('currentSlide').textContent = index + 1;
+            const cs = document.getElementById('currentSlide'); if (cs) cs.textContent = index + 1;
 
             // 获取当前活动幻灯片
             const activeSlide = slides[index];
@@ -836,8 +836,8 @@
                 }
             });
 
-            document.getElementById('prevBtn').disabled = index === 0;
-            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            const prevBtnEl = document.getElementById('prevBtn'); if (prevBtnEl) prevBtnEl.disabled = index === 0;
+            const nextBtnEl = document.getElementById('nextBtn'); if (nextBtnEl) nextBtnEl.disabled = index === totalSlides - 1;
             updateSubtitle(index + 1);
         }
 
@@ -962,7 +962,7 @@ function translateMathToSpeech(text){
             else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
         });
 
-        document.getElementById('totalSlides').textContent = totalSlides;
+        (function(){ const ts = document.getElementById('totalSlides'); if (ts) ts.textContent = totalSlides; })();
         showSlide(0);
     </script>
 </body>

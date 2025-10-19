@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟人最小化测试</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a2e;
+            font-family: 'Microsoft YaHei', sans-serif;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .info {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .status.loading {
+            background: rgba(255, 152, 0, 0.3);
+            border: 2px solid #ff9800;
+        }
+        .status.success {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4CAF50;
+        }
+        .status.error {
+            background: rgba(244, 67, 54, 0.3);
+            border: 2px solid #f44336;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        button:hover:not(:disabled) {
+            transform: scale(1.02);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-start {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-speak {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .btn-stop {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #333;
+        }
+        .avatar-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 420px;
+            height: 480px;
+            overflow: hidden;
+            z-index: 50;
+            pointer-events: none;
+            background: transparent;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: auto;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 3px 0;
+        }
+        .log-entry.error {
+            color: #f44336;
+        }
+        .log-entry.success {
+            color: #4CAF50;
+        }
+        .log-entry.warning {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 虚拟人最小化测试</h1>
+        
+        <div class="info">
+            <p><strong>测试目的：</strong>使用最简化的代码测试虚拟人是否能正常显示</p>
+            <p><strong>配置信息：</strong></p>
+            <ul>
+                <li>SDK 路径: ./avatar-sdk-web_3.1.2.1002/index.js</li>
+                <li>虚拟人 ID: 110332017 (沐沐)</li>
+                <li>语音: x4_yiting (小娟-温情4.0)</li>
+            </ul>
+        </div>
+
+        <div id="statusDiv" class="status loading">等待操作...</div>
+
+        <button class="btn-start" onclick="startAvatar()" id="startBtn">🎬 启动虚拟人</button>
+        <button class="btn-speak" onclick="testSpeak()" id="speakBtn" disabled>🗣️ 测试语音</button>
+        <button class="btn-stop" onclick="stopAvatar()" id="stopBtn" disabled>⏹️ 停止虚拟人</button>
+
+        <div class="log" id="logDiv"></div>
+    </div>
+
+    <!-- 虚拟人容器 -->
+    <div class="avatar-container">
+        <div class="wrapper" id="avatarWrapper"></div>
+    </div>
+
+    <script type="module">
+        // 加载 SDK
+        window.playbackFinished = false;
+        try {
+            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+            window.AvatarPlatform = AvatarPlatform;
+            log('✅ SDK 加载成功', 'success');
+        } catch (error) {
+            log('❌ SDK 加载失败: ' + error.message, 'error');
+        }
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    </script>
+
+    <script>
+        let avatarPlatform = null;
+        let isConnected = false;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('logDiv');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + type;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function updateStatus(message, type = 'loading') {
+            const statusDiv = document.getElementById('statusDiv');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+        }
+
+        function waitForSDK() {
+            return new Promise((resolve, reject) => {
+                if (window.AvatarPlatform) {
+                    resolve();
+                    return;
+                }
+                const timeout = setTimeout(() => {
+                    reject(new Error('SDK 加载超时'));
+                }, 10000);
+                window.addEventListener('sdkReady', function handler() {
+                    clearTimeout(timeout);
+                    window.removeEventListener('sdkReady', handler);
+                    resolve();
+                });
+            });
+        }
+
+        async function startAvatar() {
+            const startBtn = document.getElementById('startBtn');
+            const speakBtn = document.getElementById('speakBtn');
+            const stopBtn = document.getElementById('stopBtn');
+
+            startBtn.disabled = true;
+            startBtn.textContent = '🔄 启动中...';
+            updateStatus('正在启动虚拟人...', 'loading');
+
+            try {
+                log('⏳ 等待 SDK 加载...', 'info');
+                await waitForSDK();
+
+                if (typeof AvatarPlatform === 'undefined') {
+                    throw new Error('AvatarPlatform 未定义');
+                }
+
+                log('✅ SDK 已就绪', 'success');
+
+                // 销毁旧实例
+                if (avatarPlatform) {
+                    log('🗑️ 销毁旧实例...', 'info');
+                    avatarPlatform.destroy();
+                }
+
+                // 创建新实例
+                log('📦 创建 AvatarPlatform 实例...', 'info');
+                avatarPlatform = new AvatarPlatform({ useInlinePlayer: true });
+
+                // 监听事件
+                avatarPlatform.on('connected', () => {
+                    isConnected = true;
+                    log('✅ 虚拟人已连接', 'success');
+                    updateStatus('虚拟人已连接', 'success');
+                    startBtn.textContent = '✅ 已启动';
+                    speakBtn.disabled = false;
+                    stopBtn.disabled = false;
+                });
+
+                avatarPlatform.on('disconnected', () => {
+                    isConnected = false;
+                    log('⚠️ 虚拟人连接断开', 'warning');
+                    updateStatus('连接断开', 'error');
+                });
+
+                avatarPlatform.on('error', (error) => {
+                    log('❌ 虚拟人错误: ' + JSON.stringify(error), 'error');
+                    updateStatus('发生错误', 'error');
+                });
+
+                avatarPlatform.on('frame_stop', () => {
+                    log('✅ 语音播放完成', 'success');
+                });
+
+                // 设置 API 信息
+                log('🔑 设置 API 信息...', 'info');
+                avatarPlatform.setApiInfo({
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                // 设置全局参数
+                log('⚙️ 设置全局参数...', 'info');
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    }
+                });
+
+                // 启动
+                log('🎬 启动虚拟人...', 'info');
+                const wrapper = document.getElementById('avatarWrapper');
+                await avatarPlatform.start({ wrapper: wrapper });
+
+                log('✅ 虚拟人启动成功！', 'success');
+
+            } catch (error) {
+                log('❌ 启动失败: ' + error.message, 'error');
+                console.error('详细错误:', error);
+                updateStatus('启动失败: ' + error.message, 'error');
+                startBtn.textContent = '🎬 启动虚拟人';
+                startBtn.disabled = false;
+            }
+        }
+
+        async function testSpeak() {
+            if (!avatarPlatform || !isConnected) {
+                log('⚠️ 虚拟人未连接', 'warning');
+                return;
+            }
+
+            try {
+                log('🗣️ 开始语音测试...', 'info');
+                await avatarPlatform.writeText('你好，我是虚拟人沐沐，很高兴为你讲解数学知识。', { nlp: false });
+                log('✅ 语音指令已发送', 'success');
+            } catch (error) {
+                log('❌ 语音测试失败: ' + error.message, 'error');
+            }
+        }
+
+        function stopAvatar() {
+            if (avatarPlatform) {
+                avatarPlatform.stop();
+                log('⏹️ 虚拟人已停止', 'info');
+                updateStatus('已停止', 'loading');
+                document.getElementById('startBtn').textContent = '🎬 启动虚拟人';
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('speakBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = true;
+            }
+        }
+
+        // 页面加载完成
+        window.addEventListener('load', () => {
+            log('📄 页面加载完成', 'info');
+            updateStatus('准备就绪，点击"启动虚拟人"开始测试', 'loading');
+        });
+    </script>
+</body>
+</html>
+

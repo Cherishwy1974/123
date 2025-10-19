@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟人显示诊断工具</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .check-item {
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #95a5a6;
+            background: #ecf0f1;
+        }
+        .check-item.success {
+            border-left-color: #27ae60;
+            background: #d5f4e6;
+        }
+        .check-item.error {
+            border-left-color: #e74c3c;
+            background: #fadbd8;
+        }
+        .check-item.warning {
+            border-left-color: #f39c12;
+            background: #fef5e7;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .avatar-preview {
+            width: 420px;
+            height: 480px;
+            border: 2px dashed #3498db;
+            margin: 20px auto;
+            position: relative;
+            background: #1a1a2e;
+        }
+        #avatarWrapper {
+            width: 100%;
+            height: 100%;
+        }
+        code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .log {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #3498db;
+        }
+        .log-entry.error {
+            border-left-color: #e74c3c;
+            color: #e74c3c;
+        }
+        .log-entry.success {
+            border-left-color: #27ae60;
+            color: #27ae60;
+        }
+        .log-entry.warning {
+            border-left-color: #f39c12;
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #2c3e50;">🔍 虚拟人显示诊断工具</h1>
+
+    <div class="section">
+        <h2>1. 环境检查</h2>
+        <div id="envCheck"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. SDK 加载检查</h2>
+        <div id="sdkCheck"></div>
+        <button onclick="checkSDK()">🔄 重新检查 SDK</button>
+    </div>
+
+    <div class="section">
+        <h2>3. 虚拟人容器检查</h2>
+        <div id="containerCheck"></div>
+    </div>
+
+    <div class="section">
+        <h2>4. 虚拟人预览</h2>
+        <div class="avatar-preview">
+            <div id="avatarWrapper"></div>
+        </div>
+        <div style="text-align: center;">
+            <button onclick="startAvatar()">🎬 启动虚拟人</button>
+            <button onclick="stopAvatar()">⏹️ 停止虚拟人</button>
+            <button onclick="testSpeak()">🗣️ 测试语音</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>5. 实时日志</h2>
+        <div class="log" id="logContainer"></div>
+        <button onclick="clearLog()">🗑️ 清空日志</button>
+    </div>
+
+    <script type="module">
+        let avatarPlatform = null;
+        let isConnected = false;
+
+        // 日志函数
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(message);
+        }
+
+        window.clearLog = function() {
+            document.getElementById('logContainer').innerHTML = '';
+        };
+
+        // 环境检查
+        function checkEnvironment() {
+            const envCheck = document.getElementById('envCheck');
+            let html = '';
+
+            // 检查浏览器
+            const userAgent = navigator.userAgent;
+            const isChrome = /Chrome/.test(userAgent);
+            const isEdge = /Edg/.test(userAgent);
+            const isFirefox = /Firefox/.test(userAgent);
+            
+            html += `<div class="check-item ${isChrome || isEdge ? 'success' : 'warning'}">
+                <strong>浏览器:</strong> ${userAgent.split(' ').pop()}
+                ${isChrome || isEdge ? '✅ 推荐浏览器' : '⚠️ 建议使用 Chrome 或 Edge'}
+            </div>`;
+
+            // 检查协议
+            const protocol = window.location.protocol;
+            html += `<div class="check-item ${protocol === 'file:' ? 'success' : 'warning'}">
+                <strong>协议:</strong> ${protocol}
+                ${protocol === 'file:' ? '✅ 本地文件' : '⚠️ 网络协议'}
+            </div>`;
+
+            // 检查 WebRTC 支持
+            const hasWebRTC = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+            html += `<div class="check-item ${hasWebRTC ? 'success' : 'error'}">
+                <strong>WebRTC 支持:</strong> ${hasWebRTC ? '✅ 支持' : '❌ 不支持'}
+            </div>`;
+
+            envCheck.innerHTML = html;
+        }
+
+        // SDK 检查
+        window.checkSDK = async function() {
+            const sdkCheck = document.getElementById('sdkCheck');
+            let html = '';
+
+            try {
+                log('开始检查 SDK...', 'info');
+                
+                // 检查 SDK 文件是否存在
+                const sdkPath = './avatar-sdk-web_3.1.2.1002/index.js';
+                html += `<div class="check-item">
+                    <strong>SDK 路径:</strong> <code>${sdkPath}</code>
+                </div>`;
+
+                // 尝试加载 SDK
+                try {
+                    const { default: AvatarPlatform } = await import(sdkPath);
+                    window.AvatarPlatform = AvatarPlatform;
+                    
+                    html += `<div class="check-item success">
+                        <strong>SDK 加载:</strong> ✅ 成功
+                    </div>`;
+                    
+                    html += `<div class="check-item success">
+                        <strong>AvatarPlatform 类型:</strong> ${typeof AvatarPlatform}
+                    </div>`;
+                    
+                    log('✅ SDK 加载成功', 'success');
+                } catch (error) {
+                    html += `<div class="check-item error">
+                        <strong>SDK 加载:</strong> ❌ 失败<br>
+                        <strong>错误:</strong> ${error.message}
+                    </div>`;
+                    log(`❌ SDK 加载失败: ${error.message}`, 'error');
+                }
+
+            } catch (error) {
+                html += `<div class="check-item error">
+                    <strong>检查失败:</strong> ${error.message}
+                </div>`;
+                log(`❌ 检查失败: ${error.message}`, 'error');
+            }
+
+            sdkCheck.innerHTML = html;
+        };
+
+        // 容器检查
+        function checkContainer() {
+            const containerCheck = document.getElementById('containerCheck');
+            const wrapper = document.getElementById('avatarWrapper');
+            
+            let html = '';
+
+            if (wrapper) {
+                const rect = wrapper.getBoundingClientRect();
+                html += `<div class="check-item success">
+                    <strong>容器元素:</strong> ✅ 找到 #avatarWrapper
+                </div>`;
+                
+                html += `<div class="check-item ${rect.width > 0 && rect.height > 0 ? 'success' : 'error'}">
+                    <strong>容器尺寸:</strong> ${rect.width}px × ${rect.height}px
+                    ${rect.width > 0 && rect.height > 0 ? '✅' : '❌ 尺寸为0'}
+                </div>`;
+                
+                const styles = window.getComputedStyle(wrapper);
+                html += `<div class="check-item">
+                    <strong>容器样式:</strong><br>
+                    display: ${styles.display}<br>
+                    visibility: ${styles.visibility}<br>
+                    opacity: ${styles.opacity}
+                </div>`;
+            } else {
+                html += `<div class="check-item error">
+                    <strong>容器元素:</strong> ❌ 未找到 #avatarWrapper
+                </div>`;
+            }
+
+            containerCheck.innerHTML = html;
+        }
+
+        // 启动虚拟人
+        window.startAvatar = async function() {
+            try {
+                log('🚀 开始启动虚拟人...', 'info');
+
+                if (!window.AvatarPlatform) {
+                    log('❌ AvatarPlatform 未加载，尝试加载 SDK...', 'error');
+                    await checkSDK();
+                    if (!window.AvatarPlatform) {
+                        throw new Error('SDK 加载失败');
+                    }
+                }
+
+                if (avatarPlatform) {
+                    log('⚠️ 销毁旧的虚拟人实例...', 'warning');
+                    avatarPlatform.destroy();
+                }
+
+                log('📦 创建 AvatarPlatform 实例...', 'info');
+                avatarPlatform = new window.AvatarPlatform({ useInlinePlayer: true });
+
+                // 监听事件
+                avatarPlatform.on('connected', () => {
+                    isConnected = true;
+                    log('✅ 虚拟人已连接', 'success');
+                });
+
+                avatarPlatform.on('disconnected', () => {
+                    isConnected = false;
+                    log('⚠️ 虚拟人连接断开', 'warning');
+                });
+
+                avatarPlatform.on('error', (error) => {
+                    log(`❌ 虚拟人错误: ${JSON.stringify(error)}`, 'error');
+                });
+
+                avatarPlatform.on('frame_stop', () => {
+                    log('✅ 虚拟人讲解完成', 'success');
+                });
+
+                // 设置 API 信息
+                log('🔑 设置 API 信息...', 'info');
+                avatarPlatform.setApiInfo({
+                    appId: 'e8c180ed',
+                    apiKey: 'e0c44f0e2ef0f47582ffa7e864da0d9b',
+                    apiSecret: 'MDZkNDNiZWU4NDkzNWM5MDQzMTY4N2Nh',
+                    sceneId: '237415046114840576',
+                    serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'
+                });
+
+                // 设置全局参数
+                log('⚙️ 设置全局参数...', 'info');
+                avatarPlatform.setGlobalParams({
+                    stream: {
+                        protocol: 'xrtc',
+                        alpha: 1,
+                        bitrate: 1000000,
+                        fps: 25
+                    },
+                    avatar: {
+                        avatar_id: '110332017',
+                        width: 1920,
+                        height: 1080,
+                        scale: 1,
+                        move_h: 0,
+                        move_v: 0,
+                        audio_format: 1
+                    },
+                    tts: {
+                        vcn: 'x4_yiting',
+                        speed: 50,
+                        pitch: 50,
+                        volume: 100
+                    },
+                    avatar_dispatch: {
+                        interactive_mode: 1,
+                        content_analysis: 0
+                    }
+                });
+
+                // 启动
+                log('🎬 启动虚拟人...', 'info');
+                const wrapper = document.getElementById('avatarWrapper');
+                await avatarPlatform.start({ wrapper: wrapper });
+
+                log('✅ 虚拟人启动成功！', 'success');
+
+            } catch (error) {
+                log(`❌ 启动失败: ${error.message}`, 'error');
+                console.error('详细错误:', error);
+            }
+        };
+
+        // 停止虚拟人
+        window.stopAvatar = function() {
+            if (avatarPlatform) {
+                avatarPlatform.stop();
+                log('⏹️ 虚拟人已停止', 'info');
+            } else {
+                log('⚠️ 虚拟人未启动', 'warning');
+            }
+        };
+
+        // 测试语音
+        window.testSpeak = async function() {
+            if (!avatarPlatform || !isConnected) {
+                log('⚠️ 虚拟人未连接，请先启动虚拟人', 'warning');
+                return;
+            }
+
+            try {
+                log('🗣️ 测试语音播报...', 'info');
+                await avatarPlatform.writeText('你好，我是虚拟人沐沐，很高兴为你讲解数学知识。', { nlp: false });
+                log('✅ 语音播报成功', 'success');
+            } catch (error) {
+                log(`❌ 语音播报失败: ${error.message}`, 'error');
+            }
+        };
+
+        // 页面加载时执行检查
+        window.addEventListener('load', () => {
+            log('🔍 开始诊断...', 'info');
+            checkEnvironment();
+            checkSDK();
+            checkContainer();
+        });
+    </script>
+</body>
+</html>
+

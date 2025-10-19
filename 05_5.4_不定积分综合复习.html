@@ -84,7 +84,7 @@
                     <h2 class="font-bold">不定积分的定义</h2>
                     <p>不定积分是求导的<strong>逆运算</strong>。</p>
                     <div class="math-formula">
-                        $ \\int f(x) \\, dx = F(x) + C $
+                        $ \int f(x) \, dx = F(x) + C $
                     </div>
                     <p>其中 $F(x)$ 是 $f(x)$ 的一个<strong>原函数</strong>，$C$ 是任意常数。</p>
                     <p class="mt-4">这意味着：如果 $F'(x) = f(x)$，那么 $F(x)$ 就是 $f(x)$ 的原函数。</p>
@@ -107,7 +107,7 @@
                     <h2 class="font-bold">积分与导数的关系</h2>
                     <p>积分与求导互为<strong>逆运算</strong>。</p>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $
+                        $ \frac{d}{dx}\left[\int f(x) \, dx\right] = f(x) $
                     </div>
                     <p>这个关系告诉我们：对积分结果求导，应该得到原来的被积函数。</p>
                     <p class="mt-4" style="color: #e74c3c;">这也是检验积分结果是否正确的重要方法！</p>
@@ -134,7 +134,7 @@
                     <h3>核心思想</h3>
                     <p>通过变量代换 $u=g(x)$，将复杂的积分转化为简单的积分。</p>
                     <div class="math-formula">
-                        $ \\int f(g(x))g'(x) \\, dx = \\int f(u) \\, du $
+                        $ \int f(g(x))g'(x) \, dx = \int f(u) \, du $
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
@@ -157,7 +157,7 @@
                     <h2 class="font-bold">换元法的关键技巧</h2>
                     <h3>"凑微分"</h3>
                     <p>观察被积函数，寻找<strong>"一部分"是"另一部分"导数</strong>的形式。</p>
-                    <p class="mt-4">例如：在 $\\int f(g(x))g'(x) \\, dx$ 中</p>
+                    <p class="mt-4">例如：在 $\int f(g(x))g'(x) \, dx$ 中</p>
                     <ul class="list-disc list-inside mt-4 space-y-2 text-xl">
                         <li>$g(x)$ 是内层函数</li>
                         <li>$g'(x)$ 是它的导数</li>
@@ -183,7 +183,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">换元法示例（1/3）</h2>
                     <h3>问题</h3>
-                    <p>求解 $\\int \\frac{x}{\\sqrt{1-x^2}} \\, dx$</p>
+                    <p>求解 $\int \frac{x}{\sqrt{1-x^2}} \, dx$</p>
                     <h3 class="mt-6">第一步：观察</h3>
                     <p>分子是 $x$，分母根号内是 $1-x^2$。</p>
                     <p class="mt-4">注意到：$(1-x^2)' = -2x$</p>
@@ -191,7 +191,7 @@
                 </div>
                 <div class="animation-pane w-1/2">
                      <svg class="w-full h-full" viewBox="0 0 600 500">
-                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="70">$\\int \\frac{x}{\\sqrt{1-x^2}} \\, dx$</text>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="70">$\int \frac{x}{\sqrt{1-x^2}} \, dx$</text>
                         <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="360" x="120" y="150"></rect>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">观察：分子与分母的关系</text>
                         <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">$(1-x^2)' = -2x$</text>
@@ -208,20 +208,20 @@
                     <h2 class="font-bold">换元法示例（2/3）</h2>
                     <h3>第二步：换元</h3>
                     <p>令 $u = 1-x^2$</p>
-                    <p class="mt-2">则 $du = -2x \\, dx$</p>
-                    <p class="mt-2">即 $x \\, dx = -\\frac{1}{2}du$</p>
+                    <p class="mt-2">则 $du = -2x \, dx$</p>
+                    <p class="mt-2">即 $x \, dx = -\frac{1}{2}du$</p>
                     <h3 class="mt-6">第三步：代入</h3>
                     <div class="math-formula">
-                        $ \\int \\frac{x}{\\sqrt{1-x^2}} \\, dx = \\int \\frac{1}{\\sqrt{u}} \\left(-\\frac{1}{2}du\\right) $
+                        $ \int \frac{x}{\sqrt{1-x^2}} \, dx = \int \frac{1}{\sqrt{u}} \left(-\frac{1}{2}du\right) $
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
                         <rect fill="rgba(231,76,60,0.2)" height="60" rx="10" stroke="#e74c3c" stroke-width="3" width="360" x="120" y="110"></rect>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="145">$u = 1-x^2, xdx = -\\frac{1}{2} du$</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="145">$u = 1-x^2, xdx = -\frac{1}{2} du$</text>
                         <line marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="170" y2="210"></line>
                         <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="210"></rect>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="245">$- \\frac{1}{2} \\int u^{-1/2} du$</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="245">$- \frac{1}{2} \int u^{-1/2} du$</text>
                         <defs><marker id="arrow1" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
                     </svg>
                 </div>
@@ -235,21 +235,21 @@
                     <h2 class="font-bold">换元法示例（3/3）</h2>
                     <h3>第四步：积分</h3>
                     <div class="math-formula">
-                        $ -\\frac{1}{2}\\int u^{-1/2}du = -\\frac{1}{2} \\cdot 2u^{1/2} + C = -\\sqrt{u} + C $
+                        $ -\frac{1}{2}\int u^{-1/2}du = -\frac{1}{2} \cdot 2u^{1/2} + C = -\sqrt{u} + C $
                     </div>
                     <h3 class="mt-4">第五步：回代</h3>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $ = -\\sqrt{1-x^2} + C $
+                        $ = -\sqrt{1-x^2} + C $
                     </div>
                     <p class="mt-4" style="color: #e74c3c;">完成！可以通过求导验证结果。</p>
                 </div>
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
                         <rect fill="rgba(52,152,219,0.2)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="360" x="120" y="120"></rect>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="155">$- \\frac{1}{2} \\int u^{-1/2} du$</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="155">$- \frac{1}{2} \int u^{-1/2} du$</text>
                         <line marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="180" y2="220"></line>
                         <rect fill="rgba(46,204,113,0.2)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="220"></rect>
-                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="255">$- \\sqrt{1-x^2} + C$</text>
+                        <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="255">$- \sqrt{1-x^2} + C$</text>
                         <text fill="#f1c40f" font-size="22" text-anchor="middle" x="300" y="350">✓ 答案</text>
                         <defs><marker id="arrow2" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
                     </svg>
@@ -265,7 +265,7 @@
                     <p>分部积分法用于处理<strong>两个不同类型函数乘积</strong>的积分。</p>
                     <h3>核心公式</h3>
                      <div class="math-formula">
-                        $ \\int u \\, dv = uv - \\int v \\, du $
+                        $ \int u \, dv = uv - \int v \, du $
                     </div>
                     <p class="mt-4">这个公式来源于乘积的求导法则。</p>
                 </div>
@@ -273,7 +273,7 @@
                     <svg class="w-full h-full" viewBox="0 0 600 500">
                         <text fill="#f39c12" font-size="28" text-anchor="middle" x="300" y="80">分部积分法</text>
                         <rect fill="rgba(0,0,0,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="2" width="400" x="100" y="150"></rect>
-                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="195">$\\int u \\, dv = uv - \\int v \\, du$</text>
+                        <text fill="#ecf0f1" font-size="24" text-anchor="middle" x="300" y="195">$\int u \, dv = uv - \int v \, du$</text>
                         <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">处理函数乘积</text>
                     </svg>
                 </div>
@@ -288,10 +288,10 @@
                     <h3>"反对幂三指"口诀</h3>
                     <p>按以下顺序，谁靠前，谁优先选作 $u$：</p>
                     <ol class="list-decimal list-inside mt-4 space-y-3 text-xl">
-                        <li><strong>反</strong>三角函数（如 $\\arcsin x$）</li>
-                        <li><strong>对</strong>数函数（如 $\\ln x$）</li>
+                        <li><strong>反</strong>三角函数（如 $\arcsin x$）</li>
+                        <li><strong>对</strong>数函数（如 $\ln x$）</li>
                         <li><strong>幂</strong>函数（如 $x^n$）</li>
-                        <li><strong>三</strong>角函数（如 $\\sin x$）</li>
+                        <li><strong>三</strong>角函数（如 $\sin x$）</li>
                         <li><strong>指</strong>数函数（如 $e^x$）</li>
                     </ol>
                 </div>
@@ -313,7 +313,7 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">分部法示例（1/4）</h2>
                     <h3>问题</h3>
-                    <p>求解 $\\int x^2 e^x \\, dx$</p>
+                    <p>求解 $\int x^2 e^x \, dx$</p>
                     <h3 class="mt-6">第一步：分析</h3>
                     <p>这是<strong>幂函数</strong>与<strong>指数函数</strong>的乘积。</p>
                     <p class="mt-4">按"反对幂三指"口诀：</p>
@@ -321,7 +321,7 @@
                 </div>
                 <div class="animation-pane w-1/2">
                      <svg class="w-full h-full" viewBox="0 0 600 500">
-                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">$\\int x^2 e^x \\, dx$</text>
+                        <text fill="#f39c12" font-size="24" text-anchor="middle" x="300" y="80">$\int x^2 e^x \, dx$</text>
                         <rect fill="rgba(231,76,60,0.2)" height="80" rx="10" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="150"></rect>
                         <text fill="#ecf0f1" font-size="20" text-anchor="middle" x="300" y="195">幂函数 × 指数函数</text>
                         <text fill="#2ecc71" font-size="22" text-anchor="middle" x="300" y="300">选择：$u = x^2$</text>
@@ -337,14 +337,14 @@
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">分部法示例（2/4）</h2>
                     <h3>第二步：求 du 和 v</h3>
-                    <p>$u=x^2$ → $du=2x \\, dx$</p>
+                    <p>$u=x^2$ → $du=2x \, dx$</p>
                     <p>$dv=e^x dx$ → $v=e^x$</p>
                     <h3 class="mt-4">第三步：第一次分部</h3>
                     <div class="math-formula">
-                        $ \\int x^2 e^x \\, dx = x^2e^x - \\int e^x \\cdot 2x \\, dx $
+                        $ \int x^2 e^x \, dx = x^2e^x - \int e^x \cdot 2x \, dx $
                     </div>
                     <div class="math-formula" style="border-color: #2ecc71;">
-                        $ = x^2e^x - 2\\int xe^x \\, dx $
+                        $ = x^2e^x - 2\int xe^x \, dx $
                     </div>
                 </div>
                 <div class="animation-pane w-1/2">
@@ -353,7 +353,7 @@
                         <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="130">$u=x^2, dv=e^x dx$</text>
                         <line marker-end="url(#arrow3)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="150" y2="180"></line>
                         <rect fill="rgba(46,204,113,0.2)" height="60" rx="8" stroke="#2ecc71" stroke-width="3" width="360" x="120" y="180"></rect>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="215">$x^2e^x - 2\\int xe^x dx$</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="215">$x^2e^x - 2\int xe^x dx$</text>
                         <text fill="#e74c3c" font-size="20" text-anchor="middle" x="300" y="320">还需要再次分部！</text>
                         <defs><marker id="arrow3" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3"><path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path></marker></defs>
                     </svg>
@@ -366,18 +366,18 @@
             <div class="slide-content">
                 <div class="blackboard-text w-1/2">
                     <h2 class="font-bold">分部法示例（3/4）</h2>
-                    <h3>第四步：对 $\\int xe^x dx$ 再次分部</h3>
+                    <h3>第四步：对 $\int xe^x dx$ 再次分部</h3>
                     <p>令 $u=x, dv=e^x dx$</p>
                     <p>则 $du=dx, v=e^x$</p>
                     <div class="math-formula">
-                        $ \\int xe^x dx = xe^x - \\int e^x dx = xe^x - e^x $
+                        $ \int xe^x dx = xe^x - \int e^x dx = xe^x - e^x $
                     </div>
                     <p class="mt-4" style="color: #2ecc71;">幂次降低了，可以直接积分！</p>
                 </div>
                 <div class="animation-pane w-1/2">
                     <svg class="w-full h-full" viewBox="0 0 600 500">
                         <rect fill="rgba(231,76,60,0.2)" height="50" rx="8" stroke="#e74c3c" stroke-width="3" width="300" x="150" y="120"></rect>
-                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="150">对 $\\int xe^x dx$ 再分部</text>
+                        <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="150">对 $\int xe^x dx$ 再分部</text>
                         <line marker-end="url(#arrow4)" stroke="#f39c12" stroke-width="3" x1="300" x2="300" y1="170" y2="200"></line>
                         <rect fill="rgba(46,204,113,0.2)" height="60" rx="8" stroke="#2ecc71" stroke-width="3" width="300" x="150" y="200"></rect>
                         <text fill="#ecf0f1" font-size="18" text-anchor="middle" x="300" y="235">$xe^x - e^x$</text>
@@ -394,7 +394,7 @@
                     <h2 class="font-bold">分部法示例（4/4）</h2>
                     <h3>第五步：整合结果</h3>
                     <div class="math-formula">
-                        $ \\int x^2 e^x \\, dx = x^2e^x - 2(xe^x - e^x) + C $
+                        $ \int x^2 e^x \, dx = x^2e^x - 2(xe^x - e^x) + C $
                     </div>
                     <h3>化简</h3>
                     <div class="math-formula" style="border-color: #2ecc71;">
@@ -425,9 +425,9 @@
                     <p>首先判断：是否为<strong>基本积分公式</strong>？</p>
                     <p class="mt-4">常见的基本积分：</p>
                     <ul class="list-disc list-inside mt-4 space-y-2 text-xl">
-                        <li>$\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$</li>
-                        <li>$\\int e^x dx = e^x + C$</li>
-                        <li>$\\int \\sin x dx = -\\cos x + C$</li>
+                        <li>$\int x^n dx = \frac{x^{n+1}}{n+1} + C$</li>
+                        <li>$\int e^x dx = e^x + C$</li>
+                        <li>$\int \sin x dx = -\cos x + C$</li>
                     </ul>
                 </div>
                  <div class="animation-pane w-1/2">
@@ -504,7 +504,7 @@
                     <h3>重要习惯</h3>
                     <p>完成积分后，<strong>对结果求导</strong>进行检验。</p>
                     <div class="math-formula">
-                        $ \\frac{d}{dx}\\left[\\int f(x) \\, dx\\right] = f(x) $
+                        $ \frac{d}{dx}\left[\int f(x) \, dx\right] = f(x) $
                     </div>
                     <p class="mt-4">如果求导后得到原来的被积函数，说明积分正确！</p>
                     <p class="mt-4" style="color: #e74c3c;">这是验证答案最可靠的方法。</p>
