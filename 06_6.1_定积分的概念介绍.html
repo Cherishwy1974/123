@@ -622,7 +622,7 @@
             if (!speech) return 5000;
             const translated = translateMathToSpeech(speech);
             const charCount = translated.length;
-            const duration = charCount * 200;
+            const duration = charCount * 400; // 每字400ms（比第5章的200ms慢一倍）
             console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }
