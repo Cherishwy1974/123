@@ -589,14 +589,8 @@
         <button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
     </div>
     <script type="module">
-        try {
-            const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
-            window.AvatarPlatform = AvatarPlatform;
-            console.log('✅ 讯飞SDK模块已加载');
-        } catch (error) {
-            console.error('❌ SDK模块加载失败:', error);
-        }
-        window.dispatchEvent(new CustomEvent('sdkReady'));
+        window.playbackFinished = false;
+        try { const { default: AvatarPlatform } = await import('./avatar-sdk-web_3.1.2.1002/index.js'); window.AvatarPlatform = AvatarPlatform; console.log('✅ 讯飞SDK模块已加载'); } catch (error) { console.error('❌ SDK加载失败:', error); } window.dispatchEvent(new CustomEvent('sdkReady'));
     </script>
     <script>
         const subtitleScript = {
