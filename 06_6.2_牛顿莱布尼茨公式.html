@@ -1388,6 +1388,11 @@
             };
             return titles[pageNum] || `第${pageNum}页`;
         }
+
+        setTimeout(() => {
+            console.log('🚀 3秒后自动启动播放...');
+            startAutoPlay();
+        }, 3000);
     </script>
 </body>
 </html>

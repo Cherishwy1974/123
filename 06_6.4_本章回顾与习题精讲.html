@@ -474,6 +474,10 @@
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             switchToPage(1, false);
+            setTimeout(() => {
+                console.log('🚀 3秒后自动启动播放...');
+                startAutoPlay();
+            }, 3000);
         });
     </script>
 </body>
