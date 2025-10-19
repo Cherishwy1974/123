@@ -41,16 +41,16 @@
         .slide.active { opacity: 1; visibility: visible; }
         .slide-content { display: flex; flex-direction: row; gap: 2rem; width: 100%; height: 95%; }
         .chalkboard { flex: 0 0 45%; padding: 20px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
-        .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 28px; padding-bottom: 10px; margin-bottom: 20px; }
-        .chalkboard h3 { color: #1abc9c; font-size: 22px; margin-top: 20px; margin-bottom: 10px; }
-        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 18px; line-height: 1.8; margin: 8px 0; }
-        .chalkboard strong { color: #e74c3c; }
-        .math-formula-box { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 20px; color: #1abc9c; text-align: center; margin: 15px 0; }
+        .chalkboard h2 { color: #f1c40f; border-bottom: 2px solid #f39c12; font-size: 36px; padding-bottom: 10px; margin-bottom: 20px; }
+        .chalkboard h3 { color: #1abc9c; font-size: 28px; margin-top: 20px; margin-bottom: 10px; }
+        .chalkboard p, .chalkboard li { color: #e0e0e0; font-size: 24px; line-height: 1.8; margin: 8px 0; }
+        .chalkboard strong { color: #f39c12; }
+        .math-formula-box { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; font-size: 26px; color: #1abc9c; text-align: center; margin: 15px 0; }
         .visualization { flex: 1; padding: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #333; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
+        .btn { padding: 14px 22px; background: rgba(255, 255, 255, 0.25); color: #ecf0f1; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; width: 100%; text-align: center; }
         .btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 23px; text-align: center; padding: 15px 20px; line-height: 1.4; }
+        .subtitle-area { position: absolute; bottom: 20px; left: 50px; right: 50px; min-height: 50px; background: rgba(0,0,0,0.8); border-radius: 8px; display: flex; align-items: center; justify-content: center; z-index: 60; color: white; font-size: 28px; text-align: center; padding: 15px 20px; line-height: 1.4; }
         .status-indicator { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: rgba(0,0,0,0.5); color: white; border-radius: 5px; font-size: 16px; z-index: 100; display: none; }
         .status-indicator.connected { background: rgba(76, 175, 80, 0.8); display: block; }
         .status-indicator.error { background: rgba(244, 67, 54, 0.8); display: block; }
@@ -597,7 +597,35 @@
             } catch (error) { console.error('❌ 讲解失败:', error); }
         }
 
-        function getSlideDuration(slideNum) { const speech = speechScript[slideNum]; if (!speech) return 5000; return speech.length * 120 + 2000; }
+        // 数学公式音译为中文，便于虚拟人口播与字数统计
+        function translateMathToSpeech(text) {
+            if (!text) return '';
+            let result = text;
+            result = result.replace(/f''\s*\(\s*x\s*\)/g, 'f两撇x');
+            result = result.replace(/f'\s*\(\s*x\s*\)/g, 'f撇x');
+            result = result.replace(/x_0/g, 'x零').replace(/x_1/g, 'x一').replace(/x_2/g, 'x二').replace(/x_3/g, 'x三').replace(/x_n/g, 'x n');
+            result = result.replace(/\\lim/g, '极限');
+            result = result.replace(/\\to/g, '趋向于').replace(/->/g, '趋向于');
+            result = result.replace(/\\infty/g, '无穷大');
+            result = result.replace(/\\int/g, '积分');
+            result = result.replace(/\\sum/g, '求和');
+            result = result.replace(/\\frac\s*{([^}]*)}\s*{([^}]*)}/g, function(_, a, b){ return a + '分之' + b; });
+            result = result.replace(/\\alpha/g, '阿尔法').replace(/\\beta/g, '贝塔').replace(/\\theta/g, '西塔').replace(/\\Delta/g, '德尔塔');
+            result = result.replace(/≥/g,'大于等于').replace(/≤/g,'小于等于').replace(/>/g,'大于').replace(/</g,'小于').replace(/=/g,'等于');
+            result = result.replace(/\\cdot|\\times/g, '乘以');
+            result = result.replace(/\$/g, '').replace(/\\/g, '').replace(/[{}]/g, '');
+            return result;
+        }
+
+        function getSlideDuration(slideNum) {
+            const speech = speechScript[slideNum] || subtitleScript[slideNum];
+            if (!speech) return 5000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = charCount * 200;
+            console.log(`第${slideNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         function updateStatus(message, type = 'normal') { const indicator = document.getElementById('statusIndicator'); if (indicator) { indicator.textContent = message; indicator.className = 'status-indicator'; if (type === 'connected') indicator.classList.add('connected'); else if (type === 'error') indicator.classList.add('error'); else if (type === 'connecting') indicator.classList.add('connecting'); } }
 
         function waitForSDK() {
