@@ -726,10 +726,13 @@
         }
 
         function getPageDuration(pageNum) {
-            const durations = {
-                1: 20000, 2: 22000, 3: 24000, 4: 22000, 5: 20000, 6: 15000
-            };
-            return durations[pageNum] || 15000;
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 400); // 每字400ms，确保虚拟人有足够时间讲完
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         async function startAutoPlay() {
