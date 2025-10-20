@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="zh-CN">
 <head>
@@ -818,8 +818,7 @@
                     .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成 frame_stop:', data);
                         if (isAutoPlaying && currentPage < totalPages) {
-                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
-                            setTimeout(() => {
+                            const __dwell = ((typeof __extraWaitMap!=="undefined" && __extraWaitMap[currentPage])||0) + 1500; console.log(`⏳ 本页追加停留 ${__dwell-1500}ms`); setTimeout(() => {
                                 if (isAutoPlaying && currentPage < totalPages) {
                                     currentPage++;
                                     switchToPage(currentPage);
@@ -854,7 +853,8 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
             if (!content) return;
             try {
                 await avatarPlatform.writeText(content, {nlp: false});

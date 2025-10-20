@@ -1044,8 +1044,110 @@
 </div>
 </div>
 </div>
+<!-- 第10页：正弦函数积分例题 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：正弦函数积分</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">计算 $\int_0^{\pi} \sin x \, dx$</p>
+<ul class="chalk-list">
+<li class="chalk-text"><strong style="color: #81c784;">步骤1：</strong>找原函数 $F(x) = -\cos x$</li>
+<li class="chalk-text"><strong style="color: #81c784;">步骤2：</strong>代入上限 $F(\pi) = -\cos \pi = 1$</li>
+<li class="chalk-text"><strong style="color: #81c784;">步骤3：</strong>代入下限 $F(0) = -\cos 0 = -1$</li>
+<li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$1 - (-1) = 2$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第11页：原函数的常数项 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">注意事项：原函数的常数</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">原函数不唯一</p>
+<ul class="chalk-list">
+<li class="chalk-text">$F(x) = x^2$ 和 $F(x) = x^2 + 5$ 都是 $2x$ 的原函数</li>
+<li class="chalk-text">它们相差一个常数 $C$</li>
+<li class="chalk-text">计算定积分时：$F(b) - F(a)$ 会让常数抵消</li>
+<li class="chalk-text">所以不影响最终结果</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第12页：连续性要求 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">注意事项：连续性</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">被积函数必须连续</p>
+<ul class="chalk-list">
+<li class="chalk-text">如果函数在区间内有间断点</li>
+<li class="chalk-text">不能直接使用牛顿莱布尼茨公式</li>
+<li class="chalk-text">需要分段处理</li>
+<li class="chalk-text">或使用广义积分方法</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第13页：几何意义 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">几何意义</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">面积 = 原函数的高度差</p>
+<ul class="chalk-list">
+<li class="chalk-text">定积分 = 曲线下的面积</li>
+<li class="chalk-text">$F(b) - F(a)$ = 原函数在两端点的高度差</li>
+<li class="chalk-text">公式揭示：面积等于高度变化</li>
+<li class="chalk-text">这是一个深刻的几何事实</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第14页：物理意义 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">物理意义</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">位移 = 位置的变化</p>
+<ul class="chalk-list">
+<li class="chalk-text">如果 $f(t)$ 是速度</li>
+<li class="chalk-text">积分 $\int_a^b f(t) dt$ 就是位移</li>
+<li class="chalk-text">$F(b) - F(a)$ 是位置函数的差值</li>
+<li class="chalk-text">积分和原函数在物理上统一</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第15页：微积分基本定理 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">微积分基本定理</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">微分与积分的桥梁</p>
+<ul class="chalk-list">
+<li class="chalk-text">微分：求变化率（导数）</li>
+<li class="chalk-text">积分：求累加（原函数）</li>
+<li class="chalk-text">公式揭示：两者互为逆运算</li>
+<li class="chalk-text">这是微积分最核心的思想</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text" style="color: #ffab40; font-weight: 600;">掌握这个公式，你就掌握了微积分的精髓！</p>
+</div>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
 <!-- 导航按钮 -->
 <div class="control-bar">
+<div style="color: #ecf0f1; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+            第 <span id="currentPageControl">1</span> 页 / 共 15 页
+        </div>
 <button class="btn" id="prevBtn" onclick="changePage(-1)">上一页</button>
 <button class="btn" id="nextBtn" onclick="changePage(1)">下一页</button>
 <button class="btn" id="startBtn" onclick="startTeaching()" style="border-color:#4CAF50;color:#4CAF50">开始讲课</button>
@@ -1086,7 +1188,7 @@
     </script>
 <script>
         let currentPage = 1;
-        const totalPages = 9;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
@@ -1099,10 +1201,16 @@
             3: "牛顿的思路是从物理出发，位置、速度、加速度是一条链。求导把位置变成速度、速度变成加速度；积分则将加速度累积为速度、再累积为位置。所以积分与求导是互逆的物理过程。",
             4: "莱布尼茨的思路：从几何出发，研究切线与面积的问题。他引入了 dx、dy 和 ∫ 等符号，将切线斜率与面积问题统一在一个符号体系中，也揭示了微分与积分在几何上的互逆关系。",
             5: "累积的变化率等于总变化。就像水箱例子，流速 f(t) 的积分给出水位的总变化量，这与 F(b)-F(a) 描述的是同一件事——一个从过程看，一个从结果看。",
-            6: "为什么公式成立？把区间切成很多小段，F(x_i)-F(x_{i-1}) 累加时中间项两两抵消，仅留下首尾 F(b)-F(a)。",
+            6: "为什么公式成立？把区间切成很多小段，F(x_i)-F(x_{i-1}) 累加时中间项两两抵消，仅留下首尾 F(b)-F(a)。这个证明方法叫做伸缩求和法，是理解公式的关键。",
             7: "∫_a^b f(x)dx = F(b) - F(a)。要计算定积分，只需找到原函数 F(x)，再用终点值减去起点值，无穷求和的难题就变为简单的减法。",
             8: "以 f(x)=2x 在 [1,3] 为例。第一步找原函数 F(x)=x²；第二步代入端点 F(3)=9、F(1)=1；第三步做减法 9-1=8。无需切分与求和，三步完成计算。",
-            9: "牛顿-莱布尼茨公式连接了微分与积分两大分支。微分求变化率，积分求累加，二者互为逆运算，这一联系让我们能用简洁的计算解决复杂问题。"
+            9: "让我们再看一个例子：计算从0到π的正弦函数的定积分。正弦函数的原函数是负的余弦函数，所以积分等于负余弦π减去负余弦0，结果是1减去负1，等于2。",
+            10: "使用公式时要注意什么？第一，原函数不唯一，但相差一个常数C。计算定积分时，F(b)减F(a)会让常数C抵消，所以不影响结果。第二，被积函数必须在区间上连续。",
+            11: "如果被积函数有间断点怎么办？比如在区间内有跳跃或无穷间断点，就不能直接用牛顿莱布尼茨公式。这时需要分段处理，或者使用广义积分的方法。",
+            12: "公式的几何意义是什么？定积分表示曲线下的面积，而F(b)减F(a)表示原函数在两端点的高度差。公式告诉我们：曲线下的面积等于原函数的高度变化。这是一个深刻的几何事实。",
+            13: "公式的物理意义也很重要。如果f(t)是速度，那么积分就是位移。F(b)减F(a)正好是位置函数在时刻b和时刻a的差值，也就是位移。这说明积分和原函数在物理上是统一的。",
+            14: "牛顿莱布尼茨公式为什么被称为微积分基本定理？因为它建立了微分和积分之间的桥梁。微分是求导，积分是求原函数，公式告诉我们这两个运算互为逆运算。这是微积分最核心的思想。",
+            15: "总结一下：牛顿莱布尼茨公式连接了微分与积分两大分支。它不仅提供了计算定积分的实用方法，更揭示了数学、物理、几何之间的深刻联系。掌握这个公式，你就掌握了微积分的精髓。"
         };
 
         function updateStatus(message, type = 'normal') {
@@ -1118,14 +1226,15 @@
         function changePage(direction) {
             const pages = document.querySelectorAll('.page');
             pages[currentPage - 1].classList.remove('active');
-            
+
             currentPage += direction;
-            
+
             if (currentPage < 1) currentPage = 1;
             if (currentPage > totalPages) currentPage = totalPages;
-            
+
             pages[currentPage - 1].classList.add('active');
-            document.getElementById('currentPage').textContent = currentPage;
+            const pageDisplay = document.getElementById('currentPage') || document.getElementById('currentPageControl');
+            if (pageDisplay) pageDisplay.textContent = currentPage;
             
             // 更新按钮状态
             document.getElementById('prevBtn').disabled = currentPage === 1;
@@ -1336,41 +1445,29 @@
         }
 
         // 获取每页的固定播放时长 - 基于实际测试的语音播放规律
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
         function getPageDuration(pageNum) {
-            /*
-            ⏰ 牛顿-莱布尼茨公式课程时间设计 (基于语音播放测试)：
-
-            📊 数据分析：
-            第1页: 原函数概念 - 65字，基础概念
-            第2页: 历史意义 - 72字，需要强调重要性
-            第3页: 牛顿思路 - 68字，物理角度
-            第4页: 莱布尼茨思路 - 71字，几何角度
-            第5页: 核心洞察 - 63字，关键理解
-            第6页: 直观证明 - 58字，数学推理
-            第7页: 伟大公式 - 45字，公式展示
-            第8页: 实际计算 - 52字，具体例子
-            第9页: 总结 - 69字，课程总结
-
-            🧮 实用公式：
-            概念解释 = 4.0 字/秒 (需要理解时间)
-            公式推导 = 3.5 字/秒 (需要更多思考)
-            计算演示 = 4.5 字/秒 (相对直观)
-
-            🎯 总播放时长: 约140秒 (2分20秒)
-            📹 适合深度教学的节奏设计
-            */
-            const durations = {
-                1: 16000,  // 65字，原函数概念，基础重要
-                2: 14000,  // 72字，历史意义，需要强调
-                3: 17000,  // 68字，牛顿思路，物理概念
-                4: 17000,  // 71字，莱布尼茨思路，几何概念
-                5: 16000,  // 63字，核心洞察，关键理解
-                6: 13000,  // 58字，直观证明，数学推理
-                7: 14000,  // 45字，公式展示，相对简短
-                8: 15000,  // 52字，实际计算，具体演示
-                9: 17000   // 69字，课程总结，需要强调
-            };
-            return durations[pageNum] || 16000; // 默认16秒
+            const speech = pageContent[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 400); // 每字400ms，确保虚拟人有足够时间讲完
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         // 获取页面标题 - 用于状态显示
@@ -1384,7 +1481,13 @@
                 6: "直观证明",
                 7: "伟大的公式",
                 8: "实际计算",
-                9: "总结"
+                9: "正弦函数例题",
+                10: "正弦函数积分",
+                11: "原函数的常数",
+                12: "连续性要求",
+                13: "几何意义",
+                14: "物理意义",
+                15: "微积分基本定理"
             };
             return titles[pageNum] || `第${pageNum}页`;
         }

@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>07_7.4_本章回顾与习题精讲</title>
 <style>
-            width: 100vw;
-        }
 
         .blackboard {
             width: 100vw;
@@ -283,8 +281,7 @@
                 }
             }
         };
-</style>
-    </script>
+</script>
 <script async="" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
@@ -646,23 +643,25 @@
         // 播放完成标记（供OBS检测）
         window.playbackFinished = false;
 
-    try {
-        const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+    (async () => {
+        try {
+            const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
 
-        window.AvatarPlatform = AvatarPlatform;
-        window.SDKEvents = SDKEvents;
-        window.PlayerEvents = PlayerEvents;
-        window.RecorderEvents = RecorderEvents;
-        window.UserMedia = UserMedia;
+            window.AvatarPlatform = AvatarPlatform;
+            window.SDKEvents = SDKEvents;
+            window.PlayerEvents = PlayerEvents;
+            window.RecorderEvents = RecorderEvents;
+            window.UserMedia = UserMedia;
 
-        console.log('✅ 讯飞官方SDK模块已加载');
-        console.log('SDK版本:', AvatarPlatform.getVersion());
+            console.log('✅ 讯飞官方SDK模块已加载');
+            console.log('SDK版本:', AvatarPlatform.getVersion());
 
-    } catch (error) {
-        console.error('❌ SDK模块加载失败:', error);
-    }
+        } catch (error) {
+            console.error('❌ SDK模块加载失败:', error);
+        }
 
-    window.dispatchEvent(new CustomEvent('sdkReady'));
+        window.dispatchEvent(new CustomEvent('sdkReady'));
+    })();
 </script>
 
 <script>
@@ -1051,4 +1050,3 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>07_7.4_本章回顾与习题精讲</title>
 <style>
-

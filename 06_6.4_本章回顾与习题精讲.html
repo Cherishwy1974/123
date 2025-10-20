@@ -301,10 +301,95 @@
 </div>
 <div class="right-panel"></div>
 </div>
+<!-- 第11页：定积分概念回顾 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">定积分概念回顾</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">四个步骤</p>
+<ul class="chalk-list">
+<li class="chalk-text"><strong style="color: #81c784;">分割：</strong>把区间分成n个小段</li>
+<li class="chalk-text"><strong style="color: #81c784;">近似：</strong>用小矩形近似曲边梯形</li>
+<li class="chalk-text"><strong style="color: #81c784;">求和：</strong>把所有小矩形面积加起来</li>
+<li class="chalk-text"><strong style="color: #81c784;">取极限：</strong>n趋向无穷得到精确值</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第12页：牛顿莱布尼茨公式回顾 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">牛顿莱布尼茨公式</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">微积分基本定理</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_a^b f(x)dx = F(b) - F(a)$$</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">定积分 = 原函数在上下限的差值</li>
+<li class="chalk-text">无穷求和 → 简单减法</li>
+<li class="chalk-text">微积分最伟大的发现</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第13页：换元积分法回顾 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">换元积分法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">处理复杂积分的技巧</p>
+<ul class="chalk-list">
+<li class="chalk-text">选择合适的替换变量</li>
+<li class="chalk-text">转换积分上下限</li>
+<li class="chalk-text">常见替换：三角、指数、对数</li>
+<li class="chalk-text">记得同步变换所有元素</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第14页：定积分的应用 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">定积分的应用</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">广泛的应用领域</p>
+<ul class="chalk-list">
+<li class="chalk-text"><strong style="color: #81c784;">几何：</strong>面积、体积、弧长</li>
+<li class="chalk-text"><strong style="color: #81c784;">物理：</strong>功、质心、转动惯量</li>
+<li class="chalk-text"><strong style="color: #81c784;">工程：</strong>流量、压力、应力</li>
+<li class="chalk-text"><strong style="color: #81c784;">经济：</strong>消费者剩余、总收益</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第15页：本章总结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">本章总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定积分的力量</p>
+<ul class="chalk-list">
+<li class="chalk-text">连接离散与连续</li>
+<li class="chalk-text">连接局部与整体</li>
+<li class="chalk-text">从概念到计算</li>
+<li class="chalk-text">从理论到应用</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text" style="color: #ffab40; font-weight: 600;">多做练习，熟练掌握这个强大工具！</p>
+</div>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
 </div>
 <div class="control-bar">
 <div style="color: #ecf0f1; margin-bottom: 1rem; text-align: center; font-size: 12px;">
-            第 <span id="currentPageControl">1</span> 页 / 共 10 页
+            第 <span id="currentPageControl">1</span> 页 / 共 15 页
         </div>
 <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
 <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
@@ -335,11 +420,27 @@
         let isConnected = false;
         let isTeaching = false;
         let currentPage = 1;
-        const totalPages = 10;
+        const totalPages = 15;
         let isAutoPlaying = false;
         let speechFinishedResolve = null;
 
-        const subtitleScript = { 1: "本节回顾定积分核心：理解累积量思想，串联牛顿莱布尼茨、换元与面积应用。", 2: "题目：计算从零到一的x除以一加x平方的定积分，先识别结构与方法。", 3: "分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。", 4: "令u等于一加x平方，du等于二x dx；上下限随u从一到二，积分转化为基本形式。", 5: "结果为二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。", 6: "题目：求y等于正弦x与x轴在零到派围成的面积；先确认区间与函数符号。", 7: "面积表示为定积分，S等于积分零到派正弦x dx；该区间内函数非负。", 8: "原函数是负的余弦x，代入上限派和下限零，结果是一加一等于二。", 9: "面积题关键在确定区间与函数符号，防止把负面积算入；必要时做分段。", 10: "总结：把握累积量思想，熟练牛顿莱布尼茨与换元；面积应用常考，建议多练习。" };
+        const subtitleScript = {
+            1: "本节回顾定积分核心：理解累积量思想，串联牛顿莱布尼茨、换元与面积应用。",
+            2: "题目：计算从零到一的x除以一加x平方的定积分，先识别结构与方法。",
+            3: "分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。",
+            4: "令u等于一加x平方，du等于二x dx；上下限随u从一到二，积分转化为基本形式。",
+            5: "结果为二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。",
+            6: "题目：求y等于正弦x与x轴在零到派围成的面积；先确认区间与函数符号。",
+            7: "面积表示为定积分，S等于积分零到派正弦x dx；该区间内函数非负。",
+            8: "原函数是负的余弦x，代入上限派和下限零，结果是一加一等于二。",
+            9: "面积题关键在确定区间与函数符号，防止把负面积算入；必要时做分段。",
+            10: "总结：把握累积量思想，熟练牛顿莱布尼茨与换元；面积应用常考，建议多练习。",
+            11: "定积分的概念回顾：定积分是曲边梯形面积的精确值，通过分割、近似、求和、取极限四个步骤得到。它的本质是无限细分后的累加，体现了以直代曲的思想。",
+            12: "牛顿莱布尼茨公式是计算定积分的核心工具。它告诉我们：定积分等于原函数在上下限的差值。这个公式把无穷求和问题转化为简单的减法，是微积分最伟大的发现之一。",
+            13: "换元积分法是处理复杂积分的重要技巧。关键是选择合适的替换变量，同时要记得转换积分上下限。常见的替换包括三角替换、指数替换和对数替换。",
+            14: "定积分的应用非常广泛。除了求面积，还可以求体积、弧长、功、质心等。在物理、工程、经济学中都有重要应用。掌握定积分，就掌握了解决实际问题的强大工具。",
+            15: "本章总结：定积分连接了离散与连续、局部与整体。从概念到计算，从理论到应用，定积分展现了数学的力量和美。希望大家多做练习，熟练掌握这个重要工具。"
+        };
 
         // durations computed dynamically via getPageDuration()
 
