@@ -769,13 +769,16 @@
         const autoPlayDurations = {
             1: 16000,
             2: 20000,
-            3: 20000,
-            4: 20000,
-            5: 22000,
-            6: 20000
+        const subtitleScript = {
+            1: `一阶线性方程：标准形式y撇加P(x)乘以y等于Q(x)。`,
+            2: `积分因子μ等于e的积分P(x)dx次方，两边同乘可化为导数形式。`,
+            3: `例题A：y撇减2y等于e的3x次方，按步骤求出通解。`,
+            4: `例题B：y撇加y等于e的负x次方，积分因子为e的x次方。`,
+            5: `应用：RC电路充电方程，解为U等于E括号1减e的负t除以RC次方。`,
+            6: `通解公式：y等于e的负积分P(x)dx乘以括号积分Q(x)e的积分P(x)dx次方dx加C。`,
+            7: `误区：积分因子漏符号、漏常数C、未检查初值；务必回代核验。`,
+            8: `小结：标准形式+因子+练习巩固；下节扩展到更一般情形。`,
         };
-
-        // 虚拟人相关函数
         function updateStatus(message, type = 'normal') {
             const indicator = document.getElementById('statusIndicator');
             if (indicator) {
