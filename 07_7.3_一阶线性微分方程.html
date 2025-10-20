@@ -324,7 +324,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 8 页</div>
 <!-- 第1页：一阶线性微分方程的标准形式 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -750,7 +750,7 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 8;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
@@ -1108,4 +1108,24 @@
         });
     </script>
 </body>
+
+<div class="page" id="page7">
+  <div class="left-panel">
+    <h1 class="title chalk-text">误区与提醒</h1>
+    <div class="board-content">
+      <p class="chalk-text">常见误区：积分因子写错；漏写常数C；未回代检查。</p>
+    </div>
+  </div>
+  <div class="right-panel"></div>
+</div>
+
+<div class="page" id="page8">
+  <div class="left-panel">
+    <h1 class="title chalk-text">小结与展望</h1>
+    <div class="board-content">
+      <p class="chalk-text">小结：标准形式、积分因子、两例掌握；下节进入应用强化。</p>
+    </div>
+  </div>
+  <div class="right-panel"></div>
+</div>
 </html>
