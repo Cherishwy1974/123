@@ -1,203 +1,3 @@
-﻿<!DOCTYPE html>
-
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>第07章 微分方程的基本概念</title>
-<link href="./noto-serif-sc.css" rel="stylesheet"/>
-<style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
-            background: #1a1a2e;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        .blackboard {
-            width: 100vw;
-            height: 100vh;
-            background: #1a1a2e;
-            position: relative;
-            display: flex;
-        }
-
-        .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s ease;
-            padding: 30px;
-            display: flex;
-        }
-
-        .page.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .left-panel {
-            width: 35%;
-            height: 100%;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .right-panel {
-            width: 65%;
-            height: 100%;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: visible;
-        }
-
-        .chalk-text {
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: normal;
-            letter-spacing: 0.5px;
-            line-height: 1.5;
-        }
-
-        .title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #e1bee7;
-        }
-
-        .emphasis {
-            color: #FF6B6B;
-            font-size: 18px;
-        }
-
-        .formula-box {
-            background: rgba(255,224,102,0.1);
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px dashed rgba(255,224,102,0.4);
-            margin: 15px 0;
-            text-align: center;
-        }
-
-        .chalk-list {
-            list-style: none;
-            padding-left: 0;
-            margin: 15px 0;
-        }
-
-        .chalk-list li {
-            position: relative;
-            padding-left: 20px;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        .chalk-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #FFE066;
-        }
-
-        .svg-animation {
-            width: 100%;
-            height: auto;
-            max-width: none;
-            max-height: none;
-            transform: translateX(-70px) scale(2);
-            transform-origin: left center;
-        }
-        /* 统一视觉：取消发光，文字加粗，圆角矩形 */
-        svg.svg-animation * { filter: none !important; }
-        svg.svg-animation text { font-weight: bold; }
-        svg.svg-animation rect { rx: 10px; }
-
-        .page-indicator {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #FFE066;
-            font-size: 16px;
-            z-index: 100;
-        }
-
-        .small-text {
-            font-size: 14px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .mjx-chtml {
-            color: #ffffff !important;
-            font-size: 16px !important;
-        }
-
-        .status-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border-radius: 5px;
-            font-size: 12px;
-            z-index: 100;
-            display: none !important;
-        }
-
-        .avatar-container {
-            position: fixed;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 975px;
-            height: 1105px;
-            overflow: hidden;
-            z-index: 50;
-            pointer-events: none;
-            background: transparent;
-        }
-        
-        .wrapper { 
-            width: 100%; 
-            height: 100%; 
-            background: transparent; 
-            pointer-events: auto; 
-        }
-
-        .subtitle-area {
-            position: absolute;
-            bottom: 8px;
-            left: 20px;
-            right: 20px;
-            min-height: 36px;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 14px;
-            text-align: center;
-            padding: 0 16px;
-            z-index: 110;
-            text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7);
             pointer-events: none;
         }
 
@@ -326,7 +126,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 15 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 8 页</div>
 <!-- 第1页：什么是微分方程 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -797,139 +597,6 @@
 </div>
 </div>
 </div>
-<!-- 第9页：药物衰减模型 -->
-<div class="page" id="page9">
-<div class="left-panel">
-<h1 class="title chalk-text">药物衰减模型</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">医学中的微分方程</p>
-<div class="formula-box">
-<p class="chalk-text">$$\frac{dC}{dt} = -kC$$</p>
-<p class="chalk-text small-text">C: 药物浓度，k: 衰减常数</p>
-</div>
-<ul class="chalk-list">
-<li class="chalk-text">衰减率与当前浓度成正比</li>
-<li class="chalk-text">解为指数衰减函数</li>
-<li class="chalk-text">用于计算给药间隔</li>
-</ul>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第10页：线性微分方程 -->
-<div class="page" id="page10">
-<div class="left-panel">
-<h1 class="title chalk-text">线性微分方程</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">线性方程的标准形式</p>
-<div class="formula-box">
-<p class="chalk-text">$$\frac{dy}{dx} + P(x)y = Q(x)$$</p>
-</div>
-<p class="chalk-text emphasis">叠加原理</p>
-<ul class="chalk-list">
-<li class="chalk-text">若y₁、y₂是解</li>
-<li class="chalk-text">则C₁y₁ + C₂y₂也是解</li>
-<li class="chalk-text">这是线性方程的重要性质</li>
-</ul>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第11页：非线性微分方程 -->
-<div class="page" id="page11">
-<div class="left-panel">
-<h1 class="title chalk-text">非线性微分方程</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">非线性方程的特点</p>
-<div class="formula-box">
-<p class="chalk-text">$$\frac{dy}{dx} = y^2$$</p>
-<p class="chalk-text small-text">（含有y的高次项）</p>
-</div>
-<ul class="chalk-list">
-<li class="chalk-text">没有通用解法</li>
-<li class="chalk-text">需要数值方法求解</li>
-<li class="chalk-text">某些可转化为线性方程</li>
-</ul>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第12页：显式解与隐式解 -->
-<div class="page" id="page12">
-<div class="left-panel">
-<h1 class="title chalk-text">显式解与隐式解</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">显式解</p>
-<div class="formula-box">
-<p class="chalk-text">$$y = f(x)$$</p>
-<p class="chalk-text small-text">直接表达，便于计算</p>
-</div>
-<p class="chalk-text emphasis">隐式解</p>
-<div class="formula-box">
-<p class="chalk-text">$$F(x, y) = 0$$</p>
-<p class="chalk-text small-text">间接表达，同样有效</p>
-</div>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第13页：方向场 -->
-<div class="page" id="page13">
-<div class="left-panel">
-<h1 class="title chalk-text">方向场</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">图解法理解微分方程</p>
-<ul class="chalk-list">
-<li class="chalk-text">在平面上每个点画切线方向</li>
-<li class="chalk-text">直观展示解曲线的走向</li>
-<li class="chalk-text">无需求出解析解</li>
-<li class="chalk-text">帮助理解方程的性质</li>
-</ul>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第14页：存在唯一性定理 -->
-<div class="page" id="page14">
-<div class="left-panel">
-<h1 class="title chalk-text">存在唯一性定理</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">定理内容</p>
-<div class="formula-box">
-<p class="chalk-text">对于 $\frac{dy}{dx} = f(x,y)$</p>
-<p class="chalk-text small-text">若f和∂f/∂y连续</p>
-<p class="chalk-text small-text">则通过任意点的解唯一</p>
-</div>
-<ul class="chalk-list">
-<li class="chalk-text">保证解的存在性</li>
-<li class="chalk-text">保证解的唯一性</li>
-<li class="chalk-text">求解的理论基础</li>
-</ul>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第15页：本节总结 -->
-<div class="page" id="page15">
-<div class="left-panel">
-<h1 class="title chalk-text">本节总结</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">核心知识点</p>
-<ul class="chalk-list">
-<li class="chalk-text">微分方程的定义与分类</li>
-<li class="chalk-text">通解与特解的区别</li>
-<li class="chalk-text">线性与非线性方程</li>
-<li class="chalk-text">实际应用案例</li>
-<li class="chalk-text">存在唯一性定理</li>
-</ul>
-<p class="chalk-text emphasis">下节预告</p>
-<div class="formula-box">
-<p class="chalk-text">可分离变量的微分方程求解方法</p>
-</div>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
 </div>
 <!-- 控制栏 -->
 <div class="control-bar">
@@ -970,7 +637,7 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 15;
+        const totalPages = 8;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
@@ -978,21 +645,14 @@
 
         // === 字幕脚本设置 ===
         const subtitleScript = {
-            1: `欢迎来到微分方程的学习。微分方程是高等数学中非常重要的一章，它描述的是变化率与函数之间的关系。什么是微分方程呢？简单来说，微分方程就是含有未知函数及其导数的方程。比如，如果我们知道一个物体的速度是如何随时间变化的，我们就可以用微分方程来描述它的位置。`,
-            2: `让我们看一个具体的例子。假设一个物体做自由落体运动，它的加速度是重力加速度g。我们知道加速度是速度的导数，速度是位置的导数。所以我们可以写出微分方程：d²s除以dt²等于负g。这就是一个二阶微分方程，因为它包含了二阶导数。`,
-            3: `微分方程的解分为两种：通解和特解。通解是含有任意常数的解，它表示一族曲线。比如，刚才那个自由落体方程的通解是s等于负二分之一g乘以t的平方加上C₁乘以t加上C₂。这里的C₁和C₂就是任意常数。`,
-            4: `特解是满足特定初值条件的解。比如，如果我们知道物体在t等于零时的位置是s₀，速度是v₀，我们就可以确定C₁和C₂的值，得到一个具体的解。这个过程叫做求特解。从通解到特解，我们需要利用初值条件来确定任意常数。`,
-            5: `微分方程的分类有很多种方法。最常见的是按阶数分类。阶数是指方程中出现的最高阶导数的阶数。比如，只含一阶导数的叫一阶微分方程，含二阶导数的叫二阶微分方程。在工程和物理中，一阶和二阶微分方程是最常见的，也是我们学习的重点。`,
-            6: `除了按阶数分类，我们还可以按次数分类。次数是指方程中未知函数及其导数的最高次幂。比如，dy除以dx等于y就是一次的，而dy除以dx等于y的平方就是二次的。一般来说，一次的微分方程比较容易求解。`,
-            7: `微分方程在现实生活中有非常广泛的应用。在物理学中，自由落体运动、弹簧振动、电路中的电流变化，都可以用微分方程来描述。牛顿冷却定律告诉我们，物体的温度变化率与温度差成正比，这也是一个微分方程。`,
-            8: `在生物学中，种群增长模型是一个经典的微分方程应用。如果种群的增长率与当前种群数量成正比，我们可以写出微分方程：dN除以dt等于rN，其中N是种群数量，r是增长率。这个方程的解是指数增长函数。`,
-            9: `在医学中，药物在体内的衰减也可以用微分方程来描述。假设药物的衰减率与当前浓度成正比，我们可以写出微分方程：dC除以dt等于负kC，其中C是药物浓度，k是衰减常数。这个方程的解是指数衰减函数。`,
-            10: `微分方程还可以分为线性和非线性两大类。线性微分方程是指未知函数及其导数都是一次的，比如dy除以dx加上P(x)乘以y等于Q(x)。线性方程有一个重要的性质叫叠加原理：如果y₁和y₂都是方程的解，那么它们的线性组合也是解。`,
-            11: `非线性微分方程是指未知函数或其导数出现了高次项或乘积项，比如dy除以dx等于y的平方。非线性方程一般没有通用的解法，很多时候需要用数值方法来求近似解。但是，某些特殊的非线性方程可以通过变量替换转化为线性方程。`,
-            12: `微分方程的解还可以分为显式解和隐式解。显式解是指能够直接写成y等于f(x)的形式，这种形式便于计算和分析。隐式解是指解以F(x,y)等于零的形式给出，虽然不如显式解直观，但同样是有效的解。`,
-            13: `有时候，我们无法求出微分方程的解析解，这时候可以用图解法来理解方程的性质。方向场就是一种图解方法，它在平面上的每个点画出解曲线的切线方向，从而直观地展示解的走向。`,
-            14: `微分方程的存在唯一性定理告诉我们，在什么条件下微分方程有解，以及解是否唯一。对于一阶微分方程dy除以dx等于f(x,y)，如果f和它的偏导数连续，那么通过任意一点的解曲线是唯一的。这个定理保证了我们求解的合理性。`,
-            15: `本节总结：我们学习了微分方程的定义、分类、解的形式，以及它在物理、生物、医学中的应用。掌握这些基本概念是后续学习的基础。下一节我们将学习可分离变量的微分方程的求解方法，这是最基本也是最重要的求解技巧。`
+            1: `微分方程的定义：含未知函数及其导数的方程，描述变化率与函数的关系。`,
+            2: `通解：含任意常数的解，表示一族曲线；特解：满足初值条件的具体解。`,
+            3: `从通解到特解：利用初值确定常数C，得到唯一曲线。`,
+            4: `分类：按阶与次数；一阶与二阶是基础且常考。`,
+            5: `现实应用：自由落体、牛顿冷却律描述物理过程；种群增长、药物衰减模型生物现象。`,
+            6: `线性方程：关于因变量一次的形式，具有叠加原理，易求解；非线性方程无通用解法，需数值方法。`,
+            7: `显式解：直接表达y等于f(x)的形式，便于计算；隐式解为F(x,y)等于零，同样有效。`,
+            8: `本节总结：掌握微分方程的定义、分类、解的形式；理解基本概念是后续学习的基础，下节学习可分离变量的求解方法。`,
         };
 
         // durations computed at runtime based on translated length
@@ -1061,7 +721,7 @@
             if(!speech) return 6000;
             const translated = translateMathToSpeech(speech);
             const charCount = translated.length;
-            const duration = Math.max(6000, charCount * 400); // 每字400ms，确保虚拟人有足够时间讲完
+            const duration = Math.max(6000, charCount * 200);
             console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }
@@ -1152,7 +812,7 @@
                                         }
                                     }, 800);
                                 }
-                            }, 500); // 虚拟人讲完后500ms切换页面
+                            }, 1500);
                         }
                     })
                     .on('tts_duration', (data) => {
