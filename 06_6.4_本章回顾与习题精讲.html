@@ -198,12 +198,6 @@
 </div>
 <!-- 第4页：章末总结 -->
 <div class="page" id="page4">
-<div class="page" id="page5"><div class="left-panel"><h1 class="title chalk-text">例题1 · 题目</h1><div class="board-content"><p class="chalk-text">题目：计算从零到一的x除以一加x平方的定积分，先识别结构。</p></div></div><div class="right-panel"></div></div>
-<div class="page" id="page6"><div class="left-panel"><h1 class="title chalk-text">例题1 · 思路</h1><div class="board-content"><p class="chalk-text">分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。</p></div></div><div class="right-panel"></div></div>
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">例题1 · 步骤</h1><div class="board-content"><p class="chalk-text">令u等于一加x平方，du等于二x dx；上下限随u从一到二，转化为二分之一积分一到二的一除以u。</p></div></div><div class="right-panel"></div></div>
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">例题1 · 总结</h1><div class="board-content"><p class="chalk-text">结果是二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。</p></div></div><div class="right-panel"></div></div>
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题2 · 题目</h1><div class="board-content"><p class="chalk-text">求y等于正弦x与x轴在零到派围成的面积；先画图确认区间与函数符号。</p></div></div><div class="right-panel"></div></div>
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">例题2 · 思路</h1><div class="board-content"><p class="chalk-text">面积表示为定积分：S等于积分零到派正弦x dx；在该区间正弦非负，直接积分。</p></div></div><div class="right-panel"></div></div>
 <div class="left-panel">
 <h1 class="title chalk-text">章末总结</h1>
 <div class="board-content">
@@ -247,9 +241,70 @@
 </div>
 </div>
 </div>
+<!-- 第5页：例题1 · 题目 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 题目</h1>
+<div class="board-content">
+<p class="chalk-text">题目：计算从零到一的x除以一加x平方的定积分，先识别结构。</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第6页：例题1 · 思路 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 思路</h1>
+<div class="board-content">
+<p class="chalk-text">分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第7页：例题1 · 步骤 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 步骤</h1>
+<div class="board-content">
+<p class="chalk-text">令u等于一加x平方，du等于二x dx；上下限随u从一到二，转化为二分之一积分一到二的一除以u。</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第8页：例题1 · 总结 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 总结</h1>
+<div class="board-content">
+<p class="chalk-text">结果是二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第9页：例题2 · 题目 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2 · 题目</h1>
+<div class="board-content">
+<p class="chalk-text">求y等于正弦x与x轴在零到派围成的面积；先画图确认区间与函数符号。</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第10页：例题2 · 思路 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2 · 思路</h1>
+<div class="board-content">
+<p class="chalk-text">面积表示为定积分：S等于积分零到派正弦x dx；在该区间正弦非负，直接积分。</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+</div>
 <div class="control-bar">
-<div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
-            第 <span id="currentPageControl">1</span> 页 / 共 4 页
+<div style="color: #ecf0f1; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+            第 <span id="currentPageControl">1</span> 页 / 共 10 页
         </div>
 <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
 <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
@@ -481,9 +536,7 @@
                 startAutoPlay();
             }, 3000);
         });
-    </script>
-</body>
-</html>
+
         // 数学公式音译为中文（用于字数统计与TTS）
         function translateMathToSpeech(text){
             if(!text) return '';
@@ -508,4 +561,6 @@
             console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }
+    </script>
+</body>
 </html>

@@ -326,7 +326,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 4 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 8 页</div>
 <!-- 第1页：什么是微分方程 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -568,6 +568,235 @@
 </div>
 </div>
 </div>
+<!-- 第5页：微分方程的现实应用 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">微分方程的现实应用</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">物理应用</p>
+<ul class="chalk-list">
+<li class="chalk-text">自由落体：$m\frac{dv}{dt} = mg$</li>
+<li class="chalk-text">牛顿冷却律：$\frac{dT}{dt} = -k(T - T_0)$</li>
+</ul>
+<p class="chalk-text emphasis">生物应用</p>
+<ul class="chalk-list">
+<li class="chalk-text">种群增长：$\frac{dP}{dt} = rP$</li>
+<li class="chalk-text">药物浓度：$\frac{dC}{dt} = -\lambda C$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow5">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 坐标系 -->
+<line filter="url(#glow5)" stroke="#FFE066" stroke-width="2" x1="100" x2="600" y1="450" y2="450"></line>
+<line filter="url(#glow5)" stroke="#FFE066" stroke-width="2" x1="100" x2="100" y1="450" y2="50"></line>
+<!-- 指数增长曲线（种群） -->
+<path d="M 100 420 Q 200 350, 300 250 T 500 80" fill="none" filter="url(#glow5)" stroke="#4ECDC4" stroke-width="3">
+<animate attributename="stroke-dasharray" dur="3s" repeatcount="indefinite" values="0,1000;1000,0"></animate>
+</path>
+<!-- 指数衰减曲线（药物） -->
+<path d="M 100 150 Q 200 200, 300 320 T 500 420" fill="none" filter="url(#glow5)" stroke="#FF6B6B" stroke-width="3">
+<animate attributename="stroke-dasharray" begin="1.5s" dur="3s" repeatcount="indefinite" values="0,1000;1000,0"></animate>
+</path>
+<!-- 标注 -->
+<text fill="#4ECDC4" filter="url(#glow5)" font-size="16" font-weight="bold" x="350" y="70">种群增长</text>
+<text fill="#FF6B6B" filter="url(#glow5)" font-size="16" font-weight="bold" x="350" y="480">药物衰减</text>
+<text fill="#FFE066" filter="url(#glow5)" font-size="14" font-weight="bold" x="620" y="455">时间</text>
+<text fill="#FFE066" filter="url(#glow5)" font-size="14" font-weight="bold" x="80" y="40">数量</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：线性与非线性微分方程 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">线性与非线性</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">线性微分方程</p>
+<div class="formula-box">
+<p class="chalk-text">$y' + P(x)y = Q(x)$</p>
+<p class="chalk-text small-text">关于y的一次方程</p>
+</div>
+<p class="chalk-text emphasis">非线性微分方程</p>
+<div class="formula-box">
+<p class="chalk-text">$y' = y^2 + x$</p>
+<p class="chalk-text small-text">含y的高次或乘积</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">线性更易求解</li>
+<li class="chalk-text">非线性通常需数值方法</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow6">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<marker id="arrow4" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#4ECDC4" points="0,0 10,5 0,10"></polygon>
+</marker>
+<marker id="arrow5" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
+<polygon fill="#FF6B6B" points="0,0 10,5 0,10"></polygon>
+</marker>
+</defs>
+<!-- 左侧：线性 -->
+<g id="linear">
+<rect fill="rgba(78,205,196,0.2)" filter="url(#glow6)" height="200" rx="10" stroke="#4ECDC4" stroke-width="3" width="220" x="80" y="150"></rect>
+<text fill="#4ECDC4" filter="url(#glow6)" font-size="20" font-weight="bold" text-anchor="middle" x="190" y="200">线性方程</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="190" y="230">解析解存在</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="190" y="260">叠加原理</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="190" y="290">易求解</text>
+</g>
+<!-- 右侧：非线性 -->
+<g id="nonlinear">
+<rect fill="rgba(255,107,107,0.2)" filter="url(#glow6)" height="200" rx="10" stroke="#FF6B6B" stroke-width="3" width="220" x="400" y="150"></rect>
+<text fill="#FF6B6B" filter="url(#glow6)" font-size="20" font-weight="bold" text-anchor="middle" x="510" y="200">非线性方程</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="510" y="230">无通用解法</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="510" y="260">需数值方法</text>
+<text fill="#ffffff" filter="url(#glow6)" font-size="14" font-weight="bold" text-anchor="middle" x="510" y="290">难求解</text>
+</g>
+<!-- 箭头与复杂度 -->
+<path d="M 300 250 L 400 250" filter="url(#glow6)" marker-end="url(#arrow4)" stroke="#FFE066" stroke-width="3"></path>
+<text fill="#FFE066" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="240">复杂度增加</text>
+<!-- 底部标注 -->
+<text fill="#ffffff" filter="url(#glow6)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="520">分类标准：关于因变量的最高次数</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第7页：显式解与隐式解 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">显式解与隐式解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">显式解</p>
+<div class="formula-box">
+<p class="chalk-text">$$y = e^x + C$$</p>
+<p class="chalk-text small-text">直接表达 $y = f(x)$ 的形式</p>
+</div>
+<p class="chalk-text emphasis">隐式解</p>
+<div class="formula-box">
+<p class="chalk-text">$$x^2 + y^2 = C$$</p>
+<p class="chalk-text small-text">$F(x, y) = 0$ 的形式</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">显式解便于计算与应用</li>
+<li class="chalk-text">隐式解同样有效</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow7">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 坐标系 -->
+<line filter="url(#glow7)" stroke="#FFE066" stroke-width="2" x1="150" x2="600" y1="400" y2="400"></line>
+<line filter="url(#glow7)" stroke="#FFE066" stroke-width="2" x1="150" x2="150" y1="400" y2="100"></line>
+<!-- 显式解：指数曲线 -->
+<path d="M 150 380 Q 250 300, 350 200 T 550 80" fill="none" filter="url(#glow7)" stroke="#4ECDC4" stroke-width="3"></path>
+<text fill="#4ECDC4" filter="url(#glow7)" font-size="18" font-weight="bold" x="350" y="50">显式：$y = e^x + C$</text>
+<!-- 隐式解：圆形族 -->
+<circle cx="350" cy="250" fill="none" filter="url(#glow7)" r="60" stroke="#FFE066" stroke-width="2"></circle>
+<circle cx="350" cy="250" fill="none" filter="url(#glow7)" r="80" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"></circle>
+<circle cx="350" cy="250" fill="none" filter="url(#glow7)" r="100" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"></circle>
+<text fill="#FFE066" filter="url(#glow7)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="520">隐式：$x^2 + y^2 = C$</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第8页：总结与展望 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">本节总结与展望</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心知识点</p>
+<ul class="chalk-list">
+<li class="chalk-text">定义与应用领域</li>
+<li class="chalk-text">通解与特解的区别</li>
+<li class="chalk-text">阶与次数的分类</li>
+<li class="chalk-text">线性与非线性方程</li>
+<li class="chalk-text">显式解与隐式解</li>
+</ul>
+<p class="chalk-text emphasis">下节学习</p>
+<div class="formula-box">
+<p class="chalk-text">可分离变量的微分方程求解方法</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow8">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 大标题：学习路径 -->
+<text fill="#FFE066" filter="url(#glow8)" font-size="24" font-weight="bold" text-anchor="middle" x="350" y="80">微分方程学习路径</text>
+<!-- 五个步骤 -->
+<g id="step1">
+<circle cx="100" cy="200" fill="rgba(78,205,196,0.3)" filter="url(#glow8)" r="40" stroke="#4ECDC4" stroke-width="2"></circle>
+<text fill="#ffffff" filter="url(#glow8)" font-size="20" font-weight="bold" text-anchor="middle" x="100" y="205">1</text>
+<text fill="#4ECDC4" filter="url(#glow8)" font-size="14" font-weight="bold" text-anchor="middle" x="100" y="260">基本概念</text>
+</g>
+<g id="step2">
+<circle cx="200" cy="350" fill="rgba(255,224,102,0.3)" filter="url(#glow8)" r="40" stroke="#FFE066" stroke-width="2"></circle>
+<text fill="#ffffff" filter="url(#glow8)" font-size="20" font-weight="bold" text-anchor="middle" x="200" y="355">2</text>
+<text fill="#FFE066" filter="url(#glow8)" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="410">可分离</text>
+</g>
+<g id="step3">
+<circle cx="350" cy="450" fill="rgba(255,107,107,0.3)" filter="url(#glow8)" r="40" stroke="#FF6B6B" stroke-width="2"></circle>
+<text fill="#ffffff" filter="url(#glow8)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="455">3</text>
+<text fill="#FF6B6B" filter="url(#glow8)" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="510">一阶线性</text>
+</g>
+<g id="step4">
+<circle cx="500" cy="350" fill="rgba(78,205,196,0.3)" filter="url(#glow8)" r="40" stroke="#4ECDC4" stroke-width="2"></circle>
+<text fill="#ffffff" filter="url(#glow8)" font-size="20" font-weight="bold" text-anchor="middle" x="500" y="355">4</text>
+<text fill="#4ECDC4" filter="url(#glow8)" font-size="14" font-weight="bold" text-anchor="middle" x="500" y="410">高阶方程</text>
+</g>
+<g id="step5">
+<circle cx="600" cy="200" fill="rgba(255,224,102,0.3)" filter="url(#glow8)" r="40" stroke="#FFE066" stroke-width="2"></circle>
+<text fill="#ffffff" filter="url(#glow8)" font-size="20" font-weight="bold" text-anchor="middle" x="600" y="205">5</text>
+<text fill="#FFE066" filter="url(#glow8)" font-size="14" font-weight="bold" text-anchor="middle" x="600" y="260">应用</text>
+</g>
+<!-- 连接线 -->
+<path d="M 140 220 L 160 330" filter="url(#glow8)" stroke="#FFE066" stroke-width="2"></path>
+<path d="M 240 370 L 310 430" filter="url(#glow8)" stroke="#FFE066" stroke-width="2"></path>
+<path d="M 390 430 L 460 370" filter="url(#glow8)" stroke="#FFE066" stroke-width="2"></path>
+<path d="M 540 330 L 560 220" filter="url(#glow8)" stroke="#FFE066" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
 </div>
 <!-- 控制栏 -->
 <div class="control-bar">
@@ -620,10 +849,10 @@
             2: `通解：含任意常数的解，表示一族曲线；特解：满足初值条件的具体解。`,
             3: `从通解到特解：利用初值确定常数C，得到唯一曲线。`,
             4: `分类：按阶与次数；一阶与二阶是基础且常考。`,
-            5: `建模意义：微分方程广泛用于物理工程经济学，刻画动态系统。`,
-            6: `术语巩固：阶=最高阶导数的阶数；次数=最高阶导数的指数。`,
-            7: `解的形式：显式/隐式；注意可分离变量与线性方程的区别。`,
-            8: `小结：掌握定义、解、分类；下一节进入可分离变量方程。`,
+            5: `现实应用：自由落体、牛顿冷却律描述物理过程；种群增长、药物衰减模型生物现象。`,
+            6: `线性方程：关于因变量一次的形式，具有叠加原理，易求解；非线性方程无通用解法，需数值方法。`,
+            7: `显式解：直接表达y等于f(x)的形式，便于计算；隐式解为F(x,y)等于零，同样有效。`,
+            8: `本节总结：掌握微分方程的定义、分类、解的形式；理解基本概念是后续学习的基础，下节学习可分离变量的求解方法。`,
         };
 
         // durations computed at runtime based on translated length
