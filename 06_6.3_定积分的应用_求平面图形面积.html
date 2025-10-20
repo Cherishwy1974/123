@@ -725,6 +725,21 @@
             return titles[pageNum] || `第${pageNum}页`;
         }
 
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
         function getPageDuration(pageNum) {
             const speech = subtitleScript[pageNum];
             if(!speech) return 6000;
