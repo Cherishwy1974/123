@@ -111,7 +111,7 @@
 <p class="chalk-text emphasis">换元积分法</p>
 <ul class="chalk-list">
 <li class="chalk-text"><strong style="color: #81c784;">题目：</strong>$\int_0^1 \frac{x}{1+x^2} dx$</li>
-<li class="chalk-text"><strong style="color: #81c784;">换元：</strong>设 $u=1+x^2$，则 $du=2x dx$</li>
+<li class="chalk-text"><strong style="color: #81c784;">换元：</strong>设 $u=1+x^2$，则 $du=2x\,dx$</li>
 <li class="chalk-text"><strong style="color: #81c784;">计算：</strong>$\frac{1}{2}\int_1^2 \frac{du}{u}$</li>
 <li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$\frac{1}{2}[\ln u]_1^2 = \frac{1}{2}\ln 2$</li>
 </ul>
@@ -159,7 +159,7 @@
 <p class="chalk-text emphasis">正弦函数的面积</p>
 <ul class="chalk-list">
 <li class="chalk-text"><strong style="color: #81c784;">题目：</strong>求 $y=\sin x$ 与 $x$ 轴在 $[0,\pi]$ 间的面积</li>
-<li class="chalk-text"><strong style="color: #81c784;">设定：</strong>$S = \int_0^{\pi} \sin x dx$</li>
+<li class="chalk-text"><strong style="color: #81c784;">设定：</strong>$S = \int_0^{\pi} \sin x\,dx$</li>
 <li class="chalk-text"><strong style="color: #81c784;">计算：</strong>$[-\cos x]_0^{\pi}$</li>
 <li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$-\cos\pi - (-\cos 0) = 1 + 1 = 2$</li>
 </ul>
@@ -397,7 +397,8 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const raw = subtitleScript[pageNum];\n            const content = translateMathToSpeech(raw);
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
             if (!content) return;
 
             try {

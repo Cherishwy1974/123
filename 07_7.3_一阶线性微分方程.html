@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="zh-CN">
 <head>
@@ -162,18 +162,7 @@
             display: none !important;
         }
 
-        .avatar-container {
-            position: fixed;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 975px;
-            height: 1105px;
-            overflow: hidden;
-            z-index: 50;
-            pointer-events: none;
-            background: transparent;
-        }
+        .avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 420px; height: 480px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         
         .wrapper { 
             width: 100%; 
@@ -830,6 +819,30 @@
             });
         }
 
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
 
@@ -979,7 +992,7 @@
                 return;
             }
 
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];`n            const content = translateMathToSpeech(raw);
             if (!content) return;
 
             try {

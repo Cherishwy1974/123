@@ -506,6 +506,7 @@
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
+        let speechFinishedResolve = null;
 
         let currentPage = 1;
         const totalPages = 6;
@@ -633,6 +634,10 @@
                     })
                     .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成');
+                        if (speechFinishedResolve) {
+                            speechFinishedResolve('speech_finished');
+                            speechFinishedResolve = null;
+                        }
                     })
                     .on('tts_duration', (data) => {
                         console.log('📊 TTS时长信息:', data);
@@ -733,69 +738,53 @@
                 return;
             }
 
+            if (!avatarPlatform || !isConnected) {
+                await startTeaching();
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                if (!isConnected) {
+                    console.error("启动虚拟人失败，自动播放已取消。");
+                    return;
+                }
+            }
+
+            isAutoPlaying = true;
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
+            autoPlayBtn.textContent = '⏹️ 停止播放';
+            autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+
             try {
-                console.log('🎬 开始自动播放完整课程...');
-                isAutoPlaying = true;
-
-                // 首先启动虚拟人
-                if (!avatarPlatform || !isConnected) {
-                    console.log('🎬 启动虚拟人...');
-                    await startTeaching();
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                }
-
-                const autoPlayBtn = document.getElementById('autoPlayBtn');
-                autoPlayBtn.textContent = '⏹️ 停止播放';
-                autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-
-                console.log(`⏰ 倒计时: 1秒`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-
-                console.log('🚀 自动播放正式开始！');
-                document.body.classList.add('recording-mode');
-
-                console.log(`🚀 开始逐页播放，总共${totalPages}页`);
                 for (let page = 1; page <= totalPages; page++) {
-                    try {
-                        if (!isAutoPlaying) {
-                            console.log('🛑 自动播放被停止');
-                            break;
-                        }
+                    if (!isAutoPlaying) break;
 
-                        console.log(`\n🎬 === 开始播放第${page}页/${totalPages}页 ===`);
-                        switchToPage(page);
-                        console.log(`📄 已切换到第${page}页: ${getPageTitle(page)}`);
+                    console.log(`\n🎬 === 准备播放第 ${page}/${totalPages} 页 ===`);
+                    switchToPage(page);
+                    await new Promise(resolve => setTimeout(resolve, 200));
 
-                        console.log(`⏳ 等待页面渲染 0.8秒...`);
-                        await new Promise(resolve => setTimeout(resolve, 800));
+                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                    speakContent(page);
 
-                        const pageTime = getPageDuration(page);
-                        console.log(`⏰ 等待阅读时间 ${pageTime/1000}秒...`);
-                        await new Promise(resolve => setTimeout(resolve, pageTime));
+                    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('timeout'), getPageDuration(page)));
 
-                        if (page === totalPages) {
-                            console.log(`⏳ 最后一页，停顿2秒...`);
-                            await new Promise(resolve => setTimeout(resolve, 2000));
-                        }
+                    console.log(`[Sync] ⏳ 等待讲解完成或超时...`);
+                    const result = await Promise.race([speechPromise, timeoutPromise]);
 
-                        console.log(`✅ 第${page}页播放完成\n`);
+                    if (!isAutoPlaying) break;
 
-                    } catch (error) {
-                        console.error(`❌ 第${page}页播放过程出错:`, error);
-                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    if (result === 'timeout') {
+                        console.warn(`[Sync] ⚠️ 第 ${page} 页讲解超时! 继续下一页。`);
+                    } else {
+                        console.log(`[Sync] ✅ 第 ${page} 页讲解正常完成。`);
                     }
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
-
-                console.log('🎉 所有页面播放完成！');
-
-                if (isAutoPlaying) {
-                    console.log('⏰ 等待3秒后结束录制...');
-                    await new Promise(resolve => setTimeout(resolve, 3000));
-                    stopAutoPlay();
-                }
-
             } catch (error) {
-                console.error('❌ 自动播放失败:', error);
+                console.error('❌ 自动播放流程出现严重错误:', error);
+            } finally {
+                if (isAutoPlaying) {
+                    console.log('🎉 自动播放流程已全部完成');
+                    window.playbackFinished = true;
+                    document.title = "PLAYBACK_FINISHED";
+                }
                 stopAutoPlay();
             }
         }

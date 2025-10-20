@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="zh-CN">
 <head>
@@ -608,7 +608,7 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 4;
+        const totalPages = 8;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
@@ -616,18 +616,17 @@
 
         // === 字幕脚本设置 ===
         const subtitleScript = {
-            1: `欢迎来到微分方程的学习。微分方程是含有未知函数及其导数的方程，它描述了变化率与函数之间的关系。微分方程在物理、工程、经济等领域有广泛应用，是描述自然规律的重要数学工具。`,
-            2: `微分方程的解分为通解和特解。通解是包含任意常数C的解，它代表无穷多条曲线族。特解是满足特定初始条件的具体解，对应一条确定的曲线。从通解到特解，需要利用初始条件确定常数C的值。`,
-            3: `微分方程的分类主要看阶和次数。阶是方程中最高导数的阶数，比如一阶、二阶。次数是最高阶导数的指数。一般来说，阶数越高，方程越复杂，求解难度也越大。我们主要学习一阶和二阶微分方程。`,
-            4: `总结一下，微分方程的三要素是：定义、解的形式、以及分类方法。掌握这些基本概念是求解微分方程的基础。接下来我们将学习具体的求解方法，从最简单的可分离变量方程开始。`
+            1: `微分方程的定义：含未知函数及其导数的方程，描述变化率与函数的关系。`,
+            2: `通解：含任意常数的解，表示一族曲线；特解：满足初值条件的具体解。`,
+            3: `从通解到特解：利用初值确定常数C，得到唯一曲线。`,
+            4: `分类：按阶与次数；一阶与二阶是基础且常考。`,
+            5: `建模意义：微分方程广泛用于物理工程经济学，刻画动态系统。`,
+            6: `术语巩固：阶=最高阶导数的阶数；次数=最高阶导数的指数。`,
+            7: `解的形式：显式/隐式；注意可分离变量与线性方程的区别。`,
+            8: `小结：掌握定义、解、分类；下一节进入可分离变量方程。`,
         };
 
-        const autoPlayDurations = {
-            1: 15000,
-            2: 18000,
-            3: 18000,
-            4: 16000
-        };
+        // durations computed at runtime based on translated length
 
         // 虚拟人相关函数
         function updateStatus(message, type = 'normal') {
@@ -673,6 +672,30 @@
             });
         }
 
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
 
@@ -822,7 +845,8 @@
                 return;
             }
 
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
             if (!content) return;
 
             try {
