@@ -361,12 +361,12 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习二重积分的应用与总结。二重积分的第一个应用是计算平面图形的面积。面积等于对区域D积分1，即两个1的二重积分。例如椭圆x平方除以a平方加y平方除以b平方等于1的面积是πab。`,
-            2: `第二个应用是计算曲顶柱体的体积。体积等于对区域D积分高度函数f(x,y)。这是二重积分最直观的几何意义，曲顶柱体的体积就是函数在区域上的二重积分。`,
-            3: `第三个应用是计算薄板的质量。质量等于对区域D积分面密度函数ρ(x,y)。如果密度是均匀的，质量就等于密度乘以面积。如果密度不均匀，就需要用二重积分来计算。`,
-            4: `第四个应用是计算质心坐标。质心的x坐标等于x乘以密度的积分除以总质量，y坐标的计算类似。质心是物体质量分布的平衡点，在工程设计中非常重要。`,
-            5: `第五个应用是计算转动惯量。对x轴的转动惯量等于y平方乘以密度的二重积分，对y轴的转动惯量等于x平方乘以密度的积分。转动惯量描述物体旋转时的惯性大小。`,
-            6: `第9章总结：我们学习了二重积分的概念、几何意义、累次积分计算方法，以及五大应用：面积、体积、质量、质心、转动惯量。下一章将学习线性代数，包括行列式、矩阵和线性方程组。`
+            1: `应用一：面积。对区域积分常数一，得到区域面积，如椭圆面积πa b。`,
+            2: `应用二：体积。体积等于对区域积分高度函数，曲顶柱体的体积模型。`,
+            3: `应用三：质量。质量等于对区域积分面密度；均匀时等于密度乘面积。`,
+            4: `应用四：质心。坐标等于坐标乘密度的积分除以总质量，工程常用。`,
+            5: `应用五：转动惯量。对x轴为y平方乘密度积分；对y轴为x平方乘密度积分。`,
+            6: `第九章小结：概念、几何意义、累次积分与五大应用，下一章线性代数。`
         };
 
         const autoPlayDurations = {
@@ -396,6 +396,31 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -459,9 +484,11 @@
             } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
-        async function speakContent(pageNum) {
+async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

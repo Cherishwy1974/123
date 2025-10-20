@@ -715,12 +715,12 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习全微分、梯度与方向导数。全微分是函数增量的线性主部，公式是dz等于偏f对x乘以dx加偏f对y乘以dy。全微分的几何意义是用切平面近似曲面，这在工程计算中非常有用。`,
-            2: `梯度是由两个偏导数组成的向量，记作∇f等于括号fx逗号fy。梯度有两个重要性质：第一，梯度指向函数增长最快的方向；第二，梯度的模就是最大变化率。梯度在优化问题中起着核心作用。`,
-            3: `方向导数是函数沿某个方向的变化率，等于梯度与方向向量的点积。沿梯度方向的方向导数最大，等于梯度的模。沿垂直于梯度的方向，方向导数为0，这就是等高线的方向。`,
-            4: `让我们看一个例题。对于函数f等于x平方减y平方，在点(1,1)处，偏导数fx等于2，fy等于负2，所以梯度是(2,-2)。沿方向(1,1)的方向导数等于梯度点乘单位方向向量，结果为0，因为梯度与这个方向垂直。`,
-            5: `最速下降法是沿负梯度方向迭代，使函数值下降最快。每一步都沿着当前点的负梯度方向移动，逐步接近最小值点。这个方法广泛应用于机器学习的梯度下降算法和神经网络训练，是现代人工智能的基础。`,
-            6: `总结一下，全微分、梯度和方向导数是多元函数微分学的三个核心概念。全微分用于近似计算，梯度指向增长最快的方向并垂直于等高线，方向导数描述任意方向的变化率。这些概念在优化、机器学习等领域有广泛应用。`
+            1: `全微分：增量的线性主部。d z等于f下标x d x加f下标y d y。`,
+            2: `几何意义：用切平面近似曲面，小范围内近似准确可用。`,
+            3: `梯度：nabla f等于括号f下标x逗号f下标y，指向增长最快方向。`,
+            4: `方向导数：等于梯度与单位方向向量点积，给出该方向变化率。`,
+            5: `例：f等于x平方减y平方，在点一逗号一处梯度二逗号负二，某方向导数为零。`,
+            6: `应用与总结：最速下降沿负梯度，三概念服务优化与估算。`
         };
 
         const autoPlayDurations = {
@@ -756,6 +756,31 @@
                     resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -830,9 +855,11 @@
             }
         }
 
-        async function speakContent(pageNum) {
+async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try {
                 await avatarPlatform.writeText(content, {nlp: false});

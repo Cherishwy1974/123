@@ -417,12 +417,12 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习行列式及其几何意义。二阶行列式等于ad减bc，它的几何意义是两个向量构成的平行四边形的面积。行列式是线性代数的基础工具，在求解线性方程组、计算面积体积等方面有广泛应用。`,
-            2: `三阶行列式可以用对角线法则计算。主对角线是从左上到右下的三条线，副对角线是从右上到左下的三条线。行列式的值等于主对角线三个元素乘积之和，减去副对角线三个元素乘积之和。`,
-            3: `行列式有五个基本性质：第一，行列互换值不变；第二，两行互换值变号；第三，某行乘k值乘k；第四，某行全为0值为0；第五，两行相同值为0。这些性质在计算行列式时非常有用。`,
-            4: `上三角行列式的值等于主对角线元素之积。这是一个重要的计算技巧。通过行变换，我们可以把一般的行列式化为上三角形式，然后直接计算主对角线元素的乘积。`,
-            5: `克拉默法则用行列式求解线性方程组。xi等于Di除以D，其中D是系数行列式，Di是将第i列替换为常数项后的行列式。克拉默法则给出了线性方程组解的显式表达式。`,
-            6: `总结一下，行列式是线性代数的基础工具。我们学习了二阶和三阶行列式的计算、行列式的几何意义、五个基本性质，以及克拉默法则。掌握这些内容对后续学习矩阵和线性方程组非常重要。`
+            1: `二阶行列式：a d减b c，几何为两向量平行四边形面积。`,
+            2: `三阶行列式：对角线法则，主对角乘积和减副对角乘积和。`,
+            3: `五大性质：互换变号、倍乘倍增、行相同与全零行值为零。`,
+            4: `上三角行列式：值等于主对角线元素之积，计算高效常用。`,
+            5: `克拉默法则：x i等于D i除以D，线性方程组的显式解法。`,
+            6: `小结：计算方法、几何意义与性质，为矩阵与方程组铺垫。`
         };
 
         const autoPlayDurations = {
@@ -452,6 +452,31 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -515,9 +540,11 @@
             } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
-        async function speakContent(pageNum) {
+async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

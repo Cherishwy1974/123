@@ -688,12 +688,12 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习二重积分。二重积分是一重积分在二维的推广。一重积分求曲边梯形的面积，二重积分求曲顶柱体的体积。它可以用来计算不规则物体的体积、平面薄板的质量、重心位置等实际问题。`,
-            2: `二重积分的定义遵循经典的四步法：第一步，分割区域D成n个小区域；第二步，用小柱体近似每个小区域上的体积；第三步，所有小柱体体积相加得到近似值；第四步，当分割越来越细时取极限，得到精确值。`,
-            3: `二重积分的几何意义是曲顶柱体的体积。当被积函数f(x,y)大于等于0时，二重积分等于以区域D为底、以曲面z等于f(x,y)为顶的曲顶柱体的体积。特殊地，当f恒等于1时，积分值就是区域D的面积。`,
-            4: `二重积分有三个重要性质：第一，线性性质，常数可以提出来，和的积分等于积分的和；第二，区域可加性，整个区域的积分等于各部分区域积分之和；第三，比较性质，如果被积函数处处不大于另一个函数，则积分值也不大于。`,
-            5: `例题：估计单位圆上x平方加y平方的二重积分。在单位圆内，x平方加y平方的值在0到1之间。单位圆的面积是π。根据比较性质，积分值在0乘以π到1乘以π之间，即在0到π之间。`,
-            6: `总结一下，二重积分的核心是分割、近似、求和、取极限四步法。几何意义是曲顶柱体的体积。掌握了概念和性质后，下一步我们将学习如何用累次积分法计算二重积分。`
+            1: `二重积分：一重积分在二维的推广，用于求体积与质量等量。`,
+            2: `四步法定义：分割区域、柱体近似、求和加总、分割细化取极限。`,
+            3: `几何意义：当f非负时，为底面D上方曲面的曲顶柱体体积。`,
+            4: `重要性质：线性、区域可加、比较性质，用于估计与分解计算。`,
+            5: `例：单位圆内x平方加y平方。积分值介于零到圆面积π之间。`,
+            6: `小结：掌握概念与性质；下一步学习累次积分的具体计算。`
         };
 
         const autoPlayDurations = {
@@ -729,6 +729,31 @@
                     resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -803,9 +828,11 @@
             }
         }
 
-        async function speakContent(pageNum) {
+async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try {
                 await avatarPlatform.writeText(content, {nlp: false});

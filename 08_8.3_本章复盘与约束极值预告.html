@@ -677,12 +677,12 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `第8章回顾：我们学习了多元函数微分学的完整体系，包括偏导数、全微分、梯度、方向导数和它们的应用。偏导数是基础，全微分用于近似计算，梯度指明最优方向，方向导数描述任意方向的变化率。`,
-            2: `无约束极值问题的求解分三步：第一步，找到驻点，即偏导数都为0的点；第二步，计算二阶偏导数；第三步，用判别式判断是极大值、极小值还是鞍点。鞍点是一个方向上升、另一个方向下降的点。`,
-            3: `约束极值问题是在满足约束条件下求极值。比如用固定长度的篱笆围最大面积，或者在预算限制下最大化产量。这类问题在工程设计、经济管理、资源优化等领域非常常见。`,
-            4: `拉格朗日乘数法是求解约束极值的标准方法。步骤是：构造拉格朗日函数L等于f加λ乘以g，对所有变量和λ求偏导数并令其为0，解这个方程组得到候选点，最后比较函数值确定极值。`,
-            5: `例如用100米篱笆围矩形，求最大面积。设长为x宽为y，目标函数是面积xy，约束条件是2x加2y等于100。用拉格朗日乘数法求解，得到x等于y等于25时面积最大，为625平方米。这是正方形！`,
-            6: `第8章完成！我们掌握了多元函数微分学的核心内容。接下来将学习第9章二重积分、第10章线性代数和第11章级数，继续深入高等数学的学习。加油！`
+            1: `第八章回顾：偏导、全微分、梯度、方向导数与应用的核心要点。`,
+            2: `无约束极值三步：找驻点，算二阶偏导，判别极大极小或鞍点。`,
+            3: `约束极值：在约束条件下优化目标，工程与经济问题中常见。`,
+            4: `拉格朗日乘子法：构造L，联立偏导为零解方程组，筛选极值点。`,
+            5: `示例：周长一定的矩形最大面积。解得长等于宽，最优是正方形。`,
+            6: `小结与展望：掌握多元微分工具，下一章学习二重积分与应用。`
         };
 
         const autoPlayDurations = {
@@ -718,6 +718,31 @@
                     resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -792,9 +817,11 @@
             }
         }
 
-        async function speakContent(pageNum) {
+async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try {
                 await avatarPlatform.writeText(content, {nlp: false});

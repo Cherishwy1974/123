@@ -312,7 +312,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 8 页</div>
 <!-- 第1页：多元函数的概念 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -676,6 +676,48 @@
 </div>
 </div>
 </div>
+<!-- 第7页：偏导定义（公式） -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">偏导数定义</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">对x的偏导</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\displaystyle f_x(x_0,y_0)=\\lim_{h \\to 0} \\frac{f(x_0+h,y_0)-f(x_0,y_0)}{h}$$</p>
+<p class="chalk-text small-text">对y的定义同理</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">定义与极限形式</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第8页：高阶偏导与性质 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">高阶偏导性质</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">混合偏导</p>
+<div class="formula-box">
+<p class="chalk-text">$$f_{xy}(x,y)=f_{yx}(x,y)$$</p>
+<p class="chalk-text small-text">常见连续条件下成立</p>
+ </div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">性质记忆要点</text>
+</svg>
+</div>
+</div>
+</div>
+
 <!-- 控制栏 -->
 <div class="control-bar">
 <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
@@ -711,19 +753,21 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习多元函数与偏导数。多元函数是指有多个自变量的函数，最常见的是二元函数z等于f(x,y)。例如z等于x平方加y平方，它的图像是一个圆锥面。多元函数在工程、物理、经济等领域有广泛应用。`,
-            2: `偏导数是多元函数对某一个变量的导数，求偏导时把其他变量看作常数。偏导数的几何意义是曲面在某个方向上的切线斜率。对x的偏导数表示沿x轴方向的变化率，对y的偏导数表示沿y轴方向的变化率。`,
-            3: `计算偏导数的方法很简单：对x求偏导时把y看作常数，对y求偏导时把x看作常数。例如z等于x平方加3xy加y平方，对x求偏导得2x加3y，对y求偏导得3x加2y。就像一元函数求导一样，只是把其他变量当常数处理。`,
-            4: `高阶偏导数是对偏导数再求偏导。二阶偏导数有四种：对x求两次得到f下标xx，对y求两次得到f下标yy，先对x再对y得到f下标xy，先对y再对x得到f下标yx。在大多数情况下，混合偏导数f下标xy等于f下标yx。`,
-            5: `偏导数的应用包括求切平面方程和极值问题。曲面在某点的切平面方程由该点的两个偏导数确定。极值问题中，极值点的必要条件是两个偏导数都等于0，这样的点称为驻点或临界点。`,
-            6: `总结一下，偏导数是研究多元函数的基本工具。它包括定义、计算方法、几何意义和应用四个方面。掌握偏导数的概念和计算方法，是学习多元微积分的关键基础。`
+            1: `多元函数入门：二元函数z等于f括号x逗号y，刻画多变量关系。`,
+            2: `示例：z等于x平方加y平方，图像为抛物面，工程中常见。`,
+            3: `偏导定义：对x求偏导视y为常数；对y同理，规则直观。`,
+            4: `几何意义：偏导给出沿坐标方向的切线斜率与局部变化率。`,
+            5: `计算示例：z等于x平方加三x y加y平方；f下标x等于二x加三y。`,
+            6: `继续示例：f下标y等于三x加二y；与一元求导法则相似。`,
+            7: `高阶偏导：f下标x x、f下标y y、f下标x y、f下标y x；常见性质相等。`,
+            8: `应用：切平面与极值。驻点需两个偏导同为零，是必要条件。`
         };
 
         const autoPlayDurations = {
@@ -760,6 +804,31 @@
                     resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -855,6 +924,7 @@
             if (!isTeaching || !isConnected || !avatarPlatform) return;
             const raw = subtitleScript[pageNum];
             const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try {
                 await avatarPlatform.writeText(content, {nlp: false});

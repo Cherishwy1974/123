@@ -953,7 +953,7 @@
                                         }
                                     }, 800);
                                 }
-                            });
+                            }, 500); // 虚拟人讲完后500ms切换页面
                         }
                     })
                     .on('tts_duration', (data) => {
@@ -1145,11 +1145,261 @@
 
 <div class="page" id="page8">
   <div class="left-panel">
-    <h1 class="title chalk-text">小结与展望</h1>
+    <h1 class="title chalk-text">例题1 · 特解</h1>
     <div class="board-content">
-      <p class="chalk-text">小结：标准形式、积分因子、两例掌握；下节进入应用强化。</p>
+      <p class="chalk-text emphasis">初值条件</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$y(0) = 2$$</p>
+      </div>
+      <p class="chalk-text emphasis">求特解</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$y = e^{3x} + Ce^{2x}$$</p>
+        <p class="chalk-text small-text">代入 x=0, y=2</p>
+        <p class="chalk-text">$$2 = 1 + C \Rightarrow C = 1$$</p>
+        <p class="chalk-text">$$y = e^{3x} + e^{2x}$$</p>
+      </div>
     </div>
   </div>
-  <div class="right-panel"></div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">特解求解</text>
+        <text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="18">y(0) = 2 → C = 1</text>
+      </svg>
+    </div>
+  </div>
 </div>
-</html>
+<!-- 第9页：例题2 -->
+<div class="page" id="page9">
+  <div class="left-panel">
+    <h1 class="title chalk-text">例题2 · 题目</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">求解微分方程</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$\frac{dy}{dx} + y = e^{-x}$$</p>
+      </div>
+      <p class="chalk-text emphasis">识别参数</p>
+      <ul class="chalk-list">
+        <li class="chalk-text">P(x) = 1</li>
+        <li class="chalk-text">Q(x) = e^(-x)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">例题2</text>
+        <text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="18">dy/dx + y = e^(-x)</text>
+      </svg>
+    </div>
+  </div>
+</div>
+<!-- 第10页：例题2求解 -->
+<div class="page" id="page10">
+  <div class="left-panel">
+    <h1 class="title chalk-text">例题2 · 求解</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">计算积分因子</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$\mu = e^{\int 1 dx} = e^x$$</p>
+      </div>
+      <p class="chalk-text emphasis">方程两边乘以μ</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$e^x \frac{dy}{dx} + e^x y = 1$$</p>
+        <p class="chalk-text">$$(e^x y)' = 1$$</p>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">积分因子</text>
+        <text x="350" y="310" text-anchor="middle" fill="#95E1D3" font-size="18">μ = e^x</text>
+        <text x="350" y="360" text-anchor="middle" fill="#F38181" font-size="18">(e^x y)' = 1</text>
+      </svg>
+    </div>
+  </div>
+</div>
+<!-- 第11页：例题2结果 -->
+<div class="page" id="page11">
+  <div class="left-panel">
+    <h1 class="title chalk-text">例题2 · 结果</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">两边积分</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$e^x y = x + C$$</p>
+      </div>
+      <p class="chalk-text emphasis">解出y</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$y = (x + C)e^{-x}$$</p>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">通解</text>
+        <text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="18">y = (x + C)e^(-x)</text>
+      </svg>
+    </div>
+  </div>
+</div>
+<!-- 第12页：通解公式 -->
+<div class="page" id="page12">
+  <div class="left-panel">
+    <h1 class="title chalk-text">通解公式</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">一阶线性方程通解</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$y = e^{-\int P dx} \left( \int Q e^{\int P dx} dx + C \right)$$</p>
+      </div>
+      <ul class="chalk-list">
+        <li class="chalk-text">先算积分因子 μ = e^(∫Pdx)</li>
+        <li class="chalk-text">再算 ∫Qμ dx</li>
+        <li class="chalk-text">最后除以μ得到y</li>
+      </ul>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="250" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">通解公式</text>
+        <text x="350" y="310" text-anchor="middle" fill="#95E1D3" font-size="16">y = e^(-∫Pdx)(∫Qe^(∫Pdx)dx + C)</text>
+        <rect x="200" y="340" width="300" height="80" fill="none" stroke="#F38181" stroke-width="2"/>
+        <text x="350" y="370" text-anchor="middle" fill="#F38181" font-size="14">记住这个公式</text>
+        <text x="350" y="395" text-anchor="middle" fill="#F38181" font-size="14">可以直接套用</text>
+      </svg>
+    </div>
+  </div>
+</div>
+<!-- 第13页：齐次与非齐次 -->
+<div class="page" id="page13">
+  <div class="left-panel">
+    <h1 class="title chalk-text">齐次与非齐次</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">齐次方程 (Q=0)</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$\frac{dy}{dx} + P(x)y = 0$$</p>
+        <p class="chalk-text small-text">解：$$y = Ce^{-\int P dx}$$</p>
+      </div>
+      <p class="chalk-text emphasis">非齐次方程 (Q≠0)</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$\frac{dy}{dx} + P(x)y = Q(x)$$</p>
+        <p class="chalk-text small-text">需要用积分因子法</p>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="220" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">两种类型</text>
+        <rect x="150" y="250" width="180" height="100" fill="none" stroke="#95E1D3" stroke-width="2"/>
+        <text x="240" y="280" text-anchor="middle" fill="#95E1D3" font-size="18">齐次</text>
+        <text x="240" y="310" text-anchor="middle" fill="#95E1D3" font-size="14">Q = 0</text>
+        <rect x="370" y="250" width="180" height="100" fill="none" stroke="#F38181" stroke-width="2"/>
+        <text x="460" y="280" text-anchor="middle" fill="#F38181" font-size="18">非齐次</text>
+        <text x="460" y="310" text-anchor="middle" fill="#F38181" font-size="14">Q ≠ 0</text>
+      </svg>
+    </div>
+  </div>
+</div>
+<!-- 第14页：应用举例 -->
+<div class="page" id="page14">
+  <div class="left-panel">
+    <h1 class="title chalk-text">应用举例</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">RC电路</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$RC\frac{dU}{dt} + U = E$$</p>
+        <p class="chalk-text small-text">U: 电容电压，E: 电源电压</p>
+      </div>
+      <p class="chalk-text emphasis">混合问题</p>
+      <div class="formula-box">
+        <p class="chalk-text">$$\frac{dQ}{dt} + \frac{r}{V}Q = rc_0$$</p>
+        <p class="chalk-text small-text">Q: 溶质量，r: 流速</p>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="250" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">实际应用</text>
+        <text x="350" y="310" text-anchor="middle" fill="#95E1D3" font-size="18">RC电路</text>
+        <text x="350" y="350" text-anchor="middle" fill="#95E1D3" font-size="18">混合问题</text>
+        <text x="350" y="390" text-anchor="middle" fill="#F38181" font-size="18">都是一阶线性方程</text>
+      </svg>
+    </div>
+  </div>
+</div>
+<!-- 第15页：本节总结 -->
+<div class="page" id="page15">
+  <div class="left-panel">
+    <h1 class="title chalk-text">本节总结</h1>
+    <div class="board-content">
+      <p class="chalk-text emphasis">核心知识点</p>
+      <ul class="chalk-list">
+        <li class="chalk-text">标准形式：dy/dx + Py = Q</li>
+        <li class="chalk-text">积分因子：μ = e^(∫Pdx)</li>
+        <li class="chalk-text">通解公式要记牢</li>
+        <li class="chalk-text">应用：电路、混合问题</li>
+      </ul>
+      <p class="chalk-text emphasis">下节预告</p>
+      <div class="formula-box">
+        <p class="chalk-text">本章回顾与习题精讲</p>
+      </div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="animation-container">
+      <svg class="svg-animation" viewBox="0 0 700 600">
+        <text x="350" y="200" text-anchor="middle" fill="#FFE066" font-size="26" font-weight="bold">📚 本节总结</text>
+        <text x="350" y="260" text-anchor="middle" fill="#95E1D3" font-size="18">一阶线性微分方程</text>
+        <text x="350" y="300" text-anchor="middle" fill="#95E1D3" font-size="16">dy/dx + Py = Q</text>
+        <text x="350" y="360" text-anchor="middle" fill="#F38181" font-size="18">积分因子法</text>
+        <text x="350" y="420" text-anchor="middle" fill="#FFE066" font-size="16">下节：本章回顾</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- 控制栏 -->
+<div class="control-bar">
+<div style="color: #ecf0f1; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+第 <span id="currentPageControl">1</span> 页 / 共 15 页
+</div>
+<button class="btn" onclick="previousPage()">⬅️ 上一页</button>
+<button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
+<button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
+<button class="btn" id="autoPlayBtn" onclick="startAutoPlay()">🎬 自动播放</button>
+</div>
+<!-- 字幕区域 -->
+
+<!-- 讯飞官方SDK -->
+<!-- Polyfill for older browsers -->
+<script src="./polyfill.min.js"></script>
+
+<script type="module">
+// 播放完成标记（供OBS检测）
+window.playbackFinished = false;
+
+try {
+const { default: AvatarPlatform, SDKEvents, PlayerEvents, RecorderEvents, UserMedia } = await import('./avatar-sdk-web_3.1.2.1002/index.js');
+
+window.AvatarPlatform = AvatarPlatform;
+window.SDKEvents = SDKEvents;
+window.PlayerEvents = PlayerEvents;
+window.RecorderEvents = RecorderEvents;
+window.UserMedia = UserMedia;
+
+console.log('✅ 讯飞官方SDK模块已加载');
+console.log('SDK版本:', AvatarPlatform.getVersion());
+
+} catch (error) {
+console.error('❌ SDK模块加载失败:', error);
+}
+
+window.dispatchEvent(new CustomEvent('sdkReady'));
+</script>
+
+<script>

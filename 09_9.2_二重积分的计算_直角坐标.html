@@ -585,12 +585,12 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习二重积分的计算方法。累次积分法是计算二重积分的基本方法，它将二重积分化为两次一重积分。计算步骤是：第一步，画出积分区域；第二步，确定积分次序；第三步，确定积分上下限；第四步，先算内层积分再算外层积分。`,
-            2: `例题：计算矩形区域0到1、0到2上xy的二重积分。先对y从0到2积分，把x看作常数，得到x乘以y平方除以2，代入上下限得到2x。再对x从0到1积分，得到x平方，代入得到1。矩形区域的积分最简单，上下限都是常数。`,
-            3: `三角形区域的积分需要注意上下限的确定。对于x加y等于1、x轴、y轴围成的三角形，如果先对y积分，y的下限是0，上限是1减x。外层x从0到1。画图是关键，通过图形确定积分限。`,
-            4: `有时需要交换积分次序来简化计算。先y后x和先x后y的积分次序可以互换，但要重新确定积分限。交换次序后，积分区域不变，但描述方式改变。有些积分交换次序后会变得更简单。`,
-            5: `利用对称性可以简化计算。如果区域关于坐标轴对称，且被积函数是奇函数，则积分为0。如果被积函数是偶函数，则积分等于一半区域积分的2倍。对称性是简化计算的重要技巧。`,
-            6: `总结一下，二重积分的计算关键是：画图确定区域、选择合适的积分次序、正确确定积分限。掌握交换次序和对称性等技巧可以大大简化计算。多练习不同类型的区域，熟能生巧。`
+            1: `累次积分：把二重积分化为两次一重积分，按次序依次计算。`,
+            2: `矩形区域示例：先y后x，积分限为常数，计算最为直接。`,
+            3: `三角形区域：先y后x，y从零到一减x，x从零到一，画图定积分限。`,
+            4: `交换积分次序：同一区域不同次序，需重定积分限以简化计算。`,
+            5: `利用对称性：关于轴对称且被积函数奇则积分为零，偶则倍乘。`,
+            6: `小结：画图、选次序、定积分限，善用交换与对称提升效率。`
         };
 
         const autoPlayDurations = {
@@ -626,6 +626,31 @@
                     resolve();
                 });
             });
+        }
+
+        // 数学公式音译为中文，便于虚拟人播报与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            const rep=(pat,to)=>{ r=r.replace(new RegExp(pat,'g'),to); };
+            rep("f''\\(x\\)",'f两撇x'); rep("f'\\(x\\)",'f撇x');
+            rep("x_0",'x零'); rep("x_1",'x一'); rep("x_2",'x二'); rep("x_n",'x n');
+            rep("\\\\lim",'极限'); rep("\\\\to",'趋向于'); rep("\\\\infty",'无穷大');
+            rep("\\\\int",'积分'); rep("\\\\sum",'求和'); rep("\\\\sqrt",'根号');
+            r=r.replace(new RegExp("\\\\frac\\s*{([^}]*)}\\s*{([^}]*)}",'g'),function(_,a,b){return a+'分之'+b;});
+            rep(">",'大于'); rep("<",'小于'); rep("=",'等于');
+            r=r.replace(new RegExp("\\$",'g'),'').replace(new RegExp("\\\\",'g'),'').replace(new RegExp("[{}]",'g'),'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) {
@@ -693,9 +718,11 @@
             }
         }
 
-        async function speakContent(pageNum) {
+async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try {
                 await avatarPlatform.writeText(content, {nlp: false});
