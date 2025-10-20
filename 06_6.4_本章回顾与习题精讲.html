@@ -337,6 +337,7 @@
         let currentPage = 1;
         const totalPages = 10;
         let isAutoPlaying = false;
+        let speechFinishedResolve = null;
 
         const subtitleScript = { 1: "本节回顾定积分核心：理解累积量思想，串联牛顿莱布尼茨、换元与面积应用。", 2: "题目：计算从零到一的x除以一加x平方的定积分，先识别结构与方法。", 3: "分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。", 4: "令u等于一加x平方，du等于二x dx；上下限随u从一到二，积分转化为基本形式。", 5: "结果为二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。", 6: "题目：求y等于正弦x与x轴在零到派围成的面积；先确认区间与函数符号。", 7: "面积表示为定积分，S等于积分零到派正弦x dx；该区间内函数非负。", 8: "原函数是负的余弦x，代入上限派和下限零，结果是一加一等于二。", 9: "面积题关键在确定区间与函数符号，防止把负面积算入；必要时做分段。", 10: "总结：把握累积量思想，熟练牛顿莱布尼茨与换元；面积应用常考，建议多练习。" };
 
@@ -425,6 +426,12 @@
                     console.error('❌ 错误:', error);
                     startBtn.textContent = '❌ 连接失败';
                         startBtn.disabled = false;
+                    }).on('frame_stop', (data) => {
+                        console.log('✅ 虚拟人讲解完成');
+                        if (speechFinishedResolve) {
+                            speechFinishedResolve('speech_finished');
+                            speechFinishedResolve = null;
+                        }
                     });
 
                 avatarPlatform.setApiInfo({
@@ -475,30 +482,68 @@
 
         async function startAutoPlay() {
             if (isAutoPlaying) {
-                isAutoPlaying = false;
-                document.getElementById('autoPlayBtn').textContent = '🎬 自动播放';
+                stopAutoPlay();
                 return;
             }
 
             if (!avatarPlatform || !isConnected) {
                 await startTeaching();
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                if (!isConnected) {
+                    console.error("启动虚拟人失败，自动播放已取消。");
+                    return;
+                }
             }
 
             isAutoPlaying = true;
             const autoPlayBtn = document.getElementById('autoPlayBtn');
-            autoPlayBtn.textContent = '⏹️ 停止';
+            autoPlayBtn.textContent = '⏹️ 停止播放';
+            autoPlayBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
 
-            for (let i = 1; i <= totalPages; i++) {
-                if (!isAutoPlaying) break;
-                switchToPage(i, false);
-                await speakContent(i);
-                const duration = autoPlayDurations[i] || 8000;
-                await new Promise(resolve => setTimeout(resolve, duration));
+            try {
+                for (let page = 1; page <= totalPages; page++) {
+                    if (!isAutoPlaying) break;
+
+                    console.log(`\n🎬 === 准备播放第 ${page}/${totalPages} 页 ===`);
+                    switchToPage(page);
+                    await new Promise(resolve => setTimeout(resolve, 200));
+
+                    const speechPromise = new Promise(resolve => { speechFinishedResolve = resolve; });
+                    speakContent(page);
+
+                    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('timeout'), getPageDuration(page)));
+
+                    console.log(`[Sync] ⏳ 等待讲解完成或超时...`);
+                    const result = await Promise.race([speechPromise, timeoutPromise]);
+
+                    if (!isAutoPlaying) break;
+
+                    if (result === 'timeout') {
+                        console.warn(`[Sync] ⚠️ 第 ${page} 页讲解超时! 继续下一页。`);
+                    } else {
+                        console.log(`[Sync] ✅ 第 ${page} 页讲解正常完成。`);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            } catch (error) {
+                console.error('❌ 自动播放流程出现严重错误:', error);
+            } finally {
+                if (isAutoPlaying) {
+                    console.log('🎉 自动播放流程已全部完成');
+                    window.playbackFinished = true;
+                    document.title = "PLAYBACK_FINISHED";
+                }
+                stopAutoPlay();
             }
+        }
 
+        function stopAutoPlay() {
             isAutoPlaying = false;
-            autoPlayBtn.textContent = '🎬 自动播放';
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
+            if (autoPlayBtn) {
+                autoPlayBtn.textContent = '🎬 自动播放';
+                autoPlayBtn.style.background = '';
+            }
         }
 
         // 键盘控制
