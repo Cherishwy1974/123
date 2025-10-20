@@ -564,11 +564,226 @@
 </div>
 </div>
 </div>
+
+<!-- 第5页：变量分离公式（单独成页） -->
+<div class="page" id="page5">
+    <div class="left-panel">
+        <h1 class="title chalk-text">变量分离公式</h1>
+        <div class="board-content">
+            <p class="chalk-text emphasis">分离变量后</p>
+            <div class="formula-box">
+                <p class="chalk-text">$$\\frac{dy}{y} = x\,dx$$</p>
+            </div>
+            <p class="chalk-text small-text">核心是把x与y完全分到两边</p>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="animation-container">
+            <svg class="svg-animation" viewBox="0 0 700 600">
+                <text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="26" font-weight="bold">Step 1 分离变量</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- 第6页：积分结果（单独成页） -->
+<div class="page" id="page6">
+    <div class="left-panel">
+        <h1 class="title chalk-text">积分结果</h1>
+        <div class="board-content">
+            <p class="chalk-text emphasis">两边积分</p>
+            <div class="formula-box">
+                <p class="chalk-text">$$\\ln|y| = \\frac{x^2}{2} + C$$</p>
+            </div>
+            <p class="chalk-text small-text">注意保留积分常数C</p>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="animation-container">
+            <svg class="svg-animation" viewBox="0 0 700 600">
+                <text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="26" font-weight="bold">Step 2 两边积分</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- 第7页：通解（单独成页） -->
+<div class="page" id="page7">
+    <div class="left-panel">
+        <h1 class="title chalk-text">通解表达</h1>
+        <div class="board-content">
+            <p class="chalk-text emphasis">解出y</p>
+            <div class="formula-box">
+                <p class="chalk-text">$$y = C\,e^{x^2/2}$$</p>
+                <p class="chalk-text small-text">（C为任意常数）</p>
+            </div>
+            <p class="chalk-text">不同C对应一族解曲线</p>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="animation-container">
+            <svg class="svg-animation" viewBox="0 0 700 600">
+                <text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="26" font-weight="bold">Step 3 解出通解</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- 第8页：应用与小结 -->
+<div class="page" id="page8">
+    <div class="left-panel">
+        <h1 class="title chalk-text">应用与小结</h1>
+        <div class="board-content">
+            <p class="chalk-text emphasis">人口增长模型</p>
+            <div class="formula-box">
+                <p class="chalk-text">$$\\frac{dP}{dt} = kP$$</p>
+                <p class="chalk-text small-text">$$P = P_0 e^{kt}$$</p>
+            </div>
+            <p class="chalk-text small-text">记住三步法：分离、积分、解出y</p>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="animation-container">
+            <svg class="svg-animation" viewBox="0 0 700 600">
+                <text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="26" font-weight="bold">应用场景 回顾总结</text>
+            </svg>
+        </div>
+    </div>
+</div>
+<!-- 第9页：人口增长模型详解 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">人口增长模型详解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">建立方程</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dP}{dt} = kP$$</p>
+<p class="chalk-text small-text">P: 人口数量，k: 增长率</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">增长率与当前人口成正比</li>
+<li class="chalk-text">这是马尔萨斯人口模型</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第10页：人口模型求解 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">人口模型求解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">求解过程</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dP}{P} = k dt$$</p>
+<p class="chalk-text">$$\ln|P| = kt + C$$</p>
+<p class="chalk-text">$$P = P_0 e^{kt}$$</p>
+</div>
+<p class="chalk-text small-text">指数增长模型</p>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第11页：放射性衰变 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">放射性衰变</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">衰变方程</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dM}{dt} = -\lambda M$$</p>
+<p class="chalk-text small-text">M: 质量，λ: 衰变常数</p>
+</div>
+<p class="chalk-text emphasis">解</p>
+<div class="formula-box">
+<p class="chalk-text">$$M = M_0 e^{-\lambda t}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第12页：牛顿冷却定律 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">牛顿冷却定律</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">冷却方程</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{dT}{dt} = -k(T - T_0)$$</p>
+<p class="chalk-text small-text">T: 物体温度，T₀: 环境温度</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">变量替换：u = T - T₀</li>
+<li class="chalk-text">转化为可分离变量方程</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第13页：注意事项1 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">注意事项（一）</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">可能丢失的解</p>
+<ul class="chalk-list">
+<li class="chalk-text">分离变量时除以h(y)</li>
+<li class="chalk-text">h(y)=0的解可能丢失</li>
+<li class="chalk-text">需要单独检验</li>
+</ul>
+<p class="chalk-text emphasis">积分常数</p>
+<ul class="chalk-list">
+<li class="chalk-text">不要忘记加常数C</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第14页：注意事项2 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">注意事项（二）</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">检验解</p>
+<ul class="chalk-list">
+<li class="chalk-text">验证是否满足原方程</li>
+<li class="chalk-text">检查定义域</li>
+</ul>
+<p class="chalk-text emphasis">变量替换</p>
+<ul class="chalk-list">
+<li class="chalk-text">不能直接分离时</li>
+<li class="chalk-text">尝试适当的变量替换</li>
+</ul>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+<!-- 第15页：本节总结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">本节总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心知识点</p>
+<ul class="chalk-list">
+<li class="chalk-text">标准形式：dy/dx = g(x)h(y)</li>
+<li class="chalk-text">求解步骤：分离、积分、求解</li>
+<li class="chalk-text">应用：人口、衰变、冷却</li>
+<li class="chalk-text">注意：丢失解、常数、检验</li>
+</ul>
+<p class="chalk-text emphasis">下节预告</p>
+<div class="formula-box">
+<p class="chalk-text">一阶线性微分方程</p>
+</div>
+</div>
+</div>
+<div class="right-panel"></div>
+</div>
+
 </div>
 <!-- 控制栏 -->
 <div class="control-bar">
 <div style="color: #333; margin-bottom: 1rem; text-align: center; font-size: 12px;">
-            第 <span id="currentPageControl">1</span> 页 / 共 8 页
+            第 <span id="currentPageControl">1</span> 页 / 共 15 页
         </div>
 <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
 <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
@@ -606,7 +821,7 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 8;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
@@ -614,22 +829,46 @@
 
         // === 字幕脚本设置 ===
         const subtitleScript = {
-            1: `欢迎学习可分离变量的微分方程。这是最简单也是最重要的一类微分方程。可分离变量的微分方程形式为dy除以dx等于g(x)乘以h(y)。解法的关键是将含x的项和含y的项分离到等号两边，然后两边分别积分。这个方法简单直接，应用广泛。`,
-            2: `让我们看一个具体例子：求解y'等于xy。首先将方程改写为dy除以y等于xdx，这就完成了变量分离。然后两边同时积分，左边得到ln|y|，右边得到x平方除以2。最后解出y，得到通解y等于C乘以e的x平方除以2次方。这里的C是任意常数。`,
-            3: `可分离变量法在实际中有广泛应用。最经典的例子是人口增长模型：dP除以dt等于kP，其中P是人口数量，k是增长率。分离变量后积分，得到P等于P0乘以e的kt次方。这就是著名的指数增长模型，也叫马尔萨斯人口模型。`,
-            4: `总结一下，解可分离变量微分方程的三个步骤是：第一步，分离变量，将x和y分到等号两边；第二步，两边分别积分；第三步，求解y，得到通解。掌握这个方法，你就能解决很多实际问题了。`
+            1: `欢迎学习可分离变量的微分方程。这是微分方程中最基础、最重要的一类。掌握这个方法，你就能解决很多实际问题。`,
+            2: `什么是可分离变量的微分方程？标准形式是dy除以dx等于g(x)乘以h(y)。也就是说，等号右边可以写成只含x的函数乘以只含y的函数。核心思想是把x和y完全分离开来。`,
+            3: `可分离变量法的求解步骤有三步。第一步，分离变量，将含x的项和含y的项分到等号两边。第二步，两边分别积分。第三步，求解y，得到通解或特解。`,
+            4: `让我们看一个具体例题。求解dy除以dx等于xy。这是一个典型的可分离变量方程，因为右边等于x乘以y。`,
+            5: `第一步，分离变量。将方程改写为dy除以y等于xdx。注意，我们把含y的项移到左边，含x的项移到右边。这就完成了变量分离。`,
+            6: `第二步，两边积分。左边对y积分，得到ln绝对值y。右边对x积分，得到x平方除以2。别忘了加上积分常数C。所以我们得到ln绝对值y等于x平方除以2加上C。`,
+            7: `第三步，求解y。从ln绝对值y等于x平方除以2加上C，两边取指数，得到y等于正负e的C次方乘以e的x平方除以2次方。令A等于正负e的C次方，最终得到通解y等于A乘以e的x平方除以2次方。`,
+            8: `如果给定初值条件，我们可以求出特解。比如y(0)等于2，代入通解得到A等于2。所以特解是y等于2倍的e的x平方除以2次方。`,
+            9: `可分离变量法在实际中有广泛应用。最经典的是人口增长模型。假设人口增长率与当前人口数量成正比，可以建立微分方程dP除以dt等于kP，其中P是人口数量，k是增长率。`,
+            10: `求解人口增长模型。分离变量得到dP除以P等于kdt。两边积分得到ln绝对值P等于kt加上C。解出P，得到P等于P0乘以e的kt次方。这就是著名的指数增长模型，也叫马尔萨斯人口模型。`,
+            11: `另一个重要应用是放射性衰变。放射性物质的衰变率与当前质量成正比，方程是dM除以dt等于负λM。这也是可分离变量方程。解得M等于M0乘以e的负λt次方，这是指数衰减模型。`,
+            12: `牛顿冷却定律也可以用可分离变量法求解。物体的温度变化率与温度差成正比：dT除以dt等于负k乘以T减T0。通过变量替换u等于T减T0，可以转化为可分离变量方程du除以dt等于负ku。`,
+            13: `解可分离变量方程时要注意几个问题。第一，分离变量时可能会丢失解。比如h(y)等于0的解，在分离变量时被除掉了，要单独检验。第二，积分时不要忘记加常数C。`,
+            14: `第三个注意事项是，最后要检验解是否满足原方程。有时候求出的解可能不满足原方程的定义域。第四，如果方程不能直接分离变量，可以尝试变量替换。`,
+            15: `本节总结：可分离变量的微分方程形式为dy除以dx等于g(x)h(y)。求解步骤是分离变量、两边积分、求解y。这个方法在人口模型、放射性衰变、冷却定律等问题中都有应用。掌握这个方法是学习微分方程的基础。下一节我们将学习一阶线性微分方程。`
         };
 
-        const autoPlayDurations = {
-            1: 18000,
-            2: 20000,
-            3: 22000,
-            4: 20000,
-            5: 23000,
-            6: 24000,
-            7: 22000,
-            8: 18000
-        };
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/\\lim/g,'极限');
+            r=r.replace(/\\sum/g,'求和');
+            r=r.replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\^(\d+)/g,'的$1次方');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 400); // 每字400ms，确保虚拟人有足够时间讲完
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
 
         function updateStatus(message, type) {
             const indicator = document.getElementById('statusIndicator');
@@ -786,7 +1025,7 @@
                                         }
                                     }, 800);
                                 }
-                            });
+                            }, 500); // 虚拟人讲完后500ms切换页面
                         }
                     })
                     .on('tts_duration', (data) => {
@@ -850,6 +1089,8 @@
 
             const raw = subtitleScript[pageNum];
             const content = translateMathToSpeech(raw);
+            // 统计字数并计算预估时长（日志用）
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
 
             try {

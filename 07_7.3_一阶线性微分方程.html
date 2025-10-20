@@ -750,7 +750,7 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 8;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
@@ -758,18 +758,47 @@
 
         // === 字幕脚本设置 ===
         const subtitleScript = {
-            1: `欢迎学习一阶线性微分方程。一阶线性微分方程的标准形式是y'加P(x)y等于Q(x)，其中y和y'都是一次的。这是工程和科学中最常见的微分方程类型，掌握它的求解方法非常重要。`,
-            2: `积分因子法是求解一阶线性微分方程的核心方法。关键步骤是找到积分因子μ(x)，它等于e的∫P(x)dx次方。两边同时乘以积分因子后，方程左边可以化简为μ(x)y的导数，这样就可以直接积分求解了。`,
-            3: `让我们看一个具体例子：求解y'减2y等于e的3x次方。首先确定P(x)等于负2，积分因子是e的负2x次方。两边乘以积分因子后积分，最终得到通解y等于e的3x次方加C乘以e的2x次方。`,
-            4: `再看另一个例题：求解y'加y等于e的负x次方。这里P(x)等于1，积分因子是e的x次方。按照标准步骤求解，最终得到y等于x加C乘以e的负x次方。这是一组钟形曲线，在不同的C值下形成曲线族。`,
-            5: `一阶线性微分方程在RC电路中有重要应用。电容充电过程满足方程RC乘以dU除以dt加U等于E。用积分因子法求解，得到U等于E乘以括号1减e的负t除以RC次方。电压从0开始，逐渐上升，最终趋近于电源电压E。`,
-            6: `总结一下，一阶线性微分方程的通解公式是：y等于e的负∫P(x)dx次方，乘以括号∫Q(x)e的∫P(x)dx次方dx加C。这类方程广泛应用于电路分析、力学系统、化学反应速率、经济增长模型等众多领域。`
+            1: `欢迎学习一阶线性微分方程。这是微分方程中非常重要的一类，在物理、工程、经济学中都有广泛应用。今天我们将学习如何用积分因子法求解这类方程。`,
+            2: `什么是一阶线性微分方程？标准形式是dy除以dx加上P(x)乘以y等于Q(x)。注意，y和dy除以dx都是一次的，这就是"线性"的含义。`,
+            3: `一阶线性方程分为齐次和非齐次两种。如果Q(x)等于0，叫齐次方程。如果Q(x)不等于0，叫非齐次方程。齐次方程比较简单，可以用分离变量法求解。`,
+            4: `非齐次方程的求解需要用到积分因子法。这是一个非常巧妙的方法，核心思想是找一个函数μ(x)，使得方程两边乘以μ后，左边变成一个导数的形式。`,
+            5: `积分因子μ(x)的公式是e的积分P(x)dx次方。有了这个积分因子，我们就能把方程转化为可以直接积分的形式。这是求解一阶线性方程的关键步骤。`,
+            6: `让我们看求解步骤。第一步，将方程化为标准形式dy除以dx加P(x)y等于Q(x)。第二步，计算积分因子μ等于e的积分Pdx次方。第三步，方程两边乘以μ。`,
+            7: `第四步，注意到左边是μy的导数。第五步，两边积分得到μy等于积分μQ dx加C。第六步，解出y，得到通解y等于e的负积分Pdx次方乘以括号积分Qe的积分Pdx次方dx加C。`,
+            8: `让我们看第一个例题。求解dy除以dx减2y等于e的3x次方。首先识别P(x)等于负2，Q(x)等于e的3x次方。`,
+            9: `计算积分因子。μ等于e的积分负2dx次方，等于e的负2x次方。然后方程两边乘以e的负2x次方。`,
+            10: `左边变成e的负2x次方乘以y的导数。右边是e的负2x次方乘以e的3x次方，等于e的x次方。两边积分，得到e的负2x次方乘以y等于e的x次方加C。`,
+            11: `解出y。y等于e的2x次方乘以括号e的x次方加C，等于e的3x次方加C乘以e的2x次方。这就是通解。不同的C对应不同的解曲线。`,
+            12: `让我们看第二个例题。求解dy除以dx加y等于e的负x次方。这里P(x)等于1，Q(x)等于e的负x次方。`,
+            13: `计算积分因子μ等于e的积分1dx次方，等于e的x次方。方程两边乘以e的x次方，得到e的x次方乘以y的导数等于1。`,
+            14: `两边积分，得到e的x次方乘以y等于x加C。解出y，得到y等于x乘以e的负x次方加C乘以e的负x次方，等于括号x加C乘以e的负x次方。`,
+            15: `本节总结：一阶线性微分方程的标准形式是dy除以dx加Py等于Q。求解方法是积分因子法，关键是计算μ等于e的积分Pdx次方。通解公式是y等于e的负积分Pdx次方乘以括号积分Qe的积分Pdx次方dx加C。掌握这个方法，你就能解决很多实际问题。下一节我们将进行本章回顾与习题精讲。`
         };
 
-        const autoPlayDurations = {
-            1: 16000,
-            2: 20000,
-        };
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/\\lim/g,'极限');
+            r=r.replace(/\\sum/g,'求和');
+            r=r.replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\^(\d+)/g,'的$1次方');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 400); // 每字400ms，确保虚拟人有足够时间讲完
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
+
         function updateStatus(message, type = 'normal') {
             const indicator = document.getElementById('statusIndicator');
             if (indicator) {
@@ -988,6 +1017,7 @@
 
             const raw = subtitleScript[pageNum];
             const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
 
             try {
