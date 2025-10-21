@@ -67,15 +67,16 @@
 <div class="status-indicator" id="statusIndicator">等待连接</div>
 <div class="avatar-container"><div class="wrapper" id="avatarWrapper"></div></div>
 <div class="page-indicator">第 <span id="currentPage">1</span> / 10 页</div>
-<!-- 第1页：知识清单 -->
-<div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
+<!-- 第1页：封面 -->
+<div class="page active cover-page" data-page="1" id="page1">
+<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
 <h1 style="font-size: 2.2rem; font-weight: bold; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.5); margin-bottom: 1rem;">
-                        本章回顾与习题精讲
-                    </h1>
+本章回顾与习题精讲
+</h1>
 <p style="font-size: 1.1rem; color: #9ca3af; margin-bottom: 1.5rem;">
-                        第6章 视频 6.4
-                    </p>
+第6章 视频 6.4
+</p>
 <div style="display: inline-block; text-align: left; margin-top: 1.5rem;">
 <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 核心概念回顾</p>
 <p style="font-size: 0.95rem; color: #e0e0e0; margin: 0.6rem 0;">✓ 重要公式总结</p>
@@ -92,8 +93,8 @@
 </lineargradient>
 </defs>
 <text fill="#2ecc71" font-family="serif" font-size="70" text-anchor="middle" x="300" y="80">
-                            ∫
-                            <animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7"></animate>
+∫
+<animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0;1;1;0.7"></animate>
 </text>
 <path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320" fill="none" stroke="#3498db" stroke-width="3"></path>
 <path d="M 150 350 Q 200 200 250 250 T 350 300 T 450 320 L 450 350 L 150 350 Z" fill="url(#grad1)">
@@ -103,206 +104,10 @@
 <line stroke="#666" stroke-dasharray="5,5" stroke-width="2" x1="450" x2="450" y1="150" y2="350"></line>
 </svg>
 </div>
-</div></div>
+</div>
+</div>
+<!-- 第2页：定积分概念回顾 -->
 <div class="page" id="page2">
-<div class="left-panel">
-<h1 class="title chalk-text">例题 1：定积分计算</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">换元积分法</p>
-<ul class="chalk-list">
-<li class="chalk-text"><strong style="color: #81c784;">题目：</strong>$\int_0^1 \frac{x}{1+x^2} dx$</li>
-<li class="chalk-text"><strong style="color: #81c784;">换元：</strong>设 $u=1+x^2$，则 $du=2x\,dx$</li>
-<li class="chalk-text"><strong style="color: #81c784;">计算：</strong>$\frac{1}{2}\int_1^2 \frac{du}{u}$</li>
-<li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$\frac{1}{2}[\ln u]_1^2 = \frac{1}{2}\ln 2$</li>
-</ul>
-<div class="formula-box">
-<p class="chalk-text small-text" style="color: #ffab40; font-weight: 600;">定积分换元法与不定积分类似，但上下限也要跟着变。</p>
-</div>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 400 300">
-<defs>
-<filter id="glow2">
-<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
-<femerge>
-<femergenode in="coloredBlur"></femergenode>
-<femergenode in="SourceGraphic"></femergenode>
-</femerge>
-</filter>
-<marker id="arrow1" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path>
-</marker>
-</defs>
-<text fill="#f39c12" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="200" y="50">∫₀¹ x/(1+x²) dx</text>
-<rect fill="rgba(52,152,219,0.2)" filter="url(#glow2)" height="40" rx="6" stroke="#3498db" stroke-width="2" width="240" x="80" y="80"></rect>
-<text fill="#ecf0f1" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="105">u=1+x², du=2x dx</text>
-<line filter="url(#glow2)" marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="2" x1="200" x2="200" y1="120" y2="150">
-<animate attributename="y2" dur="1.5s" repeatcount="indefinite" values="120;150"></animate>
-</line>
-<rect fill="rgba(46,204,113,0.2)" filter="url(#glow2)" height="40" rx="6" stroke="#2ecc71" stroke-width="2" width="240" x="80" y="150"></rect>
-<text fill="#ecf0f1" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="175">1/2 ∫₁² du/u</text>
-<line filter="url(#glow2)" marker-end="url(#arrow1)" stroke="#f39c12" stroke-width="2" x1="200" x2="200" y1="190" y2="220">
-<animate attributename="y2" begin="0.5s" dur="1.5s" repeatcount="indefinite" values="190;220"></animate>
-</line>
-<text fill="#2ecc71" filter="url(#glow2)" font-size="18" font-weight="bold" text-anchor="middle" x="200" y="250">= 1/2 ln 2</text>
-</svg>
-</div>
-</div>
-</div>
-<!-- 第3页：例题2 -->
-<div class="page" id="page3">
-<div class="left-panel">
-<h1 class="title chalk-text">例题 2：面积计算</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">正弦函数的面积</p>
-<ul class="chalk-list">
-<li class="chalk-text"><strong style="color: #81c784;">题目：</strong>求 $y=\sin x$ 与 $x$ 轴在 $[0,\pi]$ 间的面积</li>
-<li class="chalk-text"><strong style="color: #81c784;">设定：</strong>$S = \int_0^{\pi} \sin x\,dx$</li>
-<li class="chalk-text"><strong style="color: #81c784;">计算：</strong>$[-\cos x]_0^{\pi}$</li>
-<li class="chalk-text"><strong style="color: #81c784;">结果：</strong>$-\cos\pi - (-\cos 0) = 1 + 1 = 2$</li>
-</ul>
-<div class="formula-box">
-<p class="chalk-text small-text" style="color: #ffab40; font-weight: 600;">面积题先画图确认区间，确保积分符号方向正确。</p>
-</div>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 400 300">
-<defs>
-<filter id="glow3">
-<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
-<femerge>
-<femergenode in="coloredBlur"></femergenode>
-<femergenode in="SourceGraphic"></femergenode>
-</femerge>
-</filter>
-</defs>
-<line filter="url(#glow3)" stroke="#666" stroke-width="2" x1="50" x2="350" y1="200" y2="200"></line>
-<line filter="url(#glow3)" stroke="#666" stroke-width="2" x1="50" x2="50" y1="200" y2="50"></line>
-<path d="M 80 200 Q 150 100, 200 120 Q 250 140, 320 200" fill="none" filter="url(#glow3)" stroke="#3498db" stroke-width="3">
-<animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.8;1;0.8"></animate>
-</path>
-<path d="M 80 200 Q 150 100, 200 120 Q 250 140, 320 200 Z" fill="rgba(52,152,219,0.3)">
-<animate attributename="fill-opacity" dur="3s" repeatcount="indefinite" values="0;0.4;0.4;0"></animate>
-</path>
-<text fill="#ecf0f1" font-size="12" font-weight="bold" text-anchor="middle" x="80" y="220">0</text>
-<text fill="#ecf0f1" font-size="12" font-weight="bold" text-anchor="middle" x="320" y="220">π</text>
-<text fill="#2ecc71" filter="url(#glow3)" font-size="16" font-weight="bold" text-anchor="middle" x="200" y="40">S = 2</text>
-<text fill="#f39c12" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="270">y = sin x</text>
-</svg>
-</div>
-</div>
-</div>
-<!-- 第4页：章末总结 -->
-<div class="page" id="page4">
-<div class="left-panel">
-<h1 class="title chalk-text">章末总结</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">本章要点回顾</p>
-<ul class="chalk-list">
-<li class="chalk-text"><strong style="color: #81c784;">本章要点：</strong>定积分概念、牛顿-莱布尼茨公式、计算技巧、应用问题</li>
-<li class="chalk-text"><strong style="color: #81c784;">课后作业：</strong>两道定积分计算题、一道面积应用题</li>
-<li class="chalk-text"><strong style="color: #81c784;">下章预告：</strong>常微分方程 - 描述动态变化</li>
-</ul>
-<div class="formula-box">
-<p class="chalk-text" style="color: #ffab40; font-weight: 600;">继续前进，我们将用微分方程描述动态变化的世界。</p>
-</div>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 400 300">
-<defs>
-<filter id="glow4">
-<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
-<femerge>
-<femergenode in="coloredBlur"></femergenode>
-<femergenode in="SourceGraphic"></femergenode>
-</femerge>
-</filter>
-<marker id="arrow2" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#f39c12"></path>
-</marker>
-</defs>
-<rect fill="rgba(52,152,219,0.2)" filter="url(#glow4)" height="60" rx="10" stroke="#3498db" stroke-width="3" width="120" x="80" y="80"></rect>
-<text fill="#ecf0f1" font-size="16" font-weight="bold" text-anchor="middle" x="140" y="115">第6章</text>
-<text fill="#3498db" font-size="12" font-weight="bold" text-anchor="middle" x="140" y="135">定积分</text>
-<line filter="url(#glow4)" marker-end="url(#arrow2)" stroke="#f39c12" stroke-width="3" x1="200" x2="240" y1="110" y2="110">
-<animate attributename="x2" dur="2s" repeatcount="indefinite" values="200;240"></animate>
-</line>
-<rect fill="rgba(46,204,113,0.2)" filter="url(#glow4)" height="60" rx="10" stroke="#2ecc71" stroke-width="3" width="120" x="200" y="160"></rect>
-<text fill="#ecf0f1" font-size="16" font-weight="bold" text-anchor="middle" x="260" y="195">第7章</text>
-<text fill="#2ecc71" font-size="12" font-weight="bold" text-anchor="middle" x="260" y="215">微分方程</text>
-</svg>
-</div>
-</div>
-</div>
-</div>
-<!-- 第5页：例题1 · 题目 -->
-<div class="page" id="page5">
-<div class="left-panel">
-<h1 class="title chalk-text">例题1 · 题目</h1>
-<div class="board-content">
-<p class="chalk-text">题目：计算从零到一的x除以一加x平方的定积分，先识别结构。</p>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第6页：例题1 · 思路 -->
-<div class="page" id="page6">
-<div class="left-panel">
-<h1 class="title chalk-text">例题1 · 思路</h1>
-<div class="board-content">
-<p class="chalk-text">分子含x，分母含一加x平方，联想到换元：令u等于一加x平方，寻找du。</p>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第7页：例题1 · 步骤 -->
-<div class="page" id="page7">
-<div class="left-panel">
-<h1 class="title chalk-text">例题1 · 步骤</h1>
-<div class="board-content">
-<p class="chalk-text">令u等于一加x平方，du等于二x dx；上下限随u从一到二，转化为二分之一积分一到二的一除以u。</p>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第8页：例题1 · 总结 -->
-<div class="page" id="page8">
-<div class="left-panel">
-<h1 class="title chalk-text">例题1 · 总结</h1>
-<div class="board-content">
-<p class="chalk-text">结果是二分之一乘以ln二；要点：上下限同步变换，系数不要遗漏。</p>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第9页：例题2 · 题目 -->
-<div class="page" id="page9">
-<div class="left-panel">
-<h1 class="title chalk-text">例题2 · 题目</h1>
-<div class="board-content">
-<p class="chalk-text">求y等于正弦x与x轴在零到派围成的面积；先画图确认区间与函数符号。</p>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第10页：例题2 · 思路 -->
-<div class="page" id="page10">
-<div class="left-panel">
-<h1 class="title chalk-text">例题2 · 思路</h1>
-<div class="board-content">
-<p class="chalk-text">面积表示为定积分：S等于积分零到派正弦x dx；在该区间正弦非负，直接积分。</p>
-</div>
-</div>
-<div class="right-panel"></div>
-</div>
-<!-- 第11页：定积分概念回顾 -->
-<div class="page" id="page11">
 <div class="left-panel">
 <h1 class="title chalk-text">定积分概念回顾</h1>
 <div class="board-content">
@@ -313,18 +118,29 @@
 <li class="chalk-text"><strong style="color: #81c784;">求和：</strong>把所有小矩形面积加起来</li>
 <li class="chalk-text"><strong style="color: #81c784;">取极限：</strong>n趋向无穷得到精确值</li>
 </ul>
+<div class="formula-box">
+<p class="chalk-text small-text" style="color: #ffab40;">以直代曲，无限细分后累加</p>
 </div>
 </div>
-<div class="right-panel"></div>
 </div>
-<!-- 第12页：牛顿莱布尼茨公式回顾 -->
-<div class="page" id="page12">
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">定积分的本质</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="18">分割→近似→求和→极限</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第3页：牛顿莱布尼茨公式 -->
+<div class="page" id="page3">
 <div class="left-panel">
 <h1 class="title chalk-text">牛顿莱布尼茨公式</h1>
 <div class="board-content">
 <p class="chalk-text emphasis">微积分基本定理</p>
 <div class="formula-box">
 <p class="chalk-text">$$\int_a^b f(x)dx = F(b) - F(a)$$</p>
+<p class="chalk-text small-text">其中 $F'(x) = f(x)$</p>
 </div>
 <ul class="chalk-list">
 <li class="chalk-text">定积分 = 原函数在上下限的差值</li>
@@ -333,26 +149,247 @@
 </ul>
 </div>
 </div>
-<div class="right-panel"></div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">牛顿莱布尼茨公式</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="18">∫ f(x)dx = F(b) - F(a)</text>
+</svg>
 </div>
-<!-- 第13页：换元积分法回顾 -->
-<div class="page" id="page13">
+</div>
+</div>
+<!-- 第4页：换元积分法 -->
+<div class="page" id="page4">
 <div class="left-panel">
 <h1 class="title chalk-text">换元积分法</h1>
 <div class="board-content">
 <p class="chalk-text emphasis">处理复杂积分的技巧</p>
 <ul class="chalk-list">
-<li class="chalk-text">选择合适的替换变量</li>
+<li class="chalk-text">选择合适的替换变量 $u=g(x)$</li>
+<li class="chalk-text">计算 $du = g'(x)dx$</li>
 <li class="chalk-text">转换积分上下限</li>
-<li class="chalk-text">常见替换：三角、指数、对数</li>
 <li class="chalk-text">记得同步变换所有元素</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text small-text" style="color: #ffab40;">常见替换：三角、指数、对数</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">换元积分法</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">u = g(x), du = g'(x)dx</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第5页：例题1 · 题目 -->
+<div class="page" id="page5">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 题目</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定积分计算</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_0^1 \frac{x}{1+x^2} dx$$</p>
+</div>
+<p class="chalk-text">观察：分子是 $x$，分母是 $1+x^2$</p>
+<p class="chalk-text">这种结构提示我们使用换元法</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">例题1</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="18">∫₀¹ x/(1+x²) dx</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第6页：例题1 · 思路 -->
+<div class="page" id="page6">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 思路</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">换元法分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">令 $u = 1+x^2$</li>
+<li class="chalk-text">则 $du = 2x\,dx$</li>
+<li class="chalk-text">所以 $x\,dx = \frac{1}{2}du$</li>
+</ul>
+<p class="chalk-text emphasis">上下限变换</p>
+<ul class="chalk-list">
+<li class="chalk-text">$x=0$ 时，$u=1$</li>
+<li class="chalk-text">$x=1$ 时，$u=2$</li>
 </ul>
 </div>
 </div>
-<div class="right-panel"></div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">换元思路</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">u = 1+x², du = 2x dx</text>
+</svg>
 </div>
-<!-- 第14页：定积分的应用 -->
-<div class="page" id="page14">
+</div>
+</div>
+<!-- 第7页：例题1 · 计算 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 计算</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">换元后的积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_0^1 \frac{x}{1+x^2} dx = \frac{1}{2}\int_1^2 \frac{du}{u}$$</p>
+</div>
+<p class="chalk-text emphasis">计算结果</p>
+<div class="formula-box">
+<p class="chalk-text">$$= \frac{1}{2}[\ln u]_1^2 = \frac{1}{2}(\ln 2 - \ln 1)$$</p>
+<p class="chalk-text">$$= \frac{1}{2}\ln 2$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">计算过程</text>
+<text x="350" y="340" text-anchor="middle" fill="#F38181" font-size="18">= (1/2) ln 2</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第8页：例题1 · 总结 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1 · 总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">关键要点</p>
+<ul class="chalk-list">
+<li class="chalk-text">✓ 识别换元结构</li>
+<li class="chalk-text">✓ 上下限同步变换</li>
+<li class="chalk-text">✓ 系数不要遗漏</li>
+<li class="chalk-text">✓ 最终结果：$\frac{1}{2}\ln 2$</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text small-text" style="color: #ffab40;">定积分换元法的核心：变量、微分、上下限三者同步</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">✓ 完成</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">答案：(1/2) ln 2</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第9页：例题2 · 题目 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2 · 题目</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">面积计算</p>
+<div class="formula-box">
+<p class="chalk-text">求 $y=\sin x$ 与 $x$ 轴在 $[0,\pi]$ 间的面积</p>
+</div>
+<p class="chalk-text">分析：</p>
+<ul class="chalk-list">
+<li class="chalk-text">先画图确认区间</li>
+<li class="chalk-text">确认函数符号（正/负）</li>
+<li class="chalk-text">在 $[0,\pi]$ 内，$\sin x \geq 0$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">例题2</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">y = sin x, [0,π]</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第10页：例题2 · 思路 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2 · 思路</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">设定积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$S = \int_0^{\pi} \sin x\,dx$$</p>
+</div>
+<p class="chalk-text">因为在 $[0,\pi]$ 区间内：</p>
+<ul class="chalk-list">
+<li class="chalk-text">$\sin x \geq 0$（非负）</li>
+<li class="chalk-text">可以直接积分</li>
+<li class="chalk-text">不需要分段处理</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">设定积分</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">S = ∫₀^π sin x dx</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第11页：例题2 · 计算 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2 · 计算</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">求原函数</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int \sin x\,dx = -\cos x + C$$</p>
+</div>
+<p class="chalk-text emphasis">代入上下限</p>
+<div class="formula-box">
+<p class="chalk-text">$$S = [-\cos x]_0^{\pi}$$</p>
+<p class="chalk-text">$$= -\cos\pi - (-\cos 0)$$</p>
+<p class="chalk-text">$$= -(-1) - (-1) = 1 + 1 = 2$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">计算过程</text>
+<text x="350" y="330" text-anchor="middle" fill="#F38181" font-size="18">S = 2</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第12页：例题2 · 总结 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2 · 总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">关键要点</p>
+<ul class="chalk-list">
+<li class="chalk-text">✓ 画图确认区间</li>
+<li class="chalk-text">✓ 判断函数符号</li>
+<li class="chalk-text">✓ 正弦函数的原函数是负余弦</li>
+<li class="chalk-text">✓ 最终面积：$S = 2$</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text small-text" style="color: #ffab40;">面积题关键：确定区间与函数符号，防止负面积</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">✓ 完成</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">面积 = 2</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第13页：定积分的应用 -->
+<div class="page" id="page13">
 <div class="left-panel">
 <h1 class="title chalk-text">定积分的应用</h1>
 <div class="board-content">
@@ -363,9 +400,45 @@
 <li class="chalk-text"><strong style="color: #81c784;">工程：</strong>流量、压力、应力</li>
 <li class="chalk-text"><strong style="color: #81c784;">经济：</strong>消费者剩余、总收益</li>
 </ul>
+<div class="formula-box">
+<p class="chalk-text small-text" style="color: #ffab40;">定积分是解决实际问题的强大工具</p>
 </div>
 </div>
-<div class="right-panel"></div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">应用领域</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">几何·物理·工程·经济</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第14页：易错点提醒 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">易错点提醒</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">常见错误</p>
+<ul class="chalk-list">
+<li class="chalk-text">❌ 换元后忘记变换上下限</li>
+<li class="chalk-text">❌ 系数计算错误</li>
+<li class="chalk-text">❌ 面积题忘记取绝对值</li>
+<li class="chalk-text">❌ 原函数求错</li>
+</ul>
+<div class="formula-box">
+<p class="chalk-text" style="color: #ffab40; font-weight: 600;">细心检查每一步，避免低级错误！</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#F38181" font-size="24" font-weight="bold">⚠️ 易错点</text>
+<text x="350" y="330" text-anchor="middle" fill="#FFE066" font-size="16">细心检查每一步</text>
+</svg>
+</div>
+</div>
 </div>
 <!-- 第15页：本章总结 -->
 <div class="page" id="page15">
@@ -374,17 +447,27 @@
 <div class="board-content">
 <p class="chalk-text emphasis">定积分的力量</p>
 <ul class="chalk-list">
-<li class="chalk-text">连接离散与连续</li>
-<li class="chalk-text">连接局部与整体</li>
-<li class="chalk-text">从概念到计算</li>
-<li class="chalk-text">从理论到应用</li>
+<li class="chalk-text">✓ 定积分概念：分割→近似→求和→极限</li>
+<li class="chalk-text">✓ 牛顿莱布尼茨公式：$\int_a^b f(x)dx = F(b)-F(a)$</li>
+<li class="chalk-text">✓ 换元积分法：变量、微分、上下限同步</li>
+<li class="chalk-text">✓ 应用：面积、体积、物理、工程</li>
 </ul>
 <div class="formula-box">
-<p class="chalk-text" style="color: #ffab40; font-weight: 600;">多做练习，熟练掌握这个强大工具！</p>
+<p class="chalk-text" style="color: #ffab40; font-weight: 600;">多做练习，熟练掌握！下章：微分方程</p>
 </div>
 </div>
 </div>
-<div class="right-panel"></div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="220" text-anchor="middle" fill="#FFE066" font-size="28" font-weight="bold">🎓 第6章完成</text>
+<text x="350" y="290" text-anchor="middle" fill="#95E1D3" font-size="18">定积分</text>
+<circle cx="350" cy="370" r="60" fill="none" stroke="#F38181" stroke-width="3"/>
+<text x="350" y="380" text-anchor="middle" fill="#F38181" font-size="24">✓</text>
+<text x="350" y="480" text-anchor="middle" fill="#FFE066" font-size="16">下一章：微分方程</text>
+</svg>
+</div>
+</div>
 </div>
 </div>
 <div class="control-bar">
@@ -425,21 +508,21 @@
         let speechFinishedResolve = null;
 
         const subtitleScript = {
-            1: "欢迎来到本章回顾与习题精讲。本节我们将回顾定积分的核心概念，包括牛顿莱布尼茨公式、换元积分法和面积应用。通过典型例题的分析，帮助大家掌握定积分的计算技巧和应用方法。",
-            2: "例题一：定积分计算。题目是计算从零到一的x除以一加x平方的定积分。这是一道典型的换元积分题。我们设u等于一加x平方，则du等于二x dx。上下限从零到一变为从一到二。积分变为二分之一乘以积分一到二的一除以u du，结果是二分之一ln二。",
-            3: "例题二：面积计算。题目是求y等于正弦x与x轴在零到派之间围成的面积。这是定积分的几何应用。面积S等于积分零到派正弦x dx。正弦x的原函数是负余弦x，代入上下限得到负余弦派减去负余弦零，等于一加一等于二。",
-            4: "章末总结。本章的核心内容包括：定积分的概念、牛顿莱布尼茨公式、定积分的计算技巧、以及定积分在求面积等问题中的应用。课后请完成两道定积分计算题和一道面积应用题。下一章我们将学习常微分方程，用数学描述动态变化的世界。",
-            5: "例题一的题目。计算从零到一的x除以一加x平方的定积分。观察这个积分式，分子是x，分母是一加x平方。这种结构提示我们可以使用换元法。关键是找到合适的替换变量u。",
-            6: "例题一的思路。分子含有x，分母含有一加x平方。我们联想到换元法：令u等于一加x平方。对u求导得到du等于二x dx。这样分子的x dx就可以用二分之一du来替换。同时要注意上下限也要跟着变化。",
-            7: "例题一的步骤。令u等于一加x平方，则du等于二x dx，所以x dx等于二分之一du。当x等于零时，u等于一。当x等于一时，u等于二。原积分转化为二分之一乘以积分一到二的一除以u du。这是一个基本积分形式。",
-            8: "例题一的结果。积分一到二的一除以u du等于ln u在一到二的值，等于ln二减ln一等于ln二。所以原积分等于二分之一乘以ln二。总结要点：定积分换元时，上下限要同步变换，系数不要遗漏。",
-            9: "例题二的题目。求y等于正弦x与x轴在零到派之间围成的面积。这是定积分的几何应用题。首先要画图确认区间和函数的符号。在零到派区间内，正弦x大于等于零，所以面积就等于定积分。",
-            10: "例题二的思路。面积可以表示为定积分：S等于积分零到派正弦x dx。在零到派区间内，正弦x非负，所以可以直接积分。如果函数在某些区间为负，需要分段处理，取绝对值后再积分。",
-            11: "定积分概念回顾。定积分是曲边梯形面积的精确值，通过四个步骤得到：分割、近似、求和、取极限。分割是把区间分成n个小区间，近似是用矩形面积代替曲边梯形，求和是把所有矩形面积加起来，取极限是让分割无限细。这体现了以直代曲的思想。",
-            12: "牛顿莱布尼茨公式回顾。这是计算定积分的核心工具，也叫微积分基本定理。公式是：积分a到b的f(x)dx等于F(b)减F(a)，其中F是f的原函数。这个公式把无穷求和问题转化为简单的减法，是微积分最伟大的发现之一。它建立了微分和积分的联系。",
-            13: "换元积分法回顾。这是处理复杂积分的重要技巧。关键是选择合适的替换变量u等于g(x)，使得积分变简单。同时要记得转换积分上下限：下限变为g(a)，上限变为g(b)。常见的替换包括三角替换、指数替换和对数替换。熟练掌握换元法，可以解决大部分定积分计算问题。",
-            14: "定积分的应用领域。除了求平面图形的面积，定积分还可以求旋转体的体积、曲线的弧长、变力做功、液体压力、质心位置等。在物理学中，定积分用于计算位移、功、电荷量。在工程中，用于计算材料用量、结构受力。在经济学中，用于计算总成本、总收益。掌握定积分，就掌握了解决实际问题的强大工具。",
-            15: "本章总结。定积分连接了离散与连续、局部与整体。从概念到计算，从理论到应用，定积分展现了数学的力量和美。核心概念包括：定积分的定义、牛顿莱布尼茨公式、换元积分法、定积分的几何应用。希望大家多做练习，熟练掌握这个重要工具。下一章我们将学习微分方程。"
+            1: "欢迎来到本章回顾与习题精讲。本节我们将系统回顾定积分的核心概念，包括定积分的定义、牛顿莱布尼茨公式、换元积分法，并通过两道典型例题，帮助大家掌握定积分的计算技巧和应用方法。让我们开始吧！",
+            2: "首先回顾定积分的概念。定积分是曲边梯形面积的精确值，通过四个步骤得到：分割、近似、求和、取极限。分割是把区间分成n个小段，近似是用小矩形近似曲边梯形，求和是把所有小矩形面积加起来，取极限是让n趋向无穷得到精确值。这体现了以直代曲的思想。",
+            3: "牛顿莱布尼茨公式，也叫微积分基本定理。公式是：积分a到b的f(x)dx等于F(b)减F(a)，其中F是f的原函数。这个公式把无穷求和问题转化为简单的减法，是微积分最伟大的发现之一。它建立了微分和积分的联系。",
+            4: "换元积分法是处理复杂积分的重要技巧。关键是选择合适的替换变量u等于g(x)，计算du等于g撇(x)dx，然后转换积分上下限。常见的替换包括三角替换、指数替换和对数替换。记得同步变换所有元素：变量、微分、上下限。",
+            5: "例题一：定积分计算。题目是计算从零到一的x除以一加x平方的定积分。观察这个积分式，分子是x，分母是一加x平方。这种结构提示我们可以使用换元法。关键是找到合适的替换变量。",
+            6: "例题一的思路。令u等于一加x平方，则du等于二x dx，所以x dx等于二分之一du。上下限变换：当x等于零时，u等于一；当x等于一时，u等于二。这样就把原积分转化为基本积分形式。",
+            7: "例题一的计算过程。换元后的积分是二分之一乘以积分一到二的一除以u du。一除以u的原函数是ln u，代入上下限得到ln二减ln一等于ln二。所以原积分等于二分之一乘以ln二。",
+            8: "例题一的总结。关键要点有三个：第一，识别换元结构；第二，上下限同步变换；第三，系数不要遗漏。最终结果是二分之一ln二。定积分换元法的核心是变量、微分、上下限三者同步变换。",
+            9: "例题二：面积计算。题目是求y等于正弦x与x轴在零到派之间围成的面积。这是定积分的几何应用题。首先要画图确认区间和函数的符号。在零到派区间内，正弦x大于等于零，所以面积就等于定积分。",
+            10: "例题二的思路。面积可以表示为定积分：S等于积分零到派正弦x dx。因为在零到派区间内，正弦x非负，所以可以直接积分，不需要分段处理。如果函数在某些区间为负，需要分段处理，取绝对值后再积分。",
+            11: "例题二的计算过程。正弦x的原函数是负余弦x。代入上下限：负余弦派减去负余弦零，等于负的负一减去负的一，等于一加一等于二。所以面积S等于二。",
+            12: "例题二的总结。关键要点有三个：第一，画图确认区间；第二，判断函数符号；第三，正弦函数的原函数是负余弦。最终面积等于二。面积题的关键是确定区间与函数符号，防止把负面积算入。",
+            13: "定积分的应用非常广泛。在几何中，可以求面积、体积、弧长。在物理中，可以求功、质心、转动惯量。在工程中，可以求流量、压力、应力。在经济学中，可以求消费者剩余、总收益。定积分是解决实际问题的强大工具。",
+            14: "易错点提醒。常见错误有四个：第一，换元后忘记变换上下限；第二，系数计算错误；第三，面积题忘记取绝对值；第四，原函数求错。细心检查每一步，避免低级错误！",
+            15: "本章总结。定积分的核心内容包括：定积分概念，通过分割、近似、求和、取极限得到；牛顿莱布尼茨公式，积分a到b的f(x)dx等于F(b)减F(a)；换元积分法，变量、微分、上下限同步变换；应用包括面积、体积、物理、工程等。多做练习，熟练掌握这个强大工具！下一章我们将学习微分方程。"
         };
 
         // durations computed dynamically via getPageDuration()
