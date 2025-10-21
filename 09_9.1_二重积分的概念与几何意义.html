@@ -312,7 +312,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 15 页</div>
 <!-- 第1页：二重积分的引入 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -574,6 +574,364 @@
 </div>
 </div>
 </div>
+<!-- 第7页：定义的四步法详解 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">定义的四步法详解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">第一步：分割区域D</p>
+<p class="chalk-text">将区域D分成n个小区域ΔS₁, ΔS₂, ..., ΔSₙ</p>
+<p class="chalk-text emphasis">第二步：柱体近似</p>
+<p class="chalk-text">在每个小区域内取点(ξᵢ,ηᵢ)，用f(ξᵢ,ηᵢ)·ΔSᵢ近似小柱体体积</p>
+<p class="chalk-text emphasis">第三步：求和加总</p>
+<p class="chalk-text">Σf(ξᵢ,ηᵢ)·ΔSᵢ 近似总体积</p>
+<p class="chalk-text emphasis">第四步：取极限</p>
+<p class="chalk-text">分割越来越细，极限即为二重积分</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<defs>
+<filter id="glow09_7">
+<feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+<femerge><femergenode in="coloredBlur"/><femergenode in="SourceGraphic"/></femerge>
+</filter>
+</defs>
+<!-- 区域分割示意图 -->
+<rect x="100" y="100" width="400" height="300" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" filter="url(#glow09_7)"/>
+<!-- 分割线 -->
+<line x1="250" y1="100" x2="250" y2="400" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+<line x1="100" y1="250" x2="500" y2="250" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+<!-- 小区域标记 -->
+<circle cx="175" cy="175" r="5" fill="#FF6B6B"/>
+<text x="185" y="180" fill="#ffffff" font-size="14">(ξ₁,η₁)</text>
+<circle cx="375" cy="175" r="5" fill="#FF6B6B"/>
+<text x="385" y="180" fill="#ffffff" font-size="14">(ξ₂,η₂)</text>
+<!-- 箭头指向极限 -->
+<text x="250" y="480" fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle">分割细化 → 极限</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第8页：例题1题目 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1：计算简单二重积分</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\iint_D (x+y) \\, dA$$</p>
+<p class="chalk-text small-text">其中D是矩形区域：0≤x≤1, 0≤y≤2</p>
+</div>
+<p class="chalk-text emphasis">分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">被积函数：f(x,y) = x+y</li>
+<li class="chalk-text">积分区域：矩形[0,1]×[0,2]</li>
+<li class="chalk-text">方法：化为累次积分</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 矩形区域D -->
+<rect x="150" y="200" width="200" height="300" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<text x="250" y="360" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle">D</text>
+<!-- 坐标轴 -->
+<line x1="100" y1="520" x2="450" y2="520" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowhead)"/>
+<line x1="130" y1="550" x2="130" y2="150" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowhead)"/>
+<text x="460" y="525" fill="#ffffff" font-size="16">x</text>
+<text x="135" y="140" fill="#ffffff" font-size="16">y</text>
+<!-- 标注 -->
+<text x="150" y="540" fill="#FFE066" font-size="14">0</text>
+<text x="350" y="540" fill="#FFE066" font-size="14">1</text>
+<text x="110" y="525" fill="#FFE066" font-size="14">0</text>
+<text x="110" y="205" fill="#FFE066" font-size="14">2</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第9页：例题1求解 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1：求解过程</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">化为累次积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\iint_D (x+y) \\, dA = \\int_0^1 \\int_0^2 (x+y) \\, dy \\, dx$$</p>
+</div>
+<p class="chalk-text emphasis">先对y积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\int_0^2 (x+y) \\, dy = \\left[xy + \\frac{y^2}{2}\\right]_0^2$$</p>
+<p class="chalk-text">$$= 2x + 2$$</p>
+</div>
+<p class="chalk-text emphasis">再对x积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\int_0^1 (2x+2) \\, dx = \\left[x^2 + 2x\\right]_0^1$$</p>
+<p class="chalk-text">$$= 1 + 2 = 3$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 计算步骤流程图 -->
+<rect x="150" y="100" width="400" height="80" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="10"/>
+<text x="350" y="145" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">∬(x+y)dA</text>
+<text x="350" y="100" y="165" fill="#FFE066" font-size="14" text-anchor="middle">原积分</text>
+<!-- 箭头 -->
+<path d="M 350 180 L 350 220" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="150" y="230" width="400" height="80" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" rx="10"/>
+<text x="350" y="270" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">∫₀¹(2x+2)dx</text>
+<text x="350" y="290" fill="#FFE066" font-size="12" text-anchor="middle">先对y积分</text>
+<!-- 箭头 -->
+<path d="M 350 310 L 350 350" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="200" y="360" width="300" height="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10"/>
+<text x="350" y="405" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle">= 3</text>
+<text x="350" y="425" fill="#4ECDC4" font-size="14" text-anchor="middle">最终结果</text>
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FFE066"/>
+</marker>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第10页：例题1结果 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">例题1：结果与验证</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">最终结果</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\iint_D (x+y) \\, dA = 3$$</p>
+</div>
+<p class="chalk-text emphasis">几何意义</p>
+<p class="chalk-text">这个值表示曲面z=x+y在矩形D上方的体积</p>
+<p class="chalk-text emphasis">验证合理性</p>
+<ul class="chalk-list">
+<li class="chalk-text">区域面积：1×2 = 2</li>
+<li class="chalk-text">函数平均值：3/2 = 1.5</li>
+<li class="chalk-text">在区域中心(0.5,1)处，f=1.5 ✓</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 3D曲面示意图 -->
+<defs>
+<linearGradient id="surfaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:0.6"/>
+<stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0.6"/>
+</linearGradient>
+</defs>
+<!-- 底面矩形 -->
+<path d="M 200 400 L 400 400 L 450 350 L 250 350 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2"/>
+<!-- 曲面 -->
+<path d="M 200 400 L 400 400 L 450 250 L 250 200 Z" fill="url(#surfaceGrad)" stroke="#FFE066" stroke-width="2"/>
+<!-- 标注 -->
+<text x="350" y="480" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">体积 = 3</text>
+<text x="300" y="380" fill="#FFE066" font-size="14">z = x+y</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第11页：例题2题目 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2：体积计算</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">求曲面z = 4 - x² - y²在第一卦限与坐标平面围成的体积</p>
+<p class="chalk-text emphasis">分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">被积函数：f(x,y) = 4 - x² - y²</li>
+<li class="chalk-text">积分区域：x²+y²≤4, x≥0, y≥0</li>
+<li class="chalk-text">这是一个四分之一圆盘</li>
+</ul>
+<p class="chalk-text emphasis">方法</p>
+<p class="chalk-text">使用极坐标更方便</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第一卦限的四分之一圆 -->
+<path d="M 350 400 L 350 200 A 200 200 0 0 1 550 400 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<text x="420" y="320" fill="#ffffff" font-size="18" font-weight="bold">D</text>
+<!-- 坐标轴 -->
+<line x1="200" y1="400" x2="600" y2="400" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowhead)"/>
+<line x1="350" y1="500" x2="350" y2="150" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowhead)"/>
+<text x="610" y="405" fill="#ffffff" font-size="16">x</text>
+<text x="355" y="140" fill="#ffffff" font-size="16">y</text>
+<!-- 半径标注 -->
+<line x1="350" y1="400" x2="550" y2="400" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+<text x="440" y="420" fill="#FFE066" font-size="14">r=2</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第12页：例题2求解 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">例题2：求解过程</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">转换为极坐标</p>
+<div class="formula-box">
+<p class="chalk-text">$$x = r\\cos\\theta, \\quad y = r\\sin\\theta$$</p>
+<p class="chalk-text">$$dA = r \\, dr \\, d\\theta$$</p>
+</div>
+<p class="chalk-text emphasis">积分范围</p>
+<p class="chalk-text">0 ≤ r ≤ 2, 0 ≤ θ ≤ π/2</p>
+<p class="chalk-text emphasis">计算</p>
+<div class="formula-box">
+<p class="chalk-text">$$V = \\int_0^{\\pi/2} \\int_0^2 (4-r^2) r \\, dr \\, d\\theta$$</p>
+<p class="chalk-text">$$= \\int_0^{\\pi/2} \\left[2r^2 - \\frac{r^4}{4}\\right]_0^2 d\\theta$$</p>
+<p class="chalk-text">$$= \\int_0^{\\pi/2} 4 \\, d\\theta = 2\\pi$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 极坐标系示意 -->
+<circle cx="350" cy="300" r="150" fill="none" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5"/>
+<circle cx="350" cy="300" r="100" fill="none" stroke="#4ECDC4" stroke-width="1" stroke-dasharray="3,3"/>
+<circle cx="350" cy="300" r="50" fill="none" stroke="#4ECDC4" stroke-width="1" stroke-dasharray="3,3"/>
+<!-- 角度扇形 -->
+<path d="M 350 300 L 500 300 A 150 150 0 0 1 350 150 Z" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2"/>
+<!-- 标注 -->
+<text x="420" y="320" fill="#ffffff" font-size="14">r</text>
+<text x="380" y="240" fill="#FFE066" font-size="14">θ</text>
+<text x="350" y="500" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle">V = 2π</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第13页：应用-质量计算 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：质量计算</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">物理意义</p>
+<p class="chalk-text">设薄板占据区域D，密度函数为ρ(x,y)</p>
+<p class="chalk-text">则薄板的总质量为：</p>
+<div class="formula-box">
+<p class="chalk-text">$$M = \\iint_D \\rho(x,y) \\, dA$$</p>
+</div>
+<p class="chalk-text emphasis">例子</p>
+<p class="chalk-text">圆盘x²+y²≤1，密度ρ=x²+y²</p>
+<div class="formula-box">
+<p class="chalk-text">$$M = \\int_0^{2\\pi} \\int_0^1 r^2 \\cdot r \\, dr \\, d\\theta$$</p>
+<p class="chalk-text">$$= 2\\pi \\cdot \\frac{1}{4} = \\frac{\\pi}{2}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 薄板示意图 -->
+<circle cx="350" cy="300" r="150" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<!-- 密度渐变 -->
+<defs>
+<radialGradient id="densityGrad">
+<stop offset="0%" style="stop-color:#FFE066;stop-opacity:0.8"/>
+<stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0.3"/>
+</radialGradient>
+</defs>
+<circle cx="350" cy="300" r="140" fill="url(#densityGrad)"/>
+<!-- 标注 -->
+<text x="350" y="290" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">密度ρ(x,y)</text>
+<text x="350" y="310" fill="#ffffff" font-size="14" text-anchor="middle">中心密度高</text>
+<text x="350" y="500" fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle">质量 M = π/2</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第14页：应用-平均值 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：函数平均值</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">平均值公式</p>
+<p class="chalk-text">函数f(x,y)在区域D上的平均值：</p>
+<div class="formula-box">
+<p class="chalk-text">$$\\bar{f} = \\frac{1}{A(D)} \\iint_D f(x,y) \\, dA$$</p>
+<p class="chalk-text small-text">其中A(D)是区域D的面积</p>
+</div>
+<p class="chalk-text emphasis">物理意义</p>
+<ul class="chalk-list">
+<li class="chalk-text">温度的平均值</li>
+<li class="chalk-text">高度的平均值</li>
+<li class="chalk-text">密度的平均值</li>
+</ul>
+<p class="chalk-text emphasis">注意</p>
+<p class="chalk-text">平均值介于函数的最小值和最大值之间</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 平均值示意图 -->
+<rect x="150" y="350" width="400" height="150" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<!-- 曲面 -->
+<path d="M 150 350 Q 350 200 550 350" fill="none" stroke="#FF6B6B" stroke-width="3"/>
+<!-- 平均高度线 -->
+<line x1="150" y1="280" x2="550" y2="280" stroke="#FFE066" stroke-width="3" stroke-dasharray="10,5"/>
+<text x="560" y="285" fill="#FFE066" font-size="14">平均值</text>
+<!-- 标注 -->
+<text x="350" y="530" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">区域D</text>
+<text x="350" y="180" fill="#FF6B6B" font-size="14" text-anchor="middle">f(x,y)</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第15页：注意事项 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">注意事项与易错点</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">易错点1：积分次序</p>
+<p class="chalk-text">先对哪个变量积分要看积分限的形式</p>
+<p class="chalk-text emphasis">易错点2：积分区域</p>
+<p class="chalk-text">画出区域图形，明确边界</p>
+<p class="chalk-text emphasis">易错点3：极坐标变换</p>
+<p class="chalk-text">不要忘记雅可比行列式r</p>
+<p class="chalk-text emphasis">解题技巧</p>
+<ul class="chalk-list">
+<li class="chalk-text">选择合适的坐标系</li>
+<li class="chalk-text">利用对称性简化计算</li>
+<li class="chalk-text">先画图再计算</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 警告图标 -->
+<circle cx="350" cy="200" r="80" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="4"/>
+<text x="350" y="220" fill="#ffffff" font-size="60" font-weight="bold" text-anchor="middle">!</text>
+<!-- 提示列表 -->
+<rect x="150" y="320" width="400" height="60" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2" rx="5"/>
+<text x="350" y="355" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">✓ 画图 → 选坐标系 → 定积分限 → 计算</text>
+<rect x="150" y="400" width="400" height="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2" rx="5"/>
+<text x="350" y="435" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">✓ 检验：结果的合理性和量纲</text>
+</svg>
+</div>
+</div>
+</div>
+
 <!-- 第6页：总结 -->
 <div class="page" id="page6">
 <div class="left-panel">
@@ -681,23 +1039,28 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `二重积分：一重积分在二维的推广，用于求体积与质量等量。`,
-            2: `四步法定义：分割区域、柱体近似、求和加总、分割细化取极限。`,
-            3: `几何意义：当f非负时，为底面D上方曲面的曲顶柱体体积。`,
-            4: `重要性质：线性、区域可加、比较性质，用于估计与分解计算。`,
-            5: `例：单位圆内x平方加y平方。积分值介于零到圆面积π之间。`,
-            6: `小结：掌握概念与性质；下一步学习累次积分的具体计算。`
-        };
-
-        const autoPlayDurations = {
-            1: 18000, 2: 20000, 3: 22000, 4: 22000, 5: 20000, 6: 18000
+            1: `欢迎学习二重积分的概念与几何意义。二重积分是一元积分在二维空间的推广，它不仅能计算曲顶柱体的体积，还能求解薄板的质量、平均温度等实际问题。掌握二重积分是学习多元微积分的重要一步。`,
+            2: `二重积分的定义采用四步法。第一步，将积分区域D分割成许多小区域。第二步，在每个小区域内取一点，用函数值乘以小区域面积近似小柱体体积。第三步，将所有小柱体体积求和。第四步，让分割越来越细，求和的极限就是二重积分。这个过程类似一元积分的黎曼和。`,
+            3: `二重积分的几何意义非常直观。当被积函数f括号x逗号y非负时，二重积分表示以区域D为底面、以曲面z等于f括号x逗号y为顶的曲顶柱体的体积。这就像一元积分表示曲边梯形面积一样，二重积分将这个概念推广到三维空间。`,
+            4: `二重积分具有三个重要性质。第一是线性性质，常数可以提到积分号外，两个函数和的积分等于积分的和。第二是区域可加性，如果区域D可以分成两部分，那么在D上的积分等于在两部分上积分的和。第三是比较性质，如果f小于等于g，则f的积分小于等于g的积分。`,
+            5: `让我们看一个估计积分值的例题。计算单位圆内x平方加y平方的二重积分。由于在单位圆内，x平方加y平方小于等于1，而单位圆的面积是π，所以积分值介于0和π之间。这个例子展示了如何用比较性质估计积分值。`,
+            6: `本节小结。我们学习了二重积分的定义、几何意义和重要性质。二重积分用四步法定义，几何上表示曲顶柱体体积。掌握这些基础概念后，下一节我们将学习如何具体计算二重积分，也就是累次积分的方法。`,
+            7: `让我们详细理解定义的四步法。第一步分割区域D，就像切蛋糕一样，把平面区域分成许多小块。第二步在每个小块内取一个代表点括号ξi逗号ηi，用函数值f括号ξi逗号ηi乘以小块面积ΔSi，这就近似了小柱体的体积。第三步把所有小柱体体积加起来，得到总和。第四步让分割越来越细，小块越来越多越来越小，这个和的极限就是精确的二重积分值。`,
+            8: `现在看第一个计算例题。计算二重积分，被积函数是x加y，积分区域D是矩形，x从0到1，y从0到2。这是一个最简单的二重积分，区域是矩形，被积函数是线性的。我们的方法是将二重积分化为累次积分，也就是先对一个变量积分，再对另一个变量积分。`,
+            9: `例题1的求解过程。首先将二重积分化为累次积分，写成先对y积分再对x积分的形式。先对y积分时，把x看作常数，积分x加y得到xy加y平方除以2，代入上下限0和2，得到2x加2。然后对x从0到1积分2x加2，得到x平方加2x，代入上下限得到1加2等于3。所以最终答案是3。`,
+            10: `例题1的结果是3。这个值的几何意义是曲面z等于x加y在矩形区域D上方的体积。我们可以验证这个结果的合理性。矩形区域的面积是1乘以2等于2，函数的平均值是3除以2等于1.5。在区域中心点括号0.5逗号1处，函数值确实是0.5加1等于1.5，这说明我们的计算是正确的。`,
+            11: `第二个例题是体积计算问题。求曲面z等于4减x平方减y平方在第一卦限与坐标平面围成的体积。这个曲面是一个抛物面，积分区域是第一卦限内x平方加y平方小于等于4的部分，也就是四分之一圆盘。对于这种圆形区域，使用极坐标会更方便。`,
+            12: `例题2使用极坐标求解。令x等于r乘以cosθ，y等于r乘以sinθ，面积元素dA等于r乘以dr乘以dθ。积分范围是r从0到2，θ从0到π除以2。被积函数变成4减r平方，乘以r得到4r减r立方。先对r积分得到2r平方减r四次方除以4，代入0到2得到4。再对θ从0到π除以2积分常数4，得到2π。`,
+            13: `二重积分的一个重要应用是计算薄板的质量。如果薄板占据平面区域D，密度函数是ρ括号x逗号y，那么薄板的总质量就是密度函数在区域D上的二重积分。例如圆盘x平方加y平方小于等于1，密度是x平方加y平方，用极坐标计算，质量等于2π乘以四分之一等于π除以2。`,
+            14: `二重积分还可以用来计算函数的平均值。函数f括号x逗号y在区域D上的平均值等于f在D上的二重积分除以D的面积。这个公式的物理意义很清楚，比如温度的平均值、高度的平均值等。平均值一定介于函数的最小值和最大值之间，这是一个重要的性质。`,
+            15: `最后总结一些注意事项和易错点。第一，积分次序要根据积分限的形式来选择，先对哪个变量积分要看清楚。第二，一定要画出积分区域的图形，明确边界。第三，使用极坐标变换时不要忘记雅可比行列式r。解题技巧是选择合适的坐标系，利用对称性简化计算，先画图再计算。掌握这些要点，二重积分就不难了。`
         };
 
         function updateStatus(message, type = 'normal') {
