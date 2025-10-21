@@ -799,7 +799,26 @@
 </svg>
 </div>
 </div>
-</div>
+
+<!-- 第7-15页 -->
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">收敛半径的求法</h1><div class="board-content"><p class="chalk-text">$$R = \lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|$$</p><p class="chalk-text">或</p><p class="chalk-text">$$R = \frac{1}{\lim_{n\to\infty}\sqrt[n]{|a_n|}}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.2)" r="80" stroke="#4ECDC4" stroke-width="3"></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">收敛半径</text></svg></div></div></div>
+
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">幂级数的性质</h1><div class="board-content"><p class="chalk-text">1. 和函数在收敛域内连续</p><p class="chalk-text">2. 可逐项求导</p><p class="chalk-text">3. 可逐项积分</p><p class="chalk-text">4. 收敛半径不变</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">幂级数性质</text></svg></div></div></div>
+
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">泰勒级数</h1><div class="board-content"><p class="chalk-text">$$f(x) = \sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$$</p><p class="chalk-text emphasis">麦克劳林级数（x₀=0）</p><p class="chalk-text">$$f(x) = \sum_{n=0}^{\infty}\frac{f^{(n)}(0)}{n!}x^n$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,107,107,0.2)" r="80" stroke="#FF6B6B" stroke-width="3"></circle><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="255">泰勒级数</text></svg></div></div></div>
+
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">常用函数的泰勒展开</h1><div class="board-content"><p class="chalk-text">$$e^x = \sum_{n=0}^{\infty}\frac{x^n}{n!}$$</p><p class="chalk-text">$$\sin x = \sum_{n=0}^{\infty}\frac{(-1)^n x^{2n+1}}{(2n+1)!}$$</p><p class="chalk-text">$$\cos x = \sum_{n=0}^{\infty}\frac{(-1)^n x^{2n}}{(2n)!}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">常用展开式</text></svg></div></div></div>
+
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：求幂级数收敛域</h1><div class="board-content"><p class="chalk-text">$$\sum_{n=1}^{\infty}\frac{x^n}{n}$$</p><p class="chalk-text emphasis">步骤</p><p class="chalk-text">1. 求收敛半径R=1</p><p class="chalk-text">2. 检验端点x=±1</p><p class="chalk-text">3. 收敛域：(-1,1]</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">收敛域例题</text></svg></div></div></div>
+
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：函数展开成幂级数</h1><div class="board-content"><p class="chalk-text">将f(x)=1/(1-x)展开</p><p class="chalk-text emphasis">解</p><p class="chalk-text">$$\frac{1}{1-x} = \sum_{n=0}^{\infty}x^n$$</p><p class="chalk-text">收敛域：|x|<1</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">函数展开例题</text></svg></div></div></div>
+
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">幂级数的应用</h1><div class="board-content"><p class="chalk-text">• 函数近似计算</p><p class="chalk-text">• 求极限</p><p class="chalk-text">• 求积分</p><p class="chalk-text">• 求微分方程的解</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">幂级数应用</text></svg></div></div></div>
+
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">傅里叶级数简介</h1><div class="board-content"><p class="chalk-text">周期函数展开成三角级数</p><p class="chalk-text">$$f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty}(a_n\cos nx + b_n\sin nx)$$</p><p class="chalk-text">应用：信号处理、图像压缩</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">傅里叶级数</text></svg></div></div></div>
+
+<div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 幂级数的收敛域</p><p class="chalk-text">✓ 泰勒级数展开</p><p class="chalk-text">✓ 常用函数的展开式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">本章总结与误差控制</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">幂级数</text></svg></div></div></div>
+
 </div>
 <div class="control-bar">
 <button class="btn" onclick="previousPage()">

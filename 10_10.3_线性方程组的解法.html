@@ -1013,6 +1013,159 @@
 </svg></div></div>
 </div>
 
+
+<!-- 第12页：齐次线性方程组 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">齐次线性方程组</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<p class="chalk-text">$$AX = 0$$（常数项全为零）</p>
+<p class="chalk-text emphasis">性质</p>
+<p class="chalk-text">• 一定有零解 X = 0</p>
+<p class="chalk-text">• D ≠ 0 → 只有零解</p>
+<p class="chalk-text">• D = 0 → 有非零解（无穷多解）</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 齐次方程组解空间 -->
+<g transform="translate(250,180)">
+<circle cx="100" cy="0" fill="rgba(78,205,196,0.1)" r="80" stroke="#4ECDC4" stroke-width="2"></circle>
+<circle cx="0" cy="0" fill="#FFE066" r="5"></circle>
+<text fill="#FFE066" font-size="13" x="-30" y="-15">零解</text>
+<!-- 非零解向量 -->
+<line marker-end="url(#arrow4)" stroke="#FF6B6B" stroke-width="2" x1="0" x2="60" y1="0" y2="-40"></line>
+<line marker-end="url(#arrow4)" stroke="#FF6B6B" stroke-width="2" x1="0" x2="40" y1="0" y2="50"></line>
+<line marker-end="url(#arrow4)" stroke="#FF6B6B" stroke-width="2" x1="0" x2="-50" y1="0" y2="30"></line>
+<text fill="#FF6B6B" font-size="12" x="65" y="-45">非零解</text>
+</g>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="350" y="320">解空间是向量空间</text>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="350">零解总是存在</text>
+<defs>
+<marker id="arrow4" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3">
+<path d="M0,0 L0,6 L9,3 z" fill="#FF6B6B"></path>
+</marker>
+</defs>
+</svg></div></div>
+</div>
+
+<!-- 第13页：非齐次与齐次方程组的关系 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">非齐次与齐次的关系</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">通解结构</p>
+<p class="chalk-text">非齐次方程组 AX = B 的通解</p>
+<p class="chalk-text">= 齐次方程组 AX = 0 的通解</p>
+<p class="chalk-text">+ 非齐次方程组的一个特解</p>
+<p class="chalk-text emphasis">求解策略</p>
+<p class="chalk-text">1. 求齐次方程组通解</p>
+<p class="chalk-text">2. 求非齐次方程组特解</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 通解结构图 -->
+<g transform="translate(200,180)">
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="100" y="-30">通解 = 齐次通解 + 特解</text>
+<!-- 齐次通解 -->
+<circle cx="50" cy="50" fill="rgba(78,205,196,0.15)" r="60" stroke="#4ECDC4" stroke-width="2"></circle>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="50" y="55">齐次通解</text>
+<text fill="#ffffff" font-size="18" x="130" y="60">+</text>
+<!-- 特解 -->
+<circle cx="180" cy="50" fill="#FFE066" r="8"></circle>
+<text fill="#FFE066" font-size="13" x="195" y="55">特解</text>
+<text fill="#ffffff" font-size="18" x="250" y="60">=</text>
+<!-- 非齐次通解 -->
+<ellipse cx="330" cy="50" fill="rgba(255,107,107,0.15)" rx="70" ry="60" stroke="#FF6B6B" stroke-width="2"></ellipse>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="330" y="50">非齐次</text>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="330" y="65">通解</text>
+</g>
+<text fill="#9370DB" font-size="13" text-anchor="middle" x="350" y="300">解的叠加原理</text>
+</svg></div></div>
+</div>
+
+<!-- 第14页：线性方程组的应用 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">线性方程组的应用</h1>
+<div class="board-content">
+<p class="chalk-text">• 电路分析：基尔霍夫定律</p>
+<p class="chalk-text">• 经济学：投入产出分析</p>
+<p class="chalk-text">• 工程：结构力学计算</p>
+<p class="chalk-text">• 图形学：坐标变换</p>
+<p class="chalk-text">• 数据拟合：最小二乘法</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 应用场景 -->
+<g transform="translate(150,100)">
+<rect fill="rgba(78,205,196,0.15)" height="60" rx="10" stroke="#4ECDC4" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="90" y="38">电路分析</text>
+</g>
+<g transform="translate(150,180)">
+<rect fill="rgba(255,224,102,0.15)" height="60" rx="10" stroke="#FFE066" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="90" y="38">投入产出模型</text>
+</g>
+<g transform="translate(150,260)">
+<rect fill="rgba(255,107,107,0.15)" height="60" rx="10" stroke="#FF6B6B" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" text-anchor="middle" x="90" y="38">结构力学</text>
+</g>
+<g transform="translate(150,340)">
+<rect fill="rgba(147,112,219,0.15)" height="60" rx="10" stroke="#9370DB" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="13" text-anchor="middle" x="90" y="38">图形变换</text>
+</g>
+<!-- 中心图标 -->
+<g transform="translate(400,250)">
+<circle cx="0" cy="0" fill="rgba(255,224,102,0.3)" r="70" stroke="#FFE066" stroke-width="3">
+<animate attributeName="r" dur="3s" repeatCount="indefinite" values="70;80;70"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="0" y="-5">线性</text>
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="0" y="15">方程组</text>
+</g>
+</svg></div></div>
+</div>
+
+<!-- 第15页：本节小结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">本节小结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">三种求解方法</p>
+<p class="chalk-text">✓ 高斯消元法：最常用</p>
+<p class="chalk-text">✓ 逆矩阵法：适合方阵</p>
+<p class="chalk-text">✓ 克拉默法则：理论重要</p>
+<p class="chalk-text emphasis">解的判定</p>
+<p class="chalk-text">掌握唯一解、无穷多解、无解的判定</p>
+<p class="chalk-text emphasis">下一节</p>
+<p class="chalk-text">本章总结与工程应用</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 总结可视化 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4">
+<animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate>
+</circle>
+<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="245">线性方程组</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="350" y="270">求解方法</text>
+<g transform="translate(180,130)">
+<circle cx="0" cy="0" fill="#4ECDC4" r="6"></circle>
+<text fill="#4ECDC4" font-size="13" x="15" y="5">高斯消元</text>
+</g>
+<g transform="translate(460,180)">
+<circle cx="0" cy="0" fill="#FF6B6B" r="6"></circle>
+<text fill="#FF6B6B" font-size="13" x="15" y="5">逆矩阵法</text>
+</g>
+<g transform="translate(470,330)">
+<circle cx="0" cy="0" fill="#9370DB" r="6"></circle>
+<text fill="#9370DB" font-size="13" x="15" y="5">克拉默法则</text>
+</g>
+<g transform="translate(160,360)">
+<circle cx="0" cy="0" fill="#FFE066" r="6"></circle>
+<text fill="#FFE066" font-size="13" x="15" y="5">解的判定</text>
+</g>
+</svg></div></div>
+</div>
+
 </div>
 <div class="control-bar">
 <button class="btn" onclick="previousPage()">
