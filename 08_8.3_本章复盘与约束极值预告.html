@@ -1017,16 +1017,6 @@
             return r;
         }
 
-        function getPageDuration(pageNum){
-            const speech = subtitleScript[pageNum];
-            if(!speech) return 6000;
-            const translated = translateMathToSpeech(speech);
-            const charCount = translated.length;
-            const duration = Math.max(6000, charCount * 200);
-            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
-            return duration;
-        }
-
         function switchToPage(pageNum) {
             if (pageNum < 1 || pageNum > totalPages) return;
 
