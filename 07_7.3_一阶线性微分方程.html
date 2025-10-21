@@ -162,7 +162,7 @@
             display: none !important;
         }
 
-        .avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 420px; height: 480px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
+        .avatar-container { position: fixed; bottom: 24px; right: 24px; transform: none; width: 600px; height: 700px; overflow: hidden; z-index: 50; pointer-events: none; background: transparent; }
         
         .wrapper { 
             width: 100%; 
@@ -324,7 +324,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 8 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 15 页</div>
 <!-- 第1页：一阶线性微分方程的标准形式 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -862,7 +862,7 @@
             if(!speech) return 6000;
             const translated = translateMathToSpeech(speech);
             const charCount = translated.length;
-            const duration = Math.max(6000, charCount * 200);
+            const duration = Math.max(6000, charCount * 400);
             console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }
