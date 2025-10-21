@@ -164,7 +164,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 15 页</div>
 <!-- 第1页：二阶行列式 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -366,6 +366,128 @@
 </svg>
 </div></div>
 </div>
+
+<!-- 第7-15页：扩充内容 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">行列式的展开定理</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">按行展开</p>
+<p class="chalk-text">$$|A| = a_{i1}A_{i1} + a_{i2}A_{i2} + \cdots + a_{in}A_{in}$$</p>
+<p class="chalk-text">其中A_{ij}是代数余子式</p>
+<p class="chalk-text emphasis">代数余子式</p>
+<p class="chalk-text">$$A_{ij} = (-1)^{i+j}M_{ij}$$</p>
+<p class="chalk-text">M_{ij}是去掉第i行第j列后的余子式</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle">展开定理</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：计算三阶行列式</h1>
+<div class="board-content">
+<p class="chalk-text">计算行列式的值</p>
+<p class="chalk-text">使用对角线法则或展开定理</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#4ECDC4" font-size="18" text-anchor="middle">计算示例</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">行列式的性质应用</h1>
+<div class="board-content">
+<p class="chalk-text">利用性质简化计算</p>
+<p class="chalk-text">化为上三角形式</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#FF6B6B" font-size="18" text-anchor="middle">性质应用</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">范德蒙德行列式</h1>
+<div class="board-content">
+<p class="chalk-text">特殊行列式</p>
+<p class="chalk-text">$$V_n = \prod_{1 \leq i < j \leq n}(x_j - x_i)$$</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#9370DB" font-size="18" text-anchor="middle">范德蒙德</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">克拉默法则详解</h1>
+<div class="board-content">
+<p class="chalk-text">线性方程组的解</p>
+<p class="chalk-text">$$x_i = \frac{D_i}{D}$$</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#FFE066" font-size="18" text-anchor="middle">克拉默法则</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">克拉默法则例题</h1>
+<div class="board-content">
+<p class="chalk-text">求解二元线性方程组</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#4ECDC4" font-size="18" text-anchor="middle">例题</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">行列式的几何意义深化</h1>
+<div class="board-content">
+<p class="chalk-text">体积、面积的计算</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#FF6B6B" font-size="18" text-anchor="middle">几何意义</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">行列式的应用</h1>
+<div class="board-content">
+<p class="chalk-text">判断线性相关性</p>
+<p class="chalk-text">求解线性方程组</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#9370DB" font-size="18" text-anchor="middle">应用</text>
+</svg></div></div>
+</div>
+
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">学习要点</h1>
+<div class="board-content">
+<p class="chalk-text">掌握计算方法</p>
+<p class="chalk-text">理解几何意义</p>
+<p class="chalk-text">熟练运用性质</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="300" fill="#FFE066" font-size="18" text-anchor="middle">要点总结</text>
+</svg></div></div>
+</div>
+
 <div class="page" id="page6">
 <div class="left-panel">
 <h1 class="title chalk-text">总结</h1>
@@ -417,23 +539,28 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `二阶行列式：a d减b c，几何为两向量平行四边形面积。`,
-            2: `三阶行列式：对角线法则，主对角乘积和减副对角乘积和。`,
-            3: `五大性质：互换变号、倍乘倍增、行相同与全零行值为零。`,
-            4: `上三角行列式：值等于主对角线元素之积，计算高效常用。`,
-            5: `克拉默法则：x i等于D i除以D，线性方程组的显式解法。`,
-            6: `小结：计算方法、几何意义与性质，为矩阵与方程组铺垫。`
-        };
-
-        const autoPlayDurations = {
-            1: 18000, 2: 20000, 3: 20000, 4: 18000, 5: 20000, 6: 20000
+            1: `欢迎学习行列式及其几何意义。行列式是线性代数的基础工具，它不仅是一个数值计算工具，更有深刻的几何意义。二阶行列式表示平行四边形的面积，三阶行列式表示平行六面体的体积。掌握行列式对学习矩阵和线性方程组至关重要。`,
+            2: `二阶行列式的定义是ad减bc，这个值的几何意义是由两个向量构成的平行四边形的有向面积。如果行列式为正，说明两向量按逆时针排列；如果为负，说明按顺时针排列；如果为零，说明两向量共线。这个几何意义帮助我们理解行列式的本质。`,
+            3: `三阶行列式可以用对角线法则计算。主对角线是从左上到右下的三条对角线，副对角线是从右上到左下的三条对角线。行列式等于主对角线元素乘积之和减去副对角线元素乘积之和。这个方法只适用于三阶行列式，更高阶的行列式需要用展开定理。`,
+            4: `行列式有五大重要性质。第一，互换两行，行列式变号。第二，某行乘以k，行列式也乘以k。第三，两行相同，行列式为零。第四，某行全为零，行列式为零。第五，某行加上另一行的k倍，行列式不变。这些性质是简化行列式计算的关键。`,
+            5: `上三角行列式是一种特殊的行列式，主对角线下方的元素全为零。上三角行列式的值等于主对角线元素的乘积。这个性质使得上三角行列式的计算非常高效。在实际计算中，我们常常利用行列式的性质将一般行列式化为上三角形式，然后直接计算。`,
+            6: `克拉默法则是用行列式求解线性方程组的方法。对于n元线性方程组，如果系数行列式D不为零，则方程组有唯一解，解的第i个分量xi等于Di除以D，其中Di是将系数矩阵的第i列替换为常数项后得到的行列式。这是线性方程组的显式解法。`,
+            7: `行列式的展开定理是计算高阶行列式的通用方法。按第i行展开，行列式等于该行各元素与其代数余子式乘积的和。代数余子式Aij等于负1的i加j次方乘以余子式Mij，余子式是去掉第i行第j列后的行列式。展开定理将高阶行列式化为低阶行列式的计算。`,
+            8: `看一个计算三阶行列式的例题。可以使用对角线法则直接计算，也可以使用展开定理按某一行或某一列展开。如果某行或某列有较多的零元素，选择按该行或列展开会简化计算。这个例题展示了行列式计算的基本技巧。`,
+            9: `行列式性质的应用。利用性质可以大大简化行列式的计算。例如，如果某行是另一行的倍数，行列式为零。如果某行加上另一行的倍数，行列式不变，我们可以利用这个性质将行列式化为上三角形式。这些技巧在实际计算中非常有用。`,
+            10: `范德蒙德行列式是一种特殊的行列式，它的值等于所有可能的xi减xj的乘积，其中i小于j。范德蒙德行列式在多项式插值和线性相关性判断中有重要应用。它的计算公式虽然复杂，但结果非常简洁，体现了行列式的优美性质。`,
+            11: `克拉默法则的详细讲解。克拉默法则给出了线性方程组解的显式表达式，但它的计算量很大，因为需要计算n加1个n阶行列式。因此克拉默法则主要用于理论分析和小规模方程组的求解。对于大规模方程组，我们通常使用高斯消元法等更高效的方法。`,
+            12: `克拉默法则的例题。求解二元线性方程组，首先计算系数行列式D，如果D不为零，方程组有唯一解。然后计算D1和D2，分别是将第一列和第二列替换为常数项后的行列式。最后x1等于D1除以D，x2等于D2除以D。这个例题展示了克拉默法则的具体应用。`,
+            13: `行列式几何意义的深化。二阶行列式表示平行四边形的有向面积，三阶行列式表示平行六面体的有向体积。行列式的绝对值就是面积或体积的大小，符号表示方向。这个几何意义在计算机图形学、物理学等领域有广泛应用。`,
+            14: `行列式的应用。第一，判断向量组的线性相关性，如果行列式为零，向量组线性相关。第二，求解线性方程组，使用克拉默法则。第三，计算矩阵的逆，逆矩阵的元素可以用行列式表示。第四，计算特征值，特征值是特征方程的根，特征方程是一个行列式方程。`,
+            15: `学习要点总结。第一，掌握行列式的计算方法，包括对角线法则、展开定理和性质应用。第二，理解行列式的几何意义，它表示面积或体积。第三，熟练运用行列式的性质简化计算。第四，掌握克拉默法则求解线性方程组。下一节我们将学习矩阵运算与逆矩阵。`
         };
 
         function updateStatus(message, type = 'normal') {

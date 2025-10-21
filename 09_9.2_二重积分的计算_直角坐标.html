@@ -312,7 +312,7 @@
 <div class="avatar-container">
 <div class="wrapper" id="avatarWrapper"></div>
 </div>
-<div class="page-indicator">第 <span id="currentPage">1</span> / 6 页</div>
+<div class="page-indicator">第 <span id="currentPage">1</span> / 15 页</div>
 <!-- 第1页：累次积分法 -->
 <div class="page active cover-page" data-page="1" id="page1"><div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;">
 <div style="flex: 1; text-align: center; padding: 2rem;">
@@ -506,6 +506,370 @@
 </div>
 </div>
 </div>
+
+<!-- 第7页：累次积分的理论基础 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">累次积分的理论基础</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">Fubini定理</p>
+<p class="chalk-text">若f(x,y)在矩形区域D上连续，则：</p>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_D f(x,y) \, dA = \int_a^b \int_c^d f(x,y) \, dy \, dx$$</p>
+<p class="chalk-text">$$= \int_c^d \int_a^b f(x,y) \, dx \, dy$$</p>
+</div>
+<p class="chalk-text emphasis">关键点</p>
+<ul class="chalk-list">
+<li class="chalk-text">两种积分次序结果相同</li>
+<li class="chalk-text">先积哪个变量看积分限</li>
+<li class="chalk-text">内层积分把另一变量当常数</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<defs>
+<filter id="glow09_2_7">
+<feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+<femerge><femergenode in="coloredBlur"/><femergenode in="SourceGraphic"/></femerge>
+</filter>
+</defs>
+<!-- 矩形区域 -->
+<rect x="200" y="200" width="300" height="200" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<!-- 两种积分次序箭头 -->
+<path d="M 250 150 L 250 420" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+<text x="260" y="280" fill="#FFE066" font-size="14">先y后x</text>
+<path d="M 150 250 L 520 250" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+<text x="320" y="240" fill="#FF6B6B" font-size="14">先x后y</text>
+<text x="350" y="480" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">Fubini定理</text>
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FFE066"/>
+</marker>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第8页：例题3-复杂区域题目 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题3：复杂区域</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">计算$$\iint_D xy \, dA$$</p>
+<p class="chalk-text">其中D由y=x², y=x围成</p>
+<p class="chalk-text emphasis">分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">先画出区域D</li>
+<li class="chalk-text">找交点：x²=x → x=0或x=1</li>
+<li class="chalk-text">选择积分次序：先y后x</li>
+<li class="chalk-text">y的范围：x²到x</li>
+<li class="chalk-text">x的范围：0到1</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 坐标轴 -->
+<line x1="100" y1="500" x2="600" y2="500" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowhead)"/>
+<line x1="150" y1="550" x2="150" y2="100" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowhead)"/>
+<!-- y=x² 抛物线 -->
+<path d="M 150 500 Q 350 200 550 100" stroke="#4ECDC4" stroke-width="3" fill="none"/>
+<text x="560" y="110" fill="#4ECDC4" font-size="14">y=x²</text>
+<!-- y=x 直线 -->
+<line x1="150" y1="500" x2="550" y2="100" stroke="#FF6B6B" stroke-width="3"/>
+<text x="560" y="90" fill="#FF6B6B" font-size="14">y=x</text>
+<!-- 区域D -->
+<path d="M 150 500 Q 350 200 550 100 L 150 500 Z" fill="rgba(255,224,102,0.3)"/>
+<text x="300" y="350" fill="#FFE066" font-size="20" font-weight="bold">D</text>
+<!-- 交点标注 -->
+<circle cx="150" cy="500" r="5" fill="#ffffff"/>
+<text x="130" y="520" fill="#ffffff" font-size="12">(0,0)</text>
+<circle cx="550" cy="100" r="5" fill="#ffffff"/>
+<text x="560" y="95" fill="#ffffff" font-size="12">(1,1)</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第9页：例题3求解 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">例题3：求解过程</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">化为累次积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_D xy \, dA = \int_0^1 \int_{x^2}^x xy \, dy \, dx$$</p>
+</div>
+<p class="chalk-text emphasis">先对y积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_{x^2}^x xy \, dy = x \left[\frac{y^2}{2}\right]_{x^2}^x$$</p>
+<p class="chalk-text">$$= x \cdot \frac{x^2 - x^4}{2} = \frac{x^3 - x^5}{2}$$</p>
+</div>
+<p class="chalk-text emphasis">再对x积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_0^1 \frac{x^3 - x^5}{2} \, dx = \frac{1}{2}\left[\frac{x^4}{4} - \frac{x^6}{6}\right]_0^1$$</p>
+<p class="chalk-text">$$= \frac{1}{2}\left(\frac{1}{4} - \frac{1}{6}\right) = \frac{1}{24}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 计算流程 -->
+<rect x="150" y="100" width="400" height="80" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="10"/>
+<text x="350" y="145" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">∬ xy dA</text>
+<path d="M 350 180 L 350 220" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="150" y="230" width="400" height="80" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" rx="10"/>
+<text x="350" y="265" fill="#ffffff" font-size="12" text-anchor="middle">∫₀¹ (x³-x⁵)/2 dx</text>
+<text x="350" y="285" fill="#FFE066" font-size="11" text-anchor="middle">先对y积分</text>
+<path d="M 350 310 L 350 350" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="200" y="360" width="300" height="80" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10"/>
+<text x="350" y="405" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle">= 1/24</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第10页：交换积分次序详解 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">交换积分次序详解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">为什么要交换次序？</p>
+<ul class="chalk-list">
+<li class="chalk-text">简化计算</li>
+<li class="chalk-text">某个次序积不出来</li>
+<li class="chalk-text">利用对称性</li>
+</ul>
+<p class="chalk-text emphasis">如何交换？</p>
+<p class="chalk-text">1. 画出积分区域</p>
+<p class="chalk-text">2. 重新确定积分限</p>
+<p class="chalk-text">3. 改变积分次序</p>
+<p class="chalk-text emphasis">注意</p>
+<p class="chalk-text">积分限的形式会改变！</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 区域示意 -->
+<path d="M 200 400 L 500 400 L 500 200 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<!-- 两种扫描方式 -->
+<line x1="250" y1="180" x2="250" y2="400" stroke="#FFE066" stroke-width="2" stroke-dasharray="3,3"/>
+<line x1="300" y1="180" x2="300" y2="400" stroke="#FFE066" stroke-width="2" stroke-dasharray="3,3"/>
+<line x1="350" y1="180" x2="350" y2="400" stroke="#FFE066" stroke-width="2" stroke-dasharray="3,3"/>
+<text x="200" y="170" fill="#FFE066" font-size="14">先y后x</text>
+<line x1="200" y1="350" x2="500" y2="350" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="3,3"/>
+<line x1="200" y1="300" x2="500" y2="300" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="3,3"/>
+<line x1="200" y1="250" x2="500" y2="250" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="3,3"/>
+<text x="510" y="300" fill="#FF6B6B" font-size="14">先x后y</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第11页：交换次序例题 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">例题4：交换积分次序</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">交换积分次序：$$\int_0^1 \int_x^1 f(x,y) \, dy \, dx$$</p>
+<p class="chalk-text emphasis">原积分限分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">x: 0→1</li>
+<li class="chalk-text">y: x→1</li>
+<li class="chalk-text">区域：0≤x≤1, x≤y≤1</li>
+</ul>
+<p class="chalk-text emphasis">交换后</p>
+<div class="formula-box">
+<p class="chalk-text">$$\int_0^1 \int_0^y f(x,y) \, dx \, dy$$</p>
+</div>
+<p class="chalk-text">y: 0→1, x: 0→y</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 三角形区域 -->
+<path d="M 200 500 L 500 500 L 500 200 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<text x="400" y="400" fill="#ffffff" font-size="18" font-weight="bold">D</text>
+<!-- 坐标轴 -->
+<line x1="150" y1="500" x2="550" y2="500" stroke="#ffffff" stroke-width="2"/>
+<line x1="200" y1="550" x2="200" y2="150" stroke="#ffffff" stroke-width="2"/>
+<!-- 边界标注 -->
+<text x="350" y="520" fill="#FFE066" font-size="14">y=x</text>
+<line x1="200" y1="500" x2="500" y2="200" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+<!-- 积分限标注 -->
+<text x="180" y="520" fill="#ffffff" font-size="12">0</text>
+<text x="500" y="520" fill="#ffffff" font-size="12">1</text>
+<text x="180" y="210" fill="#ffffff" font-size="12">1</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第12页：对称性应用详解 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">对称性应用详解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">关于x轴对称</p>
+<p class="chalk-text">若D关于x轴对称：</p>
+<ul class="chalk-list">
+<li class="chalk-text">f(x,y)关于y为奇函数 → 积分=0</li>
+<li class="chalk-text">f(x,y)关于y为偶函数 → 积分=2倍上半部分</li>
+</ul>
+<p class="chalk-text emphasis">关于y轴对称</p>
+<p class="chalk-text">若D关于y轴对称：</p>
+<ul class="chalk-list">
+<li class="chalk-text">f(x,y)关于x为奇函数 → 积分=0</li>
+<li class="chalk-text">f(x,y)关于x为偶函数 → 积分=2倍右半部分</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 关于y轴对称的区域 -->
+<ellipse cx="350" cy="300" rx="150" ry="100" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<!-- y轴 -->
+<line x1="350" y1="150" x2="350" y2="450" stroke="#FFE066" stroke-width="3"/>
+<text x="360" y="170" fill="#FFE066" font-size="14">y轴</text>
+<!-- 左右对称标记 -->
+<path d="M 250 300 L 280 280 L 280 320 Z" fill="#FF6B6B"/>
+<path d="M 450 300 L 420 280 L 420 320 Z" fill="#FF6B6B"/>
+<text x="350" y="480" fill="#ffffff" font-size="14" text-anchor="middle">对称性可简化计算</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第13页：对称性例题 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">例题5：利用对称性</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">计算$$\iint_D x^3 + y^2 \, dA$$</p>
+<p class="chalk-text">其中D: x²+y²≤1</p>
+<p class="chalk-text emphasis">分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">D关于x轴和y轴都对称</li>
+<li class="chalk-text">x³关于x为奇函数 → 积分=0</li>
+<li class="chalk-text">y²关于y为偶函数 → 可用对称性</li>
+</ul>
+<p class="chalk-text emphasis">结果</p>
+<div class="formula-box">
+<p class="chalk-text">$$\iint_D x^3 \, dA = 0$$</p>
+<p class="chalk-text">$$\iint_D y^2 \, dA = \iint_D x^2 \, dA$$ (对称性)</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 单位圆 -->
+<circle cx="350" cy="300" r="150" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<!-- 坐标轴 -->
+<line x1="200" y1="300" x2="500" y2="300" stroke="#ffffff" stroke-width="2"/>
+<line x1="350" y1="150" x2="350" y2="450" stroke="#ffffff" stroke-width="2"/>
+<!-- 奇函数示意 -->
+<text x="250" y="250" fill="#FF6B6B" font-size="16">+</text>
+<text x="440" y="250" fill="#4ECDC4" font-size="16">-</text>
+<text x="350" y="500" fill="#FFE066" font-size="14" text-anchor="middle">x³为奇函数，正负抵消</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第14页：综合例题 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">综合例题</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">题目</p>
+<p class="chalk-text">计算$$\int_0^2 \int_0^{\sqrt{2x-x^2}} (x+y) \, dy \, dx$$</p>
+<p class="chalk-text emphasis">分析</p>
+<ul class="chalk-list">
+<li class="chalk-text">识别区域：√(2x-x²) = √(1-(x-1)²)</li>
+<li class="chalk-text">这是半圆：(x-1)²+y²≤1, y≥0</li>
+<li class="chalk-text">圆心(1,0)，半径1</li>
+</ul>
+<p class="chalk-text emphasis">求解</p>
+<p class="chalk-text">先对y积分，再对x积分</p>
+<div class="formula-box">
+<p class="chalk-text">$$= \int_0^2 \left[xy + \frac{y^2}{2}\right]_0^{\sqrt{2x-x^2}} dx$$</p>
+<p class="chalk-text">$$= \int_0^2 \left(x\sqrt{2x-x^2} + \frac{2x-x^2}{2}\right) dx$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 半圆 -->
+<path d="M 250 400 A 150 150 0 0 1 550 400 Z" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3"/>
+<text x="400" y="320" fill="#ffffff" font-size="18" font-weight="bold">D</text>
+<!-- 坐标轴 -->
+<line x1="200" y1="400" x2="600" y2="400" stroke="#ffffff" stroke-width="2"/>
+<line x1="250" y1="450" x2="250" y2="200" stroke="#ffffff" stroke-width="2"/>
+<!-- 圆心和半径 -->
+<circle cx="400" cy="400" r="5" fill="#FFE066"/>
+<text x="410" y="405" fill="#FFE066" font-size="12">(1,0)</text>
+<line x1="400" y1="400" x2="550" y2="400" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"/>
+<text x="470" y="420" fill="#FFE066" font-size="12">r=1</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第15页：解题策略总结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">解题策略总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">步骤1：画图</p>
+<p class="chalk-text">准确画出积分区域，标出边界</p>
+<p class="chalk-text emphasis">步骤2：选择积分次序</p>
+<ul class="chalk-list">
+<li class="chalk-text">看积分限的复杂程度</li>
+<li class="chalk-text">考虑被积函数的形式</li>
+<li class="chalk-text">必要时交换次序</li>
+</ul>
+<p class="chalk-text emphasis">步骤3：确定积分限</p>
+<p class="chalk-text">外层：常数到常数</p>
+<p class="chalk-text">内层：函数到函数</p>
+<p class="chalk-text emphasis">步骤4：计算</p>
+<p class="chalk-text">先内后外，逐步计算</p>
+<p class="chalk-text emphasis">技巧</p>
+<p class="chalk-text">利用对称性、交换次序简化计算</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 流程图 -->
+<rect x="250" y="100" width="200" height="60" fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="3" rx="10"/>
+<text x="350" y="135" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">1. 画图</text>
+<path d="M 350 160 L 350 190" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="250" y="190" width="200" height="60" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="3" rx="10"/>
+<text x="350" y="225" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">2. 选次序</text>
+<path d="M 350 250 L 350 280" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="250" y="280" width="200" height="60" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3" rx="10"/>
+<text x="350" y="315" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">3. 定积分限</text>
+<path d="M 350 340 L 350 370" stroke="#FFE066" stroke-width="3" marker-end="url(#arrowhead)"/>
+<rect x="250" y="370" width="200" height="60" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="3" rx="10"/>
+<text x="350" y="405" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">4. 计算</text>
+</svg>
+</div>
+</div>
+</div>
+
 <div class="page" id="page6">
 <div class="left-panel">
 <h1 class="title chalk-text">总结</h1>
@@ -578,23 +942,28 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `累次积分：把二重积分化为两次一重积分，按次序依次计算。`,
-            2: `矩形区域示例：先y后x，积分限为常数，计算最为直接。`,
-            3: `三角形区域：先y后x，y从零到一减x，x从零到一，画图定积分限。`,
-            4: `交换积分次序：同一区域不同次序，需重定积分限以简化计算。`,
-            5: `利用对称性：关于轴对称且被积函数奇则积分为零，偶则倍乘。`,
-            6: `小结：画图、选次序、定积分限，善用交换与对称提升效率。`
-        };
-
-        const autoPlayDurations = {
-            1: 20000, 2: 22000, 3: 22000, 4: 22000, 5: 20000, 6: 18000
+            1: `欢迎学习二重积分的计算方法。上一节我们学习了二重积分的概念和几何意义，这一节我们要学习如何具体计算二重积分。主要方法是累次积分法，就是把二重积分化为两次一重积分，按照一定的次序依次计算。掌握这个方法是学习二重积分的关键。`,
+            2: `先看一个最简单的例子，矩形区域上的二重积分。当积分区域是矩形时，积分限都是常数，计算最为直接。我们可以先对y积分再对x积分，也可以先对x积分再对y积分，两种次序的结果是一样的。这个例子展示了累次积分的基本思想。`,
+            3: `三角形区域的二重积分稍微复杂一些。积分区域由直线围成，积分限不再是常数，而是变量的函数。例如y从0到1减x，x从0到1。这时候一定要先画出积分区域的图形，根据图形确定积分限。先对哪个变量积分，积分限的形式就不同。`,
+            4: `交换积分次序是一个重要技巧。对于同一个积分区域，可以选择不同的积分次序，但是积分限的形式会改变。有时候一个次序很难积分，交换次序后就简单多了。交换次序的关键是重新确定积分限，这需要根据区域的图形来分析。`,
+            5: `利用对称性可以大大简化计算。如果积分区域关于某个坐标轴对称，而被积函数关于相应变量是奇函数，那么积分值为零。如果被积函数是偶函数，积分值等于对称部分的两倍。这个性质在实际计算中非常有用，可以避免复杂的计算。`,
+            6: `本节小结。计算二重积分的关键步骤是：第一画出积分区域，第二选择积分次序，第三确定积分限，第四先内后外依次计算。要善于利用交换积分次序和对称性来简化计算。下一节我们将学习极坐标下的二重积分计算方法。`,
+            7: `累次积分的理论基础是Fubini定理。这个定理说，如果被积函数在矩形区域上连续，那么二重积分可以化为两次一重积分，而且两种积分次序的结果相同。关键点是先积哪个变量要看积分限的形式，内层积分时要把另一个变量当作常数。这是累次积分法的理论保证。`,
+            8: `现在看一个复杂区域的例题。计算xy在区域D上的二重积分，其中D由抛物线y等于x平方和直线y等于x围成。首先要画出这个区域，找到两条曲线的交点。抛物线和直线相交于原点和点括号1逗号1。选择先对y积分再对x积分，y的范围是从x平方到x，x的范围是从0到1。`,
+            9: `例题3的求解过程。将二重积分化为累次积分，先对y积分。把x看作常数，积分xy得到x乘以y平方除以2，代入上下限x和x平方，得到x乘以括号x平方减x四次方括号除以2，化简为x立方减x五次方除以2。然后对x从0到1积分，得到x四次方除以4减x六次方除以6，代入上下限得到24分之1。`,
+            10: `交换积分次序的详细讲解。为什么要交换次序呢？主要有三个原因：一是简化计算，二是某个次序积不出来，三是为了利用对称性。如何交换呢？关键是三步：第一画出积分区域，第二重新确定积分限，第三改变积分次序。要注意积分限的形式会改变，这是最容易出错的地方。`,
+            11: `看一个交换积分次序的具体例题。原积分是x从0到1，y从x到1。先分析原积分限，x的范围是0到1，y的范围是x到1，所以区域D是0小于等于x小于等于1，x小于等于y小于等于1。这是一个三角形区域。交换次序后，y从0到1，x从0到y。两种次序描述的是同一个区域，但积分限的形式不同。`,
+            12: `对称性应用的详细讲解。如果区域D关于x轴对称，被积函数关于y是奇函数，那么积分为零，因为正负部分抵消。如果被积函数关于y是偶函数，积分等于上半部分的两倍。同样，如果区域关于y轴对称，被积函数关于x的奇偶性也有类似的性质。利用对称性可以大大简化计算。`,
+            13: `利用对称性的例题。计算x立方加y平方在单位圆上的二重积分。单位圆关于x轴和y轴都对称。x立方关于x是奇函数，所以x立方的积分为零。y平方关于y是偶函数，而且由于圆的对称性，y平方的积分等于x平方的积分。这样就可以简化计算，不需要真的去积分。`,
+            14: `综合例题。计算从0到2，从0到根号下2x减x平方的积分。首先要识别积分区域，根号下2x减x平方可以写成根号下1减括号x减1括号平方，这是一个半圆，圆心在括号1逗号0，半径为1，y大于等于0。然后先对y积分，得到xy加y平方除以2，代入上限，再对x积分。`,
+            15: `最后总结解题策略。第一步画图，准确画出积分区域并标出边界。第二步选择积分次序，要看积分限的复杂程度和被积函数的形式，必要时交换次序。第三步确定积分限，外层是常数到常数，内层是函数到函数。第四步计算，先内后外逐步计算。技巧是利用对称性和交换次序简化计算。掌握这些方法，二重积分计算就不难了。`
         };
 
         function updateStatus(message, type = 'normal') {
