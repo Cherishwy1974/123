@@ -867,21 +867,291 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">向量的混合积</h1><div class="board-content"><p class="chalk-text">$$(a \times b) \cdot c$$</p><p class="chalk-text emphasis">几何意义</p><p class="chalk-text">以a,b,c为棱的平行六面体体积</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">混合积</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">向量的混合积</h1><div class="board-content"><p class="chalk-text">$$(a \times b) \cdot c$$</p><p class="chalk-text emphasis">几何意义</p><p class="chalk-text">以a,b,c为棱的平行六面体体积</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(150,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="200" y="-20">混合积的几何意义</text>
+<!-- 平行六面体 -->
+<defs>
+<marker id="arrow-mix" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+</defs>
+<!-- 底面平行四边形 -->
+<line x1="50" y1="250" x2="200" y2="250" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow-mix)"></line>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="120" y="270">a⃗</text>
+<line x1="50" y1="250" x2="120" y2="180" stroke="#FFE066" stroke-width="3" marker-end="url(#arrow-mix)"></line>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="70" y="210">b⃗</text>
+<line x1="200" y1="250" x2="270" y2="180" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<line x1="120" y1="180" x2="270" y2="180" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<!-- 高度向量c -->
+<line x1="50" y1="250" x2="50" y2="100" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrow-mix)"></line>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="170">c⃗</text>
+<!-- 顶面 -->
+<line x1="50" y1="100" x2="200" y2="100" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5"></line>
+<line x1="50" y1="100" x2="120" y2="30" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"></line>
+<line x1="200" y1="100" x2="270" y2="30" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<line x1="120" y1="30" x2="270" y2="30" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<!-- 侧边 -->
+<line x1="200" y1="250" x2="200" y2="100" stroke="#999" stroke-width="2"></line>
+<line x1="120" y1="180" x2="120" y2="30" stroke="#999" stroke-width="2"></line>
+<line x1="270" y1="180" x2="270" y2="30" stroke="#999" stroke-width="2"></line>
+<!-- 公式 -->
+<g transform="translate(0,300)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="400" height="60" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="25">体积 V = |(a⃗ × b⃗) · c⃗|</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="200" y="45">混合积的绝对值 = 平行六面体体积</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">例题：点积计算</h1><div class="board-content"><p class="chalk-text">a=(1,2,3), b=(4,5,6)</p><p class="chalk-text">求a·b和夹角θ</p><p class="chalk-text emphasis">解</p><p class="chalk-text">a·b = 1×4+2×5+3×6 = 32</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">点积例题</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">例题：点积计算</h1><div class="board-content"><p class="chalk-text">a=(1,2,3), b=(4,5,6)</p><p class="chalk-text">求a·b和夹角θ</p><p class="chalk-text emphasis">解</p><p class="chalk-text">a·b = 1×4+2×5+3×6 = 32</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：点积计算</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">已知条件</text>
+<text fill="#999" font-size="13" x="20" y="50">a⃗ = (1, 2, 3)</text>
+<text fill="#999" font-size="13" x="20" y="70">b⃗ = (4, 5, 6)</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.1)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">步骤1：计算点积</text>
+<text fill="#999" font-size="13" x="20" y="50">a⃗ · b⃗ = (1)(4) + (2)(5) + (3)(6)</text>
+<text fill="#999" font-size="13" x="20" y="70">     = 4 + 10 + 18</text>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="90">     = 32</text>
+</g>
+<g transform="translate(0,250)">
+<rect fill="rgba(255,107,107,0.1)" stroke="#FF6B6B" stroke-width="2" width="500" height="120" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="25">步骤2：计算夹角</text>
+<text fill="#999" font-size="13" x="20" y="50">|a⃗| = √(1²+2²+3²) = √14</text>
+<text fill="#999" font-size="13" x="20" y="70">|b⃗| = √(4²+5²+6²) = √77</text>
+<text fill="#999" font-size="13" x="20" y="90">cos θ = (a⃗·b⃗)/(|a⃗||b⃗|) = 32/(√14·√77)</text>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="110">θ ≈ 12.9°</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题：叉积计算</h1><div class="board-content"><p class="chalk-text">a=(1,0,0), b=(0,1,0)</p><p class="chalk-text">求a×b</p><p class="chalk-text emphasis">解</p><p class="chalk-text">a×b = (0,0,1)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">叉积例题</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题：叉积计算</h1><div class="board-content"><p class="chalk-text">a=(1,0,0), b=(0,1,0)</p><p class="chalk-text">求a×b</p><p class="chalk-text emphasis">解</p><p class="chalk-text">a×b = (0,0,1)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：叉积计算（右手定则）</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">已知条件</text>
+<text fill="#999" font-size="13" x="20" y="50">a⃗ = (1, 0, 0)  （x轴方向）</text>
+<text fill="#999" font-size="13" x="20" y="70">b⃗ = (0, 1, 0)  （y轴方向）</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.1)" stroke="#FFE066" stroke-width="2" width="500" height="120" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">计算过程（行列式法）</text>
+<text fill="#999" font-size="13" x="20" y="50">a⃗ × b⃗ = | i⃗   j⃗   k⃗ |</text>
+<text fill="#999" font-size="13" x="20" y="70">        | 1   0   0 |</text>
+<text fill="#999" font-size="13" x="20" y="90">        | 0   1   0 |</text>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="110">      = (0, 0, 1)  （z轴方向）</text>
+</g>
+<g transform="translate(0,270)">
+<!-- 3D坐标系可视化 -->
+<defs>
+<marker id="arrow-xyz" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+<polygon points="0 0, 8 3, 0 6" fill="#999"></polygon>
+</marker>
+</defs>
+<line x1="50" y1="100" x2="150" y2="100" stroke="#FF6B6B" stroke-width="3" marker-end="url(#arrow-xyz)"></line>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="160" y="105">x (a⃗)</text>
+<line x1="50" y1="100" x2="50" y2="20" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow-xyz)"></line>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="55" y="15">y (b⃗)</text>
+<line x1="50" y1="100" x2="20" y2="130" stroke="#FFE066" stroke-width="3" marker-end="url(#arrow-xyz)"></line>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="5" y="145">z (a⃗×b⃗)</text>
+<text fill="#999" font-size="12" x="200" y="70">右手定则：</text>
+<text fill="#999" font-size="12" x="200" y="90">四指从a⃗转向b⃗</text>
+<text fill="#999" font-size="12" x="200" y="110">拇指指向a⃗×b⃗</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">向量的投影</h1><div class="board-content"><p class="chalk-text">向量a在b上的投影</p><p class="chalk-text">$$\text{proj}_b a = \frac{a \cdot b}{|b|}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">向量投影</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">向量的投影</h1><div class="board-content"><p class="chalk-text">向量a在b上的投影</p><p class="chalk-text">$$\text{proj}_b a = \frac{a \cdot b}{|b|}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,120)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-30">向量投影的几何意义</text>
+<defs>
+<marker id="arrow-proj" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+<marker id="arrow-proj2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"></polygon>
+</marker>
+</defs>
+<!-- 向量b（基准向量） -->
+<line x1="50" y1="200" x2="400" y2="200" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrow-proj)"></line>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" x="410" y="205">b⃗</text>
+<!-- 向量a -->
+<line x1="50" y1="200" x2="300" y2="80" stroke="#FF6B6B" stroke-width="4" marker-end="url(#arrow-proj2)"></line>
+<text fill="#FF6B6B" font-size="16" font-weight="bold" x="310" y="75">a⃗</text>
+<!-- 投影（虚线） -->
+<line x1="300" y1="80" x2="300" y2="200" stroke="#FFE066" stroke-width="2" stroke-dasharray="5,5"></line>
+<!-- 投影长度标注 -->
+<line x1="50" y1="220" x2="300" y2="220" stroke="#FFE066" stroke-width="3"></line>
+<text fill="#FFE066" font-size="14" font-weight="bold" text-anchor="middle" x="175" y="245">proj_b a⃗</text>
+<!-- 夹角 -->
+<path d="M 100 200 Q 110 190 120 185" stroke="#9370DB" stroke-width="2" fill="none"></path>
+<text fill="#9370DB" font-size="13" x="125" y="190">θ</text>
+<!-- 公式说明 -->
+<g transform="translate(0,280)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="230" y="25">投影公式</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="230" y="50">proj_b a⃗ = (a⃗ · b⃗) / |b⃗|</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="230" y="70">投影长度 = |a⃗| cos θ</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">向量的线性组合</h1><div class="board-content"><p class="chalk-text">$$c = \lambda_1 a + \lambda_2 b$$</p><p class="chalk-text emphasis">线性相关</p><p class="chalk-text">存在不全为零的λ使组合为零</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">线性组合</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">向量的线性组合</h1><div class="board-content"><p class="chalk-text">$$c = \lambda_1 a + \lambda_2 b$$</p><p class="chalk-text emphasis">线性相关</p><p class="chalk-text">存在不全为零的λ使组合为零</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">向量的线性组合</text>
+<defs>
+<marker id="arrow-lc" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+<marker id="arrow-lc2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"></polygon>
+</marker>
+<marker id="arrow-lc3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FFE066"></polygon>
+</marker>
+</defs>
+<!-- 坐标系 -->
+<line x1="0" y1="200" x2="450" y2="200" stroke="#666" stroke-width="2"></line>
+<line x1="50" y1="0" x2="50" y2="350" stroke="#666" stroke-width="2"></line>
+<!-- 向量a -->
+<line x1="50" y1="200" x2="200" y2="200" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrow-lc)"></line>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="120" y="190">a⃗</text>
+<!-- 向量b -->
+<line x1="50" y1="200" x2="50" y2="80" stroke="#FF6B6B" stroke-width="4" marker-end="url(#arrow-lc2)"></line>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="60" y="130">b⃗</text>
+<!-- 线性组合 c = 2a + 1.5b -->
+<line x1="200" y1="200" x2="200" y2="20" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<line x1="50" y1="80" x2="200" y2="80" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<line x1="50" y1="200" x2="200" y2="20" stroke="#FFE066" stroke-width="4" marker-end="url(#arrow-lc3)"></line>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="130" y="100">c⃗ = 2a⃗ + 1.5b⃗</text>
+<!-- 说明 -->
+<g transform="translate(0,280)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="60" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">线性组合：c⃗ = λ₁a⃗ + λ₂b⃗</text>
+<text fill="#999" font-size="12" x="20" y="45">任意向量c可以表示为基向量a,b的线性组合</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">向量的应用：力的分解</h1><div class="board-content"><p class="chalk-text">力F分解为两个方向</p><p class="chalk-text">F = F₁ + F₂</p><p class="chalk-text">用向量加法和投影</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">力的分解</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">向量的应用：力的分解</h1><div class="board-content"><p class="chalk-text">力F分解为两个方向</p><p class="chalk-text">F = F₁ + F₂</p><p class="chalk-text">用向量加法和投影</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(150,120)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="200" y="-30">力的分解（斜面问题）</text>
+<defs>
+<marker id="arrow-force" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"></polygon>
+</marker>
+<marker id="arrow-force2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+<marker id="arrow-force3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FFE066"></polygon>
+</marker>
+</defs>
+<!-- 斜面 -->
+<line x1="50" y1="250" x2="350" y2="100" stroke="#999" stroke-width="4"></line>
+<line x1="50" y1="250" x2="350" y2="250" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<!-- 物体 -->
+<rect x="180" y="150" width="40" height="40" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3"></rect>
+<!-- 重力F -->
+<line x1="200" y1="190" x2="200" y2="300" stroke="#FF6B6B" stroke-width="4" marker-end="url(#arrow-force)"></line>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="210" y="250">F⃗ (重力)</text>
+<!-- 分力F₁（平行斜面） -->
+<line x1="200" y1="170" x2="280" y2="130" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow-force2)"></line>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" x="285" y="125">F⃗₁</text>
+<!-- 分力F₂（垂直斜面） -->
+<line x1="200" y1="170" x2="160" y2="220" stroke="#FFE066" stroke-width="3" marker-end="url(#arrow-force3)"></line>
+<text fill="#FFE066" font-size="13" font-weight="bold" x="130" y="230">F⃗₂</text>
+<!-- 角度标注 -->
+<text fill="#9370DB" font-size="13" x="60" y="240">θ</text>
+<!-- 说明 -->
+<g transform="translate(0,280)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="400" height="60" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" text-anchor="middle" x="200" y="25">F⃗ = F⃗₁ + F⃗₂</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="200" y="45">F₁ = F sin θ (沿斜面), F₂ = F cos θ (垂直斜面)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">向量的应用：速度合成</h1><div class="board-content"><p class="chalk-text">船速v₁，水速v₂</p><p class="chalk-text">合速度v = v₁ + v₂</p><p class="chalk-text">用向量加法求合速度</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">速度合成</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">向量的应用：速度合成</h1><div class="board-content"><p class="chalk-text">船速v₁，水速v₂</p><p class="chalk-text">合速度v = v₁ + v₂</p><p class="chalk-text">用向量加法求合速度</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,120)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-30">速度合成（渡河问题）</text>
+<defs>
+<marker id="arrow-vel" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+<marker id="arrow-vel2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"></polygon>
+</marker>
+<marker id="arrow-vel3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FFE066"></polygon>
+</marker>
+</defs>
+<!-- 河岸 -->
+<line x1="50" y1="50" x2="50" y2="300" stroke="#4ECDC4" stroke-width="4"></line>
+<line x1="400" y1="50" x2="400" y2="300" stroke="#4ECDC4" stroke-width="4"></line>
+<text fill="#4ECDC4" font-size="13" x="10" y="180">河岸</text>
+<text fill="#4ECDC4" font-size="13" x="410" y="180">河岸</text>
+<!-- 水流方向 -->
+<line x1="100" y1="80" x2="100" y2="150" stroke="#999" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-vel2)"></line>
+<text fill="#999" font-size="12" x="110" y="120">水流</text>
+<!-- 船 -->
+<ellipse cx="200" cy="200" rx="25" ry="15" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="3"></ellipse>
+<!-- 船速v₁（垂直河岸） -->
+<line x1="200" y1="200" x2="320" y2="200" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrow-vel)"></line>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="250" y="190">v⃗₁ (船速)</text>
+<!-- 水速v₂（沿河岸） -->
+<line x1="200" y1="200" x2="200" y2="100" stroke="#FF6B6B" stroke-width="4" marker-end="url(#arrow-vel2)"></line>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="210" y="145">v⃗₂ (水速)</text>
+<!-- 合速度v -->
+<line x1="200" y1="200" x2="320" y2="100" stroke="#FFE066" stroke-width="4" marker-end="url(#arrow-vel3)"></line>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="270" y="140">v⃗ (合速度)</text>
+<!-- 平行四边形 -->
+<line x1="320" y1="200" x2="320" y2="100" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<!-- 说明 -->
+<g transform="translate(0,280)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="60" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" text-anchor="middle" x="230" y="25">v⃗ = v⃗₁ + v⃗₂ (向量加法)</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="230" y="45">|v⃗| = √(v₁² + v₂²)，方向由tan θ = v₂/v₁确定</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">向量在计算机图形学中的应用</h1><div class="board-content"><p class="chalk-text">• 3D建模：顶点坐标</p><p class="chalk-text">• 光照计算：法向量</p><p class="chalk-text">• 碰撞检测：距离计算</p><p class="chalk-text">• 动画：位移向量</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">图形学应用</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">向量在计算机图形学中的应用</h1><div class="board-content"><p class="chalk-text">• 3D建模：顶点坐标</p><p class="chalk-text">• 光照计算：法向量</p><p class="chalk-text">• 碰撞检测：距离计算</p><p class="chalk-text">• 动画：位移向量</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(70,60)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="280" y="-5">向量在计算机图形学中的应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 3D建模</text>
+<text fill="#999" font-size="13" x="10" y="40">顶点坐标用向量表示：P = (x, y, z)</text>
+<text fill="#999" font-size="12" x="10" y="60">三角形网格、曲面建模的基础</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 光照计算</text>
+<text fill="#999" font-size="13" x="10" y="40">法向量n⃗与光线L⃗的点积：I = n⃗ · L⃗</text>
+<text fill="#999" font-size="12" x="10" y="60">决定表面明暗（Lambert光照模型）</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 碰撞检测</text>
+<text fill="#999" font-size="13" x="10" y="40">计算两物体间距离：d = |P₁ - P₂|</text>
+<text fill="#999" font-size="12" x="10" y="60">游戏物理引擎的核心算法</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 动画</text>
+<text fill="#999" font-size="13" x="10" y="40">位移向量：Δr⃗ = r⃗(t+Δt) - r⃗(t)</text>
+<text fill="#999" font-size="12" x="10" y="60">速度、加速度都是向量，实现平滑运动</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 向量的概念和运算</p><p class="chalk-text">✓ 点积：数量积</p><p class="chalk-text">✓ 叉积：向量积</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">平面与直线方程</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">向量理论</text></svg></div></div></div>
 

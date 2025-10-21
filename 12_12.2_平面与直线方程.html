@@ -785,21 +785,239 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">直线的对称式方程</h1><div class="board-content"><p class="chalk-text">$$\frac{x-x_0}{l} = \frac{y-y_0}{m} = \frac{z-z_0}{n}$$</p><p class="chalk-text">(l,m,n)是方向向量</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">对称式方程</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">直线的对称式方程</h1><div class="board-content"><p class="chalk-text">$$\frac{x-x_0}{l} = \frac{y-y_0}{m} = \frac{z-z_0}{n}$$</p><p class="chalk-text">(l,m,n)是方向向量</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">直线的对称式方程</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">对称式方程</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="250" y="55">(x-x₀)/l = (y-y₀)/m = (z-z₀)/n</text>
+<text fill="#999" font-size="12" x="20" y="80">过点M₀(x₀,y₀,z₀)，方向向量s⃗=(l,m,n)</text>
+</g>
+<defs>
+<marker id="arrow-line" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+</defs>
+<g transform="translate(50,160)">
+<line x1="0" y1="100" x2="400" y2="100" stroke="#666" stroke-width="2"></line>
+<line x1="50" y1="0" x2="50" y2="180" stroke="#666" stroke-width="2"></line>
+<line x1="50" y1="100" x2="350" y2="40" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow-line)"></line>
+<circle cx="150" cy="80" r="5" fill="#FF6B6B"></circle>
+<text fill="#FF6B6B" font-size="13" x="160" y="75">M₀(x₀,y₀,z₀)</text>
+<line x1="150" y1="80" x2="250" y2="50" stroke="#FFE066" stroke-width="3" stroke-dasharray="5,5"></line>
+<text fill="#FFE066" font-size="13" x="200" y="60">s⃗=(l,m,n)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">两平面的位置关系</h1><div class="board-content"><p class="chalk-text">平行：法向量平行</p><p class="chalk-text">垂直：法向量垂直</p><p class="chalk-text">相交：求交线</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">平面位置关系</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">两平面的位置关系</h1><div class="board-content"><p class="chalk-text">平行：法向量平行</p><p class="chalk-text">垂直：法向量垂直</p><p class="chalk-text">相交：求交线</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(80,70)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-5">两平面的位置关系</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="540" height="90" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 平行</text>
+<text fill="#999" font-size="13" x="10" y="45">法向量n⃗₁ ∥ n⃗₂ ⇔ n⃗₁ = λn⃗₂</text>
+<text fill="#999" font-size="12" x="10" y="65">例：x+2y+3z=1 与 2x+4y+6z=5 平行</text>
+</g>
+<g transform="translate(0,140)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="540" height="90" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 垂直</text>
+<text fill="#999" font-size="13" x="10" y="45">法向量n⃗₁ ⊥ n⃗₂ ⇔ n⃗₁ · n⃗₂ = 0</text>
+<text fill="#999" font-size="12" x="10" y="65">例：x+y+z=0 与 x-y=0 垂直</text>
+</g>
+<g transform="translate(0,250)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="540" height="90" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 相交</text>
+<text fill="#999" font-size="13" x="10" y="45">交线方向向量：s⃗ = n⃗₁ × n⃗₂</text>
+<text fill="#999" font-size="12" x="10" y="65">联立两平面方程求交线</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">点到平面的距离</h1><div class="board-content"><p class="chalk-text">$$d = \frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,107,107,0.2)" r="80" stroke="#FF6B6B" stroke-width="3"></circle><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="255">点到平面距离</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">点到平面的距离</h1><div class="board-content"><p class="chalk-text">$$d = \frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-20">点到平面的距离公式</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="230" y="25">距离公式</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="230" y="50">d = |Ax₀+By₀+Cz₀+D| / √(A²+B²+C²)</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="230" y="70">平面：Ax+By+Cz+D=0，点P₀(x₀,y₀,z₀)</text>
+</g>
+<defs>
+<marker id="arrow-dist" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#FF6B6B"></polygon>
+</marker>
+</defs>
+<g transform="translate(0,140)">
+<line x1="50" y1="150" x2="400" y2="80" stroke="#4ECDC4" stroke-width="4"></line>
+<text fill="#4ECDC4" font-size="13" x="350" y="70">平面π</text>
+<circle cx="200" cy="50" r="6" fill="#FF6B6B"></circle>
+<text fill="#FF6B6B" font-size="13" x="210" y="45">P₀</text>
+<line x1="200" y1="50" x2="200" y2="105" stroke="#FFE066" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrow-dist)"></line>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="210" y="80">d</text>
+<circle cx="200" cy="110" r="4" fill="#4ECDC4"></circle>
+<text fill="#999" font-size="12" x="210" y="115">垂足</text>
+<line x1="200" y1="50" x2="200" y2="0" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-dist)"></line>
+<text fill="#9370DB" font-size="12" x="210" y="20">n⃗</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">点到直线的距离</h1><div class="board-content"><p class="chalk-text">用向量叉积计算</p><p class="chalk-text">$$d = \frac{|\vec{PM} \times \vec{s}|}{|\vec{s}|}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="280">点到直线距离</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">点到直线的距离</h1><div class="board-content"><p class="chalk-text">用向量叉积计算</p><p class="chalk-text">$$d = \frac{|\vec{PM} \times \vec{s}|}{|\vec{s}|}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-20">点到直线的距离</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="230" y="25">距离公式</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="230" y="50">d = |PM⃗ × s⃗| / |s⃗|</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="230" y="70">M是直线上一点，s⃗是方向向量，P是空间中的点</text>
+</g>
+<defs>
+<marker id="arrow-ld" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+</defs>
+<g transform="translate(0,140)">
+<line x1="50" y1="150" x2="400" y2="150" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrow-ld)"></line>
+<text fill="#4ECDC4" font-size="13" x="410" y="155">直线L</text>
+<circle cx="150" cy="150" r="5" fill="#FF6B6B"></circle>
+<text fill="#FF6B6B" font-size="13" x="160" y="145">M</text>
+<circle cx="250" cy="50" r="6" fill="#FFE066"></circle>
+<text fill="#FFE066" font-size="13" x="260" y="45">P</text>
+<line x1="150" y1="150" x2="250" y2="50" stroke="#999" stroke-width="2" stroke-dasharray="5,5"></line>
+<text fill="#999" font-size="12" x="200" y="90">PM⃗</text>
+<line x1="250" y1="50" x2="250" y2="150" stroke="#9370DB" stroke-width="3" stroke-dasharray="5,5"></line>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="260" y="100">d</text>
+<line x1="150" y1="150" x2="300" y2="150" stroke="#FFE066" stroke-width="2"></line>
+<text fill="#FFE066" font-size="12" x="220" y="140">s⃗</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：求平面方程</h1><div class="board-content"><p class="chalk-text">过点(1,2,3)，法向量(1,1,1)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">1(x-1)+1(y-2)+1(z-3)=0</p><p class="chalk-text">x+y+z=6</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">平面方程例题</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：求平面方程</h1><div class="board-content"><p class="chalk-text">过点(1,2,3)，法向量(1,1,1)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">1(x-1)+1(y-2)+1(z-3)=0</p><p class="chalk-text">x+y+z=6</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：求平面方程</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">已知条件</text>
+<text fill="#999" font-size="13" x="20" y="50">过点 M₀(1, 2, 3)</text>
+<text fill="#999" font-size="13" x="20" y="70">法向量 n⃗ = (1, 1, 1)</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.1)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">解题步骤</text>
+<text fill="#999" font-size="13" x="20" y="50">点法式：1(x-1) + 1(y-2) + 1(z-3) = 0</text>
+<text fill="#999" font-size="13" x="20" y="70">展开：x - 1 + y - 2 + z - 3 = 0</text>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="90">一般式：x + y + z = 6</text>
+</g>
+<g transform="translate(0,250)">
+<defs>
+<marker id="arrow-plane" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#9370DB"></polygon>
+</marker>
+</defs>
+<ellipse cx="250" cy="80" rx="150" ry="40" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3"></ellipse>
+<circle cx="250" cy="80" r="5" fill="#FF6B6B"></circle>
+<text fill="#FF6B6B" font-size="13" x="260" y="75">M₀(1,2,3)</text>
+<line x1="250" y1="80" x2="250" y2="20" stroke="#9370DB" stroke-width="3" marker-end="url(#arrow-plane)"></line>
+<text fill="#9370DB" font-size="13" x="260" y="45">n⃗=(1,1,1)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：求直线方程</h1><div class="board-content"><p class="chalk-text">过点(1,0,0)，方向向量(1,1,1)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">$$\frac{x-1}{1} = \frac{y}{1} = \frac{z}{1}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">直线方程例题</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：求直线方程</h1><div class="board-content"><p class="chalk-text">过点(1,0,0)，方向向量(1,1,1)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">$$\frac{x-1}{1} = \frac{y}{1} = \frac{z}{1}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：求直线方程</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">已知条件</text>
+<text fill="#999" font-size="13" x="20" y="50">过点 M₀(1, 0, 0)</text>
+<text fill="#999" font-size="13" x="20" y="70">方向向量 s⃗ = (1, 1, 1)</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.1)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">解题步骤</text>
+<text fill="#999" font-size="13" x="20" y="50">对称式：(x-1)/1 = y/1 = z/1</text>
+<text fill="#999" font-size="13" x="20" y="70">或参数式：x=1+t, y=t, z=t</text>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="90">简化：x-1 = y = z</text>
+</g>
+<g transform="translate(0,250)">
+<defs>
+<marker id="arrow-line2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"></polygon>
+</marker>
+</defs>
+<line x1="50" y1="100" x2="400" y2="100" stroke="#666" stroke-width="2"></line>
+<line x1="50" y1="0" x2="50" y2="180" stroke="#666" stroke-width="2"></line>
+<line x1="50" y1="100" x2="350" y2="40" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrow-line2)"></line>
+<circle cx="150" cy="80" r="5" fill="#FF6B6B"></circle>
+<text fill="#FF6B6B" font-size="13" x="160" y="75">M₀(1,0,0)</text>
+<line x1="150" y1="80" x2="250" y2="50" stroke="#FFE066" stroke-width="3" stroke-dasharray="5,5"></line>
+<text fill="#FFE066" font-size="13" x="200" y="60">s⃗=(1,1,1)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">空间几何的应用</h1><div class="board-content"><p class="chalk-text">• 建筑设计：空间定位</p><p class="chalk-text">• 机器人：路径规划</p><p class="chalk-text">• 航空航天：轨道计算</p><p class="chalk-text">• 3D打印：坐标控制</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">工程应用</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">空间几何的应用</h1><div class="board-content"><p class="chalk-text">• 建筑设计：空间定位</p><p class="chalk-text">• 机器人：路径规划</p><p class="chalk-text">• 航空航天：轨道计算</p><p class="chalk-text">• 3D打印：坐标控制</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(70,60)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="280" y="-5">空间几何的工程应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 建筑设计</text>
+<text fill="#999" font-size="13" x="10" y="40">空间定位：确定建筑物各部分的位置</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：钢结构节点坐标、幕墙设计</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 机器人技术</text>
+<text fill="#999" font-size="13" x="10" y="40">路径规划：计算机械臂运动轨迹</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：工业机器人、无人机导航</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 航空航天</text>
+<text fill="#999" font-size="13" x="10" y="40">轨道计算：卫星、飞行器的运动轨迹</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：GPS定位、火箭发射</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="560" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 3D打印</text>
+<text fill="#999" font-size="13" x="10" y="40">坐标控制：打印头的精确定位</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：增材制造、快速成型</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 掌握平面方程的三种形式</p><p class="chalk-text">2. 掌握直线方程的三种形式</p><p class="chalk-text">3. 会求距离</p><p class="chalk-text">4. 会判断位置关系</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">学习要点</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 掌握平面方程的三种形式</p><p class="chalk-text">2. 掌握直线方程的三种形式</p><p class="chalk-text">3. 会求距离</p><p class="chalk-text">4. 会判断位置关系</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">本节学习要点</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 平面方程的三种形式</text>
+<text fill="#999" font-size="13" x="10" y="40">点法式、一般式、截距式</text>
+<text fill="#999" font-size="12" x="10" y="60">关键：法向量n⃗的确定</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 直线方程的三种形式</text>
+<text fill="#999" font-size="13" x="10" y="40">对称式、参数式、一般式（两平面交线）</text>
+<text fill="#999" font-size="12" x="10" y="60">关键：方向向量s⃗的确定</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 距离计算</text>
+<text fill="#999" font-size="13" x="10" y="40">点到平面、点到直线、两直线间距离</text>
+<text fill="#999" font-size="12" x="10" y="60">熟记公式，灵活运用</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 位置关系判断</text>
+<text fill="#999" font-size="13" x="10" y="40">平行、垂直、相交的判定条件</text>
+<text fill="#999" font-size="12" x="10" y="60">利用法向量和方向向量的关系</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 平面方程的三种形式</p><p class="chalk-text">✓ 直线方程的三种形式</p><p class="chalk-text">✓ 距离公式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">本章综合与空间定位</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">平面与直线</text></svg></div></div></div>
 
