@@ -160,11 +160,11 @@
 
         .avatar-container {
             position: fixed;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 975px;
-            height: 1105px;
+            bottom: 10px;
+            right: 24px;
+            transform: none;
+            width: 600px;
+            height: 700px;
             overflow: hidden;
             z-index: 50;
             pointer-events: none;
@@ -751,7 +751,7 @@
             if(!speech) return 6000;
             const translated = translateMathToSpeech(speech);
             const charCount = translated.length;
-            const duration = Math.max(6000, charCount * 200);
+            const duration = Math.max(6000, charCount * 400);
             console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }
