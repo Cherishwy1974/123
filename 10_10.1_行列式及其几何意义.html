@@ -381,7 +381,25 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle">展开定理</text>
+<!-- 展开定理可视化：按第一行展开 -->
+<g transform="translate(180,150)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="105" y="-30">按第1行展开</text>
+<rect fill="rgba(225,190,231,0.08)" height="180" stroke="#e1bee7" width="210" x="0" y="0"></rect>
+<line stroke="#e1bee7" x1="70" x2="70" y1="0" y2="180"></line>
+<line stroke="#e1bee7" x1="140" x2="140" y1="0" y2="180"></line>
+<line stroke="#e1bee7" x1="0" x2="210" y1="60" y2="60"></line>
+<line stroke="#e1bee7" x1="0" x2="210" y1="120" y2="120"></line>
+<!-- 高亮第一行 -->
+<rect fill="rgba(255,224,102,0.25)" height="60" width="210" x="0" y="0"></rect>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="35" y="38">a₁₁</text><text x="105" y="38">a₁₂</text><text x="175" y="38">a₁₃</text>
+<text x="35" y="98">a₂₁</text><text x="105" y="98">a₂₂</text><text x="105" y="98">a₂₃</text>
+<text x="35" y="158">a₃₁</text><text x="105" y="158">a₃₂</text><text x="175" y="158">a₃₃</text>
+</g>
+</g>
+<!-- 展开式 -->
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="350" y="380">|A| = a₁₁·A₁₁ + a₁₂·A₁₂ + a₁₃·A₁₃</text>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="350" y="410">A_ij = (-1)^(i+j) · M_ij</text>
 </svg></div></div>
 </div>
 
@@ -394,7 +412,25 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#4ECDC4" font-size="18" text-anchor="middle">计算示例</text>
+<!-- 三阶行列式计算示例 -->
+<g transform="translate(150,140)">
+<text fill="#4ECDC4" font-size="16" text-anchor="middle" x="100" y="-20">计算示例</text>
+<rect fill="rgba(78,205,196,0.08)" height="180" stroke="#4ECDC4" width="210" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="70" x2="70" y1="0" y2="180"></line>
+<line stroke="#4ECDC4" x1="140" x2="140" y1="0" y2="180"></line>
+<line stroke="#4ECDC4" x1="0" x2="210" y1="60" y2="60"></line>
+<line stroke="#4ECDC4" x1="0" x2="210" y1="120" y2="120"></line>
+<g fill="#fff" font-size="16" text-anchor="middle">
+<text x="35" y="42">2</text><text x="105" y="42">1</text><text x="175" y="42">3</text>
+<text x="35" y="102">0</text><text x="105" y="102">4</text><text x="175" y="102">1</text>
+<text x="35" y="162">1</text><text x="105" y="162">2</text><text x="175" y="162">5</text>
+</g>
+<!-- 对角线 -->
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="0" x2="210" y1="0" y2="180"></line>
+</g>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="360">det = 2×4×5 + 1×1×1 + 3×0×2</text>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="390">    - 3×4×1 - 2×1×2 - 1×0×5</text>
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="430">= 40 + 1 + 0 - 12 - 4 - 0 = 25</text>
 </svg></div></div>
 </div>
 
@@ -407,7 +443,31 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#FF6B6B" font-size="18" text-anchor="middle">性质应用</text>
+<!-- 行变换化简过程 -->
+<g transform="translate(100,180)">
+<text fill="#FF6B6B" font-size="14" x="50" y="-20">原行列式</text>
+<rect fill="rgba(255,107,107,0.08)" height="120" stroke="#FF6B6B" width="120" x="0" y="0"></rect>
+<line stroke="#FF6B6B" x1="60" x2="60" y1="0" y2="120"></line>
+<line stroke="#FF6B6B" x1="0" x2="120" y1="60" y2="60"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="30" y="38">2</text><text x="90" y="38">4</text>
+<text x="30" y="98">3</text><text x="90" y="98">6</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="24" x="250" y="250">→</text>
+<g transform="translate(300,180)">
+<text fill="#4ECDC4" font-size="14" x="30" y="-20">行变换</text>
+<rect fill="rgba(78,205,196,0.08)" height="120" stroke="#4ECDC4" width="120" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="60" x2="60" y1="0" y2="120"></line>
+<line stroke="#4ECDC4" x1="0" x2="120" y1="60" y2="60"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="30" y="38">2</text><text x="90" y="38">4</text>
+<text x="30" y="98">0</text><text x="90" y="98">0</text>
+</g>
+<rect fill="rgba(200,200,200,0.2)" height="60" width="60" x="0" y="60"></rect>
+</g>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="350" y="350">R₂ - (3/2)R₁ → R₂</text>
+<text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="390">det = 2 × 0 = 0</text>
 </svg></div></div>
 </div>
 
@@ -420,7 +480,22 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#9370DB" font-size="18" text-anchor="middle">范德蒙德</text>
+<!-- 范德蒙德行列式结构 -->
+<g transform="translate(180,140)">
+<text fill="#9370DB" font-size="16" text-anchor="middle" x="105" y="-30">范德蒙德行列式</text>
+<rect fill="rgba(147,112,219,0.08)" height="210" stroke="#9370DB" width="210" x="0" y="0"></rect>
+<line stroke="#9370DB" x1="70" x2="70" y1="0" y2="210"></line>
+<line stroke="#9370DB" x1="140" x2="140" y1="0" y2="210"></line>
+<line stroke="#9370DB" x1="0" x2="210" y1="70" y2="70"></line>
+<line stroke="#9370DB" x1="0" x2="210" y1="140" y2="140"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="35" y="42">1</text><text x="105" y="42">1</text><text x="175" y="42">1</text>
+<text x="35" y="112">x₁</text><text x="105" y="112">x₂</text><text x="175" y="112">x₃</text>
+<text x="35" y="182">x₁²</text><text x="105" y="182">x₂²</text><text x="175" y="182">x₃²</text>
+</g>
+</g>
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="350" y="390">V₃ = (x₂-x₁)(x₃-x₁)(x₃-x₂)</text>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="350" y="420">每行是前一行的x倍</text>
 </svg></div></div>
 </div>
 
@@ -433,7 +508,31 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#FFE066" font-size="18" text-anchor="middle">克拉默法则</text>
+<!-- 克拉默法则图解 -->
+<g transform="translate(120,160)">
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="60" y="-25">系数行列式D</text>
+<rect fill="rgba(255,224,102,0.08)" height="120" stroke="#FFE066" width="120" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="60" x2="60" y1="0" y2="120"></line>
+<line stroke="#FFE066" x1="0" x2="120" y1="60" y2="60"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="30" y="38">a₁₁</text><text x="90" y="38">a₁₂</text>
+<text x="30" y="98">a₂₁</text><text x="90" y="98">a₂₂</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="20" x="270" y="230">→</text>
+<g transform="translate(320,160)">
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="60" y="-25">D₁(替换第1列)</text>
+<rect fill="rgba(78,205,196,0.08)" height="120" stroke="#4ECDC4" width="120" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="60" x2="60" y1="0" y2="120"></line>
+<line stroke="#4ECDC4" x1="0" x2="120" y1="60" y2="60"></line>
+<rect fill="rgba(255,107,107,0.2)" height="120" width="60" x="0" y="0"></rect>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="30" y="38">b₁</text><text x="90" y="38">a₁₂</text>
+<text x="30" y="98">b₂</text><text x="90" y="98">a₂₂</text>
+</g>
+</g>
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="330">x₁ = D₁/D</text>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="350" y="360">用常数项替换对应列</text>
 </svg></div></div>
 </div>
 
@@ -445,7 +544,33 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#4ECDC4" font-size="18" text-anchor="middle">例题</text>
+<!-- 克拉默法则例题 -->
+<text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="120">2x + 3y = 8</text>
+<text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="150">x - y = -1</text>
+<g transform="translate(150,190)">
+<text fill="#FFE066" font-size="14" x="20" y="-15">D =</text>
+<rect fill="rgba(255,224,102,0.08)" height="80" stroke="#FFE066" width="80" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#FFE066" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">2</text><text x="60" y="28">3</text>
+<text x="20" y="68">1</text><text x="60" y="68">-1</text>
+</g>
+<text fill="#FFE066" font-size="14" x="90" y="45">= -5</text>
+</g>
+<g transform="translate(320,190)">
+<text fill="#4ECDC4" font-size="14" x="20" y="-15">D₁ =</text>
+<rect fill="rgba(78,205,196,0.08)" height="80" stroke="#4ECDC4" width="80" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#4ECDC4" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">8</text><text x="60" y="28">3</text>
+<text x="20" y="68">-1</text><text x="60" y="68">-1</text>
+</g>
+<text fill="#4ECDC4" font-size="14" x="90" y="45">= -5</text>
+</g>
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="330">x = D₁/D = -5/(-5) = 1</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="360">y = D₂/D = -10/(-5) = 2</text>
 </svg></div></div>
 </div>
 
@@ -457,7 +582,27 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#FF6B6B" font-size="18" text-anchor="middle">几何意义</text>
+<!-- 平行四边形面积 -->
+<g transform="translate(200,200)">
+<text fill="#FF6B6B" font-size="16" text-anchor="middle" x="100" y="-40">二阶行列式 = 平行四边形面积</text>
+<!-- 坐标系 -->
+<line stroke="#888" x1="0" x2="250" y1="150" y2="150"></line>
+<line stroke="#888" x1="50" x2="50" y1="0" y2="200"></line>
+<!-- 向量a -->
+<line marker-end="url(#arrowhead)" stroke="#4ECDC4" stroke-width="3" x1="50" x2="150" y1="150" y2="150"></line>
+<text fill="#4ECDC4" font-size="14" x="100" y="140">a</text>
+<!-- 向量b -->
+<line marker-end="url(#arrowhead)" stroke="#FFE066" stroke-width="3" x1="50" x2="110" y1="150" y2="70"></line>
+<text fill="#FFE066" font-size="14" x="70" y="100">b</text>
+<!-- 平行四边形 -->
+<path d="M 50 150 L 150 150 L 210 70 L 110 70 Z" fill="rgba(255,107,107,0.2)" stroke="#FF6B6B" stroke-width="2"></path>
+</g>
+<defs>
+<marker id="arrowhead" markerHeight="10" markerUnits="strokeWidth" markerWidth="10" orient="auto" refX="5" refY="5">
+<polygon fill="#4ECDC4" points="0 0, 10 5, 0 10"></polygon>
+</marker>
+</defs>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="350" y="420">面积 = |det([a b])|</text>
 </svg></div></div>
 </div>
 
@@ -470,7 +615,22 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#9370DB" font-size="18" text-anchor="middle">应用</text>
+<!-- 应用场景 -->
+<g transform="translate(150,150)">
+<rect fill="rgba(78,205,196,0.15)" height="60" rx="10" stroke="#4ECDC4" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="90" y="38">判断向量线性相关</text>
+</g>
+<g transform="translate(150,230)">
+<rect fill="rgba(255,224,102,0.15)" height="60" rx="10" stroke="#FFE066" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="90" y="38">求解线性方程组</text>
+</g>
+<g transform="translate(150,310)">
+<rect fill="rgba(255,107,107,0.15)" height="60" rx="10" stroke="#FF6B6B" stroke-width="2" width="180" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="90" y="38">计算几何体积</text>
+</g>
+<text fill="#9370DB" font-size="16" font-weight="bold" text-anchor="middle" x="450" y="250">det ≠ 0</text>
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="450" y="280">↓</text>
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="450" y="310">可逆/独立</text>
 </svg></div></div>
 </div>
 
@@ -484,7 +644,28 @@
 </div>
 </div>
 <div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
-<text x="350" y="300" fill="#FFE066" font-size="18" text-anchor="middle">要点总结</text>
+<!-- 知识点总结 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" r="100" stroke="#FFE066" stroke-width="3">
+<animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate>
+</circle>
+<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="240">行列式</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="350" y="265">核心工具</text>
+<g transform="translate(200,100)">
+<circle cx="0" cy="0" fill="#4ECDC4" r="5"></circle>
+<text fill="#4ECDC4" font-size="13" x="15" y="5">计算方法</text>
+</g>
+<g transform="translate(450,150)">
+<circle cx="0" cy="0" fill="#FF6B6B" r="5"></circle>
+<text fill="#FF6B6B" font-size="13" x="15" y="5">几何意义</text>
+</g>
+<g transform="translate(480,320)">
+<circle cx="0" cy="0" fill="#9370DB" r="5"></circle>
+<text fill="#9370DB" font-size="13" x="15" y="5">性质应用</text>
+</g>
+<g transform="translate(180,350)">
+<circle cx="0" cy="0" fill="#FFE066" r="5"></circle>
+<text fill="#FFE066" font-size="13" x="15" y="5">克拉默法则</text>
+</g>
 </svg></div></div>
 </div>
 

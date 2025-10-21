@@ -778,7 +778,241 @@
 </svg>
 </div>
 </div>
+
+<!-- 第7页：线性方程组解的判定定理 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">解的判定定理</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">系数行列式D ≠ 0</p>
+<p class="chalk-text">→ 方程组有唯一解</p>
+<p class="chalk-text emphasis">D = 0</p>
+<p class="chalk-text">• rank(A) = rank(A|B) = n → 唯一解</p>
+<p class="chalk-text">• rank(A) = rank(A|B) < n → 无穷多解</p>
+<p class="chalk-text">• rank(A) ≠ rank(A|B) → 无解</p>
 </div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 解的判定流程图 -->
+<g transform="translate(250,100)">
+<rect fill="rgba(78,205,196,0.15)" height="50" rx="10" stroke="#4ECDC4" stroke-width="2" width="200" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="100" y="32">AX = B</text>
+</g>
+<line marker-end="url(#arrow3)" stroke="#FFE066" stroke-width="2" x1="350" x2="350" y1="150" y2="180"></line>
+<g transform="translate(250,180)">
+<path d="M 100 0 L 150 40 L 100 80 L 50 40 Z" fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2"></path>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="100" y="45">D ≠ 0?</text>
+</g>
+<line marker-end="url(#arrow3)" stroke="#4ECDC4" stroke-width="2" x1="400" x2="480" y1="220" y2="220"></line>
+<text fill="#4ECDC4" font-size="12" x="410" y="210">是</text>
+<g transform="translate(480,195)">
+<rect fill="rgba(78,205,196,0.2)" height="50" rx="10" stroke="#4ECDC4" stroke-width="2" width="120" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="60" y="32">唯一解</text>
+</g>
+<line marker-end="url(#arrow3)" stroke="#FF6B6B" stroke-width="2" x1="350" x2="350" y1="260" y2="300"></line>
+<text fill="#FF6B6B" font-size="12" x="360" y="285">否</text>
+<g transform="translate(250,300)">
+<path d="M 100 0 L 150 40 L 100 80 L 50 40 Z" fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2"></path>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="100" y="38">rank(A)=</text>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="100" y="52">rank(A|B)?</text>
+</g>
+<line marker-end="url(#arrow3)" stroke="#9370DB" stroke-width="2" x1="400" x2="480" y1="340" y2="340"></line>
+<text fill="#9370DB" font-size="12" x="410" y="330">是</text>
+<g transform="translate(480,315)">
+<rect fill="rgba(147,112,219,0.2)" height="50" rx="10" stroke="#9370DB" stroke-width="2" width="120" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="13" text-anchor="middle" x="60" y="32">无穷多解</text>
+</g>
+<line marker-end="url(#arrow3)" stroke="#FF6B6B" stroke-width="2" x1="200" x2="120" y1="340" y2="340"></line>
+<text fill="#FF6B6B" font-size="12" x="140" y="330">否</text>
+<g transform="translate(0,315)">
+<rect fill="rgba(255,107,107,0.2)" height="50" rx="10" stroke="#FF6B6B" stroke-width="2" width="120" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" text-anchor="middle" x="60" y="32">无解</text>
+</g>
+<defs>
+<marker id="arrow3" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3">
+<path d="M0,0 L0,6 L9,3 z" fill="#FFE066"></path>
+</marker>
+</defs>
+</svg></div></div>
+</div>
+
+<!-- 第8页：高斯消元法例题 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：高斯消元法</h1>
+<div class="board-content">
+<p class="chalk-text">求解三元线性方程组</p>
+<p class="chalk-text">$$\begin{cases} x + 2y + z = 4 \\ 2x + 5y + 3z = 11 \\ 3x + 7y + 4z = 15 \end{cases}$$</p>
+<p class="chalk-text emphasis">步骤</p>
+<p class="chalk-text">1. 写出增广矩阵</p>
+<p class="chalk-text">2. 初等行变换化为行阶梯形</p>
+<p class="chalk-text">3. 回代求解</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 增广矩阵 -->
+<g transform="translate(200,150)">
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="100" y="-25">(A | B)</text>
+<rect fill="rgba(78,205,196,0.08)" height="150" stroke="#4ECDC4" stroke-width="2" width="200" x="0" y="0"></rect>
+<line stroke="#4ECDC4" stroke-dasharray="3,3" x1="150" x2="150" y1="0" y2="150"></line>
+<line stroke="#4ECDC4" x1="0" x2="200" y1="50" y2="50"></line>
+<line stroke="#4ECDC4" x1="0" x2="200" y1="100" y2="100"></line>
+<line stroke="#4ECDC4" x1="50" x2="50" y1="0" y2="150"></line>
+<line stroke="#4ECDC4" x1="100" x2="100" y1="0" y2="150"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="25" y="32">1</text><text x="75" y="32">2</text><text x="125" y="32">1</text><text x="175" y="32">4</text>
+<text x="25" y="82">2</text><text x="75" y="82">5</text><text x="125" y="82">3</text><text x="175" y="82">11</text>
+<text x="25" y="132">3</text><text x="75" y="132">7</text><text x="125" y="132">4</text><text x="175" y="132">15</text>
+</g>
+</g>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="340">通过行变换化简</text>
+</svg></div></div>
+</div>
+
+<!-- 第9页：高斯消元法求解过程 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">求解过程</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">行变换</p>
+<p class="chalk-text">R₂ - 2R₁ → R₂</p>
+<p class="chalk-text">R₃ - 3R₁ → R₃</p>
+<p class="chalk-text emphasis">继续化简</p>
+<p class="chalk-text">R₃ - R₂ → R₃</p>
+<p class="chalk-text emphasis">回代</p>
+<p class="chalk-text">z = 1, y = 2, x = 1</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 行变换过程 -->
+<g transform="translate(80,120)">
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="75" y="-15">原矩阵</text>
+<rect fill="rgba(78,205,196,0.08)" height="120" stroke="#4ECDC4" width="150" x="0" y="0"></rect>
+<g fill="#fff" font-size="11" text-anchor="middle">
+<text x="30" y="28">1 2 1|4</text>
+<text x="30" y="68">2 5 3|11</text>
+<text x="30" y="108">3 7 4|15</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="16" x="250" y="190">→</text>
+<g transform="translate(290,120)">
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="75" y="-15">行阶梯形</text>
+<rect fill="rgba(255,224,102,0.08)" height="120" stroke="#FFE066" width="150" x="0" y="0"></rect>
+<g fill="#fff" font-size="11" text-anchor="middle">
+<text x="30" y="28">1 2 1|4</text>
+<text x="30" y="68">0 1 1|3</text>
+<text x="30" y="108">0 0 1|1</text>
+</g>
+<rect fill="rgba(255,107,107,0.2)" height="40" width="150" x="0" y="80"></rect>
+</g>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="350" y="280">回代求解：</text>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="310">z = 1</text>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="335">y = 3 - z = 2</text>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="360">x = 4 - 2y - z = 1</text>
+</svg></div></div>
+</div>
+
+<!-- 第10页：逆矩阵法例题 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：逆矩阵法</h1>
+<div class="board-content">
+<p class="chalk-text">求解二元线性方程组</p>
+<p class="chalk-text">$$\begin{cases} 2x + y = 5 \\ x + 3y = 8 \end{cases}$$</p>
+<p class="chalk-text emphasis">矩阵形式</p>
+<p class="chalk-text">$$AX = B, \quad X = A^{-1}B$$</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 逆矩阵法计算 -->
+<g transform="translate(100,140)">
+<text fill="#4ECDC4" font-size="13" x="10" y="-15">A =</text>
+<rect fill="rgba(78,205,196,0.08)" height="80" stroke="#4ECDC4" width="80" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#4ECDC4" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">2</text><text x="60" y="28">1</text>
+<text x="20" y="68">1</text><text x="60" y="68">3</text>
+</g>
+</g>
+<g transform="translate(220,160)">
+<text fill="#FFE066" font-size="13" x="10" y="-15">B =</text>
+<rect fill="rgba(255,224,102,0.08)" height="80" stroke="#FFE066" width="40" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="0" x2="40" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">5</text>
+<text x="20" y="68">8</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="14" x="300" y="200">|A| = 6-1 = 5</text>
+<g transform="translate(380,140)">
+<text fill="#FF6B6B" font-size="13" x="10" y="-15">A⁻¹ =</text>
+<rect fill="rgba(255,107,107,0.08)" height="80" stroke="#FF6B6B" width="100" x="0" y="0"></rect>
+<line stroke="#FF6B6B" x1="50" x2="50" y1="0" y2="80"></line>
+<line stroke="#FF6B6B" x1="0" x2="100" y1="40" y2="40"></line>
+<g fill="#fff" font-size="12" text-anchor="middle">
+<text x="25" y="28">3/5</text><text x="75" y="28">-1/5</text>
+<text x="25" y="68">-1/5</text><text x="75" y="68">2/5</text>
+</g>
+</g>
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="350" y="270">X = A⁻¹B</text>
+<text fill="#FFE066" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="310">x = 1, y = 3</text>
+</svg></div></div>
+</div>
+
+<!-- 第11页：克拉默法则例题 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：克拉默法则</h1>
+<div class="board-content">
+<p class="chalk-text">求解二元线性方程组</p>
+<p class="chalk-text">$$\begin{cases} 3x + 2y = 7 \\ x + 4y = 9 \end{cases}$$</p>
+<p class="chalk-text emphasis">克拉默法则</p>
+<p class="chalk-text">$$x = \frac{D_1}{D}, \quad y = \frac{D_2}{D}$$</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 克拉默法则计算 -->
+<g transform="translate(100,130)">
+<text fill="#4ECDC4" font-size="13" x="20" y="-15">D =</text>
+<rect fill="rgba(78,205,196,0.08)" height="70" stroke="#4ECDC4" width="70" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="35" x2="35" y1="0" y2="70"></line>
+<line stroke="#4ECDC4" x1="0" x2="70" y1="35" y2="35"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="17" y="25">3</text><text x="52" y="25">2</text>
+<text x="17" y="60">1</text><text x="52" y="60">4</text>
+</g>
+<text fill="#4ECDC4" font-size="13" x="80" y="40">= 10</text>
+</g>
+<g transform="translate(240,130)">
+<text fill="#FFE066" font-size="13" x="20" y="-15">D₁ =</text>
+<rect fill="rgba(255,224,102,0.08)" height="70" stroke="#FFE066" width="70" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="35" x2="35" y1="0" y2="70"></line>
+<line stroke="#FFE066" x1="0" x2="70" y1="35" y2="35"></line>
+<rect fill="rgba(255,107,107,0.2)" height="70" width="35" x="0" y="0"></rect>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="17" y="25">7</text><text x="52" y="25">2</text>
+<text x="17" y="60">9</text><text x="52" y="60">4</text>
+</g>
+<text fill="#FFE066" font-size="13" x="80" y="40">= 10</text>
+</g>
+<g transform="translate(380,130)">
+<text fill="#FF6B6B" font-size="13" x="20" y="-15">D₂ =</text>
+<rect fill="rgba(255,107,107,0.08)" height="70" stroke="#FF6B6B" width="70" x="0" y="0"></rect>
+<line stroke="#FF6B6B" x1="35" x2="35" y1="0" y2="70"></line>
+<line stroke="#FF6B6B" x1="0" x2="70" y1="35" y2="35"></line>
+<rect fill="rgba(255,224,102,0.2)" height="70" width="35" x="35" y="0"></rect>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="17" y="25">3</text><text x="52" y="25">7</text>
+<text x="17" y="60">1</text><text x="52" y="60">9</text>
+</g>
+<text fill="#FF6B6B" font-size="13" x="80" y="40">= 20</text>
+</g>
+<text fill="#4ECDC4" font-size="15" font-weight="bold" text-anchor="middle" x="350" y="250">x = D₁/D = 10/10 = 1</text>
+<text fill="#FFE066" font-size="15" font-weight="bold" text-anchor="middle" x="350" y="285">y = D₂/D = 20/10 = 2</text>
+</svg></div></div>
+</div>
+
 </div>
 <div class="control-bar">
 <button class="btn" onclick="previousPage()">

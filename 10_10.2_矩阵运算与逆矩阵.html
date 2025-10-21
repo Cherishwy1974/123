@@ -618,6 +618,378 @@
 </div>
 </div>
 </div>
+
+<!-- 第7页：矩阵乘法的性质 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">矩阵乘法的性质</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">结合律</p>
+<p class="chalk-text">$$(AB)C = A(BC)$$</p>
+<p class="chalk-text emphasis">分配律</p>
+<p class="chalk-text">$$A(B+C) = AB + AC$$</p>
+<p class="chalk-text emphasis">⚠️ 不满足交换律</p>
+<p class="chalk-text">$$AB \neq BA$$（一般情况）</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 矩阵乘法不交换示例 -->
+<g transform="translate(100,150)">
+<text fill="#4ECDC4" font-size="14" x="30" y="-20">AB</text>
+<rect fill="rgba(78,205,196,0.08)" height="100" stroke="#4ECDC4" width="100" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="50" x2="50" y1="0" y2="100"></line>
+<line stroke="#4ECDC4" x1="0" x2="100" y1="50" y2="50"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="25" y="32">1</text><text x="75" y="32">2</text>
+<text x="25" y="82">3</text><text x="75" y="82">4</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="20" x="230" y="210">≠</text>
+<g transform="translate(280,150)">
+<text fill="#FFE066" font-size="14" x="30" y="-20">BA</text>
+<rect fill="rgba(255,224,102,0.08)" height="100" stroke="#FFE066" width="100" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="50" x2="50" y1="0" y2="100"></line>
+<line stroke="#FFE066" x1="0" x2="100" y1="50" y2="50"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="25" y="32">2</text><text x="75" y="32">1</text>
+<text x="25" y="82">4</text><text x="75" y="82">3</text>
+</g>
+</g>
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="350" y="300">矩阵乘法一般不可交换</text>
+</svg></div></div>
+</div>
+
+<!-- 第8页：矩阵乘法例题 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：矩阵乘法计算</h1>
+<div class="board-content">
+<p class="chalk-text">计算矩阵乘积AB</p>
+<p class="chalk-text">$$A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, B = \begin{pmatrix} 2 & 0 \\ 1 & 3 \end{pmatrix}$$</p>
+<p class="chalk-text emphasis">行乘列规则</p>
+<p class="chalk-text">第i行第j列 = A的第i行 · B的第j列</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 矩阵乘法计算过程 -->
+<g transform="translate(80,120)">
+<text fill="#4ECDC4" font-size="14" x="30" y="-20">A</text>
+<rect fill="rgba(78,205,196,0.08)" height="80" stroke="#4ECDC4" width="80" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#4ECDC4" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">1</text><text x="60" y="28">2</text>
+<text x="20" y="68">3</text><text x="60" y="68">4</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="18" x="180" y="170">×</text>
+<g transform="translate(220,120)">
+<text fill="#FFE066" font-size="14" x="30" y="-20">B</text>
+<rect fill="rgba(255,224,102,0.08)" height="80" stroke="#FFE066" width="80" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#FFE066" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">2</text><text x="60" y="28">0</text>
+<text x="20" y="68">1</text><text x="60" y="68">3</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="18" x="320" y="170">=</text>
+<g transform="translate(360,120)">
+<text fill="#FF6B6B" font-size="14" x="30" y="-20">AB</text>
+<rect fill="rgba(255,107,107,0.08)" height="80" stroke="#FF6B6B" width="80" x="0" y="0"></rect>
+<line stroke="#FF6B6B" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#FF6B6B" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">4</text><text x="60" y="28">6</text>
+<text x="20" y="68">10</text><text x="60" y="68">12</text>
+</g>
+</g>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="350" y="250">第1行第1列: 1×2 + 2×1 = 4</text>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="350" y="275">第1行第2列: 1×0 + 2×3 = 6</text>
+</svg></div></div>
+</div>
+
+<!-- 第9页：转置矩阵的性质 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">转置矩阵的性质</h1>
+<div class="board-content">
+<p class="chalk-text">$$(A^T)^T = A$$</p>
+<p class="chalk-text">$$(A+B)^T = A^T + B^T$$</p>
+<p class="chalk-text">$$(AB)^T = B^T A^T$$（反序）</p>
+<p class="chalk-text">$$(kA)^T = k A^T$$</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 转置可视化 -->
+<g transform="translate(150,180)">
+<text fill="#4ECDC4" font-size="14" x="20" y="-20">A</text>
+<rect fill="rgba(78,205,196,0.08)" height="120" stroke="#4ECDC4" width="80" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="40" x2="40" y1="0" y2="120"></line>
+<line stroke="#4ECDC4" x1="0" x2="80" y1="60" y2="60"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="20" y="35">1</text><text x="60" y="35">2</text>
+<text x="20" y="95">3</text><text x="60" y="95">4</text>
+</g>
+</g>
+<g transform="translate(250,200)">
+<path d="M 0 0 Q 30 -20, 60 0" fill="none" marker-end="url(#arrow)" stroke="#FFE066" stroke-width="2"></path>
+<text fill="#FFE066" font-size="12" x="15" y="-25">转置</text>
+</g>
+<g transform="translate(350,180)">
+<text fill="#FFE066" font-size="14" x="20" y="-20">A^T</text>
+<rect fill="rgba(255,224,102,0.08)" height="80" stroke="#FFE066" width="120" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="60" x2="60" y1="0" y2="80"></line>
+<line stroke="#FFE066" x1="0" x2="120" y1="40" y2="40"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="30" y="28">1</text><text x="90" y="28">3</text>
+<text x="30" y="68">2</text><text x="90" y="68">4</text>
+</g>
+</g>
+<defs>
+<marker id="arrow" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3">
+<path d="M0,0 L0,6 L9,3 z" fill="#FFE066"></path>
+</marker>
+</defs>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="350" y="320">行列互换</text>
+</svg></div></div>
+</div>
+
+<!-- 第10页：逆矩阵的计算方法 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">逆矩阵的计算方法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">方法一：公式法（二阶）</p>
+<p class="chalk-text">$$A^{-1} = \frac{1}{|A|} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$$</p>
+<p class="chalk-text emphasis">方法二：初等变换法</p>
+<p class="chalk-text">$$(A|I) \rightarrow (I|A^{-1})$$</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 初等变换法示意 -->
+<g transform="translate(120,180)">
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="100" y="-25">(A | I)</text>
+<rect fill="rgba(78,205,196,0.08)" height="100" stroke="#4ECDC4" width="200" x="0" y="0"></rect>
+<line stroke="#4ECDC4" stroke-dasharray="3,3" x1="100" x2="100" y1="0" y2="100"></line>
+<line stroke="#4ECDC4" x1="0" x2="200" y1="50" y2="50"></line>
+<line stroke="#4ECDC4" x1="50" x2="50" y1="0" y2="100"></line>
+<line stroke="#4ECDC4" x1="150" x2="150" y1="0" y2="100"></line>
+<text fill="#fff" font-size="12" text-anchor="middle" x="50" y="30">A</text>
+<text fill="#fff" font-size="12" text-anchor="middle" x="150" y="30">I</text>
+</g>
+<g transform="translate(340,220)">
+<path d="M 0 0 L 40 0" fill="none" marker-end="url(#arrow2)" stroke="#FFE066" stroke-width="2"></path>
+<text fill="#FFE066" font-size="11" x="5" y="-10">行变换</text>
+</g>
+<g transform="translate(400,180)">
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="100" y="-25">(I | A⁻¹)</text>
+<rect fill="rgba(255,224,102,0.08)" height="100" stroke="#FFE066" width="200" x="0" y="0"></rect>
+<line stroke="#FFE066" stroke-dasharray="3,3" x1="100" x2="100" y1="0" y2="100"></line>
+<line stroke="#FFE066" x1="0" x2="200" y1="50" y2="50"></line>
+<line stroke="#FFE066" x1="50" x2="50" y1="0" y2="100"></line>
+<line stroke="#FFE066" x1="150" x2="150" y1="0" y2="100"></line>
+<text fill="#fff" font-size="12" text-anchor="middle" x="50" y="30">I</text>
+<text fill="#fff" font-size="12" text-anchor="middle" x="150" y="30">A⁻¹</text>
+</g>
+<defs>
+<marker id="arrow2" markerHeight="10" markerWidth="10" orient="auto" refX="9" refY="3">
+<path d="M0,0 L0,6 L9,3 z" fill="#FFE066"></path>
+</marker>
+</defs>
+</svg></div></div>
+</div>
+
+<!-- 第11页：逆矩阵例题 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：求逆矩阵</h1>
+<div class="board-content">
+<p class="chalk-text">求矩阵A的逆矩阵</p>
+<p class="chalk-text">$$A = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}$$</p>
+<p class="chalk-text emphasis">步骤</p>
+<p class="chalk-text">1. 计算|A| = 2×2 - 1×3 = 1</p>
+<p class="chalk-text">2. 应用公式求A⁻¹</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 逆矩阵计算过程 -->
+<g transform="translate(120,150)">
+<text fill="#4ECDC4" font-size="14" x="20" y="-20">A</text>
+<rect fill="rgba(78,205,196,0.08)" height="80" stroke="#4ECDC4" width="80" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#4ECDC4" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">2</text><text x="60" y="28">1</text>
+<text x="20" y="68">3</text><text x="60" y="68">2</text>
+</g>
+</g>
+<text fill="#ffffff" font-size="16" x="220" y="195">→</text>
+<g transform="translate(270,150)">
+<text fill="#FFE066" font-size="14" x="20" y="-20">A⁻¹</text>
+<rect fill="rgba(255,224,102,0.08)" height="80" stroke="#FFE066" width="80" x="0" y="0"></rect>
+<line stroke="#FFE066" x1="40" x2="40" y1="0" y2="80"></line>
+<line stroke="#FFE066" x1="0" x2="80" y1="40" y2="40"></line>
+<g fill="#fff" font-size="14" text-anchor="middle">
+<text x="20" y="28">2</text><text x="60" y="28">-1</text>
+<text x="20" y="68">-3</text><text x="60" y="68">2</text>
+</g>
+</g>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="350" y="270">|A| = 2×2 - 1×3 = 1</text>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="300">主对角线交换，副对角线变号</text>
+<text fill="#FF6B6B" font-size="13" text-anchor="middle" x="350" y="330">验证: AA⁻¹ = I ✓</text>
+</svg></div></div>
+</div>
+
+<!-- 第12页：矩阵的秩 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">矩阵的秩</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<p class="chalk-text">矩阵中非零子式的最高阶数</p>
+<p class="chalk-text emphasis">满秩矩阵</p>
+<p class="chalk-text">秩 = min(行数, 列数)</p>
+<p class="chalk-text emphasis">性质</p>
+<p class="chalk-text">方阵满秩 ⇔ |A| ≠ 0 ⇔ A可逆</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 秩的可视化 -->
+<g transform="translate(150,150)">
+<text fill="#4ECDC4" font-size="14" text-anchor="middle" x="60" y="-25">满秩矩阵 (秩=2)</text>
+<rect fill="rgba(78,205,196,0.08)" height="120" stroke="#4ECDC4" stroke-width="3" width="120" x="0" y="0"></rect>
+<line stroke="#4ECDC4" x1="60" x2="60" y1="0" y2="120"></line>
+<line stroke="#4ECDC4" x1="0" x2="120" y1="60" y2="60"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="30" y="38">1</text><text x="90" y="38">0</text>
+<text x="30" y="98">0</text><text x="90" y="98">1</text>
+</g>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="60" y="150">|A| = 1 ≠ 0</text>
+</g>
+<g transform="translate(350,150)">
+<text fill="#FF6B6B" font-size="14" text-anchor="middle" x="60" y="-25">降秩矩阵 (秩=1)</text>
+<rect fill="rgba(255,107,107,0.08)" height="120" stroke="#FF6B6B" stroke-width="3" width="120" x="0" y="0"></rect>
+<line stroke="#FF6B6B" x1="60" x2="60" y1="0" y2="120"></line>
+<line stroke="#FF6B6B" x1="0" x2="120" y1="60" y2="60"></line>
+<g fill="#fff" font-size="13" text-anchor="middle">
+<text x="30" y="38">1</text><text x="90" y="38">2</text>
+<text x="30" y="98">2</text><text x="90" y="98">4</text>
+</g>
+<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="60" y="150">|A| = 0</text>
+</g>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="330">秩反映矩阵的线性无关性</text>
+</svg></div></div>
+</div>
+
+<!-- 第13页：分块矩阵 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">分块矩阵</h1>
+<div class="board-content">
+<p class="chalk-text">将大矩阵分成若干小块</p>
+<p class="chalk-text emphasis">优点</p>
+<p class="chalk-text">• 简化运算</p>
+<p class="chalk-text">• 便于理论分析</p>
+<p class="chalk-text emphasis">运算规则</p>
+<p class="chalk-text">按普通矩阵规则，分块要合适</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 分块矩阵示意 -->
+<g transform="translate(200,150)">
+<text fill="#9370DB" font-size="14" text-anchor="middle" x="100" y="-30">分块矩阵</text>
+<rect fill="rgba(147,112,219,0.08)" height="200" stroke="#9370DB" stroke-width="3" width="200" x="0" y="0"></rect>
+<!-- 分块线 -->
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="100" x2="100" y1="0" y2="200"></line>
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="0" x2="200" y1="100" y2="100"></line>
+<!-- 标记各块 -->
+<text fill="#4ECDC4" font-size="16" font-weight="bold" text-anchor="middle" x="50" y="55">A₁₁</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" text-anchor="middle" x="150" y="55">A₁₂</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" text-anchor="middle" x="50" y="155">A₂₁</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" text-anchor="middle" x="150" y="155">A₂₂</text>
+</g>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="350" y="390">每个小块作为一个元素</text>
+</svg></div></div>
+</div>
+
+<!-- 第14页：矩阵的应用 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">矩阵的应用</h1>
+<div class="board-content">
+<p class="chalk-text">• 线性变换表示</p>
+<p class="chalk-text">• 线性方程组：AX = B</p>
+<p class="chalk-text">• 计算机图形学：旋转、缩放</p>
+<p class="chalk-text">• 量子力学：态矢量</p>
+<p class="chalk-text">• 经济学：投入产出模型</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 应用场景 -->
+<g transform="translate(180,120)">
+<rect fill="rgba(78,205,196,0.15)" height="60" rx="10" stroke="#4ECDC4" stroke-width="2" width="160" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="80" y="38">线性变换</text>
+</g>
+<g transform="translate(180,200)">
+<rect fill="rgba(255,224,102,0.15)" height="60" rx="10" stroke="#FFE066" stroke-width="2" width="160" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="80" y="38">方程组求解</text>
+</g>
+<g transform="translate(180,280)">
+<rect fill="rgba(255,107,107,0.15)" height="60" rx="10" stroke="#FF6B6B" stroke-width="2" width="160" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" text-anchor="middle" x="80" y="38">图形变换</text>
+</g>
+<g transform="translate(180,360)">
+<rect fill="rgba(147,112,219,0.15)" height="60" rx="10" stroke="#9370DB" stroke-width="2" width="160" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="13" text-anchor="middle" x="80" y="38">数据分析</text>
+</g>
+<circle cx="450" cy="280" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="3">
+<animate attributeName="r" dur="3s" repeatCount="indefinite" values="80;90;80"></animate>
+</circle>
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="450" y="285">矩阵</text>
+</svg></div></div>
+</div>
+
+<!-- 第15页：本节小结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">本节小结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心内容</p>
+<p class="chalk-text">✓ 矩阵的三种运算</p>
+<p class="chalk-text">✓ 单位矩阵和转置矩阵</p>
+<p class="chalk-text">✓ 逆矩阵的定义和计算</p>
+<p class="chalk-text">✓ 逆矩阵的性质</p>
+<p class="chalk-text emphasis">下一节</p>
+<p class="chalk-text">线性方程组的解法</p>
+</div>
+</div>
+<div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 总结可视化 -->
+<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4">
+<animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate>
+</circle>
+<text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="245">矩阵运算</text>
+<text fill="#ffffff" font-size="14" text-anchor="middle" x="350" y="270">与逆矩阵</text>
+<g transform="translate(180,120)">
+<circle cx="0" cy="0" fill="#4ECDC4" r="6"></circle>
+<text fill="#4ECDC4" font-size="13" x="15" y="5">加法·数乘·乘法</text>
+</g>
+<g transform="translate(450,180)">
+<circle cx="0" cy="0" fill="#FF6B6B" r="6"></circle>
+<text fill="#FF6B6B" font-size="13" x="15" y="5">转置</text>
+</g>
+<g transform="translate(480,320)">
+<circle cx="0" cy="0" fill="#9370DB" r="6"></circle>
+<text fill="#9370DB" font-size="13" x="15" y="5">逆矩阵</text>
+</g>
+<g transform="translate(160,350)">
+<circle cx="0" cy="0" fill="#4ECDC4" r="6"></circle>
+<text fill="#4ECDC4" font-size="13" x="15" y="5">秩与分块</text>
+</g>
+</svg></div></div>
+</div>
+
 </div>
 <div class="control-bar">
 <button class="btn" onclick="previousPage()">
