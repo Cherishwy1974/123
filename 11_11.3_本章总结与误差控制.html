@@ -662,13 +662,23 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎来到第11章总结与误差控制。第11章我们学习了级数的概念、敛散性判别法、幂级数和泰勒级数展开。级数是分析学的重要工具，在数值计算和函数逼近中有广泛应用。`,
-            2: `误差估计：交错级数的余项不超过第一个舍去项的绝对值，这是莱布尼茨定理的推论。泰勒公式的余项可以用拉格朗日余项公式估计，这对控制近似计算的误差非常重要。`,
-            3: `应用1：数值计算。用级数计算根号e精确到0.001，需要计算到误差小于0.001为止。通过余项估计，我们可以确定需要计算多少项才能达到要求的精度。`,
-            4: `应用2：函数近似。计算器和计算机中的三角函数、指数函数、对数函数都是用泰勒级数近似计算的。这是数值计算的基础方法，在科学计算中应用非常广泛。`,
-            5: `应用3：微分方程求解。将解设为幂级数形式，代入微分方程，比较系数求解。这种方法称为幂级数解法，可以求解一些用初等方法难以求解的微分方程。`,
-            6: `总结一下，级数是分析学的重要工具。泰勒级数连接了函数与多项式，使得我们可以用多项式来近似复杂的函数。级数在数值计算、函数逼近、微分方程求解等方面有广泛应用。下一章我们将学习向量与空间几何。`
+            1: `第十一章回顾：级数判别、幂级数与泰勒展开的要点。`,
+            2: `误差估计：交错级数余项不超过首个舍去项绝对值。`,
+            3: `拉格朗日余项：给出泰勒近似误差上界，指导项数选择。`,
+            4: `应用：用级数近似计算e、三角函数等，满足精度要求。`,
+            5: `方法延展：幂级数解微分方程，比较系数逐项求解。`,
+            6: `小结：级数连接函数与多项式，支撑近似与计算实践。`
         };
+
+        const __shortScript = {
+            1: `第十一章回顾：级数判别、幂级数与泰勒展开。`,
+            2: `误差估计：交错级数余项不超过首个舍去项。`,
+            3: `拉格朗日余项：给泰勒近似误差上界。`,
+            4: `应用：近似e与三角函数等，按精度选项数。`,
+            5: `延展：幂级数解微分方程，比较系数求解。`,
+            6: `小结：级数连接函数与多项式，支撑计算。`
+        };
+        Object.assign(subtitleScript, __shortScript);
 
         const autoPlayDurations = {1: 18000, 2: 20000, 3: 20000, 4: 20000, 5: 20000, 6: 22000};
 
@@ -695,6 +705,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -739,7 +768,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

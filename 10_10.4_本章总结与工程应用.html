@@ -464,13 +464,23 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎来到第10章总结与工程应用。第10章我们学习了线性代数的基础知识，包括行列式的计算和性质、矩阵的运算、逆矩阵的概念和计算，以及线性方程组的三种解法。这些内容是工程数学的基础。`,
-            2: `应用1：电路分析。在电路分析中，基尔霍夫电流定律和电压定律建立的电流和电压方程组，可以用矩阵方法求解。这使得复杂电路的分析变得系统化和程序化。`,
-            3: `应用2：结构力学。在桁架结构中，各杆件的内力满足平衡方程组。通过建立线性方程组，用线性代数方法求解，可以得到各杆件的内力，为结构设计提供依据。`,
-            4: `应用3：经济学中的投入产出模型。列昂惕夫模型X等于AX加Y，描述了各部门的产出和投入关系。用矩阵方法可以分析经济系统的平衡状态和各部门之间的相互依赖关系。`,
-            5: `应用4：图像处理。在计算机图形学中，旋转、缩放、平移等图像变换都可以用矩阵运算实现。通过矩阵乘法，可以方便地对图像进行各种几何变换。`,
-            6: `总结一下，线性代数是工程数学的基础，在电路分析、结构力学、经济学、图像处理等众多领域都有广泛应用。掌握线性代数的基本概念和方法，对解决实际工程问题非常重要。下一章我们将学习级数。`
+            1: `第十章回顾：行列式、矩阵运算与逆、线性方程组三大板块。`,
+            2: `应用一：电路分析。用矩阵解方程组，求电流与电压分布。`,
+            3: `应用二：结构力学。建立平衡方程组，求桁架杆件内力。`,
+            4: `应用三：投入产出模型。X等于A X加Y，分析部门投入与产出。`,
+            5: `应用四：图像变换。旋转缩放和平移，统一为矩阵乘法。`,
+            6: `小结：线性代数支撑工程与数据计算，下一章进入级数。`
         };
+
+        const __shortScript = {
+            1: `第十章回顾：行列式、矩阵与逆、线性方程组三板块。`,
+            2: `电路分析：矩阵解方程，求电流电压分布。`,
+            3: `结构力学：建立平衡方程，求桁架内力。`,
+            4: `投入产出：X等于A X加Y，分析部门平衡。`,
+            5: `图像处理：旋转缩放平移皆为矩阵乘法。`,
+            6: `小结：线代支撑工程与计算，下一章级数。`
+        };
+        Object.assign(subtitleScript, __shortScript);
 
         const autoPlayDurations = {1: 18000, 2: 18000, 3: 20000, 4: 20000, 5: 18000, 6: 20000};
 
@@ -497,6 +507,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -541,7 +570,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

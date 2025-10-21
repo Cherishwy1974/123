@@ -575,27 +575,23 @@
 <!-- 第6页：总结与展望 -->
 <div class="page" id="page6">
 <div class="left-panel">
-<h1 class="title chalk-text">总结与展望</h1>
+<h1 class="title chalk-text">方向导数回顾</h1>
 <div class="board-content">
-<p class="chalk-text emphasis">第8章总结</p>
+<p class="chalk-text emphasis">定义</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{\partial f}{\partial \vec{e}} = \nabla f \cdot \vec{e}$$</p>
+</div>
+<p class="chalk-text emphasis">性质</p>
 <ul class="chalk-list">
-<li class="chalk-text">多元函数的偏导数</li>
-<li class="chalk-text">全微分与线性近似</li>
-<li class="chalk-text">梯度与方向导数</li>
-<li class="chalk-text">无约束极值问题</li>
+<li class="chalk-text">沿梯度方向最大</li>
+<li class="chalk-text">垂直梯度方向为零</li>
+<li class="chalk-text">沿负梯度方向最小</li>
 </ul>
-<p class="chalk-text emphasis">下一步学习</p>
-<ul class="chalk-list">
-<li class="chalk-text">二重积分（第9章）</li>
-<li class="chalk-text">线性代数（第10章）</li>
-<li class="chalk-text">级数（第11章）</li>
-</ul>
-<p class="chalk-text small-text">多元微积分是高等数学的重要组成部分</p>
 </div>
 </div>
 <div class="right-panel">
 <div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
+<svg class="svg-animation" viewBox="0 0 700 600">
 <!-- 中心圆 -->
 <circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
 <animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
@@ -627,17 +623,274 @@
 <text fill="#ffffff" font-size="14" text-anchor="middle" x="350" y="415">级数</text>
 <line stroke="#FF6B6B" stroke-width="2" x1="350" x2="350" y1="330" y2="345"></line>
 </g>
-<!-- 标注 -->
-<text fill="#ffffff" font-size="20" text-anchor="middle" x="350" y="520">
-                            继续前进！
-                        </text>
+<text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">方向导数</text>
 </svg>
 </div>
 </div>
 </div>
+<!-- 第7页：无约束极值回顾 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">无约束极值回顾</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">必要条件（驻点）</p>
+<div class="formula-box">
+<p class="chalk-text">$$f_x = 0, \quad f_y = 0$$</p>
+</div>
+<p class="chalk-text emphasis">充分条件（判别式）</p>
+<div class="formula-box">
+<p class="chalk-text">$$D = f_{xx} \cdot f_{yy} - f_{xy}^2$$</p>
+</div>
+<ul class="chalk-list">
+<li class="chalk-text">$D > 0, f_{xx} > 0$ → 极小值</li>
+<li class="chalk-text">$D > 0, f_{xx} < 0$ → 极大值</li>
+<li class="chalk-text">$D < 0$ → 鞍点</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">无约束极值</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">驻点 + 判别式</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第8页：极值判别法 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">极值判别法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">三步法</p>
+<ul class="chalk-list">
+<li class="chalk-text">第一步：找驻点（$f_x=0, f_y=0$）</li>
+<li class="chalk-text">第二步：算二阶偏导</li>
+<li class="chalk-text">第三步：用判别式判断类型</li>
+</ul>
+<p class="chalk-text emphasis">判别式</p>
+<div class="formula-box">
+<p class="chalk-text">$$D = f_{xx} f_{yy} - f_{xy}^2$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="240" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">判别法</text>
+<rect x="200" y="280" width="300" height="120" fill="none" stroke="#95E1D3" stroke-width="2"/>
+<text x="350" y="315" text-anchor="middle" fill="#95E1D3" font-size="16">1. 找驻点</text>
+<text x="350" y="350" text-anchor="middle" fill="#95E1D3" font-size="16">2. 算二阶偏导</text>
+<text x="350" y="385" text-anchor="middle" fill="#95E1D3" font-size="16">3. 判别式判断</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第9页：约束极值问题 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">约束极值问题</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">什么是约束极值？</p>
+<ul class="chalk-list">
+<li class="chalk-text">目标函数：$f(x,y)$</li>
+<li class="chalk-text">约束条件：$g(x,y) = 0$</li>
+<li class="chalk-text">在约束下优化目标</li>
+</ul>
+<p class="chalk-text emphasis">例子</p>
+<ul class="chalk-list">
+<li class="chalk-text">周长一定，求最大面积</li>
+<li class="chalk-text">成本约束下最大化产量</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">约束极值</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">在约束条件下优化</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第10页：拉格朗日乘子法 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">拉格朗日乘子法</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">构造拉格朗日函数</p>
+<div class="formula-box">
+<p class="chalk-text">$$L(x,y,\lambda) = f(x,y) - \lambda g(x,y)$$</p>
+<p class="chalk-text small-text">$\lambda$ 是拉格朗日乘子</p>
+</div>
+<p class="chalk-text emphasis">求解方程组</p>
+<div class="formula-box">
+<p class="chalk-text">$$L_x = 0, \quad L_y = 0, \quad L_\lambda = 0$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">拉格朗日乘子法</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">L = f - λg</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第11页：拉格朗日乘子法步骤 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">求解步骤</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">四步法</p>
+<ul class="chalk-list">
+<li class="chalk-text">第一步：构造 $L = f - \lambda g$</li>
+<li class="chalk-text">第二步：求偏导 $L_x, L_y, L_\lambda$</li>
+<li class="chalk-text">第三步：令偏导都等于零</li>
+<li class="chalk-text">第四步：解方程组，判别极值</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="220" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">四步法</text>
+<rect x="180" y="260" width="340" height="160" fill="none" stroke="#95E1D3" stroke-width="2"/>
+<text x="350" y="295" text-anchor="middle" fill="#95E1D3" font-size="15">1. 构造L</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="15">2. 求偏导</text>
+<text x="350" y="365" text-anchor="middle" fill="#95E1D3" font-size="15">3. 令偏导=0</text>
+<text x="350" y="400" text-anchor="middle" fill="#95E1D3" font-size="15">4. 解方程组</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第12页：例题-矩形最大面积 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">例题：矩形最大面积</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">问题</p>
+<ul class="chalk-list">
+<li class="chalk-text">周长为 $P$，求最大面积</li>
+<li class="chalk-text">设长 $x$，宽 $y$</li>
+</ul>
+<p class="chalk-text emphasis">建立模型</p>
+<div class="formula-box">
+<p class="chalk-text">目标：$f = xy$</p>
+<p class="chalk-text">约束：$g = 2x + 2y - P = 0$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="240" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">矩形面积问题</text>
+<rect x="250" y="280" width="120" height="80" fill="none" stroke="#95E1D3" stroke-width="3"/>
+<text x="310" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">x</text>
+<text x="220" y="325" text-anchor="middle" fill="#95E1D3" font-size="16">y</text>
+<text x="350" y="400" text-anchor="middle" fill="#F38181" font-size="14">周长 = P</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第13页：例题求解 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">例题求解</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">构造拉格朗日函数</p>
+<div class="formula-box">
+<p class="chalk-text">$$L = xy - \lambda(2x+2y-P)$$</p>
+</div>
+<p class="chalk-text emphasis">求偏导并令其为零</p>
+<div class="formula-box">
+<p class="chalk-text">$$L_x = y - 2\lambda = 0$$</p>
+<p class="chalk-text">$$L_y = x - 2\lambda = 0$$</p>
+<p class="chalk-text">$$L_\lambda = -(2x+2y-P) = 0$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">求解过程</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">L_x = 0, L_y = 0, L_λ = 0</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第14页：例题结果 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">例题结果</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">解方程组</p>
+<div class="formula-box">
+<p class="chalk-text">从前两式：$x = y$</p>
+<p class="chalk-text">代入第三式：$4x = P$</p>
+<p class="chalk-text">$$x = y = \frac{P}{4}$$</p>
+</div>
+<p class="chalk-text emphasis">结论</p>
+<ul class="chalk-list">
+<li class="chalk-text">最优解是正方形</li>
+<li class="chalk-text">最大面积 = $\frac{P^2}{16}$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="240" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">最优解</text>
+<rect x="275" y="280" width="150" height="150" fill="none" stroke="#F38181" stroke-width="4"/>
+<text x="350" y="365" text-anchor="middle" fill="#F38181" font-size="20">正方形</text>
+<text x="350" y="460" text-anchor="middle" fill="#95E1D3" font-size="16">x = y = P/4</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第15页：本章总结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">本章总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">核心概念</p>
+<ul class="chalk-list">
+<li class="chalk-text">偏导数、全微分</li>
+<li class="chalk-text">梯度、方向导数</li>
+<li class="chalk-text">无约束极值</li>
+<li class="chalk-text">约束极值</li>
+</ul>
+<p class="chalk-text emphasis">核心方法</p>
+<ul class="chalk-list">
+<li class="chalk-text">极值判别法</li>
+<li class="chalk-text">拉格朗日乘子法</li>
+</ul>
+<p class="chalk-text emphasis">下一章</p>
+<div class="formula-box">
+<p class="chalk-text">二重积分与应用</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="180" text-anchor="middle" fill="#FFE066" font-size="28" font-weight="bold">🎓 第8章完成</text>
+<text x="350" y="250" text-anchor="middle" fill="#95E1D3" font-size="18">多元函数微分学</text>
+<circle cx="350" cy="330" r="60" fill="none" stroke="#F38181" stroke-width="3"/>
+<text x="350" y="340" text-anchor="middle" fill="#F38181" font-size="20">✓</text>
+<text x="350" y="440" text-anchor="middle" fill="#FFE066" font-size="16">下一章：二重积分</text>
+</svg>
+</div>
+</div>
+</div>
+
 </div>
 <!-- 控制栏 -->
 <div class="control-bar">
+<div style="color: #ecf0f1; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+第 <span id="currentPageControl">1</span> 页 / 共 15 页
+</div>
 <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
 <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
 <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
@@ -670,24 +923,53 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `第八章回顾：偏导、全微分、梯度、方向导数与应用的核心要点。`,
-            2: `无约束极值三步：找驻点，算二阶偏导，判别极大极小或鞍点。`,
-            3: `约束极值：在约束条件下优化目标，工程与经济问题中常见。`,
-            4: `拉格朗日乘子法：构造L，联立偏导为零解方程组，筛选极值点。`,
-            5: `示例：周长一定的矩形最大面积。解得长等于宽，最优是正方形。`,
-            6: `小结与展望：掌握多元微分工具，下一章学习二重积分与应用。`
+            1: `欢迎来到第8章的复盘与约束极值预告。本章我们学习了多元函数的微分学，包括偏导数、全微分、梯度和方向导数。现在让我们系统回顾这些知识点，并预告下一个重要内容：约束极值问题。`,
+            2: `首先回顾偏导数。偏导数f下标x表示对x求导，把y看作常数。偏导数f下标y表示对y求导，把x看作常数。偏导数的几何意义是沿坐标轴方向的切线斜率，描述了函数的局部变化率。`,
+            3: `高阶偏导数有四种：f下标xx、f下标yy、f下标xy、f下标yx。重要性质是混合偏导数相等，即f下标xy等于f下标yx，这在连续条件下成立。高阶偏导数用于判别极值点的类型。`,
+            4: `全微分dz等于f下标x乘以dx加f下标y乘以dy，表示函数增量的线性主部。全微分的几何意义是用切平面近似曲面。在小范围内，这个近似非常准确，可以用于误差估计和工程计算。`,
+            5: `梯度是一个向量，定义为梯度f等于(f下标x, f下标y)。梯度的方向指向函数增长最快的方向，梯度的模表示最大变化率。梯度垂直于等高线，这是一个重要的几何性质。`,
+            6: `方向导数表示函数沿某个方向的变化率，定义为梯度f点乘单位方向向量e。当方向e与梯度方向相同时，方向导数达到最大值。当方向e与梯度方向垂直时，方向导数等于零。`,
+            7: `现在回顾无约束极值问题。函数f(x,y)在点(x0,y0)处取极值的必要条件是f下标x等于0且f下标y等于0。满足这个条件的点叫做驻点。但驻点不一定是极值点，还需要用二阶偏导数判别。`,
+            8: `极值判别法使用判别式D等于f下标xx乘以f下标yy减去f下标xy的平方。如果D大于0且f下标xx大于0，是极小值点。如果D大于0且f下标xx小于0，是极大值点。如果D小于0，是鞍点，不是极值点。`,
+            9: `现在预告约束极值问题。约束极值是在约束条件下优化目标函数。例如，在周长一定的条件下，求矩形的最大面积。这类问题在工程、经济、物理中非常常见，需要用特殊的方法求解。`,
+            10: `拉格朗日乘子法是求解约束极值的标准方法。设目标函数为f(x,y)，约束条件为g(x,y)等于0。构造拉格朗日函数L等于f减去lambda乘以g，其中lambda是拉格朗日乘子。`,
+            11: `拉格朗日乘子法的步骤。第一步，构造L等于f减lambda g。第二步，求偏导数L下标x、L下标y、L下标lambda，令它们都等于零。第三步，解方程组，得到候选极值点。第四步，判别哪个是极值点。`,
+            12: `例题：周长一定的矩形最大面积。设矩形长为x，宽为y，周长为P。目标函数f等于xy，约束条件g等于2x加2y减P等于0。构造L等于xy减lambda(2x加2y减P)。`,
+            13: `求解例题。L下标x等于y减2lambda等于0，L下标y等于x减2lambda等于0，L下标lambda等于负(2x加2y减P)等于0。从前两个方程得到x等于y，代入第三个方程得到x等于y等于P除以4。所以最优解是正方形。`,
+            14: `约束极值的应用。在工程中，常需要在成本约束下最大化产量，或在材料约束下最小化重量。在经济学中，常需要在预算约束下最大化效用。拉格朗日乘子法是解决这类问题的有力工具。`,
+            15: `本章总结。我们学习了偏导数、全微分、梯度、方向导数四个核心概念。掌握了无约束极值的判别方法。预告了约束极值和拉格朗日乘子法。这些工具是多元微积分的基础，为后续学习二重积分做好准备。继续努力！`
         };
 
-        const autoPlayDurations = {
-            1: 18000, 2: 20000, 3: 18000, 4: 22000, 5: 20000, 6: 16000
-        };
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/\\lim/g,'极限');
+            r=r.replace(/\\sum/g,'求和');
+            r=r.replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\^(\d+)/g,'的$1次方');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 400);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
 
         function updateStatus(message, type = 'normal') {
             const indicator = document.getElementById('statusIndicator');
@@ -785,7 +1067,8 @@
                 avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
                 avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
                     .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
-                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})
+                    .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成 frame_stop:', data);
                         if (isAutoPlaying && currentPage < totalPages) {
                             console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
@@ -799,7 +1082,7 @@
                                         }
                                     }, 800);
                                 }
-                            }, 1500);
+                            }, 500); // 虚拟人讲完后500ms切换页面
                         }
                     });
                 avatarPlatform.setApiInfo({

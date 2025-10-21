@@ -811,12 +811,12 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习平面与直线方程。平面方程有两种形式：点法式和一般式。点法式用平面上一点和法向量表示，一般式是Ax加By加Cz加D等于0，其中括号A,B,C是法向量的分量。`,
-            2: `直线方程有参数式和对称式。参数式用直线上一点和方向向量表示，x等于x0加at，y等于y0加bt，z等于z0加ct。对称式是三个坐标差除以方向向量分量相等。`,
-            3: `点到平面的距离公式：d等于Ax0加By0加Cz0加D的绝对值，除以根号下A平方加B平方加C平方。这个公式在计算点到平面的距离时非常有用。`,
-            4: `两平面的位置关系：平行时法向量平行，垂直时法向量垂直，即点积为0。两平面的夹角用法向量的点积除以模的乘积的反余弦来计算。`,
-            5: `直线与平面的位置关系：直线平行于平面时，方向向量与法向量垂直，即点积为0；直线垂直于平面时，方向向量与法向量平行。直线与平面的夹角用正弦表示。`,
-            6: `总结一下，平面方程、直线方程、距离公式和位置关系是空间解析几何的核心内容。掌握这些内容对解决空间几何问题非常重要。`
+            1: `平面方程：点法式由一点与法向量；一般式A x加B y加C z加D等于零。`,
+            2: `直线方程：参数式由一点与方向向量；对称式三坐标差同比。`,
+            3: `点到平面距离：分子为代入一般式的绝对值，分母为法向量模。`,
+            4: `两平面关系：平行看法向量平行；垂直点积为零；夹角由法向量求。`,
+            5: `直线与平面：平行则方向与法向量垂直；垂直则二者平行。`,
+            6: `小结：熟练方程形式与距离、夹角判定，解决空间定位。`
         };
 
         const autoPlayDurations = {1: 18000, 2: 20000, 3: 16000, 4: 18000, 5: 18000, 6: 16000};
@@ -844,6 +844,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -888,7 +907,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

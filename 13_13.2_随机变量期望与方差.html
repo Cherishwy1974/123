@@ -517,12 +517,12 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习随机变量、期望与方差。随机变量是样本空间到实数的映射，用大写字母X表示。离散型随机变量取值有限或可数无穷。例如掷骰子，X等于1到6。分布律描述随机变量的概率分布。`,
-            2: `分布律P(X等于xk)等于pk，描述随机变量的概率分布。性质：pk大于等于0，所有pk之和等于1。例如掷骰子，P(X等于k)等于六分之一，k等于1到6。`,
-            3: `数学期望E(X)等于所有xk乘以pk的和，是随机变量的平均值。性质：常数的期望等于常数，线性性质E(aX加b)等于aE(X)加b，可加性E(X加Y)等于E(X)加E(Y)。例如掷骰子的期望是3.5。`,
-            4: `方差D(X)等于E(X减E(X)的平方)，衡量随机变量的离散程度。标准差是方差的平方根，记作σ。性质：常数的方差为0，D(aX加b)等于a平方乘以D(X)。`,
-            5: `常见分布的期望和方差：0-1分布，E等于p，D等于p乘以1减p；二项分布B(n,p)，E等于np，D等于np乘以1减p；泊松分布P(λ)，E等于λ，D等于λ。`,
-            6: `总结一下，随机变量是样本空间到实数的映射，分布律描述概率分布。期望是平均值，反映中心位置；方差衡量离散程度，反映波动大小。掌握常见分布的期望和方差对应用概率统计非常重要。`
+            1: `随机变量：样本空间到实数的映射；离散与连续两类型。`,
+            2: `分布律与性质：概率非负，总和为一；用以描述取值概率。`,
+            3: `数学期望：加权平均；线性性质E括号aX加b等于aE X加b。`,
+            4: `方差与标准差：D X等于E括号X减均值平方；尺度因子平方放大。`,
+            5: `常见分布：零一、二项、泊松的期望与方差需熟练掌握。`,
+            6: `小结：期望定中心，方差测离散，服务建模与风险评估。`
         };
 
         const autoPlayDurations = {1: 18000, 2: 16000, 3: 22000, 4: 18000, 5: 20000, 6: 18000};
@@ -586,9 +586,29 @@
             } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

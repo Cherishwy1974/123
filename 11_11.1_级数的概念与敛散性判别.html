@@ -901,13 +901,23 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习级数的概念与敛散性判别。无穷级数是无穷多项相加，部分和Sn是前n项的和。若部分和的极限存在，级数收敛；否则发散。级数是微积分的重要内容，在数值计算和函数逼近中有广泛应用。`,
-            2: `几何级数是ar的n次方的和，从n等于0到无穷。当r的绝对值小于1时，级数收敛，和为a除以1减r；当r的绝对值大于等于1时，级数发散。几何级数是最基本、最重要的级数。`,
-            3: `级数的基本性质：第一，收敛级数可以逐项相加减；第二，级数乘以常数仍收敛；第三，改变有限项不影响敛散性。收敛的必要条件是通项趋于0，但这不是充分条件。`,
-            4: `正项级数的比值判别法：若un加1除以un的极限ρ小于1，则级数收敛；大于1则发散；等于1时不确定，需要用其他方法判别。这个方法在实际应用中非常有用。`,
-            5: `交错级数的莱布尼茨判别法：若un单调递减且趋于0，则交错级数收敛。交错级数是正负项交替出现的级数，莱布尼茨判别法给出了简单的判别条件。`,
-            6: `总结一下，级数是部分和的极限。几何级数是最基本的级数，掌握它的敛散性非常重要。比值判别法和莱布尼茨判别法帮助我们判断级数的敛散性。级数理论是分析学的重要基础。`
+            1: `级数概念：无穷多项相加，部分和极限存在则收敛。`,
+            2: `几何级数：公比绝对值小于一收敛，和为a除以一减r。`,
+            3: `性质：逐项相加减与数乘保持收敛；改有限项不变敛散。`,
+            4: `必要条件：通项趋于零是必要非充分；需配合判别法。`,
+            5: `比值判别：相邻项比的极限小于一收敛，大于一发散。`,
+            6: `莱布尼茨判别：单调递减且趋零的交错级数收敛。`
         };
+
+        const __shortScript = {
+            1: `级数概念：无穷多项相加，部分和极限存在则收敛。`,
+            2: `几何级数：公比绝对值小于一收敛，和为a除以一减r。`,
+            3: `性质：逐项相加减与数乘保持收敛；改有限项不变敛散。`,
+            4: `必要条件：通项趋于零是必要非充分；需配合判别法。`,
+            5: `比值判别：相邻项比的极限小于一收敛，大于一发散。`,
+            6: `莱布尼茨：单调递减且趋零的交错级数收敛。`
+        };
+        Object.assign(subtitleScript, __shortScript);
 
         const autoPlayDurations = {1: 18000, 2: 18000, 3: 18000, 4: 18000, 5: 18000, 6: 18000};
 
@@ -934,6 +944,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -978,7 +1007,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

@@ -476,12 +476,12 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习正态分布与中心极限定理。正态分布记作X服从N(μ,σ平方)。概率密度函数是钟形曲线。参数μ是期望即均值，σ平方是方差，σ是标准差。正态分布是最重要的连续分布。`,
-            2: `标准正态分布是μ等于0、σ等于1的正态分布，记作Z服从N(0,1)。标准化变换Z等于X减μ除以σ，可以将任意正态分布转化为标准正态分布。68-95-99.7规则：1个标准差内68%，2个标准差内95%，3个标准差内99.7%。这个规则在质量控制中非常有用。`,
-            3: `正态分布的性质：关于x等于μ对称，在x等于μ处取得最大值，在x等于μ加减σ处有拐点。线性组合aX加b服从N(aμ加b,a平方σ平方)。σ越小曲线越高越窄，σ越大曲线越矮越宽。`,
-            4: `中心极限定理：大量独立同分布随机变量的和近似服从正态分布。这解释了正态分布的普遍性，为统计推断提供理论基础。从均匀分布开始，随着变量个数增加，和的分布逐渐趋向正态分布。`,
-            5: `正态分布的应用：质量控制中产品尺寸和重量，测量误差，考试成绩分布，人的身高体重，智商分布，血压心率等生理指标。正态分布在自然和社会现象中普遍存在。`,
-            6: `总结一下，正态分布N(μ,σ平方)是最重要的连续分布。标准正态分布N(0,1)，68-95-99.7规则，中心极限定理解释其普遍性。正态分布广泛应用于各个领域，是统计学的基石。`
+            1: `正态分布：X服从N括号mu逗号sigma平方，密度钟形对称。`,
+            2: `标准化：Z等于X减mu除以sigma；标准正态N括号零逗号一。`,
+            3: `性质：以mu为对称与峰值；mu加减sigma处为拐点。`,
+            4: `中心极限定理：独立同分布和的分布趋近正态，为推断奠基。`,
+            5: `应用：质量控制、测量误差、成绩与身高体重等近似正态。`,
+            6: `小结：标准化与规则配合CLT，使正态成为统计学基石。`
         };
 
         const autoPlayDurations = {1: 16000, 2: 22000, 3: 20000, 4: 20000, 5: 18000, 6: 18000};
@@ -545,9 +545,29 @@
             } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

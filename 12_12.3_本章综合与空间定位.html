@@ -648,12 +648,12 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎来到第12章综合与空间定位。第12章我们学习了向量的点积与叉积、平面方程、直线方程，以及位置关系与距离。这些内容是空间解析几何的基础，在现代科技中有广泛应用。`,
-            2: `应用1：GPS定位。通过测量到多个卫星的距离，每个卫星确定一个球面方程。三个球面的交点确定位置。这是GPS定位系统的数学基础，广泛应用于导航和定位服务。`,
-            3: `应用2：机器人运动。用向量表示机器人的位置和方向，用直线方程描述运动轨迹，用平面方程描述障碍物。通过计算直线与平面的交点，可以实现避障和路径规划。`,
-            4: `应用3：建筑设计。用平面方程描述墙面和楼板，用直线方程描述梁柱。通过计算平面与直线的交点和距离，可以进行建筑结构分析。这是CAD软件的数学基础。`,
-            5: `应用4：计算机图形学。用向量表示光线方向，用平面方程表示物体表面，计算光线与物体的交点来实现光线追踪。这是游戏和动画渲染的数学基础，创造逼真的三维图像。`,
-            6: `总结一下，向量与空间几何是现代科技的基础，广泛应用于GPS定位、机器人运动、建筑设计、计算机图形学等领域。掌握这些知识对从事工程技术工作非常重要。下一章我们将学习概率统计。`
+            1: `第十二章回顾：向量点积与叉积、平面直线方程、距离与位置关系。`,
+            2: `应用一：GPS定位。多球面交点定位，向量与方程支撑算法。`,
+            3: `应用二：机器人。向量表位姿，直线与平面判交助力避障规划。`,
+            4: `应用三：建筑设计。平面直线求交与距离，支撑结构分析。`,
+            5: `应用四：图形学。光线与平面求交实现光线追踪，生成真实图像。`,
+            6: `小结：空间解析几何贯穿工程应用，下一章进入概率统计。`
         };
 
         const autoPlayDurations = {1: 18000, 2: 20000, 3: 20000, 4: 18000, 5: 20000, 6: 20000};
@@ -681,6 +681,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -725,7 +744,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

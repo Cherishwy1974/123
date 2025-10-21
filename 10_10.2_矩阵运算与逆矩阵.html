@@ -651,13 +651,24 @@
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习矩阵运算与逆矩阵。矩阵的基本运算包括加法、数乘和乘法。矩阵加法是对应元素相加，数乘是每个元素乘以常数，矩阵乘法是行乘列，第i行第j列的元素等于第i行与第j列对应元素乘积之和。`,
-            2: `单位矩阵是主对角线为1、其余元素为0的方阵，记作I或E。任何矩阵乘以单位矩阵等于自身，AI等于IA等于A。转置矩阵是行列互换得到的矩阵，记作A的T次方。`,
-            3: `逆矩阵满足A乘以A的逆等于单位矩阵。逆矩阵存在的充要条件是：A必须是方阵，且行列式不为0。如果逆矩阵存在，我们称A是可逆矩阵或非奇异矩阵。`,
-            4: `二阶逆矩阵的计算公式：A的逆等于1除以行列式，乘以伴随矩阵。伴随矩阵是将主对角线元素互换，副对角线元素变号。这个公式在实际计算中非常实用。`,
-            5: `逆矩阵有四个重要性质：第一，逆的逆等于原矩阵；第二，乘积的逆等于逆的反序乘积，即AB的逆等于B的逆乘以A的逆；第三，转置的逆等于逆的转置；第四，逆的行列式等于行列式的倒数。`,
-            6: `总结一下，矩阵运算是线性代数的基础。我们学习了矩阵的加法、数乘、乘法，单位矩阵和转置矩阵的概念，逆矩阵的定义、存在条件、计算方法和性质。逆矩阵在求解线性方程组中有重要应用。`
+            1: `矩阵运算：加法对应相加，数乘整体倍乘，乘法行乘列。`,
+            2: `单位矩阵：主对角为一；转置为行列互换，记作A的T次方。`,
+            3: `逆矩阵定义：A乘A的逆等于单位矩阵；可逆等价行列式非零。`,
+            4: `二阶逆计算：A的逆等于一除以行列式乘伴随矩阵，易于手算。`,
+            5: `性质：逆的逆等于原矩阵；乘积的逆为反序；转置与逆可交换。`,
+            6: `小结：掌握运算、单位与转置、逆的判定与计算，服务方程组。`
         };
+
+        // 讲解短句覆盖（50–80字，音译友好）
+        const __shortScript = {
+            1: `矩阵运算：加法对应相加，数乘整体倍乘，乘法行乘列。`,
+            2: `单位矩阵：主对角为一；转置为行列互换，记作A的T次方。`,
+            3: `逆矩阵：A乘A的逆等于单位矩阵；存在当且仅当行列式非零。`,
+            4: `二阶逆：A的逆等于一分之行列式的伴随矩阵，手算便捷。`,
+            5: `性质：逆的逆等于A；乘积的逆反序；转置与逆可交换。`,
+            6: `应用：逆矩阵用于解线性方程组，理解判定与计算最关键。`
+        };
+        Object.assign(subtitleScript, __shortScript);
 
         const autoPlayDurations = {1: 20000, 2: 18000, 3: 18000, 4: 18000, 5: 22000, 6: 20000};
 
@@ -684,6 +695,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -728,7 +758,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

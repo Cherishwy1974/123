@@ -828,13 +828,23 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习幂级数与泰勒展开。幂级数是an乘以x的n次方的和，从n等于0到无穷。收敛域是使幂级数收敛的所有x值的集合，收敛半径R决定了收敛域的大小。幂级数是函数论的重要工具。`,
-            2: `泰勒级数是函数f(x)在x0处的幂级数展开，系数由函数在x0处的各阶导数决定。麦克劳林级数是x0等于0时的特殊情况，是最常用的泰勒级数形式。`,
-            3: `常用函数的麦克劳林展开式：e的x次方等于1加x加x平方除以2阶乘加x立方除以3阶乘，以此类推。正弦函数和余弦函数也有类似的展开式。这些展开式在数值计算中非常重要。`,
-            4: `幂级数可以逐项求导和逐项积分，收敛半径不变。这是幂级数的重要性质，使得我们可以通过求导和积分得到新的幂级数展开式。`,
-            5: `应用：用幂级数进行近似计算。例如，e约等于2.718，通过麦克劳林级数计算得到。sin0.1约等于0.0998，也是通过级数展开计算的。计算器中的函数值都是这样计算的。`,
-            6: `总结一下，幂级数是函数的幂次展开，泰勒级数提供了系统的展开方法。常用函数的展开式可以用于近似计算和理论分析。掌握幂级数对理解函数的性质非常重要。`
+            1: `幂级数：从n等于零到无穷，a n乘x的n次方之和。`,
+            2: `收敛半径R：决定收敛域的大小，域内收敛域外发散。`,
+            3: `泰勒级数：在x零处按各阶导数展开；x零等于零为麦克劳林。`,
+            4: `常用展开：e的x、sinx、cosx的麦克劳林式，近似计算常用。`,
+            5: `性质：可逐项求导与积分，收敛半径保持不变。`,
+            6: `应用：函数近似与数值计算，展开提供高效逼近。`
         };
+
+        const __shortScript = {
+            1: `幂级数：从n等于零到无穷，a n乘x的n次方之和。`,
+            2: `收敛半径R：决定收敛域大小，域内收敛域外发散。`,
+            3: `泰勒：在x零按各阶导数展开；x零等于零为麦克劳林。`,
+            4: `常用展开：e的x、sinx、cosx的麦克劳林式。`,
+            5: `性质：逐项求导与积分，收敛半径不变。`,
+            6: `应用：近似计算与函数逼近，高效而实用。`
+        };
+        Object.assign(subtitleScript, __shortScript);
 
         const autoPlayDurations = {1: 20000, 2: 20000, 3: 22000, 4: 18000, 5: 20000, 6: 18000};
 
@@ -861,6 +871,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -905,7 +934,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

@@ -521,12 +521,12 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎来到第13章总结与综合应用。第13章知识回顾：概率基础包括随机试验、样本空间、事件和概率的性质与运算。随机变量包括离散型随机变量、分布律、期望与方差。重要分布有0-1分布、二项分布、泊松分布、正态分布与中心极限定理。`,
-            2: `应用1质量控制：某工厂生产零件，直径服从正态分布N(10,0.01)毫米。合格品范围9.7到10.3毫米，即μ减3σ到μ加3σ，根据68-95-99.7规则，合格率约99.7%。说明生产过程稳定，质量良好。`,
-            3: `应用2可靠性分析：某电子元件寿命服从指数分布，平均寿命1000小时，λ等于0.001。可靠性函数R(t)等于e的负λt次方。工作500小时的可靠度约0.606，工作1000小时的可靠度约0.368。`,
-            4: `应用3风险评估：投资项目收益率服从N(0.08,0.04)。期望收益率8%，方差0.04，标准差20%。计算亏损概率P(X小于0)，标准化Z等于负0.08除以0.2等于负0.4，查表得亏损概率约34.5%。`,
-            5: `应用4数据分析：某班50名学生考试成绩，平均分75分，标准差10分，假设服从正态分布。根据68-95-99.7规则，60到90分即μ加减1.5σ的学生约占68%到95%之间，50到100分即μ加减2.5σ的学生约占95%，90分以上约占16%。`,
-            6: `总结与展望：本章我们掌握了概率的基本概念与性质，理解了随机变量、期望、方差，熟悉了常见分布及其应用，能够解决实际问题。进一步可以学习参数估计与假设检验、回归分析、方差分析、时间序列分析。概率论是数据科学的基础，在人工智能、机器学习等领域有广泛应用。`
+            1: `第十三章回顾：概率与事件、随机变量与期望方差、常见分布与CLT。`,
+            2: `质量控制：正态近似下mu加减三sigma为合格区，合格率近百。`,
+            3: `可靠性：指数分布寿命，可靠度为e的负lambda t次方。`,
+            4: `风险评估：收益标准化求亏损概率，方差刻画波动。`,
+            5: `数据分析：正态模型估区间比例，理解均值与标准差作用。`,
+            6: `小结与展望：进阶统计推断与回归分析，服务工程与数据。`
         };
 
         const autoPlayDurations = {1: 20000, 2: 22000, 3: 20000, 4: 22000, 5: 24000, 6: 24000};
@@ -590,9 +590,29 @@
             } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

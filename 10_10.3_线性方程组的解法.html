@@ -808,13 +808,23 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习线性方程组的解法。线性方程组可以用矩阵形式AX等于B表示，其中A是系数矩阵，X是未知数向量，B是常数向量。矩阵形式使得线性方程组的表示更加简洁，便于理论分析和计算机求解。`,
-            2: `高斯消元法通过初等行变换将增广矩阵化为阶梯形，然后回代求解。初等行变换包括：交换两行、某行乘以非零常数、某行加上另一行的倍数。这是最通用的方法，适用于任何线性方程组。`,
-            3: `逆矩阵法的解是X等于A的逆乘以B。适用条件是A必须是方阵且行列式不为0。这个方法在理论上很重要，但在实际计算中，当矩阵阶数较大时，计算逆矩阵的代价较高。`,
-            4: `克拉默法则用行列式求解，xi等于Di除以D，其中D是系数行列式，Di是将第i列替换为常数项后的行列式。这个方法在理论上很重要，给出了解的显式表达式，但计算量较大。`,
-            5: `解的判定：当系数矩阵的行列式不为0时，方程组有唯一解；当行列式为0时，方程组可能有无穷多解或无解，需要进一步分析增广矩阵的秩来判定。`,
-            6: `总结一下，线性方程组有三种主要解法：高斯消元法最通用，适用于任何情况；逆矩阵法适合方阵且行列式不为0的情况；克拉默法则在理论上很重要。掌握这些方法对解决实际问题非常有用。`
+            1: `矩阵表示：A X等于B，统一记号便于分析与计算。`,
+            2: `高斯消元：初等行变换化阶梯形，回代得到解，通用稳健。`,
+            3: `逆矩阵法：X等于A的逆乘B，要求A方阵且行列式非零。`,
+            4: `克拉默法则：x i等于D i除以D，显式但计算量较大。`,
+            5: `解的判定：行列式非零唯一解；为零需看增广矩阵的秩。`,
+            6: `小结：消元最常用；逆矩阵与克拉默多作理论与小规模计算。`
         };
+
+        const __shortScript = {
+            1: `矩阵表示：A X等于B，统一记号便于分析与计算。`,
+            2: `高斯消元：行变换化阶梯形，回代求解，通用稳健。`,
+            3: `逆矩阵法：X等于A的逆乘B，需A方阵且行列式非零。`,
+            4: `克拉默法则：x i等于D i除以D，显式但计算量大。`,
+            5: `判定：行列式非零唯一解；为零看增广矩阵的秩。`,
+            6: `小结：消元常用；逆与克拉默用于理论与小规模。`
+        };
+        Object.assign(subtitleScript, __shortScript);
 
         const autoPlayDurations = {1: 20000, 2: 22000, 3: 22000, 4: 22000, 5: 20000, 6: 20000};
 
@@ -841,6 +851,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -885,7 +914,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

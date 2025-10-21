@@ -615,25 +615,23 @@
 <!-- 第6页：总结 -->
 <div class="page" id="page6">
 <div class="left-panel">
-<h1 class="title chalk-text">总结</h1>
+<h1 class="title chalk-text">梯度的几何意义</h1>
 <div class="board-content">
-<p class="chalk-text emphasis">三个核心概念</p>
+<p class="chalk-text emphasis">梯度向量</p>
+<div class="formula-box">
+<p class="chalk-text">$$\nabla f = (f_x, f_y)$$</p>
+</div>
+<p class="chalk-text emphasis">几何性质</p>
 <ul class="chalk-list">
-<li class="chalk-text"><strong>全微分：</strong>$dz = f_x dx + f_y dy$</li>
-<li class="chalk-text"><strong>梯度：</strong>$\nabla f = (f_x, f_y)$</li>
-<li class="chalk-text"><strong>方向导数：</strong>$\frac{\partial f}{\partial l} = \nabla f \cdot \vec{l}$</li>
-</ul>
-<p class="chalk-text emphasis">关键性质</p>
-<ul class="chalk-list">
-<li class="chalk-text">梯度指向函数增长最快的方向</li>
-<li class="chalk-text">梯度垂直于等高线</li>
-<li class="chalk-text">沿梯度方向的方向导数最大</li>
+<li class="chalk-text">垂直于等高线</li>
+<li class="chalk-text">指向函数值增大方向</li>
+<li class="chalk-text">模表示最大变化率</li>
 </ul>
 </div>
 </div>
 <div class="right-panel">
 <div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
+<svg class="svg-animation" viewBox="0 0 700 600">
 <!-- 中心圆 -->
 <circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
 <animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
@@ -669,13 +667,251 @@
 <text fill="#ffffff" font-size="20" text-anchor="middle" x="350" y="520">
                             三个核心概念
                         </text>
+<text x="350" y="300" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">梯度 ⊥ 等高线</text>
 </svg>
 </div>
 </div>
 </div>
+<!-- 第7页：梯度计算例题 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">梯度计算例题</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">设 $f = x^2 + y^2$</p>
+<p class="chalk-text emphasis">求梯度</p>
+<div class="formula-box">
+<p class="chalk-text">$$f_x = 2x, \quad f_y = 2y$$</p>
+<p class="chalk-text">$$\nabla f = (2x, 2y)$$</p>
+</div>
+<p class="chalk-text emphasis">在点(1,2)处</p>
+<div class="formula-box">
+<p class="chalk-text">$$\nabla f(1,2) = (2, 4)$$</p>
+<p class="chalk-text small-text">模 = $\sqrt{20} \approx 4.47$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">梯度计算</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="18">∇f = (2x, 2y)</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第8页：方向导数定义 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">方向导数</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定义</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{\partial f}{\partial \vec{e}} = \nabla f \cdot \vec{e}$$</p>
+<p class="chalk-text small-text">$\vec{e}$ 是单位方向向量</p>
+</div>
+<p class="chalk-text emphasis">展开形式</p>
+<div class="formula-box">
+<p class="chalk-text">$$= f_x \cos\theta + f_y \sin\theta$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">方向导数</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">∂f/∂e = ∇f · e</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第9页：方向导数性质 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">方向导数性质</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">三种情况</p>
+<ul class="chalk-list">
+<li class="chalk-text">$\vec{e} \parallel \nabla f$ → 最大值 $|\nabla f|$</li>
+<li class="chalk-text">$\vec{e} \perp \nabla f$ → 零</li>
+<li class="chalk-text">$\vec{e} \parallel -\nabla f$ → 最小值 $-|\nabla f|$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="250" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">方向导数性质</text>
+<text x="350" y="320" text-anchor="middle" fill="#95E1D3" font-size="16">沿梯度方向最大</text>
+<text x="350" y="360" text-anchor="middle" fill="#F38181" font-size="16">垂直梯度为零</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第10页：方向导数例题 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">方向导数例题</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">$f = x^2 - y^2$，点(1,1)</p>
+<div class="formula-box">
+<p class="chalk-text">$$\nabla f = (2, -2)$$</p>
+</div>
+<p class="chalk-text emphasis">方向 $\vec{e} = (\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}})$</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{\partial f}{\partial \vec{e}} = 2 \cdot \frac{1}{\sqrt{2}} + (-2) \cdot \frac{1}{\sqrt{2}} = 0$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="22" font-weight="bold">计算例题</text>
+<text x="350" y="340" text-anchor="middle" fill="#F38181" font-size="18">方向导数 = 0</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第11页：三概念关系 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">三概念关系</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">联系</p>
+<div class="formula-box">
+<p class="chalk-text">$$dz = \nabla f \cdot (dx, dy)$$</p>
+<p class="chalk-text">$$\frac{\partial f}{\partial \vec{e}} = \nabla f \cdot \vec{e}$$</p>
+</div>
+<p class="chalk-text emphasis">核心</p>
+<ul class="chalk-list">
+<li class="chalk-text">梯度是桥梁</li>
+<li class="chalk-text">都用点积表示</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">三概念关系</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">梯度是核心</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第12页：应用-梯度下降 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：梯度下降</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">优化问题</p>
+<ul class="chalk-list">
+<li class="chalk-text">梯度方向：最速上升</li>
+<li class="chalk-text">负梯度方向：最速下降</li>
+</ul>
+<p class="chalk-text emphasis">梯度下降法</p>
+<div class="formula-box">
+<p class="chalk-text">$$x_{n+1} = x_n - \alpha \nabla f(x_n)$$</p>
+<p class="chalk-text small-text">$\alpha$ 是学习率</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">梯度下降法</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">沿负梯度迭代</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第13页：应用-误差估计 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：误差估计</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">利用全微分</p>
+<div class="formula-box">
+<p class="chalk-text">$$dz = f_x dx + f_y dy$$</p>
+</div>
+<p class="chalk-text emphasis">例：$z = xy$</p>
+<div class="formula-box">
+<p class="chalk-text">$$dz = y \cdot dx + x \cdot dy$$</p>
+<p class="chalk-text small-text">误差传播公式</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="280" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">误差估计</text>
+<text x="350" y="340" text-anchor="middle" fill="#95E1D3" font-size="16">dz = y·dx + x·dy</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第14页：应用-等高线 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">应用：等高线</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">地形图</p>
+<ul class="chalk-list">
+<li class="chalk-text">等高线：高度相同的点</li>
+<li class="chalk-text">梯度：垂直于等高线</li>
+<li class="chalk-text">指向高度增加方向</li>
+</ul>
+<p class="chalk-text emphasis">登山</p>
+<ul class="chalk-list">
+<li class="chalk-text">沿梯度：最陡上坡</li>
+<li class="chalk-text">沿等高线：平路</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="260" text-anchor="middle" fill="#FFE066" font-size="24" font-weight="bold">等高线与梯度</text>
+<text x="350" y="330" text-anchor="middle" fill="#95E1D3" font-size="16">梯度 ⊥ 等高线</text>
+</svg>
+</div>
+</div>
+</div>
+<!-- 第15页：本节总结 -->
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">本节总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">三个核心概念</p>
+<ul class="chalk-list">
+<li class="chalk-text">全微分：$dz = f_x dx + f_y dy$</li>
+<li class="chalk-text">梯度：$\nabla f = (f_x, f_y)$</li>
+<li class="chalk-text">方向导数：$\frac{\partial f}{\partial \vec{e}} = \nabla f \cdot \vec{e}$</li>
+</ul>
+<p class="chalk-text emphasis">应用</p>
+<ul class="chalk-list">
+<li class="chalk-text">优化：梯度下降法</li>
+<li class="chalk-text">误差估计</li>
+<li class="chalk-text">地形分析</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text x="350" y="200" text-anchor="middle" fill="#FFE066" font-size="26" font-weight="bold">📚 本节总结</text>
+<text x="350" y="270" text-anchor="middle" fill="#95E1D3" font-size="18">全微分·梯度·方向导数</text>
+<text x="350" y="340" text-anchor="middle" fill="#F38181" font-size="16">梯度是核心工具</text>
+<text x="350" y="410" text-anchor="middle" fill="#FFE066" font-size="16">下节：本章复盘</text>
+</svg>
+</div>
+</div>
+</div>
+
 </div>
 <!-- 控制栏 -->
 <div class="control-bar">
+<div style="color: #ecf0f1; margin-bottom: 1rem; text-align: center; font-size: 12px;">
+第 <span id="currentPageControl">1</span> 页 / 共 15 页
+</div>
 <button class="btn" onclick="previousPage()">⬅️ 上一页</button>
 <button class="btn primary" onclick="nextPage()">下一页 ➡️</button>
 <button class="btn" onclick="startTeaching()">🎤 开始讲解</button>
@@ -708,24 +944,53 @@
 
 <script>
         let currentPage = 1;
-        const totalPages = 6;
+        const totalPages = 15;
         let avatarPlatform = null;
         let isConnected = false;
         let isTeaching = false;
         let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `全微分：增量的线性主部。d z等于f下标x d x加f下标y d y。`,
-            2: `几何意义：用切平面近似曲面，小范围内近似准确可用。`,
-            3: `梯度：nabla f等于括号f下标x逗号f下标y，指向增长最快方向。`,
-            4: `方向导数：等于梯度与单位方向向量点积，给出该方向变化率。`,
-            5: `例：f等于x平方减y平方，在点一逗号一处梯度二逗号负二，某方向导数为零。`,
-            6: `应用与总结：最速下降沿负梯度，三概念服务优化与估算。`
+            1: `欢迎学习全微分、梯度与方向导数。上一节我们学习了偏导数，它描述了函数沿坐标轴方向的变化率。今天我们要学习更一般的概念：全微分描述函数的整体变化，梯度指出最快增长的方向，方向导数给出任意方向的变化率。`,
+            2: `首先学习全微分的概念。全微分是函数增量的线性主部。对于二元函数z等于f(x,y)，全微分定义为dz等于f下标x乘以dx加f下标y乘以dy。这个公式告诉我们，当x和y有微小变化时，z的变化可以用偏导数来近似。`,
+            3: `全微分的几何意义是什么？它表示用切平面来近似曲面。在点(x0,y0)附近，曲面z等于f(x,y)可以用切平面来近似。这个近似在小范围内非常准确，是工程计算中常用的方法。`,
+            4: `全微分的应用举例。假设z等于x平方加y平方，在点(1,2)处，f下标x等于2x等于2，f下标y等于2y等于4。所以dz等于2dx加4dy。如果dx等于0.1，dy等于0.2，则dz约等于2乘以0.1加4乘以0.2等于1.0。`,
+            5: `现在学习梯度的概念。梯度是一个向量，记作nabla f或grad f，定义为梯度f等于(f下标x, f下标y)。梯度的方向指向函数增长最快的方向，梯度的模表示最大变化率。`,
+            6: `梯度的几何意义。梯度向量垂直于等高线，指向函数值增大的方向。如果你站在山坡上，梯度方向就是最陡的上坡方向。梯度的模越大，坡度越陡。这个概念在优化问题中非常重要。`,
+            7: `梯度的计算例子。设f等于x平方加y平方，则f下标x等于2x，f下标y等于2y。所以梯度f等于(2x, 2y)。在点(1,2)处，梯度f等于(2,4)。梯度的模等于根号下4加16等于根号20约等于4.47。`,
+            8: `现在学习方向导数的概念。方向导数表示函数沿某个方向的变化率。设单位方向向量为e等于(cos theta, sin theta)，则方向导数等于梯度f点乘e，也就是f下标x乘以cos theta加f下标y乘以sin theta。`,
+            9: `方向导数的性质。当方向e与梯度方向相同时，方向导数达到最大值，等于梯度的模。当方向e与梯度方向垂直时，方向导数等于零。当方向e与梯度方向相反时，方向导数达到最小值，等于负的梯度的模。`,
+            10: `方向导数的计算例子。设f等于x平方减y平方，在点(1,1)处，f下标x等于2x等于2，f下标y等于负2y等于负2。梯度f等于(2,负2)。如果方向e等于(1除以根号2, 1除以根号2)，则方向导数等于2乘以1除以根号2加负2乘以1除以根号2等于0。`,
+            11: `三个概念的关系。全微分dz等于梯度f点乘(dx,dy)。方向导数等于梯度f点乘单位方向向量e。梯度是联系全微分和方向导数的桥梁。掌握这三个概念，就能理解多元函数的局部性质。`,
+            12: `应用一：最速上升和最速下降。在优化问题中，梯度方向是函数增长最快的方向，负梯度方向是函数下降最快的方向。梯度下降法就是沿着负梯度方向迭代，寻找函数的最小值点。`,
+            13: `应用二：误差估计。利用全微分可以估计测量误差对结果的影响。例如，如果z等于xy，x和y的测量误差分别为dx和dy，则z的误差约为dz等于y乘以dx加x乘以dy。这在实验数据处理中很有用。`,
+            14: `应用三：等高线与梯度。在地形图中，等高线表示高度相同的点。梯度向量垂直于等高线，指向高度增加最快的方向。登山者沿着梯度方向走，就是走最陡的上坡路。`,
+            15: `本节总结。全微分dz等于f下标x乘以dx加f下标y乘以dy，用于近似计算。梯度等于(f下标x, f下标y)，指向最快增长方向。方向导数等于梯度点乘单位方向向量。三个概念相互联系，是多元微积分的核心工具。下一节我们将进行本章复盘。`
         };
 
-        const autoPlayDurations = {
-            1: 18000, 2: 20000, 3: 20000, 4: 22000, 5: 22000, 6: 20000
-        };
+        // 数学公式音译为中文（用于字数统计与TTS）
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/\\lim/g,'极限');
+            r=r.replace(/\\sum/g,'求和');
+            r=r.replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\^(\d+)/g,'的$1次方');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 400);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
 
         function updateStatus(message, type = 'normal') {
             const indicator = document.getElementById('statusIndicator');
@@ -823,7 +1088,8 @@
                 avatarPlatform = new AvatarPlatform({useInlinePlayer: true});
                 avatarPlatform.on('connected', () => {isConnected = true; isTeaching = true; updateStatus('已连接', 'connected'); setTimeout(() => speakContent(currentPage), 1000);})
                     .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
-                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
+                    .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})
+                    .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成 frame_stop:', data);
                         if (isAutoPlaying && currentPage < totalPages) {
                             console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
@@ -837,7 +1103,7 @@
                                         }
                                     }, 800);
                                 }
-                            }, 1500);
+                            }, 500); // 虚拟人讲完后500ms切换页面
                         }
                     });
                 avatarPlatform.setApiInfo({

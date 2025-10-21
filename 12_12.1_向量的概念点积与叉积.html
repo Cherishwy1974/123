@@ -894,12 +894,12 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            1: `欢迎学习向量的概念、点积与叉积。向量是既有大小又有方向的量。几何上用有向线段表示，坐标上用三个分量表示，记作a等于括号a1,a2,a3。向量的模是根号下三个分量的平方和，表示向量的大小。`,
-            2: `向量的加法用平行四边形法则，坐标表示是对应分量相加。数乘是每个分量乘以常数，几何意义是伸缩和反向。当k大于0时方向不变，k小于0时方向相反。`,
-            3: `点积也叫数量积，结果是一个数。定义是两个向量的模乘以夹角的余弦。坐标表示是对应分量相乘再相加。两向量垂直当且仅当点积为0。点积可以用来求向量的夹角和投影。`,
-            4: `叉积也叫向量积，结果是一个向量。大小是两个向量的模乘以夹角的正弦，等于两向量构成的平行四边形的面积。方向用右手法则确定，垂直于两个向量所在平面。`,
-            5: `应用：力矩。力矩等于位置向量叉乘力向量，记作M等于r叉乘F。力矩大小是r乘以F乘以sin theta，方向垂直于r和F所在平面，用右手法则确定。力矩在物理学和工程学中非常重要。`,
-            6: `总结一下，向量是有大小有方向的量。点积结果是数量，用于求夹角和投影。叉积结果是向量，用于求面积和力矩。掌握向量运算对学习空间几何和物理学非常重要。`
+            1: `向量概念：既有大小又有方向，坐标表示为三分量。`,
+            2: `加法与数乘：分量相加，整体倍乘，几何为平移伸缩。`,
+            3: `点积：结果为数，等于模乘夹角余弦，可判垂直与求投影。`,
+            4: `叉积：结果为向量，大小等于模乘夹角正弦，方向右手法则。`,
+            5: `力矩示例：力矩等于r叉乘F，大小与夹角正弦成正比。`,
+            6: `小结：点积解角度与投影；叉积给面积与方向，应用广。`
         };
 
         const autoPlayDurations = {1: 18000, 2: 16000, 3: 20000, 4: 18000, 5: 18000, 6: 16000};
@@ -927,6 +927,25 @@
                     clearTimeout(timeout); window.removeEventListener('sdkReady', handler); resolve();
                 });
             });
+        }
+
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
         }
 
         function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
@@ -971,7 +990,9 @@
 
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }

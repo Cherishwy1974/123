@@ -430,13 +430,13 @@
         let avatarPlatform = null; let isConnected = false; let isTeaching = false; let isAutoPlaying = false;
 
         const subtitleScript = {
-            0: `同学们好，欢迎来到第13章，概率基本概念与性质的学习。本章我们将学习随机试验与样本空间、概率的定义与性质、以及事件运算与加法公式。概率论是研究随机现象规律的数学分支，在科学技术和日常生活中有广泛应用。让我们开始吧！`,
-            1: `随机试验是结果不确定但所有可能结果已知的试验。样本空间是所有可能结果的集合，记作Ω。例如抛硬币的样本空间是正面和反面，掷骰子的样本空间是1到6。`,
-            2: `随机事件是样本空间的子集。必然事件一定发生，记作Ω；不可能事件一定不发生，记作空集。例如掷骰子，事件A是出现偶数等于2、4、6，事件B是出现大于4等于5、6。`,
-            3: `古典概型中，概率等于事件包含的基本事件数除以样本空间的基本事件总数。例如掷骰子出现偶数的概率是3除以6等于二分之一。概率的性质：概率在0到1之间，必然事件概率为1，不可能事件概率为0。`,
-            4: `事件的运算包括并事件、交事件、对立事件和互斥事件。并事件是A或B发生，记作A并B；交事件是A和B同时发生，记作A交B；对立事件是A不发生，记作A的补集；互斥事件是不能同时发生的事件。`,
-            5: `概率的加法公式：互斥事件时，P(A并B)等于P(A)加P(B)；一般情况下，P(A并B)等于P(A)加P(B)减P(A交B)。对立事件的概率，P(A的补集)等于1减P(A)。`,
-            6: `总结一下，概率的核心内容包括样本空间与随机事件、概率的定义与性质、事件的运算和加法公式。掌握这些基本概念对学习概率统计非常重要。`
+            0: `第十三章导学：随机试验与样本空间、概率定义与性质、事件运算。`,
+            1: `随机试验与样本空间：结果不确定，可能性集合为样本空间。`,
+            2: `事件：样本空间子集；必然与不可能、互斥与对立等基本类型。`,
+            3: `概率定义与性质：取值零到一；必然为一，不可能为零。`,
+            4: `事件运算：并交补的含义与记号，为加法公式做铺垫。`,
+            5: `加法公式：互斥时相加；一般情形减去交，补事件为一减自身。`,
+            6: `小结：掌握概念与性质，为条件概率与独立性打基础。`
         };
 
         const autoPlayDurations = {0: 20000, 1: 16000, 2: 18000, 3: 20000, 4: 20000, 5: 18000, 6: 16000};
@@ -500,9 +500,29 @@
             } catch (error) { updateStatus('启动失败', 'error'); alert(`启动失败：${error.message}`); }
         }
 
+        // 数学公式音译与字数统计
+        function translateMathToSpeech(text){
+            if(!text) return '';
+            let r=text;
+            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
+            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
+            r=r.replace(/[\\${}]/g,'');
+            return r;
+        }
+        function getPageDuration(pageNum){
+            const speech = subtitleScript[pageNum];
+            if(!speech) return 6000;
+            const translated = translateMathToSpeech(speech);
+            const charCount = translated.length;
+            const duration = Math.max(6000, charCount * 200);
+            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            return duration;
+        }
         async function speakContent(pageNum) {
             if (!isTeaching || !isConnected || !avatarPlatform) return;
-            const content = subtitleScript[pageNum];
+            const raw = subtitleScript[pageNum];
+            const content = translateMathToSpeech(raw);
+            try { getPageDuration(pageNum); } catch (e) {}
             if (!content) return;
             try { await avatarPlatform.writeText(content, {nlp: false}); updateSubtitle(content); } catch (error) {}
         }
