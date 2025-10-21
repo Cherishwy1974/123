@@ -635,21 +635,226 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">泰勒公式的余项</h1><div class="board-content"><p class="chalk-text emphasis">拉格朗日余项</p><p class="chalk-text">$$R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}$$</p><p class="chalk-text">ξ在x₀和x之间</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">拉格朗日余项</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">泰勒公式的余项</h1><div class="board-content"><p class="chalk-text emphasis">拉格朗日余项</p><p class="chalk-text">$$R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}$$</p><p class="chalk-text">ξ在x₀和x之间</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">泰勒公式的余项</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" height="120" stroke="#4ECDC4" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">泰勒公式</text>
+<text fill="#999" font-size="13" x="20" y="50">f(x) = Pₙ(x) + Rₙ(x)</text>
+<text fill="#999" font-size="13" x="20" y="75">Pₙ(x)：n次泰勒多项式</text>
+<text fill="#999" font-size="13" x="20" y="100">Rₙ(x)：余项（误差）</text>
+</g>
+<g transform="translate(0,170)">
+<rect fill="rgba(255,107,107,0.1)" height="100" stroke="#FF6B6B" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="25">拉格朗日余项</text>
+<text fill="#999" font-size="13" x="20" y="50">Rₙ(x) = f^(n+1)(ξ)/(n+1)! · (x-x₀)^(n+1)</text>
+<text fill="#999" font-size="13" x="20" y="75">其中 ξ 在 x₀ 和 x 之间</text>
+</g>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="250" y="310">余项用于估计泰勒展开的误差</text>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">误差估计方法</h1><div class="board-content"><p class="chalk-text">1. 用余项公式估计</p><p class="chalk-text">2. 交错级数用下一项估计</p><p class="chalk-text">3. 几何级数用无穷项和估计</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" r="80" stroke="#FFE066" stroke-width="3"></circle><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="255">误差估计</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">误差估计方法</h1><div class="board-content"><p class="chalk-text">1. 用余项公式估计</p><p class="chalk-text">2. 交错级数用下一项估计</p><p class="chalk-text">3. 几何级数用无穷项和估计</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(80,70)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-5">三种误差估计方法</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" height="90" stroke="#4ECDC4" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 余项公式法</text>
+<text fill="#999" font-size="13" x="10" y="45">|Rₙ(x)| ≤ M/(n+1)! · |x-x₀|^(n+1)</text>
+<text fill="#999" font-size="12" x="10" y="65">M = max|f^(n+1)(ξ)|</text>
+<text fill="#999" font-size="12" x="10" y="82">适用：一般函数的泰勒展开</text>
+</g>
+<g transform="translate(0,140)">
+<rect fill="rgba(255,224,102,0.15)" height="90" stroke="#FFE066" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 交错级数法</text>
+<text fill="#999" font-size="13" x="10" y="45">|Rₙ| ≤ |uₙ₊₁|</text>
+<text fill="#999" font-size="12" x="10" y="65">误差不超过第一个舍去项的绝对值</text>
+<text fill="#999" font-size="12" x="10" y="82">适用：交错级数（莱布尼茨级数）</text>
+</g>
+<g transform="translate(0,250)">
+<rect fill="rgba(255,107,107,0.15)" height="90" stroke="#FF6B6B" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 几何级数法</text>
+<text fill="#999" font-size="13" x="10" y="45">|Rₙ| ≤ |uₙ₊₁|/(1-r)</text>
+<text fill="#999" font-size="12" x="10" y="65">r 是公比</text>
+<text fill="#999" font-size="12" x="10" y="82">适用：几何级数或类似级数</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题：误差控制</h1><div class="board-content"><p class="chalk-text">用e的泰勒展开计算e，精度0.001</p><p class="chalk-text">$$e = \sum_{n=0}^{\infty}\frac{1}{n!}$$</p><p class="chalk-text">需要多少项？</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">误差控制例题</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题：误差控制</h1><div class="board-content"><p class="chalk-text">用e的泰勒展开计算e，精度0.001</p><p class="chalk-text">$$e = \sum_{n=0}^{\infty}\frac{1}{n!}$$</p><p class="chalk-text">需要多少项？</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：计算 e 的精度控制</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" height="80" stroke="#4ECDC4" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">题目</text>
+<text fill="#999" font-size="13" x="20" y="50">e = 1 + 1 + 1/2! + 1/3! + 1/4! + ...</text>
+<text fill="#999" font-size="13" x="20" y="70">要求精度：|误差| < 0.001</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.1)" height="140" stroke="#FFE066" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">计算过程</text>
+<text fill="#999" font-size="12" x="20" y="45">S₀ = 1</text>
+<text fill="#999" font-size="12" x="20" y="62">S₁ = 1 + 1 = 2</text>
+<text fill="#999" font-size="12" x="20" y="79">S₂ = 2 + 1/2 = 2.5</text>
+<text fill="#999" font-size="12" x="20" y="96">S₃ = 2.5 + 1/6 ≈ 2.667</text>
+<text fill="#999" font-size="12" x="20" y="113">S₄ = 2.667 + 1/24 ≈ 2.708</text>
+<text fill="#999" font-size="12" x="20" y="130">S₅ = 2.708 + 1/120 ≈ 2.717</text>
+</g>
+<g transform="translate(0,290)">
+<rect fill="rgba(255,107,107,0.1)" height="60" stroke="#FF6B6B" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="25">结论</text>
+<text fill="#999" font-size="13" x="20" y="45">1/6! = 1/720 ≈ 0.00139 > 0.001</text>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" x="20" y="55">∴ 需要至少7项（n=0到6）</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">级数在数值计算中的应用</h1><div class="board-content"><p class="chalk-text">• 计算π：莱布尼茨公式</p><p class="chalk-text">• 计算e：指数级数</p><p class="chalk-text">• 计算ln2：对数级数</p><p class="chalk-text">• 计算三角函数值</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">数值计算</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">级数在数值计算中的应用</h1><div class="board-content"><p class="chalk-text">• 计算π：莱布尼茨公式</p><p class="chalk-text">• 计算e：指数级数</p><p class="chalk-text">• 计算ln2：对数级数</p><p class="chalk-text">• 计算三角函数值</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(70,60)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="280" y="-5">级数在数值计算中的应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" height="70" stroke="#4ECDC4" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 计算 π</text>
+<text fill="#999" font-size="13" x="10" y="40">π/4 = 1 - 1/3 + 1/5 - 1/7 + ...</text>
+<text fill="#999" font-size="12" x="10" y="60">(莱布尼茨公式，收敛慢)</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" height="70" stroke="#FFE066" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 计算 e</text>
+<text fill="#999" font-size="13" x="10" y="40">e = 1 + 1 + 1/2! + 1/3! + ...</text>
+<text fill="#999" font-size="12" x="10" y="60">(收敛快，常用方法)</text>
+</g>
+<g transform="translate(0,210)">
+<rect fill="rgba(255,107,107,0.15)" height="70" stroke="#FF6B6B" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 计算 ln 2</text>
+<text fill="#999" font-size="13" x="10" y="40">ln 2 = 1 - 1/2 + 1/3 - 1/4 + ...</text>
+<text fill="#999" font-size="12" x="10" y="60">(交错调和级数)</text>
+</g>
+<g transform="translate(0,300)">
+<rect fill="rgba(147,112,219,0.15)" height="70" stroke="#9370DB" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 计算三角函数</text>
+<text fill="#999" font-size="13" x="10" y="40">sin x = x - x³/6 + x⁵/120 - ...</text>
+<text fill="#999" font-size="12" x="10" y="60">(计算器内部使用的方法)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">级数求和技巧</h1><div class="board-content"><p class="chalk-text">1. 逐项求导或积分</p><p class="chalk-text">2. 利用已知级数</p><p class="chalk-text">3. 分解为简单级数</p><p class="chalk-text">4. 利用函数展开式</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">求和技巧</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">级数求和技巧</h1><div class="board-content"><p class="chalk-text">1. 逐项求导或积分</p><p class="chalk-text">2. 利用已知级数</p><p class="chalk-text">3. 分解为简单级数</p><p class="chalk-text">4. 利用函数展开式</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(80,70)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-5">级数求和的四大技巧</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" height="70" stroke="#4ECDC4" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 逐项求导或积分</text>
+<text fill="#999" font-size="13" x="10" y="40">对已知级数求导或积分得到新级数</text>
+<text fill="#999" font-size="12" x="10" y="60">例：∑xⁿ求导 → ∑nxⁿ⁻¹</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" height="70" stroke="#FFE066" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 利用已知级数</text>
+<text fill="#999" font-size="13" x="10" y="40">将待求级数化为已知级数的形式</text>
+<text fill="#999" font-size="12" x="10" y="60">例：利用几何级数、eˣ、sin x等</text>
+</g>
+<g transform="translate(0,210)">
+<rect fill="rgba(255,107,107,0.15)" height="70" stroke="#FF6B6B" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 分解为简单级数</text>
+<text fill="#999" font-size="13" x="10" y="40">用部分分式分解等方法</text>
+<text fill="#999" font-size="12" x="10" y="60">例：1/(n(n+1)) = 1/n - 1/(n+1)</text>
+</g>
+<g transform="translate(0,300)">
+<rect fill="rgba(147,112,219,0.15)" height="70" stroke="#9370DB" stroke-width="2" width="540" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 利用函数展开式</text>
+<text fill="#999" font-size="13" x="10" y="40">将级数看作某函数在特定点的值</text>
+<text fill="#999" font-size="12" x="10" y="60">例：代入x的特殊值</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：级数求和</h1><div class="board-content"><p class="chalk-text">$$\sum_{n=1}^{\infty}\frac{n}{2^n}$$</p><p class="chalk-text emphasis">方法</p><p class="chalk-text">利用∑xⁿ=1/(1-x)求导</p><p class="chalk-text">答案：2</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">级数求和例题</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：级数求和</h1><div class="board-content"><p class="chalk-text">$$\sum_{n=1}^{\infty}\frac{n}{2^n}$$</p><p class="chalk-text emphasis">方法</p><p class="chalk-text">利用∑xⁿ=1/(1-x)求导</p><p class="chalk-text">答案：2</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,70)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-5">例题：∑ n/2ⁿ 的求和</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" height="100" stroke="#4ECDC4" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">步骤1：利用已知级数</text>
+<text fill="#999" font-size="13" x="20" y="50">已知：∑xⁿ = 1/(1-x)  (|x|<1)</text>
+<text fill="#999" font-size="13" x="20" y="70">两边对x求导：</text>
+<text fill="#999" font-size="13" x="20" y="90">∑nxⁿ⁻¹ = 1/(1-x)²</text>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.1)" height="80" stroke="#FFE066" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">步骤2：两边乘以x</text>
+<text fill="#999" font-size="13" x="20" y="50">∑nxⁿ = x/(1-x)²</text>
+<text fill="#999" font-size="13" x="20" y="70">(n从1到∞)</text>
+</g>
+<g transform="translate(0,250)">
+<rect fill="rgba(255,107,107,0.1)" height="80" stroke="#FF6B6B" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="25">步骤3：代入x=1/2</text>
+<text fill="#999" font-size="13" x="20" y="50">∑n/2ⁿ = (1/2)/(1-1/2)²</text>
+<text fill="#999" font-size="13" x="20" y="70">     = (1/2)/(1/4) = 2</text>
+</g>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="250" y="370">答案：2</text>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">级数在工程中的应用</h1><div class="board-content"><p class="chalk-text">• 信号处理：傅里叶分析</p><p class="chalk-text">• 控制系统：传递函数展开</p><p class="chalk-text">• 量子力学：微扰理论</p><p class="chalk-text">• 流体力学：渐近展开</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">工程应用</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">级数在工程中的应用</h1><div class="board-content"><p class="chalk-text">• 信号处理：傅里叶分析</p><p class="chalk-text">• 控制系统：传递函数展开</p><p class="chalk-text">• 量子力学：微扰理论</p><p class="chalk-text">• 流体力学：渐近展开</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(70,60)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="280" y="-5">级数在工程中的应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" height="80" stroke="#4ECDC4" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 信号处理</text>
+<text fill="#999" font-size="13" x="10" y="40">傅里叶级数：将信号分解为正弦波</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：音频处理、频谱分析</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" height="80" stroke="#FFE066" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 控制系统</text>
+<text fill="#999" font-size="13" x="10" y="40">传递函数的级数展开</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：系统稳定性分析、控制器设计</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" height="80" stroke="#FF6B6B" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 量子力学</text>
+<text fill="#999" font-size="13" x="10" y="40">微扰理论：用级数展开求近似解</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：原子能级计算、散射问题</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" height="80" stroke="#9370DB" stroke-width="2" width="560" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 流体力学</text>
+<text fill="#999" font-size="13" x="10" y="40">渐近展开：高雷诺数流动分析</text>
+<text fill="#999" font-size="12" x="10" y="60">应用：边界层理论、湍流模型</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 掌握敛散性判别法</p><p class="chalk-text">2. 熟记常用函数展开式</p><p class="chalk-text">3. 会求收敛域</p><p class="chalk-text">4. 会估计误差</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">学习要点</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 掌握敛散性判别法</p><p class="chalk-text">2. 熟记常用函数展开式</p><p class="chalk-text">3. 会求收敛域</p><p class="chalk-text">4. 会估计误差</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">第11章学习要点总结</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" height="70" stroke="#4ECDC4" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 掌握敛散性判别法</text>
+<text fill="#999" font-size="13" x="10" y="40">比值法、根值法、比较法</text>
+<text fill="#999" font-size="13" x="10" y="60">莱布尼茨判别法（交错级数）</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" height="70" stroke="#FFE066" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 熟记常用函数展开式</text>
+<text fill="#999" font-size="13" x="10" y="40">eˣ, sin x, cos x, 1/(1-x), ln(1+x)</text>
+<text fill="#999" font-size="13" x="10" y="60">这些是最基本、最常用的展开式</text>
+</g>
+<g transform="translate(0,210)">
+<rect fill="rgba(255,107,107,0.15)" height="70" stroke="#FF6B6B" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 会求收敛域</text>
+<text fill="#999" font-size="13" x="10" y="40">先求收敛半径R</text>
+<text fill="#999" font-size="13" x="10" y="60">再检验端点的敛散性</text>
+</g>
+<g transform="translate(0,300)">
+<rect fill="rgba(147,112,219,0.15)" height="70" stroke="#9370DB" stroke-width="2" width="500" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 会估计误差</text>
+<text fill="#999" font-size="13" x="10" y="40">用余项公式或下一项估计</text>
+<text fill="#999" font-size="13" x="10" y="60">控制计算精度</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">第十一章总结</h1><div class="board-content"><p class="chalk-text emphasis">本章内容</p><p class="chalk-text">✓ 级数的敛散性判别</p><p class="chalk-text">✓ 幂级数与泰勒展开</p><p class="chalk-text">✓ 误差控制与数值计算</p><p class="chalk-text emphasis">下一章</p><p class="chalk-text">空间解析几何（第12章）</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">第11章完成</text></svg></div></div></div>
 
