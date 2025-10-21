@@ -622,7 +622,7 @@
 <div class="board-content">
 <p class="chalk-text emphasis">题目</p>
 <div class="formula-box">
-<p class="chalk-text">$$\\iint_D (x+y) \\, dA$$</p>
+<p class="chalk-text">$$\iint _{D} (x+y) dA$$</p>
 <p class="chalk-text small-text">其中D是矩形区域：0≤x≤1, 0≤y≤2</p>
 </div>
 <p class="chalk-text emphasis">分析</p>
@@ -661,16 +661,16 @@
 <div class="board-content">
 <p class="chalk-text emphasis">化为累次积分</p>
 <div class="formula-box">
-<p class="chalk-text">$$\\iint_D (x+y) \\, dA = \\int_0^1 \\int_0^2 (x+y) \\, dy \\, dx$$</p>
+<p class="chalk-text">$$\iint _{D} (x+y) dA = \int_0^1 \int_0^2 (x+y) dy dx$$</p>
 </div>
 <p class="chalk-text emphasis">先对y积分</p>
 <div class="formula-box">
-<p class="chalk-text">$$\\int_0^2 (x+y) \\, dy = \\left[xy + \\frac{y^2}{2}\\right]_0^2$$</p>
+<p class="chalk-text">$$\int _0^2 (x+y) dy = \left[xy + \frac{y^2}{2}\right]_0^2$$</p>
 <p class="chalk-text">$$= 2x + 2$$</p>
 </div>
 <p class="chalk-text emphasis">再对x积分</p>
 <div class="formula-box">
-<p class="chalk-text">$$\\int_0^1 (2x+2) \\, dx = \\left[x^2 + 2x\\right]_0^1$$</p>
+<p class="chalk-text">$$\int_0^1 (2x+2) dx = \left[x^2 + 2x\right]_0^1$$</p>
 <p class="chalk-text">$$= 1 + 2 = 3$$</p>
 </div>
 </div>
@@ -709,7 +709,7 @@
 <div class="board-content">
 <p class="chalk-text emphasis">最终结果</p>
 <div class="formula-box">
-<p class="chalk-text">$$\\iint_D (x+y) \\, dA = 3$$</p>
+<p class="chalk-text">$$\iint _{D} (x+y) dA = 3$$</p>
 </div>
 <p class="chalk-text emphasis">几何意义</p>
 <p class="chalk-text">这个值表示曲面z=x+y在矩形D上方的体积</p>
@@ -786,16 +786,16 @@
 <div class="board-content">
 <p class="chalk-text emphasis">转换为极坐标</p>
 <div class="formula-box">
-<p class="chalk-text">$$x = r\\cos\\theta, \\quad y = r\\sin\\theta$$</p>
-<p class="chalk-text">$$dA = r \\, dr \\, d\\theta$$</p>
+<p class="chalk-text">$$x = r\cos\theta, \quad y = r\sin\theta$$</p>
+<p class="chalk-text">$$dA = r dr d\theta$$</p>
 </div>
 <p class="chalk-text emphasis">积分范围</p>
 <p class="chalk-text">0 ≤ r ≤ 2, 0 ≤ θ ≤ π/2</p>
 <p class="chalk-text emphasis">计算</p>
 <div class="formula-box">
-<p class="chalk-text">$$V = \\int_0^{\\pi/2} \\int_0^2 (4-r^2) r \\, dr \\, d\\theta$$</p>
-<p class="chalk-text">$$= \\int_0^{\\pi/2} \\left[2r^2 - \\frac{r^4}{4}\\right]_0^2 d\\theta$$</p>
-<p class="chalk-text">$$= \\int_0^{\\pi/2} 4 \\, d\\theta = 2\\pi$$</p>
+<p class="chalk-text">$$V = \int_0^{\pi/2} \int_0^2 (4-r^2) r dr d\theta$$</p>
+<p class="chalk-text">$$= \int_0^{\pi/2} \left[2r^2 - \frac{r^4}{4}\right]_0^2 d\theta$$</p>
+<p class="chalk-text">$$= \int_0^{\pi/2} 4 d\theta = 2\pi$$</p>
 </div>
 </div>
 </div>
@@ -826,13 +826,13 @@
 <p class="chalk-text">设薄板占据区域D，密度函数为ρ(x,y)</p>
 <p class="chalk-text">则薄板的总质量为：</p>
 <div class="formula-box">
-<p class="chalk-text">$$M = \\iint_D \\rho(x,y) \\, dA$$</p>
+<p class="chalk-text">$$M = \iint _{D} \rho(x,y) dA$$</p>
 </div>
 <p class="chalk-text emphasis">例子</p>
 <p class="chalk-text">圆盘x²+y²≤1，密度ρ=x²+y²</p>
 <div class="formula-box">
-<p class="chalk-text">$$M = \\int_0^{2\\pi} \\int_0^1 r^2 \\cdot r \\, dr \\, d\\theta$$</p>
-<p class="chalk-text">$$= 2\\pi \\cdot \\frac{1}{4} = \\frac{\\pi}{2}$$</p>
+<p class="chalk-text">$$M = \int_0^{2\pi} \int_0^1 r^2 \cdot r dr d\theta$$</p>
+<p class="chalk-text">$$= 2\pi \cdot \frac{1}{4} = \frac{\pi}{2}$$</p>
 </div>
 </div>
 </div>
@@ -866,7 +866,7 @@
 <p class="chalk-text emphasis">平均值公式</p>
 <p class="chalk-text">函数f(x,y)在区域D上的平均值：</p>
 <div class="formula-box">
-<p class="chalk-text">$$\\bar{f} = \\frac{1}{A(D)} \\iint_D f(x,y) \\, dA$$</p>
+<p class="chalk-text">$$\bar{f} = \frac{1}{A(D)} \iint _{D} f(x,y) dA$$</p>
 <p class="chalk-text small-text">其中A(D)是区域D的面积</p>
 </div>
 <p class="chalk-text emphasis">物理意义</p>
