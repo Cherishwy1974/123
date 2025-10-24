@@ -499,21 +499,218 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">常见分布的期望和方差</h1><div class="board-content"><p class="chalk-text">二项分布B(n,p)：E(X)=np, D(X)=np(1-p)</p><p class="chalk-text">泊松分布P(λ)：E(X)=λ, D(X)=λ</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">常见分布</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">常见分布的期望和方差</h1><div class="board-content"><p class="chalk-text">二项分布B(n,p)：E(X)=np, D(X)=np(1-p)</p><p class="chalk-text">泊松分布P(λ)：E(X)=λ, D(X)=λ</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(80,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-10">常见分布的期望和方差</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="540" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 二项分布 B(n, p)</text>
+<text fill="#999" font-size="13" x="10" y="45">n次独立重复试验，每次成功概率p</text>
+<text fill="#999" font-size="13" x="10" y="70">期望：E(X) = np</text>
+<text fill="#999" font-size="13" x="10" y="90">方差：D(X) = np(1-p)</text>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="540" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 泊松分布 P(λ)</text>
+<text fill="#999" font-size="13" x="10" y="45">单位时间内事件发生次数，平均λ次</text>
+<text fill="#999" font-size="13" x="10" y="70">期望：E(X) = λ</text>
+<text fill="#999" font-size="13" x="10" y="90">方差：D(X) = λ</text>
+</g>
+<g transform="translate(0,270)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="540" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 均匀分布 U(a, b)</text>
+<text fill="#999" font-size="13" x="10" y="45">在区间[a,b]上均匀分布</text>
+<text fill="#999" font-size="13" x="10" y="70">期望：E(X) = (a+b)/2</text>
+<text fill="#999" font-size="13" x="10" y="90">方差：D(X) = (b-a)²/12</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">期望的性质</h1><div class="board-content"><p class="chalk-text">E(aX+b) = aE(X)+b</p><p class="chalk-text">E(X+Y) = E(X)+E(Y)</p><p class="chalk-text">X,Y独立：E(XY)=E(X)E(Y)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" r="80" stroke="#FFE066" stroke-width="3"></circle><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="255">期望性质</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">期望的性质</h1><div class="board-content"><p class="chalk-text">E(aX+b) = aE(X)+b</p><p class="chalk-text">E(X+Y) = E(X)+E(Y)</p><p class="chalk-text">X,Y独立：E(XY)=E(X)E(Y)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,90)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-15">期望的性质</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">性质1：线性性质</text>
+<text fill="#999" font-size="13" x="10" y="45">E(aX + b) = aE(X) + b</text>
+<text fill="#999" font-size="12" x="10" y="65">常数可以提出，期望是线性算子</text>
+<text fill="#999" font-size="11" x="10" y="82">例：E(2X+3) = 2E(X)+3</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">性质2：可加性</text>
+<text fill="#999" font-size="13" x="10" y="45">E(X + Y) = E(X) + E(Y)</text>
+<text fill="#999" font-size="12" x="10" y="65">无论X和Y是否独立都成立</text>
+<text fill="#999" font-size="11" x="10" y="82">推广：E(X₁+X₂+...+Xₙ) = E(X₁)+...+E(Xₙ)</text>
+</g>
+<g transform="translate(0,240)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">性质3：独立变量的乘积</text>
+<text fill="#999" font-size="13" x="10" y="45">若X,Y独立，则 E(XY) = E(X)·E(Y)</text>
+<text fill="#999" font-size="12" x="10" y="65">注意：此性质要求X和Y独立</text>
+<text fill="#999" font-size="11" x="10" y="82">不独立时一般不成立</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">方差的性质</h1><div class="board-content"><p class="chalk-text">D(aX+b) = a²D(X)</p><p class="chalk-text">X,Y独立：D(X+Y)=D(X)+D(Y)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">方差性质</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">方差的性质</h1><div class="board-content"><p class="chalk-text">D(aX+b) = a²D(X)</p><p class="chalk-text">X,Y独立：D(X+Y)=D(X)+D(Y)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">方差的性质</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">性质1：常数变换</text>
+<text fill="#999" font-size="13" x="10" y="45">D(aX + b) = a²D(X)</text>
+<text fill="#999" font-size="12" x="10" y="65">加常数b不影响方差（平移不变）</text>
+<text fill="#999" font-size="12" x="10" y="82">乘常数a使方差变为a²倍（尺度变换）</text>
+<text fill="#999" font-size="11" x="10" y="97">例：D(2X+3) = 4D(X)</text>
+</g>
+<g transform="translate(0,140)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">性质2：独立变量的可加性</text>
+<text fill="#999" font-size="13" x="10" y="45">若X,Y独立，则 D(X+Y) = D(X) + D(Y)</text>
+<text fill="#999" font-size="12" x="10" y="65">注意：此性质要求X和Y独立</text>
+<text fill="#999" font-size="12" x="10" y="82">不独立时：D(X+Y) = D(X)+D(Y)+2Cov(X,Y)</text>
+<text fill="#999" font-size="11" x="10" y="97">推广：D(X₁+...+Xₙ) = D(X₁)+...+D(Xₙ) (独立)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">协方差与相关系数</h1><div class="board-content"><p class="chalk-text">Cov(X,Y) = E[(X-E(X))(Y-E(Y))]</p><p class="chalk-text">ρ = Cov(X,Y)/(σ_X σ_Y)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">协方差</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">协方差与相关系数</h1><div class="board-content"><p class="chalk-text">Cov(X,Y) = E[(X-E(X))(Y-E(Y))]</p><p class="chalk-text">ρ = Cov(X,Y)/(σ_X σ_Y)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">协方差与相关系数</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">协方差 Cov(X,Y)</text>
+<text fill="#999" font-size="13" x="10" y="45">Cov(X,Y) = E[(X-E(X))(Y-E(Y))]</text>
+<text fill="#999" font-size="12" x="10" y="65">= E(XY) - E(X)E(Y)</text>
+<text fill="#999" font-size="12" x="10" y="82">度量X和Y的线性相关程度</text>
+<text fill="#999" font-size="11" x="10" y="97">Cov(X,Y)>0：正相关；<0：负相关；=0：不相关</text>
+</g>
+<g transform="translate(0,140)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">相关系数 ρ(X,Y)</text>
+<text fill="#999" font-size="13" x="10" y="45">ρ = Cov(X,Y) / (σ_X · σ_Y)</text>
+<text fill="#999" font-size="12" x="10" y="65">标准化的协方差，-1 ≤ ρ ≤ 1</text>
+<text fill="#999" font-size="12" x="10" y="82">|ρ|=1：完全线性相关</text>
+<text fill="#999" font-size="11" x="10" y="97">ρ=0：不相关（但不一定独立）</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="70" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" font-weight="bold" text-anchor="middle" x="250" y="25">独立 ⇒ 不相关</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="250" y="48">但不相关 ⇏ 独立</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：期望计算</h1><div class="board-content"><p class="chalk-text">X~B(10,0.3)，求E(X)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">E(X) = np = 10×0.3 = 3</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">期望例题</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：期望计算</h1><div class="board-content"><p class="chalk-text">X~B(10,0.3)，求E(X)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">E(X) = np = 10×0.3 = 3</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-20">例题：二项分布的期望</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">题目</text>
+<text fill="#999" font-size="13" x="10" y="45">随机变量 X ~ B(10, 0.3)</text>
+<text fill="#999" font-size="13" x="10" y="65">求期望 E(X)</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="460" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">解答</text>
+<text fill="#999" font-size="13" x="10" y="45">二项分布 B(n, p) 的期望公式：</text>
+<text fill="#999" font-size="13" x="10" y="65">E(X) = np</text>
+<text fill="#999" font-size="13" x="10" y="85">代入 n=10, p=0.3：</text>
+</g>
+<g transform="translate(0,240)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">答案</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" x="10" y="50">E(X) = 10 × 0.3 = 3</text>
+<text fill="#999" font-size="12" x="10" y="70">平均每10次试验成功3次</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：方差计算</h1><div class="board-content"><p class="chalk-text">X~B(10,0.3)，求D(X)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">D(X) = np(1-p) = 10×0.3×0.7 = 2.1</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">方差例题</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：方差计算</h1><div class="board-content"><p class="chalk-text">X~B(10,0.3)，求D(X)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">D(X) = np(1-p) = 10×0.3×0.7 = 2.1</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-20">例题：二项分布的方差</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">题目</text>
+<text fill="#999" font-size="13" x="10" y="45">随机变量 X ~ B(10, 0.3)</text>
+<text fill="#999" font-size="13" x="10" y="65">求方差 D(X)</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="460" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">解答</text>
+<text fill="#999" font-size="13" x="10" y="45">二项分布 B(n, p) 的方差公式：</text>
+<text fill="#999" font-size="13" x="10" y="65">D(X) = np(1-p)</text>
+<text fill="#999" font-size="13" x="10" y="85">代入 n=10, p=0.3：</text>
+</g>
+<g transform="translate(0,240)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">答案</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" x="10" y="50">D(X) = 10 × 0.3 × 0.7 = 2.1</text>
+<text fill="#999" font-size="12" x="10" y="70">标准差 σ = √2.1 ≈ 1.45</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">随机变量在数据分析中的应用</h1><div class="board-content"><p class="chalk-text">• 描述数据分布</p><p class="chalk-text">• 风险度量</p><p class="chalk-text">• 预测建模</p><p class="chalk-text">• 假设检验</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">数据分析</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">随机变量在数据分析中的应用</h1><div class="board-content"><p class="chalk-text">• 描述数据分布</p><p class="chalk-text">• 风险度量</p><p class="chalk-text">• 预测建模</p><p class="chalk-text">• 假设检验</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">随机变量在数据分析中的应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 描述数据分布</text>
+<text fill="#999" font-size="13" x="10" y="45">用期望描述中心位置，方差描述离散程度</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：数据摘要、统计报告</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 风险度量</text>
+<text fill="#999" font-size="13" x="10" y="45">方差/标准差度量投资风险、波动性</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：金融风险管理、投资组合优化</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 预测建模</text>
+<text fill="#999" font-size="13" x="10" y="45">建立随机变量模型进行预测</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：需求预测、销量预测</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 假设检验</text>
+<text fill="#999" font-size="13" x="10" y="45">基于随机变量分布进行统计推断</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：质量检验、A/B测试</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解期望和方差的意义</p><p class="chalk-text">2. 掌握计算方法</p><p class="chalk-text">3. 熟记常见分布的参数</p><p class="chalk-text">4. 会用性质简化计算</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">学习要点</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解期望和方差的意义</p><p class="chalk-text">2. 掌握计算方法</p><p class="chalk-text">3. 熟记常见分布的参数</p><p class="chalk-text">4. 会用性质简化计算</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">第13.2节学习要点</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 理解期望和方差的意义</text>
+<text fill="#999" font-size="13" x="10" y="45">期望：平均值、中心位置</text>
+<text fill="#999" font-size="12" x="10" y="65">方差：离散程度、波动性</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 掌握计算方法</text>
+<text fill="#999" font-size="13" x="10" y="45">离散型：E(X)=Σx_i·p_i, D(X)=E(X²)-[E(X)]²</text>
+<text fill="#999" font-size="12" x="10" y="65">连续型：积分公式</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 熟记常见分布的参数</text>
+<text fill="#999" font-size="13" x="10" y="45">B(n,p): E=np, D=np(1-p)</text>
+<text fill="#999" font-size="12" x="10" y="65">P(λ): E=λ, D=λ; U(a,b): E=(a+b)/2</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 会用性质简化计算</text>
+<text fill="#999" font-size="13" x="10" y="45">E(aX+b)=aE(X)+b, D(aX+b)=a²D(X)</text>
+<text fill="#999" font-size="12" x="10" y="65">独立时：E(XY)=E(X)E(Y), D(X+Y)=D(X)+D(Y)</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 随机变量的概念</p><p class="chalk-text">✓ 期望与方差</p><p class="chalk-text">✓ 常见分布</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">正态分布与中心极限定理</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">随机变量</text></svg></div></div></div>
 

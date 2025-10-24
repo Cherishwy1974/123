@@ -458,21 +458,257 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">标准正态分布表的使用</h1><div class="board-content"><p class="chalk-text">Φ(x)表：查表求概率</p><p class="chalk-text">Φ(-x) = 1 - Φ(x)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">标准正态表</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">标准正态分布表的使用</h1><div class="board-content"><p class="chalk-text">Φ(x)表：查表求概率</p><p class="chalk-text">Φ(-x) = 1 - Φ(x)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,90)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-15">标准正态分布表的使用</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">标准正态分布 N(0,1)</text>
+<text fill="#999" font-size="13" x="10" y="45">Φ(x) = P(Z ≤ x)，Z ~ N(0,1)</text>
+<text fill="#999" font-size="13" x="10" y="65">查表得到标准正态分布的累积概率</text>
+<text fill="#999" font-size="12" x="10" y="85">例：Φ(1) ≈ 0.8413</text>
+</g>
+<g transform="translate(0,140)">
+<defs>
+<marker id="arrow-norm" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#666"></polygon>
+</marker>
+</defs>
+<line x1="0" y1="100" x2="500" y2="100" stroke="#666" stroke-width="2" marker-end="url(#arrow-norm)"></line>
+<path d="M 50 100 Q 150 20, 250 100 T 450 100" stroke="#4ECDC4" stroke-width="3" fill="none"></path>
+<line x1="250" y1="0" x2="250" y2="110" stroke="#999" stroke-width="1" stroke-dasharray="3,3"></line>
+<text fill="#999" font-size="12" text-anchor="middle" x="250" y="125">0</text>
+<line x1="350" y1="50" x2="350" y2="110" stroke="#FFE066" stroke-width="2" stroke-dasharray="3,3"></line>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="350" y="125">x</text>
+<path d="M 50 100 Q 150 20, 250 100 T 350 50" fill="rgba(78,205,196,0.3)" stroke="none"></path>
+<path d="M 350 50 L 350 100 L 50 100" fill="rgba(78,205,196,0.3)" stroke="none"></path>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" x="200" y="80">Φ(x)</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="70" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">对称性</text>
+<text fill="#999" font-size="13" x="10" y="45">Φ(-x) = 1 - Φ(x)</text>
+<text fill="#999" font-size="12" x="10" y="63">利用对称性可以查负值的概率</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">3σ原则</h1><div class="board-content"><p class="chalk-text">P(|X-μ|<σ) ≈ 0.6827</p><p class="chalk-text">P(|X-μ|<2σ) ≈ 0.9545</p><p class="chalk-text">P(|X-μ|<3σ) ≈ 0.9973</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" r="80" stroke="#FFE066" stroke-width="3"></circle><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="255">3σ原则</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">3σ原则</h1><div class="board-content"><p class="chalk-text">P(|X-μ|<σ) ≈ 0.6827</p><p class="chalk-text">P(|X-μ|<2σ) ≈ 0.9545</p><p class="chalk-text">P(|X-μ|<3σ) ≈ 0.9973</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">3σ原则（68-95-99.7法则）</text>
+<g transform="translate(0,30)">
+<defs>
+<marker id="arrow-3sigma" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#666"></polygon>
+</marker>
+</defs>
+<line x1="0" y1="150" x2="500" y2="150" stroke="#666" stroke-width="2" marker-end="url(#arrow-3sigma)"></line>
+<path d="M 50 150 Q 150 50, 250 150 T 450 150" stroke="#4ECDC4" stroke-width="3" fill="none"></path>
+<line x1="250" y1="40" x2="250" y2="160" stroke="#999" stroke-width="2"></line>
+<text fill="#999" font-size="13" text-anchor="middle" x="250" y="175">μ</text>
+<line x1="150" y1="100" x2="150" y2="160" stroke="#4ECDC4" stroke-width="1" stroke-dasharray="3,3"></line>
+<text fill="#4ECDC4" font-size="11" text-anchor="middle" x="150" y="175">μ-σ</text>
+<line x1="350" y1="100" x2="350" y2="160" stroke="#4ECDC4" stroke-width="1" stroke-dasharray="3,3"></line>
+<text fill="#4ECDC4" font-size="11" text-anchor="middle" x="350" y="175">μ+σ</text>
+<path d="M 150 100 Q 200 50, 250 150 T 350 100" fill="rgba(78,205,196,0.3)" stroke="none"></path>
+<path d="M 150 100 L 150 150 L 350 150 L 350 100" fill="rgba(78,205,196,0.3)" stroke="none"></path>
+<text fill="#4ECDC4" font-size="12" font-weight="bold" text-anchor="middle" x="250" y="120">68.27%</text>
+</g>
+<g transform="translate(0,210)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="60" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" x="10" y="20">P(|X-μ| < σ) ≈ 0.6827 (68.27%)</text>
+<text fill="#999" font-size="12" x="10" y="40">约68%的数据落在μ±σ范围内</text>
+</g>
+<g transform="translate(0,290)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="60" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="13" x="10" y="20">P(|X-μ| < 2σ) ≈ 0.9545 (95.45%)</text>
+<text fill="#999" font-size="12" x="10" y="40">约95%的数据落在μ±2σ范围内</text>
+</g>
+<g transform="translate(0,370)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="60" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" x="10" y="20">P(|X-μ| < 3σ) ≈ 0.9973 (99.73%)</text>
+<text fill="#999" font-size="12" x="10" y="40">约99.7%的数据落在μ±3σ范围内</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">中心极限定理</h1><div class="board-content"><p class="chalk-text">独立同分布随机变量和的极限分布是正态分布</p><p class="chalk-text">$$\frac{\sum X_i - n\mu}{\sigma\sqrt{n}} \to N(0,1)$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">中心极限定理</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">中心极限定理</h1><div class="board-content"><p class="chalk-text">独立同分布随机变量和的极限分布是正态分布</p><p class="chalk-text">$$\frac{\sum X_i - n\mu}{\sigma\sqrt{n}} \to N(0,1)$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">中心极限定理</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">定理内容</text>
+<text fill="#999" font-size="13" x="10" y="45">设X₁, X₂, ..., Xₙ独立同分布</text>
+<text fill="#999" font-size="13" x="10" y="65">E(Xᵢ)=μ, D(Xᵢ)=σ²</text>
+<text fill="#999" font-size="13" x="10" y="85">则当n→∞时，Σ Xᵢ 近似服从 N(nμ, nσ²)</text>
+</g>
+<g transform="translate(0,140)">
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="0">可视化理解</text>
+<rect fill="rgba(255,224,102,0.2)" stroke="#FFE066" stroke-width="2" width="150" height="80" x="10" y="10"></rect>
+<text fill="#FFE066" font-size="12" text-anchor="middle" x="85" y="30">原始分布</text>
+<rect fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="1" width="20" height="40" x="30" y="40"></rect>
+<rect fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="1" width="20" height="50" x="60" y="30"></rect>
+<rect fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="1" width="20" height="30" x="90" y="50"></rect>
+<rect fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="1" width="20" height="45" x="120" y="35"></rect>
+<text fill="#999" font-size="11" text-anchor="middle" x="85" y="105">任意分布</text>
+<text fill="#4ECDC4" font-size="20" font-weight="bold" x="180" y="60">→</text>
+<rect fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="2" width="150" height="80" x="220" y="10"></rect>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="295" y="30">样本均值分布</text>
+<path d="M 240 80 Q 270 40, 295 80 T 350 80" stroke="#4ECDC4" stroke-width="3" fill="rgba(78,205,196,0.3)"></path>
+<text fill="#999" font-size="11" text-anchor="middle" x="295" y="105">正态分布</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">重要意义</text>
+<text fill="#999" font-size="13" x="10" y="45">无论原始分布是什么，样本均值的分布</text>
+<text fill="#999" font-size="13" x="10" y="65">都趋向于正态分布（n足够大时）</text>
+<text fill="#999" font-size="12" x="10" y="85">这是统计推断的理论基础</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">例题：正态分布计算</h1><div class="board-content"><p class="chalk-text">X~N(100,10²)，求P(90<X<110)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">标准化后查表</p><p class="chalk-text">P ≈ 0.6827</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">正态分布例题</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">例题：正态分布计算</h1><div class="board-content"><p class="chalk-text">X~N(100,10²)，求P(90<X<110)</p><p class="chalk-text emphasis">解</p><p class="chalk-text">标准化后查表</p><p class="chalk-text">P ≈ 0.6827</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,90)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-15">例题：正态分布概率计算</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">题目</text>
+<text fill="#999" font-size="13" x="10" y="45">X ~ N(100, 10²)</text>
+<text fill="#999" font-size="13" x="10" y="65">求 P(90 < X < 110)</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="460" height="120" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">解答步骤</text>
+<text fill="#999" font-size="13" x="10" y="45">① 标准化：Z = (X-μ)/σ = (X-100)/10</text>
+<text fill="#999" font-size="13" x="10" y="65">② 转换区间：</text>
+<text fill="#999" font-size="12" x="20" y="85">  (90-100)/10 < Z < (110-100)/10</text>
+<text fill="#999" font-size="12" x="20" y="102">  -1 < Z < 1</text>
+<text fill="#999" font-size="13" x="10" y="118">③ 查表或用3σ原则</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">答案</text>
+<text fill="#4ECDC4" font-size="16" font-weight="bold" x="10" y="50">P(90 < X < 110) = P(|Z| < 1) ≈ 0.6827</text>
+<text fill="#999" font-size="12" x="10" y="70">即约68.27%的概率落在μ±σ范围内</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：中心极限定理应用</h1><div class="board-content"><p class="chalk-text">100次独立试验，每次成功概率0.5</p><p class="chalk-text">求成功次数在45-55之间的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">用正态近似，P ≈ 0.68</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">中心极限定理例题</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：中心极限定理应用</h1><div class="board-content"><p class="chalk-text">100次独立试验，每次成功概率0.5</p><p class="chalk-text">求成功次数在45-55之间的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">用正态近似，P ≈ 0.68</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-10">例题：中心极限定理应用</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">题目</text>
+<text fill="#999" font-size="13" x="10" y="45">100次独立试验，每次成功概率p=0.5</text>
+<text fill="#999" font-size="13" x="10" y="65">求成功次数X在45-55之间的概率</text>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="460" height="140" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">解答</text>
+<text fill="#999" font-size="13" x="10" y="45">X ~ B(100, 0.5)，n很大，用正态近似</text>
+<text fill="#999" font-size="13" x="10" y="65">① 计算期望和方差：</text>
+<text fill="#999" font-size="12" x="20" y="85">  E(X) = np = 100×0.5 = 50</text>
+<text fill="#999" font-size="12" x="20" y="102">  D(X) = np(1-p) = 100×0.5×0.5 = 25</text>
+<text fill="#999" font-size="12" x="20" y="119">  σ = √25 = 5</text>
+<text fill="#999" font-size="13" x="10" y="135">② X 近似服从 N(50, 25)</text>
+</g>
+<g transform="translate(0,280)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="460" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">答案</text>
+<text fill="#999" font-size="13" x="10" y="45">P(45 < X < 55) = P(|X-50| < 5)</text>
+<text fill="#999" font-size="13" x="10" y="65">= P(|X-μ| < σ)</text>
+<text fill="#4ECDC4" font-size="15" font-weight="bold" x="10" y="90">≈ 0.6827 (由3σ原则)</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">正态分布的应用</h1><div class="board-content"><p class="chalk-text">• 质量控制：产品尺寸</p><p class="chalk-text">• 测量误差分析</p><p class="chalk-text">• 考试成绩分布</p><p class="chalk-text">• 生物特征：身高、体重</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">正态分布应用</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">正态分布的应用</h1><div class="board-content"><p class="chalk-text">• 质量控制：产品尺寸</p><p class="chalk-text">• 测量误差分析</p><p class="chalk-text">• 考试成绩分布</p><p class="chalk-text">• 生物特征：身高、体重</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">正态分布的应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 质量控制</text>
+<text fill="#999" font-size="13" x="10" y="45">产品尺寸、重量等服从正态分布</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：控制图、合格率计算</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 测量误差分析</text>
+<text fill="#999" font-size="13" x="10" y="45">测量误差通常服从正态分布</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：精密测量、仪器校准</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 考试成绩分布</text>
+<text fill="#999" font-size="13" x="10" y="45">大规模考试成绩近似正态分布</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：成绩分析、等级划分</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 生物特征</text>
+<text fill="#999" font-size="13" x="10" y="45">身高、体重等生物特征服从正态分布</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：医学标准、营养评估</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">统计推断基础</h1><div class="board-content"><p class="chalk-text">• 参数估计：点估计、区间估计</p><p class="chalk-text">• 假设检验：显著性检验</p><p class="chalk-text">• 置信区间</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">统计推断</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">统计推断基础</h1><div class="board-content"><p class="chalk-text">• 参数估计：点估计、区间估计</p><p class="chalk-text">• 假设检验：显著性检验</p><p class="chalk-text">• 置信区间</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">统计推断基础</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 参数估计</text>
+<text fill="#999" font-size="13" x="10" y="45">点估计：用样本统计量估计总体参数</text>
+<text fill="#999" font-size="12" x="10" y="65">  例：样本均值估计总体均值</text>
+<text fill="#999" font-size="13" x="10" y="85">区间估计：给出参数的置信区间</text>
+</g>
+<g transform="translate(0,140)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 假设检验</text>
+<text fill="#999" font-size="13" x="10" y="45">提出原假设H₀和备择假设H₁</text>
+<text fill="#999" font-size="12" x="10" y="65">根据样本数据判断是否拒绝H₀</text>
+<text fill="#999" font-size="12" x="10" y="85">应用：质量检验、药效检验</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 置信区间</text>
+<text fill="#999" font-size="13" x="10" y="45">以一定置信度（如95%）给出参数范围</text>
+<text fill="#999" font-size="12" x="10" y="65">例：μ的95%置信区间为 [x̄-1.96σ/√n, x̄+1.96σ/√n]</text>
+<text fill="#999" font-size="12" x="10" y="85">基于正态分布和中心极限定理</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解正态分布的重要性</p><p class="chalk-text">2. 会用标准正态表</p><p class="chalk-text">3. 掌握3σ原则</p><p class="chalk-text">4. 理解中心极限定理</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">学习要点</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解正态分布的重要性</p><p class="chalk-text">2. 会用标准正态表</p><p class="chalk-text">3. 掌握3σ原则</p><p class="chalk-text">4. 理解中心极限定理</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">第13.3节学习要点</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 理解正态分布的重要性</text>
+<text fill="#999" font-size="13" x="10" y="45">最重要的连续分布，应用最广泛</text>
+<text fill="#999" font-size="12" x="10" y="65">钟形曲线，关于μ对称</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 会用标准正态表</text>
+<text fill="#999" font-size="13" x="10" y="45">标准化：Z = (X-μ)/σ</text>
+<text fill="#999" font-size="12" x="10" y="65">查表求Φ(x)，利用对称性Φ(-x)=1-Φ(x)</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 掌握3σ原则</text>
+<text fill="#999" font-size="13" x="10" y="45">68-95-99.7法则</text>
+<text fill="#999" font-size="12" x="10" y="65">P(|X-μ|<σ)≈0.68, P(|X-μ|<2σ)≈0.95, P(|X-μ|<3σ)≈0.997</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 理解中心极限定理</text>
+<text fill="#999" font-size="13" x="10" y="45">样本均值的分布趋向正态分布</text>
+<text fill="#999" font-size="12" x="10" y="65">统计推断的理论基础，应用于大样本推断</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 正态分布的性质</p><p class="chalk-text">✓ 标准正态分布</p><p class="chalk-text">✓ 中心极限定理</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">本章总结与综合应用</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">正态分布</text></svg></div></div></div>
 

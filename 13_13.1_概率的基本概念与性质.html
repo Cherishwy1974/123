@@ -412,21 +412,220 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">条件概率</h1><div class="board-content"><p class="chalk-text">$$P(A|B) = \frac{P(AB)}{P(B)}$$</p><p class="chalk-text">B发生的条件下A发生的概率</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">条件概率</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">条件概率</h1><div class="board-content"><p class="chalk-text">$$P(A|B) = \frac{P(AB)}{P(B)}$$</p><p class="chalk-text">B发生的条件下A发生的概率</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(150,120)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="200" y="-30">条件概率的维恩图</text>
+<rect fill="rgba(200,200,200,0.1)" stroke="#999" stroke-width="2" width="400" height="300" x="0" y="0"></rect>
+<text fill="#999" font-size="13" x="10" y="20">样本空间Ω</text>
+<circle cx="150" cy="150" r="85" fill="rgba(78,205,196,0.25)" stroke="#4ECDC4" stroke-width="3"></circle>
+<text fill="#4ECDC4" font-size="18" font-weight="bold" x="80" y="240">B</text>
+<circle cx="200" cy="130" r="60" fill="rgba(255,107,107,0.35)" stroke="#FF6B6B" stroke-width="3"></circle>
+<text fill="#FF6B6B" font-size="18" font-weight="bold" x="230" y="110">A</text>
+<path d="M 150 130 Q 175 140, 190 145" fill="rgba(255,224,102,0.5)" stroke="#FFE066" stroke-width="2"></path>
+<text fill="#FFE066" font-size="15" font-weight="bold" x="155" y="155">AB</text>
+<g transform="translate(0,320)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="400" height="60" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="200" y="25">P(A|B) = P(AB) / P(B)</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="200" y="45">在B发生的前提下，A发生的概率</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">乘法公式</h1><div class="board-content"><p class="chalk-text">$$P(AB) = P(A)P(B|A)$$</p><p class="chalk-text">$$= P(B)P(A|B)$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" r="80" stroke="#FFE066" stroke-width="3"></circle><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="255">乘法公式</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">乘法公式</h1><div class="board-content"><p class="chalk-text">$$P(AB) = P(A)P(B|A)$$</p><p class="chalk-text">$$= P(B)P(A|B)$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,100)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">乘法公式</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="85" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">公式1：先A后B</text>
+<text fill="#999" font-size="13" x="20" y="50">P(AB) = P(A) · P(B|A)</text>
+<text fill="#999" font-size="12" x="20" y="70">先发生A，再在A的条件下发生B</text>
+</g>
+<g transform="translate(0,135)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="85" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">公式2：先B后A</text>
+<text fill="#999" font-size="13" x="20" y="50">P(AB) = P(B) · P(A|B)</text>
+<text fill="#999" font-size="12" x="20" y="70">先发生B，再在B的条件下发生A</text>
+</g>
+<g transform="translate(0,240)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="70" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" font-weight="bold" text-anchor="middle" x="250" y="25">两个公式等价</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="250" y="50">可以根据已知条件选择使用</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">全概率公式</h1><div class="board-content"><p class="chalk-text">$$P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)$$</p><p class="chalk-text">B₁,B₂,...,Bₙ是完备事件组</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">全概率公式</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">全概率公式</h1><div class="board-content"><p class="chalk-text">$$P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)$$</p><p class="chalk-text">B₁,B₂,...,Bₙ是完备事件组</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(120,90)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-15">全概率公式示意图</text>
+<rect fill="rgba(200,200,200,0.1)" stroke="#999" stroke-width="3" width="460" height="220" x="0" y="20"></rect>
+<text fill="#999" font-size="13" x="10" y="15">样本空间Ω</text>
+<rect fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2" width="140" height="200" x="20" y="40"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="90" y="145">B₁</text>
+<rect fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2" width="140" height="200" x="160" y="40"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" text-anchor="middle" x="230" y="145">B₂</text>
+<rect fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="2" width="140" height="200" x="300" y="40"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" text-anchor="middle" x="370" y="145">B₃</text>
+<ellipse cx="230" cy="130" rx="200" ry="70" fill="none" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="8,4"></ellipse>
+<text fill="#FF6B6B" font-size="15" font-weight="bold" x="320" y="135">事件A</text>
+<g transform="translate(0,260)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="460" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" text-anchor="middle" x="230" y="25">P(A) = P(B₁)P(A|B₁) + P(B₂)P(A|B₂) + P(B₃)P(A|B₃)</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="230" y="50">将复杂事件A分解为在各个B_i下的简单情况</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="230" y="68">B₁, B₂, B₃互不相容且并集为Ω</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">贝叶斯公式</h1><div class="board-content"><p class="chalk-text">$$P(B_i|A) = \frac{P(B_i)P(A|B_i)}{\sum_j P(B_j)P(A|B_j)}$$</p><p class="chalk-text">由果推因</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">贝叶斯公式</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">贝叶斯公式</h1><div class="board-content"><p class="chalk-text">$$P(B_i|A) = \frac{P(B_i)P(A|B_i)}{\sum_j P(B_j)P(A|B_j)}$$</p><p class="chalk-text">由果推因</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,90)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-15">贝叶斯公式：由果推因</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">公式结构</text>
+<text fill="#999" font-size="13" x="20" y="50">P(B_i|A) = P(B_i)P(A|B_i) / Σ P(B_j)P(A|B_j)</text>
+<text fill="#999" font-size="12" x="20" y="75">已知结果A发生，求原因B_i的概率</text>
+<text fill="#999" font-size="11" x="20" y="92">分母是全概率公式</text>
+</g>
+<g transform="translate(0,140)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="240" height="90" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" text-anchor="middle" x="120" y="25">先验概率</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="120" y="50">P(B_i)</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="120" y="70">观察前对原因的</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="120" y="85">初始判断</text>
+</g>
+<g transform="translate(260,140)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="240" height="90" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" text-anchor="middle" x="120" y="25">后验概率</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="120" y="50">P(B_i|A)</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="120" y="70">观察到A后对原因</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="120" y="85">的修正判断</text>
+</g>
+<g transform="translate(0,250)">
+<rect fill="rgba(147,112,219,0.1)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="13" font-weight="bold" text-anchor="middle" x="250" y="25">典型应用</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="250" y="50">医疗诊断、垃圾邮件过滤、机器学习</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="250" y="68">根据观察到的结果推断最可能的原因</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：古典概型</h1><div class="board-content"><p class="chalk-text">掷两个骰子，点数和为7的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">基本事件总数36</p><p class="chalk-text">有利事件6个</p><p class="chalk-text">P = 6/36 = 1/6</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">古典概型例题</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：古典概型</h1><div class="board-content"><p class="chalk-text">掷两个骰子，点数和为7的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">基本事件总数36</p><p class="chalk-text">有利事件6个</p><p class="chalk-text">P = 6/36 = 1/6</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：掷两个骰子，点数和为7</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">样本空间</text>
+<text fill="#999" font-size="13" x="20" y="50">两个骰子的所有可能结果</text>
+<text fill="#999" font-size="13" x="20" y="70">基本事件总数 = 6 × 6 = 36</text>
+<text fill="#999" font-size="12" x="20" y="90">(1,1), (1,2), ..., (6,6)</text>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">有利事件</text>
+<text fill="#999" font-size="13" x="20" y="50">点数和为7的情况：</text>
+<text fill="#999" font-size="12" x="20" y="70">(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)</text>
+<text fill="#999" font-size="13" x="20" y="90">共6个</text>
+</g>
+<g transform="translate(0,270)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="25">计算概率</text>
+<text fill="#999" font-size="14" x="20" y="50">P = 有利事件数 / 基本事件总数</text>
+<text fill="#4ECDC4" font-size="15" font-weight="bold" x="20" y="70">P = 6 / 36 = 1/6 ≈ 0.167</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：条件概率</h1><div class="board-content"><p class="chalk-text">袋中5红3白，不放回取2球</p><p class="chalk-text">第一次红球，第二次也红球的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">P(A₂|A₁) = 4/7</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">条件概率例题</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：条件概率</h1><div class="board-content"><p class="chalk-text">袋中5红3白，不放回取2球</p><p class="chalk-text">第一次红球，第二次也红球的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">P(A₂|A₁) = 4/7</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,90)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-15">例题：不放回抽球</text>
+<g transform="translate(0,20)">
+<rect fill="rgba(78,205,196,0.1)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="20" y="25">初始状态</text>
+<text fill="#999" font-size="13" x="20" y="50">袋中：5个红球 + 3个白球 = 8个球</text>
+<circle cx="450" cy="35" r="8" fill="#FF6B6B"></circle>
+<circle cx="465" cy="35" r="8" fill="#FF6B6B"></circle>
+<circle cx="480" cy="35" r="8" fill="#FF6B6B"></circle>
+<circle cx="450" cy="55" r="8" fill="#FF6B6B"></circle>
+<circle cx="465" cy="55" r="8" fill="#FF6B6B"></circle>
+<circle cx="480" cy="55" r="6" fill="#EEE" stroke="#999"></circle>
+<circle cx="465" cy="70" r="6" fill="#EEE" stroke="#999"></circle>
+<circle cx="480" cy="70" r="6" fill="#EEE" stroke="#999"></circle>
+</g>
+<g transform="translate(0,120)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="20" y="25">第一次抽取</text>
+<text fill="#999" font-size="13" x="20" y="50">抽到红球（事件A₁）</text>
+<text fill="#999" font-size="13" x="20" y="70">P(A₁) = 5/8</text>
+</g>
+<g transform="translate(0,220)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="20" y="25">第二次抽取（在A₁条件下）</text>
+<text fill="#999" font-size="13" x="20" y="50">袋中剩余：4个红球 + 3个白球 = 7个球</text>
+<text fill="#999" font-size="13" x="20" y="70">再抽到红球（事件A₂）的概率：</text>
+<text fill="#4ECDC4" font-size="15" font-weight="bold" x="20" y="90">P(A₂|A₁) = 4/7 ≈ 0.571</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">概率在决策中的应用</h1><div class="board-content"><p class="chalk-text">• 风险评估</p><p class="chalk-text">• 质量控制</p><p class="chalk-text">• 医疗诊断</p><p class="chalk-text">• 金融投资</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">决策应用</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">概率在决策中的应用</h1><div class="board-content"><p class="chalk-text">• 风险评估</p><p class="chalk-text">• 质量控制</p><p class="chalk-text">• 医疗诊断</p><p class="chalk-text">• 金融投资</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">概率在决策中的应用</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 风险评估</text>
+<text fill="#999" font-size="13" x="10" y="45">评估项目失败、事故发生的概率</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：工程安全、保险定价</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 质量控制</text>
+<text fill="#999" font-size="13" x="10" y="45">计算产品合格率、抽检方案</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：生产管理、质量检验</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 医疗诊断</text>
+<text fill="#999" font-size="13" x="10" y="45">根据症状推断疾病概率（贝叶斯）</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：疾病筛查、诊断决策</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 金融投资</text>
+<text fill="#999" font-size="13" x="10" y="45">评估投资收益和风险的概率分布</text>
+<text fill="#999" font-size="12" x="10" y="65">应用：资产配置、风险管理</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解概率的定义</p><p class="chalk-text">2. 掌握概率的性质</p><p class="chalk-text">3. 会用条件概率</p><p class="chalk-text">4. 掌握贝叶斯公式</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">学习要点</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解概率的定义</p><p class="chalk-text">2. 掌握概率的性质</p><p class="chalk-text">3. 会用条件概率</p><p class="chalk-text">4. 掌握贝叶斯公式</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">第13.1节学习要点</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 理解概率的定义</text>
+<text fill="#999" font-size="13" x="10" y="45">古典概型、几何概型、统计概型</text>
+<text fill="#999" font-size="12" x="10" y="65">P(A) = 有利事件数 / 基本事件总数</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 掌握概率的性质</text>
+<text fill="#999" font-size="13" x="10" y="45">0 ≤ P(A) ≤ 1, P(Ω)=1, P(∅)=0</text>
+<text fill="#999" font-size="12" x="10" y="65">加法公式、互斥事件、对立事件</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 会用条件概率</text>
+<text fill="#999" font-size="13" x="10" y="45">P(A|B) = P(AB) / P(B)</text>
+<text fill="#999" font-size="12" x="10" y="65">乘法公式、全概率公式</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 掌握贝叶斯公式</text>
+<text fill="#999" font-size="13" x="10" y="45">由果推因，先验概率→后验概率</text>
+<text fill="#999" font-size="12" x="10" y="65">应用于医疗诊断、机器学习等领域</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 概率的基本概念</p><p class="chalk-text">✓ 概率的性质</p><p class="chalk-text">✓ 条件概率与贝叶斯公式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">随机变量、期望与方差</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">概率基础</text></svg></div></div></div>
 

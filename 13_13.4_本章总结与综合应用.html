@@ -503,21 +503,252 @@
 </div>
 
 <!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">应用1：质量控制</h1><div class="board-content"><p class="chalk-text">产品尺寸服从正态分布</p><p class="chalk-text">用3σ原则判断合格率</p><p class="chalk-text">控制图监控生产过程</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">质量控制</text></svg></div></div></div>
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">应用1：质量控制</h1><div class="board-content"><p class="chalk-text">产品尺寸服从正态分布</p><p class="chalk-text">用3σ原则判断合格率</p><p class="chalk-text">控制图监控生产过程</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">应用1：质量控制</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">控制图（Control Chart）</text>
+<line x1="20" y1="70" x2="480" y2="70" stroke="#999" stroke-width="2"></line>
+<line x1="20" y1="50" x2="480" y2="50" stroke="#FF6B6B" stroke-width="1" stroke-dasharray="5,5"></line>
+<text fill="#FF6B6B" font-size="11" x="485" y="53">UCL (μ+3σ)</text>
+<line x1="20" y1="90" x2="480" y2="90" stroke="#FF6B6B" stroke-width="1" stroke-dasharray="5,5"></line>
+<text fill="#FF6B6B" font-size="11" x="485" y="93">LCL (μ-3σ)</text>
+<text fill="#999" font-size="11" x="485" y="73">中心线μ</text>
+<circle cx="80" cy="68" r="3" fill="#4ECDC4"></circle>
+<circle cx="140" cy="72" r="3" fill="#4ECDC4"></circle>
+<circle cx="200" cy="65" r="3" fill="#4ECDC4"></circle>
+<circle cx="260" cy="70" r="3" fill="#4ECDC4"></circle>
+<circle cx="320" cy="75" r="3" fill="#4ECDC4"></circle>
+<circle cx="380" cy="67" r="3" fill="#4ECDC4"></circle>
+<circle cx="440" cy="71" r="3" fill="#4ECDC4"></circle>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">合格率计算</text>
+<text fill="#999" font-size="13" x="10" y="45">假设产品尺寸 X ~ N(μ, σ²)</text>
+<text fill="#999" font-size="13" x="10" y="65">规格上下限：[μ-3σ, μ+3σ]</text>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="85">合格率 ≈ 99.73% (3σ原则)</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">应用场景</text>
+<text fill="#999" font-size="13" x="10" y="45">• 生产过程监控：及时发现异常</text>
+<text fill="#999" font-size="13" x="10" y="65">• 质量改进：减小方差σ</text>
+<text fill="#999" font-size="12" x="10" y="82">• 六西格玛管理：追求更高质量</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">应用2：可靠性分析</h1><div class="board-content"><p class="chalk-text">产品寿命分布</p><p class="chalk-text">故障率计算</p><p class="chalk-text">维修策略优化</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.2)" r="80" stroke="#FFE066" stroke-width="3"></circle><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="255">可靠性分析</text></svg></div></div></div>
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">应用2：可靠性分析</h1><div class="board-content"><p class="chalk-text">产品寿命分布</p><p class="chalk-text">故障率计算</p><p class="chalk-text">维修策略优化</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">应用2：可靠性分析</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">产品寿命分布</text>
+<defs>
+<marker id="arrow-reliability" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#666"></polygon>
+</marker>
+</defs>
+<line x1="20" y1="80" x2="480" y2="80" stroke="#666" stroke-width="2" marker-end="url(#arrow-reliability)"></line>
+<text fill="#999" font-size="12" x="485" y="85">时间t</text>
+<path d="M 20 80 L 100 75 L 200 60 L 300 40 L 400 25 L 480 15" stroke="#4ECDC4" stroke-width="3" fill="none"></path>
+<text fill="#4ECDC4" font-size="13" x="400" y="10">可靠度R(t)</text>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">故障率与MTBF</text>
+<text fill="#999" font-size="13" x="10" y="45">故障率 λ(t)：单位时间内故障概率</text>
+<text fill="#999" font-size="13" x="10" y="65">MTBF（平均无故障时间）：期望寿命</text>
+<text fill="#999" font-size="12" x="10" y="82">指数分布：R(t) = e^(-λt), MTBF = 1/λ</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">维修策略</text>
+<text fill="#999" font-size="13" x="10" y="45">• 预防性维修：在故障前维修</text>
+<text fill="#999" font-size="13" x="10" y="65">• 备件库存优化：基于故障概率</text>
+<text fill="#999" font-size="12" x="10" y="82">• 系统可靠性：串联、并联系统分析</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">应用3：风险评估</h1><div class="board-content"><p class="chalk-text">金融风险：VaR计算</p><p class="chalk-text">保险精算</p><p class="chalk-text">投资组合优化</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">风险评估</text></svg></div></div></div>
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">应用3：风险评估</h1><div class="board-content"><p class="chalk-text">金融风险：VaR计算</p><p class="chalk-text">保险精算</p><p class="chalk-text">投资组合优化</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">应用3：金融风险评估</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">VaR（风险价值）</text>
+<text fill="#999" font-size="13" x="10" y="45">在给定置信水平下，最大可能损失</text>
+<text fill="#999" font-size="13" x="10" y="65">例：95%置信水平，VaR = μ - 1.65σ</text>
+<text fill="#999" font-size="12" x="10" y="82">表示：有95%把握损失不超过VaR</text>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">保险精算</text>
+<text fill="#999" font-size="13" x="10" y="45">• 保费定价：基于损失概率分布</text>
+<text fill="#999" font-size="13" x="10" y="65">• 准备金计算：覆盖未来赔付</text>
+<text fill="#999" font-size="12" x="10" y="82">• 破产概率：资本充足率评估</text>
+</g>
+<g transform="translate(0,260)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="90" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">投资组合优化</text>
+<text fill="#999" font-size="13" x="10" y="45">• 马科维茨模型：期望-方差优化</text>
+<text fill="#999" font-size="13" x="10" y="65">• 分散化：降低组合方差</text>
+<text fill="#999" font-size="12" x="10" y="82">• 夏普比率：收益/风险比</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">应用4：A/B测试</h1><div class="board-content"><p class="chalk-text">网站优化：转化率比较</p><p class="chalk-text">假设检验判断显著性</p><p class="chalk-text">样本量确定</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(147,112,219,0.2)" r="80" stroke="#9370DB" stroke-width="3"></circle><text fill="#9370DB" font-size="16" text-anchor="middle" x="350" y="255">A/B测试</text></svg></div></div></div>
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">应用4：A/B测试</h1><div class="board-content"><p class="chalk-text">网站优化：转化率比较</p><p class="chalk-text">假设检验判断显著性</p><p class="chalk-text">样本量确定</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">应用4：A/B测试</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="110" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">A/B测试流程</text>
+<rect fill="rgba(78,205,196,0.3)" stroke="#4ECDC4" stroke-width="2" width="220" height="60" x="10" y="35"></rect>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="120" y="55">版本A</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="120" y="75">转化率 p_A = 10%</text>
+<rect fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2" width="220" height="60" x="270" y="35"></rect>
+<text fill="#FFE066" font-size="13" text-anchor="middle" x="380" y="55">版本B</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="380" y="75">转化率 p_B = 12%</text>
+</g>
+<g transform="translate(0,160)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">假设检验</text>
+<text fill="#999" font-size="13" x="10" y="45">H₀：p_A = p_B（无差异）</text>
+<text fill="#999" font-size="13" x="10" y="65">H₁：p_A ≠ p_B（有差异）</text>
+<text fill="#999" font-size="12" x="10" y="82">计算Z统计量，查表判断显著性</text>
+</g>
+<g transform="translate(0,280)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">样本量确定</text>
+<text fill="#999" font-size="13" x="10" y="45">根据期望检测的最小差异和显著性水平</text>
+<text fill="#999" font-size="12" x="10" y="65">计算所需样本量，确保统计功效</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">应用5：机器学习</h1><div class="board-content"><p class="chalk-text">朴素贝叶斯分类器</p><p class="chalk-text">高斯混合模型</p><p class="chalk-text">概率图模型</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="280">机器学习</text></svg></div></div></div>
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">应用5：机器学习</h1><div class="board-content"><p class="chalk-text">朴素贝叶斯分类器</p><p class="chalk-text">高斯混合模型</p><p class="chalk-text">概率图模型</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">应用5：机器学习中的概率</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">朴素贝叶斯分类器</text>
+<text fill="#999" font-size="13" x="10" y="45">基于贝叶斯公式的分类算法</text>
+<text fill="#999" font-size="13" x="10" y="65">P(类别|特征) ∝ P(类别) · P(特征|类别)</text>
+<text fill="#999" font-size="12" x="10" y="82">应用：垃圾邮件过滤、文本分类</text>
+</g>
+<g transform="translate(0,150)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">高斯混合模型（GMM）</text>
+<text fill="#999" font-size="13" x="10" y="45">多个正态分布的加权组合</text>
+<text fill="#999" font-size="13" x="10" y="65">p(x) = Σ w_k · N(x|μ_k, σ_k²)</text>
+<text fill="#999" font-size="12" x="10" y="82">应用：聚类分析、密度估计</text>
+</g>
+<g transform="translate(0,270)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">概率图模型</text>
+<text fill="#999" font-size="13" x="10" y="45">用图结构表示变量间的概率关系</text>
+<text fill="#999" font-size="13" x="10" y="65">贝叶斯网络、马尔可夫随机场</text>
+<text fill="#999" font-size="12" x="10" y="82">应用：推荐系统、因果推断</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">概率统计软件工具</h1><div class="board-content"><p class="chalk-text">• Python：NumPy, SciPy, Pandas</p><p class="chalk-text">• R语言：统计分析专用</p><p class="chalk-text">• MATLAB：工程计算</p><p class="chalk-text">• Excel：基础统计</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="280">软件工具</text></svg></div></div></div>
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">概率统计软件工具</h1><div class="board-content"><p class="chalk-text">• Python：NumPy, SciPy, Pandas</p><p class="chalk-text">• R语言：统计分析专用</p><p class="chalk-text">• MATLAB：工程计算</p><p class="chalk-text">• Excel：基础统计</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">概率统计软件工具</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① Python生态</text>
+<text fill="#999" font-size="13" x="10" y="45">NumPy：数值计算、随机数生成</text>
+<text fill="#999" font-size="12" x="10" y="62">SciPy：统计函数、分布、检验</text>
+<text fill="#999" font-size="12" x="10" y="77">Pandas：数据分析、描述统计</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② R语言</text>
+<text fill="#999" font-size="13" x="10" y="45">统计分析专用语言</text>
+<text fill="#999" font-size="12" x="10" y="62">丰富的统计包：ggplot2, dplyr, tidyr</text>
+<text fill="#999" font-size="12" x="10" y="77">适合学术研究和数据分析</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ MATLAB</text>
+<text fill="#999" font-size="13" x="10" y="45">工程计算和科学计算</text>
+<text fill="#999" font-size="12" x="10" y="62">Statistics Toolbox：统计分析工具箱</text>
+<text fill="#999" font-size="12" x="10" y="77">适合工程应用和算法开发</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ Excel</text>
+<text fill="#999" font-size="13" x="10" y="45">基础统计分析和可视化</text>
+<text fill="#999" font-size="12" x="10" y="62">数据分析工具包、数据透视表</text>
+<text fill="#999" font-size="12" x="10" y="77">适合日常数据处理和报表</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">数据科学中的概率统计</h1><div class="board-content"><p class="chalk-text">• 数据清洗：异常值检测</p><p class="chalk-text">• 特征工程：分布变换</p><p class="chalk-text">• 模型评估：置信区间</p><p class="chalk-text">• 因果推断：贝叶斯网络</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(78,205,196,0.3)" r="90" stroke="#4ECDC4" stroke-width="3"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="90;100;90"></animate></circle><text fill="#4ECDC4" font-size="16" text-anchor="middle" x="350" y="255">数据科学</text></svg></div></div></div>
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">数据科学中的概率统计</h1><div class="board-content"><p class="chalk-text">• 数据清洗：异常值检测</p><p class="chalk-text">• 特征工程：分布变换</p><p class="chalk-text">• 模型评估：置信区间</p><p class="chalk-text">• 因果推断：贝叶斯网络</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">数据科学中的概率统计</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 数据清洗：异常值检测</text>
+<text fill="#999" font-size="13" x="10" y="45">用3σ原则识别异常值</text>
+<text fill="#999" font-size="12" x="10" y="65">|x-μ| > 3σ 的数据点可能是异常值</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 特征工程：分布变换</text>
+<text fill="#999" font-size="13" x="10" y="45">对数变换、Box-Cox变换</text>
+<text fill="#999" font-size="12" x="10" y="65">将偏态分布转换为近似正态分布</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 模型评估：置信区间</text>
+<text fill="#999" font-size="13" x="10" y="45">模型性能的不确定性量化</text>
+<text fill="#999" font-size="12" x="10" y="65">交叉验证 + 置信区间估计</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 因果推断：贝叶斯网络</text>
+<text fill="#999" font-size="13" x="10" y="45">从观察数据推断因果关系</text>
+<text fill="#999" font-size="12" x="10" y="65">A/B测试、倾向得分匹配</text>
+</g>
+</g>
+</svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习方法总结</h1><div class="board-content"><p class="chalk-text">1. 理解概念，不死记公式</p><p class="chalk-text">2. 多做练习，培养直觉</p><p class="chalk-text">3. 联系实际，看到应用</p><p class="chalk-text">4. 使用软件，提高效率</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><text fill="#FF6B6B" font-size="16" text-anchor="middle" x="350" y="280">学习方法</text></svg></div></div></div>
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习方法总结</h1><div class="board-content"><p class="chalk-text">1. 理解概念，不死记公式</p><p class="chalk-text">2. 多做练习，培养直觉</p><p class="chalk-text">3. 联系实际，看到应用</p><p class="chalk-text">4. 使用软件，提高效率</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<g transform="translate(100,80)">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">概率统计学习方法总结</text>
+<g transform="translate(0,30)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 理解概念，不死记公式</text>
+<text fill="#999" font-size="13" x="10" y="45">理解概率的直观含义</text>
+<text fill="#999" font-size="12" x="10" y="65">从几何、物理意义理解公式</text>
+</g>
+<g transform="translate(0,130)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 多做练习，培养直觉</text>
+<text fill="#999" font-size="13" x="10" y="45">通过大量例题建立概率直觉</text>
+<text fill="#999" font-size="12" x="10" y="65">从简单到复杂，循序渐进</text>
+</g>
+<g transform="translate(0,230)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 联系实际，看到应用</text>
+<text fill="#999" font-size="13" x="10" y="45">关注概率统计在工程中的应用</text>
+<text fill="#999" font-size="12" x="10" y="65">质量控制、可靠性、数据分析</text>
+</g>
+<g transform="translate(0,330)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 使用软件，提高效率</text>
+<text fill="#999" font-size="13" x="10" y="45">掌握Python/R等统计软件</text>
+<text fill="#999" font-size="12" x="10" y="65">从计算中解放，专注于理解和应用</text>
+</g>
+</g>
+</svg></div></div></div>
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">恭喜完成高等数学学习！</h1><div class="board-content"><p class="chalk-text emphasis">第13章总结</p><p class="chalk-text">✓ 概率的基本概念</p><p class="chalk-text">✓ 随机变量与分布</p><p class="chalk-text">✓ 正态分布与中心极限定理</p><p class="chalk-text emphasis">🎉 全部课程完成</p><p class="chalk-text">继续探索数学的奥秘！</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="110" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="110;120;110"></animate></circle><text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="240">🎓</text><text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="270">课程完成</text><text fill="#4ECDC4" font-size="14" text-anchor="middle" x="350" y="320">恭喜你！</text></svg></div></div></div>
 

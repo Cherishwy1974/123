@@ -1,33 +1,25 @@
-# 录制的视频文件
-录制视频/
-整理好/
-
-# 所有视频文件
-*.mp4
-*.avi
-*.mov
-*.wmv
-*.flv
-*.mkv
-
-# Python 缓存
-__pycache__/
-*.py[cod]
-*$py.class
-
-# IDE 配置
-.vscode/
-.idea/
+# 系统文件
+Thumbs.db
+Desktop.ini
+.DS_Store
 
 # 临时文件
 *.tmp
-*.bak
-*.swp
-*~
+*.temp
+~*
 
-# 系统文件
-.DS_Store
-Thumbs.db
+# 大型视频文件（不上传到 Git）
+*.mp4
 
-*_backup.html
-simplify_slides.py
+# Node modules (如果有的话)
+node_modules/
+
+# 日志文件
+*.log
+
+# IDE 文件
+.vscode/
+.idea/
+*.suo
+*.user
+

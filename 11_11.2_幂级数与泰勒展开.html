@@ -741,8 +741,8 @@
         收敛域
        </text>
 <text fill="#FF6B6B" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="160" y="168">
-        |x|
-        <r< text="">
+        |x|&lt;R
+       </text>
 <!-- 分支2：泰勒级数 -->
 <line filter="url(#glow6)" stroke="#4ECDC4" stroke-width="3" x1="440" x2="540" y1="240" y2="150">
 <animate attributename="stroke-opacity" begin="0.3s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
@@ -753,11 +753,11 @@
 </animate>
 </ellipse>
 <text fill="#4ECDC4" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="540" y="148">
-          泰勒
-         </text>
+        泰勒
+       </text>
 <text fill="#4ECDC4" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="540" y="168">
-          展开
-         </text>
+        展开
+       </text>
 <!-- 分支3：常用展开式 -->
 <line filter="url(#glow6)" stroke="#FFE066" stroke-width="3" x1="260" x2="160" y1="320" y2="410">
 <animate attributename="stroke-opacity" begin="0.6s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
@@ -768,11 +768,11 @@
 </animate>
 </ellipse>
 <text fill="#FFE066" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="160" y="405">
-          常用
-         </text>
+        常用
+       </text>
 <text fill="#333" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="160" y="425">
-          展开式
-         </text>
+        展开式
+       </text>
 <!-- 分支4：应用 -->
 <line filter="url(#glow6)" stroke="#9FA8DA" stroke-width="3" x1="440" x2="540" y1="320" y2="410">
 <animate attributename="stroke-opacity" begin="0.9s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
@@ -783,25 +783,25 @@
 </animate>
 </ellipse>
 <text fill="#9FA8DA" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="540" y="405">
-          应用
-         </text>
+        应用
+       </text>
 <text fill="#9FA8DA" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="540" y="425">
-          近似计算
-         </text>
+        近似计算
+       </text>
 <!-- 底部提示 -->
 <rect fill="rgba(78,205,196,0.2)" filter="url(#glow6)" height="50" rx="8" stroke="#4ECDC4" stroke-width="2" width="300" x="200" y="500">
 </rect>
 <text fill="#4ECDC4" filter="url(#glow6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="533">
-          掌握幂级数的展开与应用
-         </text>
-</r<>
-</text>
+        掌握幂级数的展开与应用
+       </text>
 </svg>
+</div>
 </div>
 </div>
 
 <!-- 第7-15页 -->
 <div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">收敛半径的求法</h1><div class="board-content"><p class="chalk-text">$$R = \lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|$$</p><p class="chalk-text">或</p><p class="chalk-text">$$R = \frac{1}{\lim_{n\to\infty}\sqrt[n]{|a_n|}}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow7"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 收敛半径可视化 -->
 <g transform="translate(150,120)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="200" y="-30">幂级数的收敛域</text>
@@ -838,6 +838,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">幂级数的性质</h1><div class="board-content"><p class="chalk-text">1. 和函数在收敛域内连续</p><p class="chalk-text">2. 可逐项求导</p><p class="chalk-text">3. 可逐项积分</p><p class="chalk-text">4. 收敛半径不变</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow8"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 幂级数性质可视化 -->
 <g transform="translate(100,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">幂级数的重要性质</text>
@@ -873,6 +874,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">泰勒级数</h1><div class="board-content"><p class="chalk-text">$$f(x) = \sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$$</p><p class="chalk-text emphasis">麦克劳林级数（x₀=0）</p><p class="chalk-text">$$f(x) = \sum_{n=0}^{\infty}\frac{f^{(n)}(0)}{n!}x^n$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow9"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 泰勒级数可视化 -->
 <g transform="translate(80,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-10">泰勒级数：函数的多项式逼近</text>
@@ -904,6 +906,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">常用函数的泰勒展开</h1><div class="board-content"><p class="chalk-text">$$e^x = \sum_{n=0}^{\infty}\frac{x^n}{n!}$$</p><p class="chalk-text">$$\sin x = \sum_{n=0}^{\infty}\frac{(-1)^n x^{2n+1}}{(2n+1)!}$$</p><p class="chalk-text">$$\cos x = \sum_{n=0}^{\infty}\frac{(-1)^n x^{2n}}{(2n)!}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow10"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 常用函数展开式 -->
 <g transform="translate(60,60)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="290" y="-5">常用函数的麦克劳林展开</text>
@@ -943,6 +946,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：求幂级数收敛域</h1><div class="board-content"><p class="chalk-text">$$\sum_{n=1}^{\infty}\frac{x^n}{n}$$</p><p class="chalk-text emphasis">步骤</p><p class="chalk-text">1. 求收敛半径R=1</p><p class="chalk-text">2. 检验端点x=±1</p><p class="chalk-text">3. 收敛域：(-1,1]</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow11"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 收敛域例题 -->
 <g transform="translate(100,100)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">例题：∑ xⁿ/n 的收敛域</text>
@@ -979,6 +983,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：函数展开成幂级数</h1><div class="board-content"><p class="chalk-text">将f(x)=1/(1-x)展开</p><p class="chalk-text emphasis">解</p><p class="chalk-text">$$\frac{1}{1-x} = \sum_{n=0}^{\infty}x^n$$</p><p class="chalk-text">收敛域：|x|<1</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow12"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 函数展开例题 -->
 <g transform="translate(80,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-10">几何级数：1/(1-x) 的展开</text>
@@ -1013,6 +1018,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">幂级数的应用</h1><div class="board-content"><p class="chalk-text">• 函数近似计算</p><p class="chalk-text">• 求极限</p><p class="chalk-text">• 求积分</p><p class="chalk-text">• 求微分方程的解</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow13"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 幂级数应用 -->
 <g transform="translate(80,60)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-5">幂级数的四大应用</text>
@@ -1052,6 +1058,7 @@
 </svg></div></div></div>
 
 <div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">傅里叶级数简介</h1><div class="board-content"><p class="chalk-text">周期函数展开成三角级数</p><p class="chalk-text">$$f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty}(a_n\cos nx + b_n\sin nx)$$</p><p class="chalk-text">应用：信号处理、图像压缩</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<defs><filter id="glow14"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
 <!-- 傅里叶级数 -->
 <g transform="translate(80,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="270" y="-10">傅里叶级数：周期函数的展开</text>
@@ -1093,7 +1100,7 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 幂级数的收敛域</p><p class="chalk-text">✓ 泰勒级数展开</p><p class="chalk-text">✓ 常用函数的展开式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">本章总结与误差控制</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">幂级数</text></svg></div></div></div>
+<div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 幂级数的收敛域</p><p class="chalk-text">✓ 泰勒级数展开</p><p class="chalk-text">✓ 常用函数的展开式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">本章总结与误差控制</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><defs><filter id="glow15"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" filter="url(#glow15)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" filter="url(#glow15)" font-size="18" text-anchor="middle" x="350" y="255">幂级数</text></svg></div></div></div>
 
 </div>
 <div class="control-bar">
