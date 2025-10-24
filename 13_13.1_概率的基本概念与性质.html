@@ -820,12 +820,12 @@
                     await new Promise(resolve => setTimeout(resolve, 2000));
                 }
 
-                currentPage = 1;
-                switchToPage(1);
+                currentPage = 0;
+                switchToPage(0);
                 await new Promise(resolve => setTimeout(resolve, 800));
 
                 if (isConnected && isTeaching) {
-                    speakContent(1);
+                    speakContent(0);
                     console.log('🎬 自动播放已启动，翻页由虚拟人语音完成事件(frame_stop)驱动');
                 } else {
                     console.error('❌ 虚拟人未连接，自动播放失败');
