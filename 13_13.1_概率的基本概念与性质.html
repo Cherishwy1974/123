@@ -715,22 +715,26 @@
                     .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
                     .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成 frame_stop:', data);
-                        if (isAutoPlaying && currentPage < totalPages - 1) {
-                            console.log(`🎬 自动播放: 第${currentPage + 1}页讲解完成，准备翻页到第${currentPage + 2}页`);
-                            setTimeout(() => {
-                                if (isAutoPlaying && currentPage < totalPages - 1) {
-                                    currentPage++;
-                                    switchToPage(currentPage);
-                                    setTimeout(() => {
-                                        if (isAutoPlaying) {
-                                            speakContent(currentPage);
-                                        }
-                                    }, 800);
-                                } else if (currentPage === totalPages - 1) {
-                                    console.log('🎉 已到达最后一页，播放完成');
+                        if (isAutoPlaying) {
+                            if (currentPage < totalPages - 1) {
+                                console.log(`🎬 自动播放: 第${currentPage + 1}页讲解完成，准备翻页到第${currentPage + 2}页`);
+                                setTimeout(() => {
+                                    if (isAutoPlaying && currentPage < totalPages - 1) {
+                                        currentPage++;
+                                        switchToPage(currentPage);
+                                        setTimeout(() => {
+                                            if (isAutoPlaying) {
+                                                speakContent(currentPage);
+                                            }
+                                        }, 800);
+                                    }
+                                }, 1500);
+                            } else if (currentPage === totalPages - 1) {
+                                console.log('🎉 已到达最后一页，播放完成');
+                                setTimeout(() => {
                                     stopAutoPlay();
-                                }
-                            }, 1500);
+                                }, 1500);
+                            }
                         }
                     });
                 avatarPlatform.setApiInfo({appId: '1af9f6ce', apiKey: 'fb9e639101a96b2e8f55ff7598947a4d', apiSecret: 'YTY3ODBiYTUwODViOWRjZjc5NWQ0YWNm', sceneId: '238962977817104384', serverUrl: 'wss://avatar.cn-huadong-1.xf-yun.com/v1/interact'});
