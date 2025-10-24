@@ -929,6 +929,8 @@
 </g>
 </svg></div></div></div>
 
+
+
 <div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">例题：点积计算</h1><div class="board-content"><p class="chalk-text">a=(1,2,3), b=(4,5,6)</p><p class="chalk-text">求a·b和夹角θ</p><p class="chalk-text emphasis">解</p><p class="chalk-text">a·b = 1×4+2×5+3×6 = 32</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：点积计算</text>
@@ -955,6 +957,8 @@
 </g>
 </g>
 </svg></div></div></div>
+
+
 
 <div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">例题：叉积计算</h1><div class="board-content"><p class="chalk-text">a=(1,0,0), b=(0,1,0)</p><p class="chalk-text">求a×b</p><p class="chalk-text emphasis">解</p><p class="chalk-text">a×b = (0,0,1)</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,80)">
@@ -993,6 +997,8 @@
 </g>
 </svg></div></div></div>
 
+
+
 <div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">向量的投影</h1><div class="board-content"><p class="chalk-text">向量a在b上的投影</p><p class="chalk-text">$$\text{proj}_b a = \frac{a \cdot b}{|b|}$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(120,120)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-30">向量投影的几何意义</text>
@@ -1027,6 +1033,8 @@
 </g>
 </g>
 </svg></div></div></div>
+
+
 
 <div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">向量的线性组合</h1><div class="board-content"><p class="chalk-text">$$c = \lambda_1 a + \lambda_2 b$$</p><p class="chalk-text emphasis">线性相关</p><p class="chalk-text">存在不全为零的λ使组合为零</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,100)">
@@ -1064,6 +1072,8 @@
 </g>
 </g>
 </svg></div></div></div>
+
+
 
 <div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">向量的应用：力的分解</h1><div class="board-content"><p class="chalk-text">力F分解为两个方向</p><p class="chalk-text">F = F₁ + F₂</p><p class="chalk-text">用向量加法和投影</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(150,120)">
@@ -1103,6 +1113,8 @@
 </g>
 </g>
 </svg></div></div></div>
+
+
 
 <div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">向量的应用：速度合成</h1><div class="board-content"><p class="chalk-text">船速v₁，水速v₂</p><p class="chalk-text">合速度v = v₁ + v₂</p><p class="chalk-text">用向量加法求合速度</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(120,120)">
@@ -1148,6 +1160,8 @@
 </g>
 </svg></div></div></div>
 
+
+
 <div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">向量在计算机图形学中的应用</h1><div class="board-content"><p class="chalk-text">• 3D建模：顶点坐标</p><p class="chalk-text">• 光照计算：法向量</p><p class="chalk-text">• 碰撞检测：距离计算</p><p class="chalk-text">• 动画：位移向量</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(70,60)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="280" y="-5">向量在计算机图形学中的应用</text>
@@ -1177,6 +1191,8 @@
 </g>
 </g>
 </svg></div></div></div>
+
+
 
 <div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 向量的概念和运算</p><p class="chalk-text">✓ 点积：数量积</p><p class="chalk-text">✓ 叉积：向量积</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">平面与直线方程</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">向量理论</text></svg></div></div></div>
 
@@ -1271,10 +1287,37 @@
         // 数学公式音译与字数统计
         function translateMathToSpeech(text){
             if(!text) return '';
-            let r=text;
-            r=r.replace(/\\int/g,'积分').replace(/\\sum/g,'求和').replace(/\\lim/g,'极限').replace(/\\sqrt\{([^}]+)\}/g,'根号$1');
-            r=r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'$1分之$2');
-            r=r.replace(/[\\${}]/g,'');
+            let r = text;
+            // 向量符号
+            r = r.replace(/\\vec\{([^}]+)\}/g, '$1向量');
+            r = r.replace(/([a-zA-Z])⃗/g, '$1向量');
+            // 点积叉积
+            r = r.replace(/·/g, '点乘');
+            r = r.replace(/×/g, '叉乘');
+            r = r.replace(/\\cdot/g, '点乘');
+            r = r.replace(/\\times/g, '乘以');
+            // 积分求和极限
+            r = r.replace(/\\int/g, '积分');
+            r = r.replace(/\\sum/g, '求和');
+            r = r.replace(/\\lim/g, '极限');
+            r = r.replace(/\\sqrt\{([^}]+)\}/g, '根号$1');
+            // 分数 - 智能朗读
+            r = r.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, function(match, num, den) {
+                if (num.length <= 3 && den.length <= 3) return den + '分之' + num;
+                return num + '除以' + den;
+            });
+            // 上标下标
+            r = r.replace(/\^(\d+)/g, '的$1次方');
+            r = r.replace(/_(\d+)/g, '下标$1');
+            // 希腊字母
+            r = r.replace(/\\alpha/g, '阿尔法').replace(/\\beta/g, '贝塔').replace(/\\theta/g, '西塔');
+            r = r.replace(/\\lambda/g, '兰布达').replace(/\\pi/g, '派').replace(/\\sigma/g, '西格玛');
+            // 三角函数
+            r = r.replace(/\\sin/g, '正弦').replace(/\\cos/g, '余弦').replace(/\\tan/g, '正切');
+            r = r.replace(/\\ln/g, '自然对数').replace(/\\log/g, '对数');
+            // 清理符号
+            r = r.replace(/\\text\{([^}]+)\}/g, '$1');
+            r = r.replace(/[\\${}]/g, '');
             return r;
         }
         function getPageDuration(pageNum){
@@ -1287,7 +1330,25 @@
             return duration;
         }
 
-        function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function switchToPage(pageNum) { 
+            if (pageNum < 1 || pageNum > totalPages) return; 
+            const pages = document.querySelectorAll('.page'); 
+            pages.forEach(page => { page.classList.remove('active'); }); 
+            
+            // 如果是第1页，显示封面页（data-page="1"）
+            if (pageNum === 1) {
+                const coverPage = document.querySelector('.page[data-page="1"]');
+                if (coverPage) coverPage.classList.add('active');
+            } else {
+                // 否则显示对应的内容页（id="pageX"）
+                const targetPage = document.getElementById('page' + pageNum);
+                if (targetPage) targetPage.classList.add('active');
+            }
+            
+            currentPage = pageNum; 
+            document.getElementById('currentPage').textContent = pageNum; 
+            if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } 
+        }
         function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
 
