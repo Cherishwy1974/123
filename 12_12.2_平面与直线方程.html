@@ -40,7 +40,32 @@
             pointer-events: none;
             background: transparent;
         }        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
-        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .subtitle-area { 
+            position: absolute; 
+            bottom: 8px; 
+            left: 0; 
+            right: 0; 
+            height: 50px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); 
+            overflow: hidden; 
+            z-index: 110; 
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+        .subtitle-text {
+            color: #fff; 
+            font-size: 18px; 
+            font-weight: 500;
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 25s linear infinite;
+        }
+        @keyframes scroll-left {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
         .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
         .control-bar:hover { left: -9999px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
         .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
@@ -144,7 +169,7 @@
 </div>
 </div>
 </div>
-<div class="page" id="page1">
+<div class="page" id="page1" data-page="1">
 <div class="left-panel">
 <h1 class="title chalk-text">
       平面方程
@@ -1036,7 +1061,8 @@
     🎬 自动播放
    </button>
 </div>
-<div class="subtitle-area" id="subtitleArea">
+<div class="subtitle-area">
+    <div class="subtitle-text" id="subtitleArea"></div>
 </div>
 <!-- 讯飞官方SDK -->
 <!-- Polyfill for older browsers -->
@@ -1088,7 +1114,14 @@
 
         function updateSubtitle(text) {
             const subtitleArea = document.getElementById('subtitleArea');
-            if (subtitleArea) subtitleArea.textContent = text;
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+                // 重新触发动画
+                subtitleArea.style.animation = 'none';
+                setTimeout(() => {
+                    subtitleArea.style.animation = 'scroll-left 20s linear infinite';
+                }, 10);
+            }
         }
 
         function waitForSDK() {

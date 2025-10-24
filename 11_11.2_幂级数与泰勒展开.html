@@ -40,7 +40,32 @@
             pointer-events: none;
             background: transparent;
         }        .wrapper { width: 100%; height: 100%; background: transparent; pointer-events: auto; }
-        .subtitle-area { position: absolute; bottom: 8px; left: 20px; right: 20px; min-height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center; padding: 0 16px; z-index: 110; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7); pointer-events: none; }
+        .subtitle-area { 
+            position: absolute; 
+            bottom: 8px; 
+            left: 0; 
+            right: 0; 
+            height: 50px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); 
+            overflow: hidden; 
+            z-index: 110; 
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+        .subtitle-text {
+            color: #fff; 
+            font-size: 18px; 
+            font-weight: 500;
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 25s linear infinite;
+        }
+        @keyframes scroll-left {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
         .control-bar { position: fixed; left: -9999px; top: 50%; transform: translateY(-50%); width: 270px; height: auto; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 200; border-radius: 0 20px 20px 0; padding: 25px 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
         .control-bar:hover { left: -9999px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
         .control-bar::before { content: '▶️'; position: absolute; top: 50%; right: -30px; transform: translateY(-50%); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 12px 8px; border-radius: 0 15px 15px 0; font-size: 0.9rem; writing-mode: vertical-lr; border: 1px solid rgba(255, 255, 255, 0.1); color: #333; }
@@ -191,78 +216,78 @@
 </filter>
 </defs>
 <!-- 标题 -->
-<text fill="#e1bee7" filter="url(#glow1)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
+<text fill="#e1bee7" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
         幂级数收敛域
        </text>
 <!-- 数轴 -->
-<line filter="url(#glow1)" stroke="#FFE066" stroke-width="4" x1="100" x2="600" y1="300" y2="300">
+<line stroke="#FFE066" stroke-width="4" x1="100" x2="600" y1="300" y2="300">
 </line>
-<text fill="#FFE066" filter="url(#glow1)" font-size="18" font-weight="bold" x="620" y="305">
+<text fill="#FFE066" font-size="18" font-weight="bold" x="620" y="305">
         x
        </text>
 <!-- 中心点 -->
-<circle cx="350" cy="300" fill="#FFE066" filter="url(#glow1)" r="8">
+<circle cx="350" cy="300" fill="#FFE066" r="8">
 <animate attributename="r" dur="2s" repeatcount="indefinite" values="8;12;8">
 </animate>
 </circle>
-<text fill="#FFE066" filter="url(#glow1)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="335">
+<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="335">
         x₀
        </text>
 <!-- 收敛区间 (-R, R) -->
-<line filter="url(#glow1)" stroke="#4ECDC4" stroke-width="8" x1="200" x2="500" y1="300" y2="300">
+<line stroke="#4ECDC4" stroke-width="8" x1="200" x2="500" y1="300" y2="300">
 <animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </line>
 <!-- 左边界 -R -->
-<circle cx="200" cy="300" fill="none" filter="url(#glow1)" r="10" stroke="#FF6B6B" stroke-width="3">
+<circle cx="200" cy="300" fill="none" r="10" stroke="#FF6B6B" stroke-width="3">
 <animate attributename="r" dur="2s" repeatcount="indefinite" values="10;14;10">
 </animate>
 </circle>
-<text fill="#FF6B6B" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="200" y="270">
+<text fill="#FF6B6B" font-size="20" font-weight="bold" text-anchor="middle" x="200" y="270">
         -R
        </text>
 <!-- 右边界 R -->
-<circle cx="500" cy="300" fill="none" filter="url(#glow1)" r="10" stroke="#FF6B6B" stroke-width="3">
+<circle cx="500" cy="300" fill="none" r="10" stroke="#FF6B6B" stroke-width="3">
 <animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="10;14;10">
 </animate>
 </circle>
-<text fill="#FF6B6B" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="500" y="270">
+<text fill="#FF6B6B" font-size="20" font-weight="bold" text-anchor="middle" x="500" y="270">
         R
        </text>
 <!-- 收敛区域标注 -->
-<rect fill="rgba(78,205,196,0.2)" filter="url(#glow1)" height="60" rx="10" stroke="#4ECDC4" stroke-width="3" width="200" x="250" y="150">
+<rect fill="rgba(78,205,196,0.2)" height="60" rx="10" stroke="#4ECDC4" stroke-width="3" width="200" x="250" y="150">
 <animate attributename="stroke-opacity" dur="2.5s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#4ECDC4" filter="url(#glow1)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="175">
+<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="175">
         收敛区间
        </text>
-<text fill="#4ECDC4" filter="url(#glow1)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="200">
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="200">
         |x - x₀| &lt; R
        </text>
 <!-- 发散区域左 -->
-<path d="M 100 350 L 180 350" filter="url(#glow1)" stroke="#FF6B6B" stroke-dasharray="5,5" stroke-width="4">
+<path d="M 100 350 L 180 350" stroke="#FF6B6B" stroke-dasharray="5,5" stroke-width="4">
 <animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.4;0.8;0.4">
 </animate>
 </path>
-<text fill="#FF6B6B" filter="url(#glow1)" font-size="16" font-weight="bold" text-anchor="middle" x="140" y="380">
+<text fill="#FF6B6B" font-size="16" font-weight="bold" text-anchor="middle" x="140" y="380">
         发散
        </text>
 <!-- 发散区域右 -->
-<path d="M 520 350 L 600 350" filter="url(#glow1)" stroke="#FF6B6B" stroke-dasharray="5,5" stroke-width="4">
+<path d="M 520 350 L 600 350" stroke="#FF6B6B" stroke-dasharray="5,5" stroke-width="4">
 <animate attributename="stroke-opacity" begin="0.5s" dur="2s" repeatcount="indefinite" values="0.4;0.8;0.4">
 </animate>
 </path>
-<text fill="#FF6B6B" filter="url(#glow1)" font-size="16" font-weight="bold" text-anchor="middle" x="560" y="380">
+<text fill="#FF6B6B" font-size="16" font-weight="bold" text-anchor="middle" x="560" y="380">
         发散
        </text>
 <!-- 幂级数公式 -->
-<rect fill="rgba(159,168,218,0.2)" filter="url(#glow1)" height="60" rx="8" stroke="#9FA8DA" stroke-width="2" width="400" x="150" y="450">
+<rect fill="rgba(159,168,218,0.2)" height="60" rx="8" stroke="#9FA8DA" stroke-width="2" width="400" x="150" y="450">
 </rect>
-<text fill="#9FA8DA" filter="url(#glow1)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="475">
+<text fill="#9FA8DA" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="475">
         ∑aₙ(x-x₀)ⁿ
        </text>
-<text fill="#9FA8DA" filter="url(#glow1)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="500">
+<text fill="#9FA8DA" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="500">
         n=0 → ∞
        </text>
 </svg>
@@ -309,57 +334,57 @@
 </filter>
 </defs>
 <!-- 标题 -->
-<text fill="#e1bee7" filter="url(#glow2)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
+<text fill="#e1bee7" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
         泰勒级数逼近示意
        </text>
 <!-- 坐标系 -->
-<line filter="url(#glow2)" stroke="#FFE066" stroke-width="3" x1="100" x2="600" y1="400" y2="400">
+<line stroke="#FFE066" stroke-width="3" x1="100" x2="600" y1="400" y2="400">
 </line>
-<line filter="url(#glow2)" stroke="#FFE066" stroke-width="3" x1="350" x2="350" y1="500" y2="100">
+<line stroke="#FFE066" stroke-width="3" x1="350" x2="350" y1="500" y2="100">
 </line>
-<text fill="#FFE066" filter="url(#glow2)" font-size="18" font-weight="bold" x="615" y="405">
+<text fill="#FFE066" font-size="18" font-weight="bold" x="615" y="405">
         x
        </text>
-<text fill="#FFE066" filter="url(#glow2)" font-size="18" font-weight="bold" x="345" y="90">
+<text fill="#FFE066" font-size="18" font-weight="bold" x="345" y="90">
         y
        </text>
 <!-- 原函数曲线 -->
-<path d="M 150 380 Q 250 200, 350 300 T 550 180" fill="none" filter="url(#glow2)" stroke="#FF6B6B" stroke-width="4">
+<path d="M 150 380 Q 250 200, 350 300 T 550 180" fill="none" stroke="#FF6B6B" stroke-width="4">
 <animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.6;1;0.6">
 </animate>
 </path>
-<text fill="#FF6B6B" filter="url(#glow2)" font-size="18" font-weight="bold" x="570" y="170">
+<text fill="#FF6B6B" font-size="18" font-weight="bold" x="570" y="170">
         f(x)
        </text>
 <!-- 1阶逼近 -->
-<path d="M 200 350 L 500 250" fill="none" filter="url(#glow2)" opacity="0.6" stroke="#4ECDC4" stroke-dasharray="5,3" stroke-width="3">
+<path d="M 200 350 L 500 250" fill="none" opacity="0.6" stroke="#4ECDC4" stroke-dasharray="5,3" stroke-width="3">
 </path>
-<text fill="#4ECDC4" filter="url(#glow2)" font-size="16" font-weight="bold" x="180" y="360">
+<text fill="#4ECDC4" font-size="16" font-weight="bold" x="180" y="360">
         P₁(x)
        </text>
 <!-- 2阶逼近 -->
-<path d="M 180 370 Q 300 220, 520 200" fill="none" filter="url(#glow2)" opacity="0.7" stroke="#FFE066" stroke-dasharray="8,4" stroke-width="3">
+<path d="M 180 370 Q 300 220, 520 200" fill="none" opacity="0.7" stroke="#FFE066" stroke-dasharray="8,4" stroke-width="3">
 </path>
-<text fill="#FFE066" filter="url(#glow2)" font-size="16" font-weight="bold" x="160" y="380">
+<text fill="#FFE066" font-size="16" font-weight="bold" x="160" y="380">
         P₂(x)
        </text>
 <!-- 展开点 x0 -->
-<circle cx="350" cy="300" fill="#9FA8DA" filter="url(#glow2)" r="10">
+<circle cx="350" cy="300" fill="#9FA8DA" r="10">
 <animate attributename="r" dur="2s" repeatcount="indefinite" values="10;14;10">
 </animate>
 </circle>
-<line filter="url(#glow2)" stroke="#9FA8DA" stroke-dasharray="4,2" stroke-width="2" x1="350" x2="350" y1="300" y2="400">
+<line stroke="#9FA8DA" stroke-dasharray="4,2" stroke-width="2" x1="350" x2="350" y1="300" y2="400">
 </line>
-<text fill="#9FA8DA" filter="url(#glow2)" font-size="18" font-weight="bold" text-anchor="start" x="355" y="420">
+<text fill="#9FA8DA" font-size="18" font-weight="bold" text-anchor="start" x="355" y="420">
         x₀
        </text>
 <!-- 说明框 -->
-<rect fill="rgba(159,168,218,0.15)" filter="url(#glow2)" height="80" rx="8" stroke="#9FA8DA" stroke-width="2" width="420" x="140" y="470">
+<rect fill="rgba(159,168,218,0.15)" height="80" rx="8" stroke="#9FA8DA" stroke-width="2" width="420" x="140" y="470">
 </rect>
-<text fill="#9FA8DA" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="500">
+<text fill="#9FA8DA" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="500">
         Pₙ(x) = f(x₀) + f'(x₀)(x-x₀) +
        </text>
-<text fill="#9FA8DA" filter="url(#glow2)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="525">
+<text fill="#9FA8DA" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="525">
         f''(x₀)(x-x₀)²/2! + ...
        </text>
 </svg>
@@ -414,55 +439,55 @@
 </filter>
 </defs>
 <!-- 标题 -->
-<text fill="#e1bee7" filter="url(#glow3)" font-size="26" font-weight="bold" text-anchor="middle" x="350" y="40">
+<text fill="#e1bee7" font-size="26" font-weight="bold" text-anchor="middle" x="350" y="40">
         常用函数的泰勒展开
        </text>
 <!-- eˣ 展开 -->
-<rect fill="rgba(255,107,107,0.15)" filter="url(#glow3)" height="80" rx="10" stroke="#FF6B6B" stroke-width="3" width="540" x="80" y="90">
+<rect fill="rgba(255,107,107,0.15)" height="80" rx="10" stroke="#FF6B6B" stroke-width="3" width="540" x="80" y="90">
 <animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#FF6B6B" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="120">
+<text fill="#FF6B6B" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="120">
         e^x
        </text>
-<text fill="#ffffff" filter="url(#glow3)" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="150">
+<text fill="#ffffff" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="150">
         1 + x + x²/2! + x³/3! + x⁴/4! + ⋯
        </text>
 <!-- sin x 展开 -->
-<rect fill="rgba(78,205,196,0.15)" filter="url(#glow3)" height="80" rx="10" stroke="#4ECDC4" stroke-width="3" width="540" x="80" y="190">
+<rect fill="rgba(78,205,196,0.15)" height="80" rx="10" stroke="#4ECDC4" stroke-width="3" width="540" x="80" y="190">
 <animate attributename="stroke-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#4ECDC4" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="220">
+<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="220">
         sin x
        </text>
-<text fill="#ffffff" filter="url(#glow3)" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="250">
+<text fill="#ffffff" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="250">
         x - x³/3! + x⁵/5! - x⁷/7! + ⋯
        </text>
 <!-- cos x 展开 -->
-<rect fill="rgba(255,224,102,0.15)" filter="url(#glow3)" height="80" rx="10" stroke="#FFE066" stroke-width="3" width="540" x="80" y="290">
+<rect fill="rgba(255,224,102,0.15)" height="80" rx="10" stroke="#FFE066" stroke-width="3" width="540" x="80" y="290">
 <animate attributename="stroke-opacity" begin="1s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#FFE066" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="320">
+<text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="320">
         cos x
        </text>
-<text fill="#333" filter="url(#glow3)" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="350">
+<text fill="#333" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="350">
         1 - x²/2! + x⁴/4! - x⁶/6! + ⋯
        </text>
 <!-- ln(1+x) 展开 -->
-<rect fill="rgba(159,168,218,0.15)" filter="url(#glow3)" height="80" rx="10" stroke="#9FA8DA" stroke-width="3" width="540" x="80" y="390">
+<rect fill="rgba(159,168,218,0.15)" height="80" rx="10" stroke="#9FA8DA" stroke-width="3" width="540" x="80" y="390">
 <animate attributename="stroke-opacity" begin="1.5s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#9FA8DA" filter="url(#glow3)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="420">
+<text fill="#9FA8DA" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="420">
         ln(1+x)
        </text>
-<text fill="#ffffff" filter="url(#glow3)" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="450">
+<text fill="#ffffff" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="450">
         x - x²/2 + x³/3 - x⁴/4 + ⋯
        </text>
 <!-- 图示：波浪装饰 -->
-<path d="M 100 510 Q 200 490, 300 510 T 500 510 T 600 510" fill="none" filter="url(#glow3)" opacity="0.6" stroke="#4ECDC4" stroke-width="3">
+<path d="M 100 510 Q 200 490, 300 510 T 500 510 T 600 510" fill="none" opacity="0.6" stroke="#4ECDC4" stroke-width="3">
 <animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.3;0.6;0.3">
 </animate>
 </path>
@@ -513,51 +538,51 @@
 </filter>
 </defs>
 <!-- 标题 -->
-<text fill="#e1bee7" filter="url(#glow4)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="50">
+<text fill="#e1bee7" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="50">
         幂级数运算规则
        </text>
 <!-- 加减法 -->
-<rect fill="rgba(255,107,107,0.15)" filter="url(#glow4)" height="90" rx="10" stroke="#FF6B6B" stroke-width="3" width="500" x="100" y="100">
+<rect fill="rgba(255,107,107,0.15)" height="90" rx="10" stroke="#FF6B6B" stroke-width="3" width="500" x="100" y="100">
 <animate attributename="stroke-opacity" dur="2.5s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#FF6B6B" filter="url(#glow4)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="130">
+<text fill="#FF6B6B" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="130">
         加减法
        </text>
-<text fill="#ffffff" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="165">
+<text fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="165">
         ∑aₙxⁿ ± ∑bₙxⁿ = ∑(aₙ±bₙ)xⁿ
        </text>
 <!-- 乘法 -->
-<rect fill="rgba(78,205,196,0.15)" filter="url(#glow4)" height="90" rx="10" stroke="#4ECDC4" stroke-width="3" width="500" x="100" y="210">
+<rect fill="rgba(78,205,196,0.15)" height="90" rx="10" stroke="#4ECDC4" stroke-width="3" width="500" x="100" y="210">
 <animate attributename="stroke-opacity" begin="0.4s" dur="2.5s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#4ECDC4" filter="url(#glow4)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="240">
+<text fill="#4ECDC4" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="240">
         乘法（柯西乘积）
        </text>
-<text fill="#ffffff" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="275">
+<text fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="275">
         (∑aₙxⁿ)(∑bₙxⁿ) = ∑cₙxⁿ
        </text>
 <!-- 逐项求导 -->
-<rect fill="rgba(255,224,102,0.15)" filter="url(#glow4)" height="90" rx="10" stroke="#FFE066" stroke-width="3" width="500" x="100" y="320">
+<rect fill="rgba(255,224,102,0.15)" height="90" rx="10" stroke="#FFE066" stroke-width="3" width="500" x="100" y="320">
 <animate attributename="stroke-opacity" begin="0.8s" dur="2.5s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#FFE066" filter="url(#glow4)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="350">
+<text fill="#FFE066" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="350">
         逐项求导
        </text>
-<text fill="#333" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="385">
+<text fill="#333" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="385">
         (∑aₙxⁿ)' = ∑naₙxⁿ⁻¹
        </text>
 <!-- 逐项积分 -->
-<rect fill="rgba(159,168,218,0.15)" filter="url(#glow4)" height="90" rx="10" stroke="#9FA8DA" stroke-width="3" width="500" x="100" y="430">
+<rect fill="rgba(159,168,218,0.15)" height="90" rx="10" stroke="#9FA8DA" stroke-width="3" width="500" x="100" y="430">
 <animate attributename="stroke-opacity" begin="1.2s" dur="2.5s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#9FA8DA" filter="url(#glow4)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="460">
+<text fill="#9FA8DA" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="460">
         逐项积分
        </text>
-<text fill="#ffffff" filter="url(#glow4)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="495">
+<text fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="495">
         ∫(∑aₙxⁿ)dx = ∑(aₙxⁿ⁺¹)/(n+1)
        </text>
 </svg>
@@ -604,69 +629,69 @@
 </filter>
 </defs>
 <!-- 标题 -->
-<text fill="#e1bee7" filter="url(#glow5)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
+<text fill="#e1bee7" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
         泰勒级数的近似计算应用
        </text>
 <!-- 示例：计算 e -->
-<rect fill="rgba(255,107,107,0.15)" filter="url(#glow5)" height="110" rx="10" stroke="#FF6B6B" stroke-width="3" width="500" x="100" y="90">
+<rect fill="rgba(255,107,107,0.15)" height="110" rx="10" stroke="#FF6B6B" stroke-width="3" width="500" x="100" y="90">
 <animate attributename="stroke-opacity" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#FF6B6B" filter="url(#glow5)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="120">
+<text fill="#FF6B6B" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="120">
         计算 e ≈ 2.71828...
        </text>
-<text fill="#ffffff" filter="url(#glow5)" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="150">
+<text fill="#ffffff" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="150">
         e¹ = 1 + 1 + 1/2! + 1/3! + 1/4! + ...
        </text>
-<text fill="#ffffff" filter="url(#glow5)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="178">
+<text fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="178">
         ≈ 2 + 0.5 + 0.167 + 0.042 + ...
        </text>
 <!-- 误差分析 -->
-<rect fill="rgba(78,205,196,0.15)" filter="url(#glow5)" height="80" rx="10" stroke="#4ECDC4" stroke-width="3" width="500" x="100" y="220">
+<rect fill="rgba(78,205,196,0.15)" height="80" rx="10" stroke="#4ECDC4" stroke-width="3" width="500" x="100" y="220">
 <animate attributename="stroke-opacity" begin="0.5s" dur="3s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </rect>
-<text fill="#4ECDC4" filter="url(#glow5)" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="250">
+<text fill="#4ECDC4" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="250">
         拉格朗日余项
        </text>
-<text fill="#ffffff" filter="url(#glow5)" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="280">
+<text fill="#ffffff" font-size="17" font-weight="bold" text-anchor="middle" x="350" y="280">
         Rₙ(x) = f⁽ⁿ⁺¹⁾(ξ)xⁿ⁺¹/(n+1)!
        </text>
 <!-- 精度图示 -->
-<circle cx="200" cy="380" fill="rgba(255,224,102,0.3)" filter="url(#glow5)" r="50" stroke="#FFE066" stroke-width="3">
+<circle cx="200" cy="380" fill="rgba(255,224,102,0.3)" r="50" stroke="#FFE066" stroke-width="3">
 <animate attributename="fill-opacity" dur="2s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </circle>
-<text fill="#FFE066" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="200" y="375">
+<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="200" y="375">
         P₁
        </text>
-<text fill="#FFE066" filter="url(#glow5)" font-size="16" font-weight="bold" text-anchor="middle" x="200" y="395">
+<text fill="#FFE066" font-size="16" font-weight="bold" text-anchor="middle" x="200" y="395">
         低精度
        </text>
-<ellipse cx="350" cy="380" fill="rgba(78,205,196,0.3)" filter="url(#glow5)" rx="70" ry="55" stroke="#4ECDC4" stroke-width="3">
+<ellipse cx="350" cy="380" fill="rgba(78,205,196,0.3)" rx="70" ry="55" stroke="#4ECDC4" stroke-width="3">
 <animate attributename="fill-opacity" begin="0.3s" dur="2s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </ellipse>
-<text fill="#4ECDC4" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="375">
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="375">
         P₃
        </text>
-<text fill="#4ECDC4" filter="url(#glow5)" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="395">
+<text fill="#4ECDC4" font-size="16" font-weight="bold" text-anchor="middle" x="350" y="395">
         中精度
        </text>
-<ellipse cx="500" cy="380" fill="rgba(255,107,107,0.3)" filter="url(#glow5)" rx="85" ry="65" stroke="#FF6B6B" stroke-width="3">
+<ellipse cx="500" cy="380" fill="rgba(255,107,107,0.3)" rx="85" ry="65" stroke="#FF6B6B" stroke-width="3">
 <animate attributename="fill-opacity" begin="0.6s" dur="2s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </ellipse>
-<text fill="#FF6B6B" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="500" y="375">
+<text fill="#FF6B6B" font-size="18" font-weight="bold" text-anchor="middle" x="500" y="375">
         Pₙ
        </text>
-<text fill="#FF6B6B" filter="url(#glow5)" font-size="16" font-weight="bold" text-anchor="middle" x="500" y="395">
+<text fill="#FF6B6B" font-size="16" font-weight="bold" text-anchor="middle" x="500" y="395">
         高精度
        </text>
 <!-- 底部说明 -->
-<rect fill="rgba(159,168,218,0.2)" filter="url(#glow5)" height="50" rx="8" stroke="#9FA8DA" stroke-width="2" width="400" x="150" y="480">
+<rect fill="rgba(159,168,218,0.2)" height="50" rx="8" stroke="#9FA8DA" stroke-width="2" width="400" x="150" y="480">
 </rect>
-<text fill="#9FA8DA" filter="url(#glow5)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="513">
+<text fill="#9FA8DA" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="513">
         项数越多，精度越高
        </text>
 </svg>
@@ -714,84 +739,84 @@
 </filter>
 </defs>
 <!-- 标题 -->
-<text fill="#e1bee7" filter="url(#glow6)" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
+<text fill="#e1bee7" font-size="28" font-weight="bold" text-anchor="middle" x="350" y="40">
         幂级数与泰勒展开知识图谱
        </text>
 <!-- 中心：幂级数 -->
-<circle cx="350" cy="280" fill="rgba(255,224,102,0.3)" filter="url(#glow6)" r="90" stroke="#FFE066" stroke-width="4">
+<circle cx="350" cy="280" fill="rgba(255,224,102,0.3)" r="90" stroke="#FFE066" stroke-width="4">
 <animate attributename="r" dur="3s" repeatcount="indefinite" values="90;100;90">
 </animate>
 </circle>
-<text fill="#FFE066" filter="url(#glow6)" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="275">
+<text fill="#FFE066" font-size="22" font-weight="bold" text-anchor="middle" x="350" y="275">
         幂级数
        </text>
-<text fill="#FFE066" filter="url(#glow6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="300">
+<text fill="#FFE066" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="300">
         ∑aₙxⁿ
        </text>
 <!-- 分支1：收敛域 -->
-<line filter="url(#glow6)" stroke="#FF6B6B" stroke-width="3" x1="260" x2="160" y1="240" y2="150">
+<line stroke="#FF6B6B" stroke-width="3" x1="260" x2="160" y1="240" y2="150">
 <animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </line>
-<ellipse cx="160" cy="150" fill="rgba(255,107,107,0.3)" filter="url(#glow6)" rx="65" ry="50" stroke="#FF6B6B" stroke-width="3">
+<ellipse cx="160" cy="150" fill="rgba(255,107,107,0.3)" rx="65" ry="50" stroke="#FF6B6B" stroke-width="3">
 <animate attributename="fill-opacity" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </ellipse>
-<text fill="#FF6B6B" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="160" y="148">
+<text fill="#FF6B6B" font-size="17" font-weight="bold" text-anchor="middle" x="160" y="148">
         收敛域
        </text>
-<text fill="#FF6B6B" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="160" y="168">
+<text fill="#FF6B6B" font-size="15" font-weight="bold" text-anchor="middle" x="160" y="168">
         |x|&lt;R
        </text>
 <!-- 分支2：泰勒级数 -->
-<line filter="url(#glow6)" stroke="#4ECDC4" stroke-width="3" x1="440" x2="540" y1="240" y2="150">
+<line stroke="#4ECDC4" stroke-width="3" x1="440" x2="540" y1="240" y2="150">
 <animate attributename="stroke-opacity" begin="0.3s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </line>
-<ellipse cx="540" cy="150" fill="rgba(78,205,196,0.3)" filter="url(#glow6)" rx="65" ry="50" stroke="#4ECDC4" stroke-width="3">
+<ellipse cx="540" cy="150" fill="rgba(78,205,196,0.3)" rx="65" ry="50" stroke="#4ECDC4" stroke-width="3">
 <animate attributename="fill-opacity" begin="0.3s" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </ellipse>
-<text fill="#4ECDC4" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="540" y="148">
+<text fill="#4ECDC4" font-size="17" font-weight="bold" text-anchor="middle" x="540" y="148">
         泰勒
        </text>
-<text fill="#4ECDC4" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="540" y="168">
+<text fill="#4ECDC4" font-size="15" font-weight="bold" text-anchor="middle" x="540" y="168">
         展开
        </text>
 <!-- 分支3：常用展开式 -->
-<line filter="url(#glow6)" stroke="#FFE066" stroke-width="3" x1="260" x2="160" y1="320" y2="410">
+<line stroke="#FFE066" stroke-width="3" x1="260" x2="160" y1="320" y2="410">
 <animate attributename="stroke-opacity" begin="0.6s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </line>
-<ellipse cx="160" cy="410" fill="rgba(255,224,102,0.3)" filter="url(#glow6)" rx="65" ry="50" stroke="#FFE066" stroke-width="3">
+<ellipse cx="160" cy="410" fill="rgba(255,224,102,0.3)" rx="65" ry="50" stroke="#FFE066" stroke-width="3">
 <animate attributename="fill-opacity" begin="0.6s" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </ellipse>
-<text fill="#FFE066" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="160" y="405">
+<text fill="#FFE066" font-size="17" font-weight="bold" text-anchor="middle" x="160" y="405">
         常用
        </text>
-<text fill="#333" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="160" y="425">
+<text fill="#333" font-size="15" font-weight="bold" text-anchor="middle" x="160" y="425">
         展开式
        </text>
 <!-- 分支4：应用 -->
-<line filter="url(#glow6)" stroke="#9FA8DA" stroke-width="3" x1="440" x2="540" y1="320" y2="410">
+<line stroke="#9FA8DA" stroke-width="3" x1="440" x2="540" y1="320" y2="410">
 <animate attributename="stroke-opacity" begin="0.9s" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
 </animate>
 </line>
-<ellipse cx="540" cy="410" fill="rgba(159,168,218,0.3)" filter="url(#glow6)" rx="65" ry="50" stroke="#9FA8DA" stroke-width="3">
+<ellipse cx="540" cy="410" fill="rgba(159,168,218,0.3)" rx="65" ry="50" stroke="#9FA8DA" stroke-width="3">
 <animate attributename="fill-opacity" begin="0.9s" dur="2.5s" repeatcount="indefinite" values="0.2;0.4;0.2">
 </animate>
 </ellipse>
-<text fill="#9FA8DA" filter="url(#glow6)" font-size="17" font-weight="bold" text-anchor="middle" x="540" y="405">
+<text fill="#9FA8DA" font-size="17" font-weight="bold" text-anchor="middle" x="540" y="405">
         应用
        </text>
-<text fill="#9FA8DA" filter="url(#glow6)" font-size="15" font-weight="bold" text-anchor="middle" x="540" y="425">
+<text fill="#9FA8DA" font-size="15" font-weight="bold" text-anchor="middle" x="540" y="425">
         近似计算
        </text>
 <!-- 底部提示 -->
-<rect fill="rgba(78,205,196,0.2)" filter="url(#glow6)" height="50" rx="8" stroke="#4ECDC4" stroke-width="2" width="300" x="200" y="500">
+<rect fill="rgba(78,205,196,0.2)" height="50" rx="8" stroke="#4ECDC4" stroke-width="2" width="300" x="200" y="500">
 </rect>
-<text fill="#4ECDC4" filter="url(#glow6)" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="533">
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="533">
         掌握幂级数的展开与应用
        </text>
 </svg>
@@ -1100,7 +1125,111 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 幂级数的收敛域</p><p class="chalk-text">✓ 泰勒级数展开</p><p class="chalk-text">✓ 常用函数的展开式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">本章总结与误差控制</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><defs><filter id="glow15"><fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" filter="url(#glow15)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" filter="url(#glow15)" font-size="18" text-anchor="middle" x="350" y="255">幂级数</text></svg></div></div></div>
+<div class="page" id="page15">
+<div class="left-panel">
+<h1 class="title chalk-text">
+      本节小结
+     </h1>
+<div class="board-content">
+<p class="chalk-text emphasis">
+       核心内容
+      </p>
+<ul class="chalk-list">
+<li class="chalk-text">
+        幂级数的收敛域
+       </li>
+<li class="chalk-text">
+        泰勒级数展开
+       </li>
+<li class="chalk-text">
+        常用函数的展开式
+       </li>
+<li class="chalk-text">
+        幂级数的应用
+       </li>
+</ul>
+<p class="chalk-text emphasis">
+       下一节
+      </p>
+<p class="chalk-text">
+       本章总结与误差控制
+      </p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewbox="0 0 700 600">
+<defs>
+<filter id="glow15">
+<fegaussianblur result="coloredBlur" stddeviation="2">
+</fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur">
+</femergenode>
+<femergenode in="SourceGraphic">
+</femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- 标题 -->
+<text fill="#e1bee7" font-size="32" font-weight="bold" text-anchor="middle" x="350" y="80">
+        本节小结
+       </text>
+<!-- 知识点汇总 -->
+<g transform="translate(100,140)">
+<circle cx="250" cy="150" fill="rgba(255,224,102,0.2)" r="130" stroke="#FFE066" stroke-width="4">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="130;140;130">
+</animate>
+</circle>
+<text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="250" y="145">
+        幂级数与
+       </text>
+<text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="250" y="170">
+        泰勒展开
+       </text>
+<!-- 周围的知识点 -->
+<circle cx="100" cy="80" fill="rgba(78,205,196,0.3)" r="50" stroke="#4ECDC4" stroke-width="3">
+</circle>
+<text fill="#4ECDC4" font-size="13" text-anchor="middle" x="100" y="85">
+        收敛域
+       </text>
+<circle cx="400" cy="80" fill="rgba(255,107,107,0.3)" r="50" stroke="#FF6B6B" stroke-width="3">
+</circle>
+<text fill="#FF6B6B" font-size="13" text-anchor="middle" x="400" y="85">
+        泰勒级数
+       </text>
+<circle cx="100" cy="220" fill="rgba(159,168,218,0.3)" r="50" stroke="#9FA8DA" stroke-width="3">
+</circle>
+<text fill="#9FA8DA" font-size="13" text-anchor="middle" x="100" y="220">
+        常用
+       </text>
+<text fill="#9FA8DA" font-size="13" text-anchor="middle" x="100" y="235">
+        展开式
+       </text>
+<circle cx="400" cy="220" fill="rgba(255,183,77,0.3)" r="50" stroke="#FFB74D" stroke-width="3">
+</circle>
+<text fill="#FFB74D" font-size="13" text-anchor="middle" x="400" y="220">
+        应用
+       </text>
+<text fill="#FFB74D" font-size="12" text-anchor="middle" x="400" y="235">
+        近似计算
+       </text>
+</g>
+<!-- 下节预告 -->
+<rect fill="rgba(78,205,196,0.2)" height="80" rx="15" stroke="#4ECDC4" stroke-width="3" width="500" x="100" y="450">
+<animate attributename="stroke-opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5">
+</animate>
+</rect>
+<text fill="#4ECDC4" font-size="18" font-weight="bold" text-anchor="middle" x="350" y="485">
+        下节预告
+       </text>
+<text fill="#FFE066" font-size="20" font-weight="bold" text-anchor="middle" x="350" y="515">
+        本章总结与误差控制
+       </text>
+</svg>
+</div>
+</div>
+</div>
 
 </div>
 <div class="control-bar">
@@ -1117,7 +1246,8 @@
     🎬 自动播放
    </button>
 </div>
-<div class="subtitle-area" id="subtitleArea">
+<div class="subtitle-area">
+    <div class="subtitle-text" id="subtitleArea"></div>
 </div>
 <!-- 讯飞官方SDK -->
 <!-- Polyfill for older browsers -->
@@ -1169,7 +1299,14 @@
 
         function updateSubtitle(text) {
             const subtitleArea = document.getElementById('subtitleArea');
-            if (subtitleArea) subtitleArea.textContent = text;
+            if (subtitleArea) {
+                subtitleArea.textContent = text;
+                // 重新触发动画
+                subtitleArea.style.animation = 'none';
+                setTimeout(() => {
+                    subtitleArea.style.animation = 'scroll-left 20s linear infinite';
+                }, 10);
+            }
         }
 
         function waitForSDK() {
