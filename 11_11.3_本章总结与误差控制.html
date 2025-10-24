@@ -1141,7 +1141,25 @@
             return duration;
         }
 
-        function switchToPage(pageNum) { if (pageNum < 1 || pageNum > totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index + 1 === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+                function switchToPage(pageNum) { 
+            if (pageNum < 1 || pageNum > totalPages) return; 
+            const pages = document.querySelectorAll('.page'); 
+            pages.forEach(page => { page.classList.remove('active'); }); 
+            
+            // 如果是第1页，显示封面页（data-page="1"）
+            if (pageNum === 1) {
+                const coverPage = document.querySelector('.page[data-page="1"]');
+                if (coverPage) coverPage.classList.add('active');
+            } else {
+                // 否则显示对应的内容页（id="pageX"）
+                const targetPage = document.getElementById('page' + pageNum);
+                if (targetPage) targetPage.classList.add('active');
+            }
+            
+            currentPage = pageNum; 
+            document.getElementById('currentPage').textContent = pageNum; 
+            if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } 
+        }
         function nextPage() { if (currentPage < totalPages) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 1) switchToPage(currentPage - 1); }
 
