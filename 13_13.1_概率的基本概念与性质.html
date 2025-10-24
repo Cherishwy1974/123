@@ -855,7 +855,13 @@
 
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); previousPage(); } });
         let wheelTimeout; document.addEventListener('wheel', (e) => { clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { if (e.deltaY > 0) { nextPage(); } else if (e.deltaY < 0) { previousPage(); } }, 50); }, { passive: true });
-        document.addEventListener('DOMContentLoaded', () => { switchToPage(0); });
+        document.addEventListener('DOMContentLoaded', () => {
+            switchToPage(0);
+            // 自动启动播放
+            setTimeout(() => {
+                startAutoPlay();
+            }, 1000);
+        });
 
         window.addEventListener('beforeunload', function() {
             if (isAutoPlaying) stopAutoPlay();
