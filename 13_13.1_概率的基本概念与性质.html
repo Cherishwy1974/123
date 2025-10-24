@@ -154,8 +154,9 @@
 </div>
 </div>
 </div>
-<!-- 第2-6页继续... -->
-<div class="page" id="page2">
+
+<!-- 第3页：随机事件 -->
+<div class="page" id="page3">
 <div class="left-panel">
 <h1 class="title chalk-text">随机事件</h1>
 <div class="board-content">
@@ -199,7 +200,9 @@
 </div>
 </div>
 </div>
-<div class="page" id="page3">
+
+<!-- 第4页：概率的定义 -->
+<div class="page" id="page4">
 <div class="left-panel">
 <h1 class="title chalk-text">概率的定义</h1>
 <div class="board-content">
@@ -244,7 +247,9 @@
 </div>
 </div>
 </div>
-<div class="page" id="page4">
+
+<!-- 第5页：事件的运算 -->
+<div class="page" id="page5">
 <div class="left-panel">
 <h1 class="title chalk-text">事件的运算</h1>
 <div class="board-content">
@@ -307,7 +312,9 @@
 </div>
 </div>
 </div>
-<div class="page" id="page5">
+
+<!-- 第6页：概率的加法公式 -->
+<div class="page" id="page6">
 <div class="left-panel">
 <h1 class="title chalk-text">概率的加法公式</h1>
 <div class="board-content">
@@ -345,7 +352,7 @@
 <!-- 公式说明 -->
 <text fill="#FFE066" font-size="14" text-anchor="middle" x="350" y="480">P(A∪B) = P(A) + P(B) - P(A∩B)</text>
 <line marker-end="url(#arrow-red)" stroke="#FF6B6B" stroke-width="2" x1="220" x2="220" y1="380" y2="460"></line>
-<line marker-end="url(#arrow-cyan)" stroke="#4ECDC4" stroke-width="2" x="480" x2="480" y1="380" y2="460"></line>
+<line marker-end="url(#arrow-cyan)" stroke="#4ECDC4" stroke-width="2" x1="480" x2="480" y1="380" y2="460"></line>
 <line marker-end="url(#arrow-purple)" stroke="#9370DB" stroke-width="2" x1="350" x2="350" y1="360" y2="460"></line>
 <defs>
 <marker id="arrow-red" markerheight="10" markerwidth="10" orient="auto" refx="5" refy="5">
@@ -362,57 +369,9 @@
 </div>
 </div>
 </div>
-<div class="page" id="page6">
-<div class="left-panel">
-<h1 class="title chalk-text">总结</h1>
-<div class="board-content">
-<p class="chalk-text emphasis">核心内容</p>
-<ul class="chalk-list">
-<li class="chalk-text">样本空间与随机事件</li>
-<li class="chalk-text">概率的定义：$P(A) = \frac{m}{n}$</li>
-<li class="chalk-text">事件的运算：并、交、对立</li>
-<li class="chalk-text">加法公式：$P(A \cup B) = P(A) + P(B) - P(A \cap B)$</li>
-</ul>
-</div>
-</div>
-<div class="right-panel">
-<div class="animation-container">
-<svg class="svg-animation" viewbox="0 0 700 600">
-<!-- 知识树 -->
-<circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="80" stroke="#FFE066" stroke-width="4">
-<animate attributename="r" dur="3s" repeatcount="indefinite" values="80;90;80"></animate>
-</circle>
-<text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">概率</text>
-<!-- 分支1 -->
-<line stroke="#FF6B6B" stroke-width="3" x1="300" x2="200" y1="200" y2="120"></line>
-<circle cx="200" cy="120" fill="rgba(255,107,107,0.3)" r="40" stroke="#FF6B6B" stroke-width="3">
-<animate attributename="r" dur="2s" repeatcount="indefinite" values="40;45;40"></animate>
-</circle>
-<text fill="#FF6B6B" font-size="12" text-anchor="middle" x="200" y="125">样本空间</text>
-<!-- 分支2 -->
-<line stroke="#4ECDC4" stroke-width="3" x1="400" x2="500" y1="200" y2="120"></line>
-<circle cx="500" cy="120" fill="rgba(78,205,196,0.3)" r="40" stroke="#4ECDC4" stroke-width="3">
-<animate attributename="r" begin="0.5s" dur="2s" repeatcount="indefinite" values="40;45;40"></animate>
-</circle>
-<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="500" y="125">事件运算</text>
-<!-- 分支3 -->
-<line stroke="#9370DB" stroke-width="3" x1="300" x2="200" y1="300" y2="380"></line>
-<circle cx="200" cy="380" fill="rgba(147,112,219,0.3)" r="40" stroke="#9370DB" stroke-width="3">
-<animate attributename="r" begin="1s" dur="2s" repeatcount="indefinite" values="40;45;40"></animate>
-</circle>
-<text fill="#9370DB" font-size="12" text-anchor="middle" x="200" y="385">古典概型</text>
-<!-- 分支4 -->
-<line stroke="#e1bee7" stroke-width="3" x1="400" x2="500" y1="300" y2="380"></line>
-<circle cx="500" cy="380" fill="rgba(225,190,231,0.3)" r="40" stroke="#e1bee7" stroke-width="3">
-<animate attributename="r" begin="1.5s" dur="2s" repeatcount="indefinite" values="40;45;40"></animate>
-</circle>
-<text fill="#e1bee7" font-size="12" text-anchor="middle" x="500" y="385">加法公式</text>
-</svg>
-</div>
-</div>
 
-<!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">条件概率</h1><div class="board-content"><p class="chalk-text">$$P(A|B) = \frac{P(AB)}{P(B)}$$</p><p class="chalk-text">B发生的条件下A发生的概率</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第7页：条件概率 -->
+<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">条件概率</h1><div class="board-content"><p class="chalk-text emphasis">定义</p><div class="formula-box"><p class="chalk-text">$$P(A|B) = \frac{P(AB)}{P(B)}$$</p></div><p class="chalk-text">B发生的条件下A发生的概率</p><p class="chalk-text emphasis">例：不放回抽球</p><p class="chalk-text">袋中5红3白，第一次抽到红球后，第二次抽到红球的概率为 4/7</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(150,120)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="200" y="-30">条件概率的维恩图</text>
 <rect fill="rgba(200,200,200,0.1)" stroke="#999" stroke-width="2" width="400" height="300" x="0" y="0"></rect>
@@ -431,7 +390,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">乘法公式</h1><div class="board-content"><p class="chalk-text">$$P(AB) = P(A)P(B|A)$$</p><p class="chalk-text">$$= P(B)P(A|B)$$</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第8页：乘法公式 -->
+<div class="page" id="page8"><div class="left-panel"><h1 class="title chalk-text">乘法公式</h1><div class="board-content"><p class="chalk-text emphasis">公式</p><div class="formula-box"><p class="chalk-text">$$P(AB) = P(A)P(B|A)$$</p></div><div class="formula-box"><p class="chalk-text">$$= P(B)P(A|B)$$</p></div><p class="chalk-text emphasis">应用</p><p class="chalk-text">计算两个事件同时发生的概率</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,100)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-20">乘法公式</text>
 <g transform="translate(0,30)">
@@ -454,7 +414,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">全概率公式</h1><div class="board-content"><p class="chalk-text">$$P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)$$</p><p class="chalk-text">B₁,B₂,...,Bₙ是完备事件组</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第9页：全概率公式 -->
+<div class="page" id="page9"><div class="left-panel"><h1 class="title chalk-text">全概率公式</h1><div class="board-content"><p class="chalk-text emphasis">公式</p><div class="formula-box"><p class="chalk-text">$$P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)$$</p></div><p class="chalk-text">B₁,B₂,...,Bₙ是完备事件组</p><p class="chalk-text emphasis">意义</p><p class="chalk-text">将复杂事件分解为简单情况</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(120,90)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="230" y="-15">全概率公式示意图</text>
 <rect fill="rgba(200,200,200,0.1)" stroke="#999" stroke-width="3" width="460" height="220" x="0" y="20"></rect>
@@ -476,7 +437,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">贝叶斯公式</h1><div class="board-content"><p class="chalk-text">$$P(B_i|A) = \frac{P(B_i)P(A|B_i)}{\sum_j P(B_j)P(A|B_j)}$$</p><p class="chalk-text">由果推因</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第10页：贝叶斯公式 -->
+<div class="page" id="page10"><div class="left-panel"><h1 class="title chalk-text">贝叶斯公式</h1><div class="board-content"><p class="chalk-text emphasis">公式</p><div class="formula-box"><p class="chalk-text">$$P(B_i|A) = \frac{P(B_i)P(A|B_i)}{\sum_j P(B_j)P(A|B_j)}$$</p></div><p class="chalk-text emphasis">意义</p><p class="chalk-text">由果推因：已知结果推断原因</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,90)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-15">贝叶斯公式：由果推因</text>
 <g transform="translate(0,20)">
@@ -509,7 +471,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：古典概型</h1><div class="board-content"><p class="chalk-text">掷两个骰子，点数和为7的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">基本事件总数36</p><p class="chalk-text">有利事件6个</p><p class="chalk-text">P = 6/36 = 1/6</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第11页：例题：古典概型 -->
+<div class="page" id="page11"><div class="left-panel"><h1 class="title chalk-text">例题：古典概型</h1><div class="board-content"><p class="chalk-text emphasis">题目</p><p class="chalk-text">掷两个骰子，点数和为7的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">基本事件总数：36</p><p class="chalk-text">有利事件：6个</p><div class="formula-box"><p class="chalk-text">$$P = \frac{6}{36} = \frac{1}{6}$$</p></div></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">例题：掷两个骰子，点数和为7</text>
 <g transform="translate(0,30)">
@@ -535,7 +498,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：条件概率</h1><div class="board-content"><p class="chalk-text">袋中5红3白，不放回取2球</p><p class="chalk-text">第一次红球，第二次也红球的概率</p><p class="chalk-text emphasis">解</p><p class="chalk-text">P(A₂|A₁) = 4/7</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第12页：例题：条件概率 -->
+<div class="page" id="page12"><div class="left-panel"><h1 class="title chalk-text">例题：条件概率</h1><div class="board-content"><p class="chalk-text emphasis">题目</p><p class="chalk-text">袋中5红3白，不放回取2球</p><p class="chalk-text">第一次红球，第二次也红球的概率</p><p class="chalk-text emphasis">解</p><div class="formula-box"><p class="chalk-text">$$P(A_2|A_1) = \frac{4}{7}$$</p></div></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,90)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-15">例题：不放回抽球</text>
 <g transform="translate(0,20)">
@@ -567,7 +531,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">概率在决策中的应用</h1><div class="board-content"><p class="chalk-text">• 风险评估</p><p class="chalk-text">• 质量控制</p><p class="chalk-text">• 医疗诊断</p><p class="chalk-text">• 金融投资</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第13页：概率在决策中的应用 -->
+<div class="page" id="page13"><div class="left-panel"><h1 class="title chalk-text">概率在决策中的应用</h1><div class="board-content"><p class="chalk-text emphasis">主要应用领域</p><ul class="chalk-list"><li class="chalk-text">风险评估</li><li class="chalk-text">质量控制</li><li class="chalk-text">医疗诊断</li><li class="chalk-text">金融投资</li></ul></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">概率在决策中的应用</text>
 <g transform="translate(0,30)">
@@ -597,7 +562,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text">1. 理解概率的定义</p><p class="chalk-text">2. 掌握概率的性质</p><p class="chalk-text">3. 会用条件概率</p><p class="chalk-text">4. 掌握贝叶斯公式</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第14页：学习要点 -->
+<div class="page" id="page14"><div class="left-panel"><h1 class="title chalk-text">学习要点</h1><div class="board-content"><p class="chalk-text emphasis">核心知识点</p><ul class="chalk-list"><li class="chalk-text">理解概率的定义</li><li class="chalk-text">掌握概率的性质</li><li class="chalk-text">会用条件概率</li><li class="chalk-text">掌握贝叶斯公式</li></ul></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
 <g transform="translate(100,80)">
 <text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">第13.1节学习要点</text>
 <g transform="translate(0,30)">
@@ -627,7 +593,8 @@
 </g>
 </svg></div></div></div>
 
-<div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><p class="chalk-text">✓ 概率的基本概念</p><p class="chalk-text">✓ 概率的性质</p><p class="chalk-text">✓ 条件概率与贝叶斯公式</p><p class="chalk-text emphasis">下一节</p><p class="chalk-text">随机变量、期望与方差</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">概率基础</text></svg></div></div></div>
+<!-- 第15页：本节小结 -->
+<div class="page" id="page15"><div class="left-panel"><h1 class="title chalk-text">本节小结</h1><div class="board-content"><p class="chalk-text emphasis">核心内容</p><ul class="chalk-list"><li class="chalk-text">概率的基本概念</li><li class="chalk-text">概率的性质</li><li class="chalk-text">条件概率与贝叶斯公式</li></ul><p class="chalk-text emphasis" style="margin-top: 20px;">下一节</p><p class="chalk-text">随机变量、期望与方差</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600"><circle cx="350" cy="250" fill="rgba(255,224,102,0.3)" r="100" stroke="#FFE066" stroke-width="4"><animate attributeName="r" dur="3s" repeatCount="indefinite" values="100;110;100"></animate></circle><text fill="#FFE066" font-size="18" text-anchor="middle" x="350" y="255">概率基础</text></svg></div></div></div>
 
 </div>
 
@@ -663,17 +630,17 @@
             1: `随机试验的概念。随机试验是指在相同条件下可以重复进行，每次试验的结果不能事先确定，但所有可能的结果是已知的试验。例如抛硬币、掷骰子、抽奖等都是随机试验。随机试验的结果具有不确定性，但这种不确定性是有规律的，可以用概率来描述。`,
             2: `样本空间的定义。随机试验的所有可能结果组成的集合称为样本空间，记作Ω。样本空间中的每一个元素称为样本点。例如抛硬币的样本空间是Ω等于大括号正面逗号反面大括号。掷骰子的样本空间是Ω等于大括号1逗号2逗号3逗号4逗号5逗号6大括号。样本空间可以是有限集、可列集或不可列集。`,
             3: `事件的概念。样本空间的子集称为随机事件，简称事件。事件在试验中可能发生也可能不发生。如果试验结果属于事件A，则称事件A发生。例如掷骰子时，事件A等于大括号出现偶数大括号等于大括号2逗号4逗号6大括号。样本空间Ω本身称为必然事件，空集称为不可能事件。`,
-            4: `事件的分类。必然事件在每次试验中一定发生。不可能事件在每次试验中一定不发生。基本事件是只包含一个样本点的事件。复合事件是包含多个样本点的事件。互斥事件是不能同时发生的事件，即A交B等于空集。对立事件是互斥且必有一个发生的事件，A的对立事件记作A的补集。`,
-            5: `事件的运算。事件的并A并B表示A或B至少有一个发生。事件的交A交B表示A和B同时发生。事件的差A减B表示A发生但B不发生。事件的补A的补集表示A不发生。事件运算满足交换律、结合律和分配律。德摩根律：括号A并B括号的补集等于A的补集交B的补集。`,
-            6: `概率的统计定义。在n次重复试验中，事件A发生的次数为nA，则频率fn括号A括号等于nA除以n。当n很大时，频率稳定在某个常数附近，这个常数称为事件A的概率，记作P括号A括号。概率反映了事件发生的可能性大小。频率是概率的近似值，概率是频率的稳定值。`,
-            7: `概率的公理化定义。对于样本空间Ω中的任意事件A，定义概率P括号A括号满足三条公理。公理一：非负性，P括号A括号大于等于0。公理二：规范性，P括号Ω括号等于1。公理三：可列可加性，对于两两互斥的事件A1、A2等等，P括号A1并A2并点点点括号等于P括号A1括号加P括号A2括号加点点点。这三条公理是概率论的基础。`,
-            8: `概率的基本性质一。不可能事件的概率P括号空集括号等于0。对立事件的概率P括号A的补集括号等于1减P括号A括号。如果A包含于B，则P括号A括号小于等于P括号B括号。对于任意事件A，0小于等于P括号A括号小于等于1。这些性质可以从公理推导出来。`,
-            9: `概率的基本性质二：加法公式。对于任意两个事件A和B，P括号A并B括号等于P括号A括号加P括号B括号减P括号A交B括号。如果A和B互斥，则P括号A并B括号等于P括号A括号加P括号B括号。对于三个事件，P括号A并B并C括号等于P括号A括号加P括号B括号加P括号C括号减P括号A交B括号减P括号A交C括号减P括号B交C括号加P括号A交B交C括号。`,
-            10: `古典概型的定义。如果样本空间只包含有限个样本点，且每个样本点发生的可能性相等，则称为古典概型或等可能概型。在古典概型中，如果样本空间包含n个样本点，事件A包含m个样本点，则P括号A括号等于m除以n。古典概型是最简单的概率模型。`,
-            11: `古典概型的例题。从52张扑克牌中随机抽取一张，求抽到红桃的概率。样本空间包含52个样本点，每张牌被抽到的可能性相等。事件A等于大括号抽到红桃大括号包含13个样本点。所以P括号A括号等于13除以52等于四分之一。这是古典概型的典型应用。`,
-            12: `排列组合在概率中的应用。计算古典概型的概率常需要用到排列组合。从n个不同元素中取r个的排列数为P括号n逗号r括号等于n的阶乘除以括号n减r括号的阶乘。组合数为C括号n逗号r括号等于n的阶乘除以括号r的阶乘乘以括号n减r括号的阶乘括号。排列考虑顺序，组合不考虑顺序。`,
-            13: `排列组合的例题。从10个产品中随机抽取3个，其中有2个次品，求恰好抽到1个次品的概率。样本空间大小为C括号10逗号3括号等于120。事件A等于大括号恰好1个次品大括号，需要从2个次品中选1个，从8个正品中选2个，所以A包含C括号2逗号1括号乘以C括号8逗号2括号等于2乘以28等于56个样本点。P括号A括号等于56除以120等于七分之十五。`,
-            14: `概率在实际中的应用。在质量控制中，用概率评估产品合格率。在保险业中，用概率计算风险和保费。在通信中，用概率分析信号传输的可靠性。在医学中，用概率评估疾病发生率和治疗效果。在金融中，用概率分析投资风险和收益。概率论是现代科学技术的重要工具。`
+            4: `概率的定义。在古典概型中，如果样本空间包含n个等可能的样本点，事件A包含m个样本点，则事件A的概率定义为P括号A括号等于m除以n。概率反映了事件发生的可能性大小，其值介于0和1之间。概率为0表示事件几乎不可能发生，概率为1表示事件几乎必然发生。`,
+            5: `事件的运算。并事件A并B表示A或B至少有一个发生。交事件A交B表示A和B同时发生。对立事件A的补集表示A不发生。互斥事件是指A交B等于空集，即A和B不能同时发生。事件运算满足交换律、结合律和分配律，这些性质在概率计算中经常用到。`,
+            6: `概率的加法公式。对于互斥事件A和B，P括号A并B括号等于P括号A括号加P括号B括号。对于一般事件，P括号A并B括号等于P括号A括号加P括号B括号减P括号A交B括号。对立事件的概率满足P括号A的补集括号等于1减P括号A括号。加法公式是计算复杂事件概率的重要工具。`,
+            7: `条件概率的定义。在事件B发生的条件下，事件A发生的概率称为条件概率，记作P括号A竖线B括号，计算公式为P括号AB括号除以P括号B括号。条件概率反映了在已知部分信息的情况下，事件发生的可能性。例如不放回抽球问题中，第二次抽球的概率要考虑第一次抽球的结果。`,
+            8: `乘法公式。两个事件同时发生的概率可以用乘法公式计算：P括号AB括号等于P括号A括号乘以P括号B竖线A括号，也等于P括号B括号乘以P括号A竖线B括号。乘法公式将同时发生的概率分解为先后发生的概率乘积，在实际问题中应用广泛，可以根据已知条件灵活选择使用。`,
+            9: `全概率公式。如果B1、B2、...、Bn是样本空间的一个划分，即它们两两互斥且并集为Ω，则事件A的概率可以表示为P括号A括号等于求和P括号Bi括号乘以P括号A竖线Bi括号。全概率公式将复杂事件的概率分解为在各种情况下的简单概率之和，是概率计算的重要方法。`,
+            10: `贝叶斯公式。已知结果A发生，求原因Bi的概率，这就是贝叶斯公式：P括号Bi竖线A括号等于P括号Bi括号乘以P括号A竖线Bi括号，除以所有P括号Bj括号乘以P括号A竖线Bj括号的和。贝叶斯公式实现了由果推因，在医疗诊断、垃圾邮件过滤、机器学习等领域有广泛应用。`,
+            11: `例题：古典概型。掷两个骰子，求点数和为7的概率。样本空间包含6乘以6等于36个基本事件。点数和为7的情况有：括号1逗号6括号、括号2逗号5括号、括号3逗号4括号、括号4逗号3括号、括号5逗号2括号、括号6逗号1括号，共6个。所以概率P等于6除以36等于六分之一。`,
+            12: `例题：条件概率。袋中有5个红球和3个白球，不放回地抽取两个球。已知第一次抽到红球，求第二次也抽到红球的概率。第一次抽到红球后，袋中剩余4个红球和3个白球，共7个球。所以P括号A2竖线A1括号等于4除以7，约等于0.571。这个例子体现了条件概率的实际应用。`,
+            13: `概率在决策中的应用。在风险评估中，用概率评估项目失败、事故发生的可能性。在质量控制中，计算产品合格率和设计抽检方案。在医疗诊断中，根据症状用贝叶斯公式推断疾病概率。在金融投资中，评估投资收益和风险的概率分布。概率论是现代科学决策的重要工具。`,
+            14: `学习要点总结。第一，理解概率的定义，掌握古典概型、几何概型、统计概型。第二，掌握概率的性质，包括非负性、规范性和加法公式。第三，会用条件概率，理解乘法公式和全概率公式。第四，掌握贝叶斯公式，能够解决由果推因的问题。这些是概率论的核心基础知识。`
         };
 
         function updateStatus(message, type = 'normal') {
@@ -701,7 +668,7 @@
             });
         }
 
-        function switchToPage(pageNum) { if (pageNum < 0 || pageNum >= totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
+        function switchToPage(pageNum) { if (pageNum < 0 || pageNum >= totalPages) return; const pages = document.querySelectorAll('.page'); pages.forEach((page, index) => { if (index === pageNum) { page.classList.add('active'); } else { page.classList.remove('active'); } }); currentPage = pageNum; document.getElementById('currentPage').textContent = pageNum + 1; if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); } }
         function nextPage() { if (currentPage < totalPages - 1) switchToPage(currentPage + 1); }
         function previousPage() { if (currentPage > 0) switchToPage(currentPage - 1); }
 
@@ -714,10 +681,10 @@
                     .on('disconnected', () => {isConnected = false; updateStatus('连接断开', 'error');})
                     .on('error', (error) => {updateStatus('错误', 'error'); isTeaching = false;})                    .on('frame_stop', (data) => {
                         console.log('✅ 虚拟人讲解完成 frame_stop:', data);
-                        if (isAutoPlaying && currentPage < totalPages) {
-                            console.log(`🎬 自动播放: 第${currentPage}页讲解完成，准备翻页到第${currentPage + 1}页`);
+                        if (isAutoPlaying && currentPage < totalPages - 1) {
+                            console.log(`🎬 自动播放: 第${currentPage + 1}页讲解完成，准备翻页到第${currentPage + 2}页`);
                             setTimeout(() => {
-                                if (isAutoPlaying && currentPage < totalPages) {
+                                if (isAutoPlaying && currentPage < totalPages - 1) {
                                     currentPage++;
                                     switchToPage(currentPage);
                                     setTimeout(() => {
@@ -725,6 +692,9 @@
                                             speakContent(currentPage);
                                         }
                                     }, 800);
+                                } else if (currentPage === totalPages - 1) {
+                                    console.log('🎉 已到达最后一页，播放完成');
+                                    stopAutoPlay();
                                 }
                             }, 1500);
                         }
@@ -750,7 +720,7 @@
             const translated = translateMathToSpeech(speech);
             const charCount = translated.length;
             const duration = Math.max(6000, charCount * 200);
-            console.log(`第${pageNum}页: ${charCount}字 → ${duration}ms`);
+            console.log(`第${pageNum + 1}页: ${charCount}字 → ${duration}ms`);
             return duration;
         }
         async function speakContent(pageNum) {

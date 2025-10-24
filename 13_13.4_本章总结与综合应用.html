@@ -502,12 +502,489 @@
 </div>
 </div>
 
-<!-- 第7-15页 -->
-<div class="page" id="page7"><div class="left-panel"><h1 class="title chalk-text">应用1：质量控制</h1><div class="board-content"><p class="chalk-text">产品尺寸服从正态分布</p><p class="chalk-text">用3σ原则判断合格率</p><p class="chalk-text">控制图监控生产过程</p></div></div><div class="right-panel"><div class="animation-container"><svg class="svg-animation" viewBox="0 0 700 600">
+<!-- 第7页：概率论核心回顾 -->
+<div class="page" id="page7">
+<div class="left-panel">
+<h1 class="title chalk-text">概率论核心回顾</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">基本概念</p>
+<ul class="chalk-list">
+<li class="chalk-text">样本空间与事件</li>
+<li class="chalk-text">概率的公理化定义</li>
+<li class="chalk-text">条件概率与独立性</li>
+</ul>
+<p class="chalk-text emphasis">重要公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$P(A \cup B) = P(A) + P(B) - P(AB)$$</p>
+<p class="chalk-text">$$P(A|B) = \frac{P(AB)}{P(B)}$$</p>
+</div>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">概率论知识框架</text>
 <g transform="translate(100,80)">
-<text fill="#FFE066" font-size="16" text-anchor="middle" x="250" y="-10">应用1：质量控制</text>
-<g transform="translate(0,30)">
 <rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">古典概型</text>
+<text fill="#999" font-size="13" x="10" y="45">等可能事件，有限样本空间</text>
+<text fill="#999" font-size="13" x="10" y="65">P(A) = |A| / |Ω|</text>
+<text fill="#999" font-size="12" x="10" y="82">应用：抽签、掷骰子、扑克牌</text>
+</g>
+<g transform="translate(100,200)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">几何概型</text>
+<text fill="#999" font-size="13" x="10" y="45">等可能事件，无限样本空间</text>
+<text fill="#999" font-size="13" x="10" y="65">P(A) = 测度(A) / 测度(Ω)</text>
+<text fill="#999" font-size="12" x="10" y="82">应用：随机投点、等车时间</text>
+</g>
+<g transform="translate(100,320)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">贝叶斯公式</text>
+<text fill="#999" font-size="13" x="10" y="45">后验概率 = 先验概率 × 似然 / 证据</text>
+<text fill="#999" font-size="13" x="10" y="65">P(B_i|A) = P(B_i)P(A|B_i) / ΣP(B_j)P(A|B_j)</text>
+<text fill="#999" font-size="12" x="10" y="82">应用：医学诊断、垃圾邮件过滤</text>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第8页：随机变量核心回顾 -->
+<div class="page" id="page8">
+<div class="left-panel">
+<h1 class="title chalk-text">随机变量核心回顾</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">离散型随机变量</p>
+<ul class="chalk-list">
+<li class="chalk-text">分布律：$P(X=x_i) = p_i$</li>
+<li class="chalk-text">期望：$E(X) = \sum x_i p_i$</li>
+<li class="chalk-text">方差：$D(X) = E[(X-E(X))^2]$</li>
+</ul>
+<p class="chalk-text emphasis">连续型随机变量</p>
+<ul class="chalk-list">
+<li class="chalk-text">概率密度：$f(x)$</li>
+<li class="chalk-text">期望：$E(X) = \int x f(x) dx$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">随机变量的数字特征</text>
+<g transform="translate(100,80)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">期望 E(X)</text>
+<text fill="#999" font-size="13" x="10" y="45">反映随机变量的平均水平</text>
+<text fill="#999" font-size="13" x="10" y="65">性质：E(aX+b) = aE(X) + b</text>
+<text fill="#999" font-size="12" x="10" y="82">E(X+Y) = E(X) + E(Y) (总成立)</text>
+</g>
+<g transform="translate(100,200)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">方差 D(X)</text>
+<text fill="#999" font-size="13" x="10" y="45">反映随机变量的波动程度</text>
+<text fill="#999" font-size="13" x="10" y="65">性质：D(aX+b) = a²D(X)</text>
+<text fill="#999" font-size="12" x="10" y="82">D(X) = E(X²) - [E(X)]²</text>
+</g>
+<g transform="translate(100,320)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">协方差与相关系数</text>
+<text fill="#999" font-size="13" x="10" y="45">Cov(X,Y) = E[(X-E(X))(Y-E(Y))]</text>
+<text fill="#999" font-size="13" x="10" y="65">ρ(X,Y) = Cov(X,Y) / (σ_X σ_Y)</text>
+<text fill="#999" font-size="12" x="10" y="82">|ρ| = 1 表示线性相关，ρ = 0 表示不相关</text>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第9页：常见分布回顾 -->
+<div class="page" id="page9">
+<div class="left-panel">
+<h1 class="title chalk-text">常见分布回顾</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">离散分布</p>
+<ul class="chalk-list">
+<li class="chalk-text">0-1分布：$B(1,p)$</li>
+<li class="chalk-text">二项分布：$B(n,p)$</li>
+<li class="chalk-text">泊松分布：$P(\lambda)$</li>
+</ul>
+<p class="chalk-text emphasis">连续分布</p>
+<ul class="chalk-list">
+<li class="chalk-text">均匀分布：$U(a,b)$</li>
+<li class="chalk-text">指数分布：参数 $\lambda$</li>
+<li class="chalk-text">正态分布：$N(\mu, \sigma^2)$</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">常见分布对比</text>
+<g transform="translate(50,80)">
+<!-- 二项分布 -->
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="240" height="120" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">二项分布 B(n,p)</text>
+<text fill="#999" font-size="12" x="10" y="40">n重伯努利试验</text>
+<text fill="#999" font-size="12" x="10" y="58">P(X=k) = C(n,k)p^k(1-p)^(n-k)</text>
+<text fill="#999" font-size="12" x="10" y="76">E(X) = np</text>
+<text fill="#999" font-size="12" x="10" y="94">D(X) = np(1-p)</text>
+<text fill="#FFE066" font-size="11" x="10" y="112">应用：质量抽检</text>
+</g>
+<g transform="translate(310,80)">
+<!-- 泊松分布 -->
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="240" height="120" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">泊松分布 P(λ)</text>
+<text fill="#999" font-size="12" x="10" y="40">单位时间内事件数</text>
+<text fill="#999" font-size="12" x="10" y="58">P(X=k) = (λ^k/k!)e^(-λ)</text>
+<text fill="#999" font-size="12" x="10" y="76">E(X) = λ</text>
+<text fill="#999" font-size="12" x="10" y="94">D(X) = λ</text>
+<text fill="#FFE066" font-size="11" x="10" y="112">应用：呼叫中心</text>
+</g>
+<g transform="translate(50,220)">
+<!-- 指数分布 -->
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="240" height="120" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">指数分布</text>
+<text fill="#999" font-size="12" x="10" y="40">等待时间分布</text>
+<text fill="#999" font-size="12" x="10" y="58">f(x) = λe^(-λx), x≥0</text>
+<text fill="#999" font-size="12" x="10" y="76">E(X) = 1/λ</text>
+<text fill="#999" font-size="12" x="10" y="94">D(X) = 1/λ²</text>
+<text fill="#FFE066" font-size="11" x="10" y="112">应用：寿命分析</text>
+</g>
+<g transform="translate(310,220)">
+<!-- 正态分布 -->
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="240" height="120" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">正态分布 N(μ,σ²)</text>
+<text fill="#999" font-size="12" x="10" y="40">最重要的连续分布</text>
+<text fill="#999" font-size="12" x="10" y="58">f(x) = (1/√(2πσ²))e^(-(x-μ)²/(2σ²))</text>
+<text fill="#999" font-size="12" x="10" y="76">E(X) = μ</text>
+<text fill="#999" font-size="12" x="10" y="94">D(X) = σ²</text>
+<text fill="#FFE066" font-size="11" x="10" y="112">应用：几乎所有领域</text>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第10页：中心极限定理回顾 -->
+<div class="page" id="page10">
+<div class="left-panel">
+<h1 class="title chalk-text">中心极限定理</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定理内容</p>
+<p class="chalk-text">设 $X_1, X_2, \ldots, X_n$ 独立同分布</p>
+<p class="chalk-text">$E(X_i) = \mu, D(X_i) = \sigma^2$</p>
+<div class="formula-box">
+<p class="chalk-text">$$\frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1)$$</p>
+</div>
+<p class="chalk-text emphasis">意义</p>
+<ul class="chalk-list">
+<li class="chalk-text">解释了正态分布的普遍性</li>
+<li class="chalk-text">统计推断的理论基础</li>
+<li class="chalk-text">大样本近似的依据</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">中心极限定理示意</text>
+<g transform="translate(100,80)">
+<!-- 原始分布（均匀分布） -->
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="200" height="100" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" text-anchor="middle" x="100" y="20">原始分布</text>
+<rect fill="rgba(78,205,196,0.3)" width="160" height="50" x="20" y="35"></rect>
+<text fill="#999" font-size="11" text-anchor="middle" x="100" y="95">均匀分布 U(0,1)</text>
+</g>
+<g transform="translate(350,80)">
+<!-- 样本均值分布（n=5） -->
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="200" height="100" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="13" font-weight="bold" text-anchor="middle" x="100" y="20">n=5 均值分布</text>
+<path d="M 20 85 L 50 65 L 80 45 L 110 35 L 140 45 L 170 65 L 180 85" fill="rgba(255,224,102,0.3)" stroke="#FFE066" stroke-width="2"></path>
+<text fill="#999" font-size="11" text-anchor="middle" x="100" y="95">开始接近正态</text>
+</g>
+<g transform="translate(100,220)">
+<!-- 样本均值分布（n=10） -->
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="200" height="100" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="13" font-weight="bold" text-anchor="middle" x="100" y="20">n=10 均值分布</text>
+<path d="M 20 85 Q 60 60, 100 30 T 180 85" fill="rgba(255,107,107,0.3)" stroke="#FF6B6B" stroke-width="2"></path>
+<text fill="#999" font-size="11" text-anchor="middle" x="100" y="95">更接近正态</text>
+</g>
+<g transform="translate(350,220)">
+<!-- 样本均值分布（n=30） -->
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="200" height="100" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="13" font-weight="bold" text-anchor="middle" x="100" y="20">n=30 均值分布</text>
+<path d="M 20 85 Q 60 55, 100 25 T 180 85" fill="rgba(147,112,219,0.3)" stroke="#9370DB" stroke-width="2"></path>
+<text fill="#999" font-size="11" text-anchor="middle" x="100" y="95">近似正态分布</text>
+</g>
+<g transform="translate(100,360)">
+<rect fill="rgba(225,190,231,0.15)" stroke="#e1bee7" stroke-width="2" width="450" height="80" x="0" y="0"></rect>
+<text fill="#e1bee7" font-size="14" font-weight="bold" x="10" y="20">结论</text>
+<text fill="#999" font-size="13" x="10" y="40">样本量越大，样本均值的分布越接近正态分布</text>
+<text fill="#999" font-size="12" x="10" y="60">通常 n ≥ 30 时，正态近似效果较好</text>
+<text fill="#FFE066" font-size="12" x="10" y="75">这就是为什么正态分布在自然界如此普遍！</text>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第11页：3σ规则应用 -->
+<div class="page" id="page11">
+<div class="left-panel">
+<h1 class="title chalk-text">3σ规则的应用</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">规则内容</p>
+<p class="chalk-text">对于正态分布 $N(\mu, \sigma^2)$：</p>
+<ul class="chalk-list">
+<li class="chalk-text">$P(|X-\mu| < \sigma) \approx 0.683$</li>
+<li class="chalk-text">$P(|X-\mu| < 2\sigma) \approx 0.954$</li>
+<li class="chalk-text">$P(|X-\mu| < 3\sigma) \approx 0.997$</li>
+</ul>
+<p class="chalk-text emphasis">实际应用</p>
+<ul class="chalk-list">
+<li class="chalk-text">质量控制：设定控制上下限</li>
+<li class="chalk-text">异常检测：超出3σ视为异常</li>
+<li class="chalk-text">风险管理：评估极端情况</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">3σ规则可视化</text>
+<g transform="translate(100,100)">
+<!-- 坐标轴 -->
+<line stroke="#999" stroke-width="2" x1="50" x2="500" y1="300" y2="300"></line>
+<!-- 正态曲线 -->
+<path d="M 50 295 Q 130 260, 200 180 T 275 100 T 350 180 T 420 260 T 500 295" fill="none" stroke="#4ECDC4" stroke-width="3">
+<animate attributeName="stroke-opacity" dur="3s" repeatCount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<!-- μ 标记 -->
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="2" x1="275" x2="275" y1="300" y2="100"></line>
+<text fill="#FFE066" font-size="14" text-anchor="middle" x="275" y="330">μ</text>
+<!-- ±σ 区域 -->
+<rect fill="rgba(78,205,196,0.2)" height="200" width="120" x="215" y="100">
+<animate attributeName="fill-opacity" dur="3s" repeatCount="indefinite" values="0.1;0.3;0.1"></animate>
+</rect>
+<line stroke="#4ECDC4" stroke-width="2" x1="215" x2="215" y1="290" y2="310"></line>
+<line stroke="#4ECDC4" stroke-width="2" x1="335" x2="335" y1="290" y2="310"></line>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="195" y="330">μ-σ</text>
+<text fill="#4ECDC4" font-size="12" text-anchor="middle" x="355" y="330">μ+σ</text>
+<text fill="#4ECDC4" font-size="13" font-weight="bold" text-anchor="middle" x="275" y="250">68.3%</text>
+<!-- ±2σ 区域 -->
+<rect fill="rgba(255,224,102,0.15)" height="200" width="60" x="155" y="100"></rect>
+<rect fill="rgba(255,224,102,0.15)" height="200" width="60" x="335" y="100"></rect>
+<line stroke="#FFE066" stroke-width="2" x1="155" x2="155" y1="290" y2="310"></line>
+<line stroke="#FFE066" stroke-width="2" x1="395" x2="395" y1="290" y2="310"></line>
+<text fill="#FFE066" font-size="11" text-anchor="middle" x="125" y="330">μ-2σ</text>
+<text fill="#FFE066" font-size="11" text-anchor="middle" x="425" y="330">μ+2σ</text>
+<text fill="#FFE066" font-size="12" font-weight="bold" text-anchor="middle" x="185" y="200">13.6%</text>
+<text fill="#FFE066" font-size="12" font-weight="bold" text-anchor="middle" x="365" y="200">13.6%</text>
+<!-- ±3σ 区域 -->
+<line stroke="#FF6B6B" stroke-width="2" x1="95" x2="95" y1="290" y2="310"></line>
+<line stroke="#FF6B6B" stroke-width="2" x1="455" x2="455" y1="290" y2="310"></line>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="65" y="330">μ-3σ</text>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="485" y="330">μ+3σ</text>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="75" y="150">2.1%</text>
+<text fill="#FF6B6B" font-size="11" text-anchor="middle" x="475" y="150">2.1%</text>
+<!-- 总结框 -->
+<rect fill="rgba(255,255,255,0.05)" height="60" rx="5" stroke="#e1bee7" stroke-width="2" width="450" x="50" y="360"></rect>
+<text fill="#e1bee7" font-size="13" text-anchor="middle" x="275" y="385">99.7% 的数据落在 [μ-3σ, μ+3σ] 区间内</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="275" y="405">超出此范围的数据可视为异常值</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第12页：贝叶斯公式应用 -->
+<div class="page" id="page12">
+<div class="left-panel">
+<h1 class="title chalk-text">贝叶斯公式应用</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">公式</p>
+<div class="formula-box">
+<p class="chalk-text">$$P(B_i|A) = \frac{P(B_i)P(A|B_i)}{\sum_{j=1}^n P(B_j)P(A|B_j)}$$</p>
+</div>
+<p class="chalk-text emphasis">医学诊断示例</p>
+<ul class="chalk-list">
+<li class="chalk-text">患病率：1%</li>
+<li class="chalk-text">灵敏度：95%（患病且阳性）</li>
+<li class="chalk-text">特异度：90%（未患病且阴性）</li>
+<li class="chalk-text">问：阳性时真患病概率？</li>
+</ul>
+<p class="chalk-text">答案：约 8.7%</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">贝叶斯推理过程</text>
+<g transform="translate(100,80)">
+<!-- 先验概率 -->
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="200" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" text-anchor="middle" x="100" y="25">先验概率</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="100" y="45">P(患病) = 0.01</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="100" y="65">P(未患病) = 0.99</text>
+<!-- 似然 -->
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="200" height="80" x="0" y="120"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" text-anchor="middle" x="100" y="145">似然</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="100" y="165">P(阳性|患病) = 0.95</text>
+<text fill="#999" font-size="13" text-anchor="middle" x="100" y="185">P(阳性|未患病) = 0.10</text>
+<!-- 箭头 -->
+<path d="M 200 100 L 250 140" fill="none" stroke="#9370DB" stroke-width="2" marker-end="url(#arrow-bayes)"></path>
+<defs>
+<marker id="arrow-bayes" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#9370DB"></polygon>
+</marker>
+</defs>
+<!-- 后验概率 -->
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="200" height="120" x="270" y="60"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" text-anchor="middle" x="370" y="85">后验概率</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="370" y="105">分子：0.01 × 0.95</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="370" y="122">= 0.0095</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="370" y="142">分母：0.0095 + 0.099</text>
+<text fill="#999" font-size="12" text-anchor="middle" x="370" y="159">= 0.1085</text>
+<text fill="#FFE066" font-size="13" font-weight="bold" text-anchor="middle" x="370" y="175">结果：≈ 8.7%</text>
+<!-- 解释框 -->
+<rect fill="rgba(225,190,231,0.15)" stroke="#e1bee7" stroke-width="2" width="470" height="120" x="0" y="240"></rect>
+<text fill="#e1bee7" font-size="14" font-weight="bold" x="10" y="265">关键理解</text>
+<text fill="#999" font-size="13" x="10" y="285">虽然检测结果是阳性，但由于：</text>
+<text fill="#999" font-size="12" x="20" y="305">① 患病率很低（1%）</text>
+<text fill="#999" font-size="12" x="20" y="323">② 假阳性率较高（10%）</text>
+<text fill="#999" font-size="12" x="10" y="343">所以真正患病的概率只有约 8.7%</text>
+<!-- 可视化条形图 -->
+<g transform="translate(0,380)">
+<rect fill="rgba(255,107,107,0.3)" height="20" width="40" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="11" x="45" y="15">真阳性：0.95%</text>
+<rect fill="rgba(78,205,196,0.3)" height="20" width="400" x="0" y="30"></rect>
+<text fill="#4ECDC4" font-size="11" x="405" y="45">假阳性：9.9%</text>
+<text fill="#FFE066" font-size="11" x="0" y="70">0.95 / (0.95 + 9.9) ≈ 8.7%</text>
+</g>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第13页：大数定律 -->
+<div class="page" id="page13">
+<div class="left-panel">
+<h1 class="title chalk-text">大数定律</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">定理内容</p>
+<p class="chalk-text">设 $X_1, X_2, \ldots, X_n$ 独立同分布</p>
+<p class="chalk-text">$E(X_i) = \mu$</p>
+<div class="formula-box">
+<p class="chalk-text">$$\lim_{n\to\infty} P\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \mu\right| < \epsilon\right) = 1$$</p>
+</div>
+<p class="chalk-text emphasis">意义</p>
+<ul class="chalk-list">
+<li class="chalk-text">样本均值依概率收敛到总体均值</li>
+<li class="chalk-text">频率稳定于概率</li>
+<li class="chalk-text">大样本统计的理论基础</li>
+</ul>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">大数定律示意</text>
+<g transform="translate(100,80)">
+<!-- 坐标系 -->
+<line stroke="#999" stroke-width="2" x1="50" x2="500" y1="300" y2="300"></line>
+<line stroke="#999" stroke-width="2" x1="50" x2="50" y1="300" y2="100"></line>
+<text fill="#999" font-size="12" x="510" y="305">样本量 n</text>
+<text fill="#999" font-size="12" x="30" y="95">均值</text>
+<!-- 真实均值线 -->
+<line stroke="#FFE066" stroke-dasharray="5,5" stroke-width="3" x1="50" x2="500" y1="200" y2="200">
+<animate attributeName="stroke-opacity" dur="2s" repeatCount="indefinite" values="0.5;1;0.5"></animate>
+</line>
+<text fill="#FFE066" font-size="13" x="510" y="205">μ (真实均值)</text>
+<!-- 样本均值收敛曲线 -->
+<path d="M 50 250 L 100 220 L 150 210 L 200 205 L 250 202 L 300 201 L 350 200.5 L 400 200.2 L 450 200.1 L 500 200" fill="none" stroke="#4ECDC4" stroke-width="3">
+<animate attributeName="stroke-opacity" dur="3s" repeatCount="indefinite" values="0.5;1;0.5"></animate>
+</path>
+<!-- 置信区间 -->
+<path d="M 50 180 L 100 185 L 150 188 L 200 190 L 250 192 L 300 194 L 350 196 L 400 198 L 450 199 L 500 200" fill="none" stroke="#FF6B6B" stroke-dasharray="3,3" stroke-width="2" opacity="0.5"></path>
+<path d="M 50 220 L 100 215 L 150 212 L 200 210 L 250 208 L 300 206 L 350 204 L 400 202 L 450 201 L 500 200" fill="none" stroke="#FF6B6B" stroke-dasharray="3,3" stroke-width="2" opacity="0.5"></path>
+<text fill="#FF6B6B" font-size="11" x="510" y="190">μ + ε</text>
+<text fill="#FF6B6B" font-size="11" x="510" y="220">μ - ε</text>
+<!-- 波动区域填充 -->
+<path d="M 50 180 L 100 185 L 150 188 L 200 190 L 250 192 L 300 194 L 350 196 L 400 198 L 450 199 L 500 200 L 500 200 L 450 201 L 400 202 L 350 204 L 300 206 L 250 208 L 200 210 L 150 212 L 100 215 L 50 220 Z" fill="rgba(255,107,107,0.15)" stroke="none">
+<animate attributeName="fill-opacity" dur="3s" repeatCount="indefinite" values="0.1;0.2;0.1"></animate>
+</path>
+<!-- 标注点 -->
+<circle cx="100" cy="220" fill="#4ECDC4" r="4">
+<animate attributeName="r" dur="2s" repeatCount="indefinite" values="4;6;4"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="100" y="240">n=10</text>
+<circle cx="250" cy="202" fill="#4ECDC4" r="4">
+<animate attributeName="r" begin="0.5s" dur="2s" repeatCount="indefinite" values="4;6;4"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="250" y="188">n=100</text>
+<circle cx="500" cy="200" fill="#4ECDC4" r="4">
+<animate attributeName="r" begin="1s" dur="2s" repeatCount="indefinite" values="4;6;4"></animate>
+</circle>
+<text fill="#4ECDC4" font-size="10" text-anchor="middle" x="500" y="186">n→∞</text>
+<!-- 说明框 -->
+<rect fill="rgba(225,190,231,0.15)" stroke="#e1bee7" stroke-width="2" width="450" height="80" x="50" y="330"></rect>
+<text fill="#e1bee7" font-size="14" font-weight="bold" x="60" y="355">大数定律的意义</text>
+<text fill="#999" font-size="13" x="60" y="375">随着样本量增大，样本均值越来越接近总体均值</text>
+<text fill="#999" font-size="12" x="60" y="393">波动范围越来越小，最终收敛到真实值</text>
+<text fill="#FFE066" font-size="12" x="60" y="408">这是统计推断和抽样调查的理论基础</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- 第14页：学习方法总结 -->
+<div class="page" id="page14">
+<div class="left-panel">
+<h1 class="title chalk-text">学习方法总结</h1>
+<div class="board-content">
+<p class="chalk-text emphasis">1. 理解概念，不死记公式</p>
+<p class="chalk-text">理解概率的直观含义，从几何、物理意义理解公式</p>
+<p class="chalk-text emphasis">2. 多做练习，培养直觉</p>
+<p class="chalk-text">通过大量例题建立概率直觉，从简单到复杂</p>
+<p class="chalk-text emphasis">3. 联系实际，看到应用</p>
+<p class="chalk-text">关注概率统计在工程中的应用</p>
+<p class="chalk-text emphasis">4. 使用软件，提高效率</p>
+<p class="chalk-text">掌握Python/R等统计软件</p>
+</div>
+</div>
+<div class="right-panel">
+<div class="animation-container">
+<svg class="svg-animation" viewBox="0 0 700 600">
+<text fill="#FFE066" font-size="16" text-anchor="middle" x="350" y="40">概率统计学习方法</text>
+<g transform="translate(100,80)">
+<g transform="translate(0,0)">
+<rect fill="rgba(78,205,196,0.15)" stroke="#4ECDC4" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">① 理解概念，不死记公式</text>
+<text fill="#999" font-size="13" x="10" y="45">理解概率的直观含义</text>
+<text fill="#999" font-size="12" x="10" y="65">从几何、物理意义理解公式</text>
+</g>
+<g transform="translate(0,100)">
+<rect fill="rgba(255,224,102,0.15)" stroke="#FFE066" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FFE066" font-size="14" font-weight="bold" x="10" y="20">② 多做练习，培养直觉</text>
+<text fill="#999" font-size="13" x="10" y="45">通过大量例题建立概率直觉</text>
+<text fill="#999" font-size="12" x="10" y="65">从简单到复杂，循序渐进</text>
+</g>
+<g transform="translate(0,200)">
+<rect fill="rgba(255,107,107,0.15)" stroke="#FF6B6B" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#FF6B6B" font-size="14" font-weight="bold" x="10" y="20">③ 联系实际，看到应用</text>
+<text fill="#999" font-size="13" x="10" y="45">关注概率统计在工程中的应用</text>
+<text fill="#999" font-size="12" x="10" y="65">质量控制、可靠性、数据分析</text>
+</g>
+<g transform="translate(0,300)">
+<rect fill="rgba(147,112,219,0.15)" stroke="#9370DB" stroke-width="2" width="500" height="80" x="0" y="0"></rect>
+<text fill="#9370DB" font-size="14" font-weight="bold" x="10" y="20">④ 使用软件，提高效率</text>
 <text fill="#4ECDC4" font-size="14" font-weight="bold" x="10" y="20">控制图（Control Chart）</text>
 <line x1="20" y1="70" x2="480" y2="70" stroke="#999" stroke-width="2"></line>
 <line x1="20" y1="50" x2="480" y2="50" stroke="#FF6B6B" stroke-width="1" stroke-dasharray="5,5"></line>
